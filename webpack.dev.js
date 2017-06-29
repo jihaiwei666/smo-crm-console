@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: 'http://localhost:3000/static/',
+    publicPath: 'http://localhost:3021/static/',
     chunkFilename: '[name].chunk.js'
   },
   resolve: {

@@ -4,21 +4,20 @@
 import React, {Component} from 'react'
 import {Provider} from 'react-redux'
 
-import Form from './Form'
+import Login from './Login'
 
 interface LoginAppProps {
   store: any
 }
 
-class LoginApp extends Component<LoginAppProps, any> {
+class LoginPage extends Component<LoginAppProps, any> {
   render() {
     return (
       <Provider store={this.props.store}>
-        <Form/>
+        <Login/>
       </Provider>
     )
   }
 }
 
-
-export default LoginApp
+export default LoginPage
