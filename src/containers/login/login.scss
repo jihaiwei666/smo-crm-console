@@ -20,9 +20,8 @@
     }
 
     .content {
-        background: #abc;
         position: relative;
-        width: 100%;
+        //width: 100%;
 
         .content-layout {
             width: 1200px;
@@ -31,6 +30,12 @@
             position: relative;
             height: 600px;
             z-index: 999;
+        }
+        &.bg {
+            background: url(./bg.jpg);
+        }
+        &.bg1 {
+            background: url(./bg1.jpg);
         }
     }
 
