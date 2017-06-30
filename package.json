@@ -22,7 +22,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jiangyukun/platform-manage/issues"
+    "url": "https://github.com/jiangyukun/simo-crm-console/issues"
   },
   "homepage": "",
   "dependencies": {
@@ -30,12 +30,15 @@
     "classnames": "2.2.5",
     "history": "4.6.3",
     "immutable": "3.8.1",
+    "install": "^0.10.1",
     "isomorphic-fetch": "2.2.1",
+    "npm": "^5.0.4",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
     "react-router": "4.1.1",
-    "react-router-redux": "latest",
+    "react-router-dom": "^4.1.1",
+    "react-router-redux": "^5.0.0-alpha.6",
     "redux": "3.7.1"
   },
   "devDependencies": {

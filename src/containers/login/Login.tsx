@@ -24,7 +24,7 @@ class Login extends Component<any> {
   }
 
   componentWillMount() {
-    this.seed = Math.floor(Math.random() * 2)
+    this.seed = Math.floor(Math.random() * 3)
   }
 
   componentDidUpdate() {
@@ -47,7 +47,7 @@ class Login extends Component<any> {
             </h1>
           </div>
         </div>
-        <div className={classnames('content', this.seed == 0 ? 'bg' : 'bg1')}>
+        <div className={classnames('content', 'bg' + this.seed)}>
           <div className="content-layout">
             <div className="login-box-warp">
               <div className="login-box">

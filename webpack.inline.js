@@ -7,7 +7,7 @@ const port = 3021
 
 module.exports = {
   entry: [
-    './src/login.tsx'
+    './src/main.tsx'
   ],
   devServer: {
     hot: true,
