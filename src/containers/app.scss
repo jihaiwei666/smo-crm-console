@@ -1,0 +1,51 @@
+
+html, body, #root {
+    height: 100%;
+}
+
+.app {
+    height: 100%;
+    .message-container {
+        position: fixed;
+        top: 10px;
+        z-index: 9;
+    }
+    aside {
+        height: 100%;
+        width: 200px;
+        overflow: hidden;
+        float: left;
+        display: flex;
+        flex-direction: column;
+
+        .brand-name {
+            padding: 20px 15px;
+            color: #F3F6F5;
+            background-color: #555C78;
+            font-size: 24px;
+        }
+
+        .nav-items {
+            flex: 1;
+            width: 210px;
+            background-color: #4F556D;
+        }
+    }
+
+    main {
+        margin-left: 200px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        header {
+            height: 60px;
+        }
+
+        .app-function-page {
+            flex: 1;
+            background: #EFF4FA;
+        }
+    }
+}
+
