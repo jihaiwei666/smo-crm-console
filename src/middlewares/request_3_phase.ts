@@ -3,7 +3,7 @@
  * Created by jiangyukun on 2017/1/25.
  */
 
-import * as phase from '../core/constants/phase'
+import phase from '../core/constants/phase'
 export const THREE_PHASE = Symbol('THREE_PHASE')
 
 export default ({dispatch, getState}) => next => action => {
@@ -24,7 +24,7 @@ export default ({dispatch, getState}) => next => action => {
   }
 
   function handleResponseData(response) {
-    return next({type: type + phase.SUCCESS, ...getDataReducerNeed(response)})
+    return next({type: type + phase.SUCCESS, data: getDataReducerNeed(response)})
   }
 
   function handleError(err) {

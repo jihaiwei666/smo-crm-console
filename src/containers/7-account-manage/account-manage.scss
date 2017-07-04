@@ -1,0 +1,11 @@
+
+.account-manage {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .fix-head-list {
+        flex: 1;
+    }
+}

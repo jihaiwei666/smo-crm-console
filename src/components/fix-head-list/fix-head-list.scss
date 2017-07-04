@@ -1,0 +1,33 @@
+.fix-head-list {
+    .head-container {
+        display: flex;
+
+        .item {
+            background-color: #555C78;
+            padding: 12px 0 12px 15px;
+            color: #fff;
+        }
+    }
+
+    .row-container {
+        display: flex;
+
+        .item {
+            padding: 15px 0 15px 10px;
+        }
+
+        &:nth-of-type(odd) {
+            background-color: rgba(220, 230, 240, 0.7);
+        }
+        &:nth-of-type(even) {
+            background-color: rgba(200, 210, 220, 0.5);
+        }
+
+        &:hover {
+            background-color: rgba(46, 213, 86, 0.2);
+        }
+        &.selected {
+            background-color: rgba(46, 213, 86, 0.5);
+        }
+    }
+}

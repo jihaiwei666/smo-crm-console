@@ -16,7 +16,7 @@ class PageContent extends React.Component<PageContentProps> {
   render() {
     const {match} = this.props
     return (
-      <div>
+      <div style={{height: '100%'}}>
         <Route path={`${match.url}/account-manage`} component={AccountManage}/>
       </div>
     )
