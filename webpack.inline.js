@@ -39,7 +39,10 @@ module.exports = {
         exclude: handleModulePath.exclude,
         include: handleModulePath.include
       },
-      {test: /\.(ts|tsx)$/, loader: ['react-hot-loader', 'babel-loader?cacheDirectory', 'awesome-typescript-loader?useCache']},
+      {
+        test: /\.(ts|tsx)$/,
+        loader: ['react-hot-loader', 'babel-loader?cacheDirectory', 'awesome-typescript-loader?useCache']
+      },
       {test: /\.less$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'less-loader']},
       {test: /\.scss$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'sass-loader']},
       {test: /\.(jpg|png|svg)$/, loader: 'url-loader?limit=8192'},

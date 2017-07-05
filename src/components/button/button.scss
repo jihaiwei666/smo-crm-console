@@ -1,9 +1,23 @@
 
 .button {
+    box-sizing: border-box;
     padding: 7px 10px;
     border: 1px solid #3A82D7;
     border-radius: 2px;
     cursor: pointer;
-    color: #3A82D7;
+    color: #3c3c3c;
     background-color: #fff;
+
+    &.small {
+        padding: 3px 5px;
+        font-size: 12px;
+    }
+
+    &.block {
+        width: 100%;
+    }
+
+    & + .button {
+        margin-left: 5px;
+    }
 }

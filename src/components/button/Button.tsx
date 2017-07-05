@@ -6,7 +6,11 @@ import classnames from 'classnames'
 
 import './button.scss'
 
-class Button extends React.Component<any> {
+interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+
+}
+
+class Button extends React.Component<ButtonProps> {
   render() {
     const {className, ...otherProps} = this.props
     return (

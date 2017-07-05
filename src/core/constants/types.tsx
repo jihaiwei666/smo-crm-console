@@ -22,11 +22,11 @@ export const PROJECT = {
   DELETE: null,
 }
 
-
 export const ACCOUNT_MANAGE = {
   FETCH_LIST: null,
   ADD_ACCOUNT: null,
-  EDIT_ACCOUNT: null,
+  UPDATE_ACCOUNT: null,
+  DISABLE_ACCOUNT: null,
   RESET_PASSWORD: null,
 }
 

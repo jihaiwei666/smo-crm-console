@@ -7,15 +7,13 @@ import MessageManage from 'app-core/message/'
 
 import '../../scss/common.scss'
 import PageContent from './PageContent'
-import {changeMessageStatus} from '../../actions/app.action'
+import {changeMessageStatus} from 'app-core/message/message.action'
 
 class SimoCrmApp extends Component<any> {
   render() {
     return (
       <div className="app">
-        <div className="message-container">
-          <MessageManage messageList={[]} changeMessageStatus={this.props.changeMessageStatus}/>
-        </div>
+        <MessageManage messageList={this.props.msgQueue} changeMessageStatus={this.props.changeMessageStatus}/>
         <aside>
           <header className="brand-name">simo</header>
           <nav className="nav-items"></nav>
@@ -33,8 +31,7 @@ class SimoCrmApp extends Component<any> {
 
 function mapStateToProps(state) {
   return {
-    ...state['app'],
-    router: state['router']
+    ...state['app']
   }
 }
 

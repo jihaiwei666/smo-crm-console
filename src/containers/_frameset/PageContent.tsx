@@ -2,22 +2,30 @@
  * Created by jiangyukun on 2017/7/3.
  */
 import React from 'react'
-
 import {Route} from 'react-router-dom'
-import {getPath} from '../../core/env'
 
-import AccountManage from '../7-account-manage/AccountManage'
+import pages from '../../core/pages'
 
-interface PageContentProps {
-  match: any
-}
+import Chunk from './Chunk'
+import AccountManage from './lazy-page/t'
 
-class PageContent extends React.Component<PageContentProps> {
+
+class PageContent extends React.Component<any> {
+  mapper: {}
+
+  componentWillMount() {
+    const {accountManage} = pages
+    this.mapper = {
+      [accountManage]: () => <Chunk load={AccountManage}/>
+    }
+  }
+
   render() {
     const {match} = this.props
+    const {accountManage} = pages
     return (
       <div style={{height: '100%'}}>
-        <Route path={`${match.url}/account-manage`} component={AccountManage}/>
+        <Route path={`${match.url}/account-manage`} component={this.mapper[accountManage]}/>
       </div>
     )
   }

@@ -5,7 +5,9 @@ import {fromJS} from 'immutable'
 import {combineReducers} from 'redux'
 
 import data from './data.reducer'
-import account from '../containers/7-account-manage/account-manage.reducer'
+
+import app from './app.reducer'
+import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
 import {ACCOUNT_MANAGE} from '../core/constants/types'
 
@@ -26,7 +28,8 @@ function unwrapReducerState(state, iState, nextIState) {
   return nextIState.toJS()
 }
 
-
 export default combineReducers({
+  app: wrapReducerState(app),
+  accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST))
 })

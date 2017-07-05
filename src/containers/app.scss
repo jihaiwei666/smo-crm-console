@@ -9,11 +9,7 @@ body {
 
 .app {
     height: 100%;
-    .message-container {
-        position: fixed;
-        top: 10px;
-        z-index: 9;
-    }
+
     aside {
         height: 100%;
         width: 200px;
@@ -26,7 +22,7 @@ body {
             padding: 20px 15px;
             color: #F3F6F5;
             background-color: #555C78;
-            font-size: 24px;
+            font-size: 20px;
         }
 
         .nav-items {

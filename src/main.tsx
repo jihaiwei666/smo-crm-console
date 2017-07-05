@@ -4,6 +4,7 @@
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
+import 'app-core/form/form.scss'
 import React from 'react'
 import {render} from 'react-dom'
 import {createStore, applyMiddleware} from 'redux'
