@@ -5,4 +5,5 @@ export default {
   project: 'project',
 
   accountManage: 'account-manage',
+  todoRemind: 'todo-remind',
 }

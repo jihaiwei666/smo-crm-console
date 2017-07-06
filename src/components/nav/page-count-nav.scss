@@ -2,7 +2,19 @@
     background: #fff;
 
     .page {
-        float: left;
-        padding: 10px;
+        margin: 15px 0 15px 0;
+        a, span {
+            transition: color 0.5s;
+            margin: 0 2px 0 6px;
+            padding: 10px 16px;
+            border-radius: 2px;
+            background: #eff2f5;
+            color: #99a1a7;
+        }
+        span, a:hover {
+            background: #4084d0;
+            color: #fff;
+        }
     }
+
 }

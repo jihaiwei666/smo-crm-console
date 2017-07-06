@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
 import './account-manage.scss'
+import AppFunctionPage from '../common/AppFunctionPage'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import PageCountNav from '../../components/nav/PageCountNav'
@@ -14,8 +15,22 @@ import UpdateAccountDialog from './dialog/UpdateAccountDialog'
 
 import * as actions from './account-manage.action'
 import {ACCOUNT_MANAGE} from '../../core/constants/types'
+import {handleListData} from '../../reducers/data.reducer'
 
-class AccountManage extends React.Component<any> {
+interface AccountManageProps extends AppFunctionPage {
+  accountList: any
+  addAccount: any
+  updateAccount: any
+  disableAccount: any
+  resetPassword: any
+
+  addAccountSuccess: boolean
+  updateAccountSuccess: boolean
+  disableAccountSuccess: boolean
+  resetPasswordSuccess: boolean
+}
+
+class AccountManage extends React.Component<AccountManageProps> {
   state = {
     index: -1,
     currentPage: 0,
@@ -24,33 +39,47 @@ class AccountManage extends React.Component<any> {
     showDisabledConfirm: false
   }
 
+  toPage = (newPage) => {
+    if (newPage && newPage != this.state.currentPage) {
+      this.setState({currentPage: newPage})
+    }
+    this.props.fetchList(newPage)
+  }
+
   disableAccount = () => {
     const item = this.props.accountList.data.list[this.state.index]
     this.props.disableAccount(item['user_id'])
   }
 
   componentDidMount() {
-    this.props.fetchList(this.state.currentPage)
+    this.toPage(0)
   }
 
   componentDidUpdate() {
     if (this.props.addAccountSuccess) {
-      this.props.showSuccess('添加账号成功！')
+      this.props.showSuccess('新增账号成功！')
       this.props.clearState(ACCOUNT_MANAGE.ADD_ACCOUNT)
+      this.toPage(0)
     }
     if (this.props.updateAccountSuccess) {
       this.props.showSuccess('更新账号信息成功！')
       this.props.clearState(ACCOUNT_MANAGE.UPDATE_ACCOUNT)
+      this.toPage(0)
+    }
+    if (this.props.disableAccountSuccess) {
+      this.props.showSuccess('禁用账号信息成功！')
+      this.props.clearState(ACCOUNT_MANAGE.DISABLE_ACCOUNT)
+      this.toPage(0)
+    }
+    if (this.props.resetPasswordSuccess) {
+      this.props.showSuccess('重置密码成功！')
+      this.props.clearState(ACCOUNT_MANAGE.RESET_PASSWORD)
     }
   }
 
   render() {
-    const {data, loading, loaded} = this.props.accountList
-    let total = 0, list = []
-    if (data) {
-      total = data.total
-      list = data.list
-    }
+    const {total, list, loading, loaded} = handleListData(this.props.accountList)
+
     const item = list[this.state.index] || {}
 
     return (
@@ -77,14 +106,14 @@ class AccountManage extends React.Component<any> {
         }
         {
           this.state.showDisabledConfirm && (
-            <Confirm message="确定停用此账号吗？" onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={() => null}/>
+            <Confirm message="确定停用此账号吗？" onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
           )
         }
 
         <div className="m10">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建账号</Button>
         </div>
-        <FixHeadList weights={[]}>
+        <FixHeadList>
           <FixHead>
             <FixHead.Item>账号</FixHead.Item>
             <FixHead.Item>姓名</FixHead.Item>
@@ -105,7 +134,7 @@ class AccountManage extends React.Component<any> {
                     <FixRow.Item>{item['post_type']}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>
-                      <Button className="small" onClick={() => this.setState({showDisabledConfirm: true, index})}>停用</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDisabledConfirm: true, index})}>停用</Button>
                     </FixRow.Item>
                   </FixRow>
                 )
@@ -113,7 +142,7 @@ class AccountManage extends React.Component<any> {
             }
           </FixBody>
         </FixHeadList>
-        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={() => null}/>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }

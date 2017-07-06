@@ -9,7 +9,8 @@ import phase from '../../core/constants/phase'
 const initValue = {
   addAccountSuccess: false,
   updateAccountSuccess: false,
-  resetPasswordSuccess: false
+  resetPasswordSuccess: false,
+  disableAccountSuccess: false
 }
 
 export default function (iState = fromJS(initValue), action) {
@@ -22,12 +23,27 @@ export default function (iState = fromJS(initValue), action) {
     case phase.CLEAR + ACCOUNT_MANAGE.ADD_ACCOUNT :
       nextIState = nextIState.set('addAccountSuccess', false)
       break
+
     case ACCOUNT_MANAGE.UPDATE_ACCOUNT + phase.SUCCESS:
       nextIState = nextIState.set('updateAccountSuccess', true)
       break
 
     case phase.CLEAR + ACCOUNT_MANAGE.UPDATE_ACCOUNT :
       nextIState = nextIState.set('updateAccountSuccess', false)
+      break
+
+    case ACCOUNT_MANAGE.RESET_PASSWORD + phase.SUCCESS:
+      nextIState = nextIState.set('resetPasswordSuccess', true)
+      break
+    case phase.CLEAR + ACCOUNT_MANAGE.RESET_PASSWORD :
+      nextIState = nextIState.set('resetPasswordSuccess', false)
+      break
+
+    case ACCOUNT_MANAGE.DISABLE_ACCOUNT + phase.SUCCESS:
+      nextIState = nextIState.set('disableAccountSuccess', true)
+      break
+    case phase.CLEAR + ACCOUNT_MANAGE.DISABLE_ACCOUNT :
+      nextIState = nextIState.set('disableAccountSuccess', false)
       break
   }
   return nextIState

@@ -19,16 +19,36 @@ body {
         flex-direction: column;
 
         .brand-name {
-            padding: 20px 15px;
             color: #F3F6F5;
             background-color: #555C78;
             font-size: 20px;
         }
 
-        .nav-items {
+        .nav-container {
             flex: 1;
             width: 210px;
             background-color: #4F556D;
+        }
+
+        .nav-items {
+            padding: 10px 0;
+            li {
+                cursor: pointer;
+                transition: all 0.5s;
+                padding: 10px 20px;
+                color: #ccc;
+
+                a {
+                    color: #ccc;
+                    display: block;
+                    width: 100%;
+                }
+
+                &:hover {
+                    color: #EFF4FA;
+                    background: lighten(#4F556D, 10%);
+                }
+            }
         }
     }
 
@@ -45,6 +65,7 @@ body {
         .app-function-page {
             flex: 1;
             background: #EFF4FA;
+            color: #3c3c3c;
         }
     }
 }

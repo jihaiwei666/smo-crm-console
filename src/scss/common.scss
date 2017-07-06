@@ -3,12 +3,22 @@ blockquote, body, button, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4,
     padding: 0;
 }
 
-/*
+html {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Roboto,
+    "PingFang SC", "Hiragino Sans GB", SimSun, "Microsoft YaHei", sans-serif;
+    line-height: 1.5;
+}
 
+/*
 button, input, select, textarea {
     font: 100% "Microsoft YaHei", tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
 }
 */
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
 
 h1 {
     font-size: 18px;

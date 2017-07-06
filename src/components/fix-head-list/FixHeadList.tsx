@@ -7,10 +7,13 @@ import PropTypes from 'prop-types'
 import './fix-head-list.scss'
 
 interface FixHeadListProps {
-  weights: (number | string)[]
+  weights?: (number | string)[]
 }
 
 class FixHeadList extends React.Component<FixHeadListProps> {
+  static defaultProps = {
+    weights: []
+  }
   static childContextTypes = {
     weights: PropTypes.array
   }

@@ -14,6 +14,11 @@ export const APP = {
   CHANGE_MESSAGE_STATUS: null,
 }
 
+export const TODO_REMIND = {
+  FETCH_LIST: null,
+
+}
+
 export const PROJECT = {
   FETCH_LIST: null,
   FETCH_DETAIL: null,

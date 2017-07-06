@@ -2,8 +2,11 @@
  * http请求3个阶段的封装
  * Created by jiangyukun on 2017/1/25.
  */
+import {showMessage} from 'app-core/message/message.action'
+import {MESSAGE_TYPE} from 'app-core/message/message.constants'
 
 import phase from '../core/constants/phase'
+
 export const THREE_PHASE = Symbol('THREE_PHASE')
 
 export default ({dispatch, getState}) => next => action => {
@@ -28,7 +31,11 @@ export default ({dispatch, getState}) => next => action => {
   }
 
   function handleError(err) {
-    return next({type: type + phase.FAILURE, err})
+    next(showMessage({
+      msgType: MESSAGE_TYPE.FAILURE,
+      content: err
+    }))
+    // return next({type: type + phase.FAILURE, err})
   }
 
   function logError(err) {

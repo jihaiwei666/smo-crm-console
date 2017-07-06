@@ -13,7 +13,7 @@ export function fetchList(start) {
     [THREE_PHASE]: {
       type: ACCOUNT_MANAGE.FETCH_LIST,
       http: () => _get(prefix + `/v1/getUserList/${start}`),
-      handleResponse: data => ({count: data['totalCount'], list: data['list']})
+      handleResponse: data => ({total: data['totalCount'], list: data['list']})
     }
   }
 }

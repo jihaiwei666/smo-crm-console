@@ -13,9 +13,9 @@ import Button from '../../../components/button/Button'
 
 interface UpdateAccountDialogProps {
   accountInfo: any
-  updateAccount: any
+  updateAccount: (accountId: string, email: string, username: string, shortName: string, position: string) => void
   updateAccountSuccess: boolean
-  resetPassword: any
+  resetPassword: (accountId: string) => void
   resetPasswordSuccess: boolean
   onExited: () => void
 }
@@ -24,6 +24,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
   state = {
     show: true,
     showUpdateConfirm: false,
+    showResetPasswordConfirm: false,
 
     email: '',
     username: '',
@@ -34,9 +35,15 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
   close = () => {
     this.setState({show: false})
   }
+
   updateAccount = () => {
-    const accountId = this.props.accountInfo['user_account']
+    const accountId = this.props.accountInfo['user_id']
     this.props.updateAccount(accountId, this.state.email, this.state.username, this.state.shortName, this.state.position)
+  }
+
+  resetPassword = () => {
+    const accountId = this.props.accountInfo['user_id']
+    this.props.resetPassword(accountId)
   }
 
   componentWillMount() {
@@ -52,6 +59,9 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
     if (!this.props.updateAccountSuccess && nextProps.updateAccountSuccess) {
       this.close()
     }
+    if (!this.props.resetPasswordSuccess && nextProps.resetPasswordSuccess) {
+      this.close()
+    }
   }
 
   render() {
@@ -63,6 +73,15 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
               message="确定更新吗？"
               onExited={() => this.setState({showUpdateConfirm: false})}
               onConfirm={this.updateAccount}
+            />
+          )
+        }
+        {
+          this.state.showResetPasswordConfirm && (
+            <Confirm
+              message="确定重置密码吗？"
+              onExited={() => this.setState({showResetPasswordConfirm: false})}
+              onConfirm={this.resetPassword}
             />
           )
         }
@@ -129,7 +148,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
         <Modal.Footer>
           <FlexDiv>
             <Part className="m5">
-              <Button className="block">重置密码</Button>
+              <Button className="block" onClick={() => this.setState({showResetPasswordConfirm: true})}>重置密码</Button>
             </Part>
             <Part className="m5">
               <Button className="block" onClick={() => this.setState({showUpdateConfirm: true})}>保存</Button>

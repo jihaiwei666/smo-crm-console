@@ -1,0 +1,24 @@
+.todo-remind {
+    display: flex;
+    flex-direction: column;
+
+    .todo-remind-list {
+        overflow: auto;
+        padding: 15px;
+    }
+
+    .todo-remind-item {
+        margin: 10px;
+        box-shadow: 1px 1px 10px #aaa;
+        border-radius: 4px;
+        background: #fff;
+
+        .content {
+            margin: 10px 4px;
+        }
+
+        .relevant-item {
+            color: gray;
+        }
+    }
+}

@@ -3,13 +3,14 @@
  */
 import {fromJS} from 'immutable'
 import {combineReducers} from 'redux'
+import message from 'app-core/message/message.reducer'
 
 import data from './data.reducer'
 
 import app from './app.reducer'
 import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
-import {ACCOUNT_MANAGE} from '../core/constants/types'
+import {TODO_REMIND, ACCOUNT_MANAGE} from '../core/constants/types'
 
 /**
  * 使用immutable，将reducer的state封装为iState，不可变数据
@@ -30,6 +31,11 @@ function unwrapReducerState(state, iState, nextIState) {
 
 export default combineReducers({
   app: wrapReducerState(app),
+  message: wrapReducerState(message),
+
+  todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
+
   accountManage: wrapReducerState(accountManage),
-  accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST))
+  accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),
+
 })
