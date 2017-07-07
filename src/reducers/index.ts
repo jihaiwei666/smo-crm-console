@@ -4,6 +4,7 @@
 import {fromJS} from 'immutable'
 import {combineReducers} from 'redux'
 import message from 'app-core/message/message.reducer'
+import {routerReducer} from 'react-router-redux'
 
 import data from './data.reducer'
 
@@ -30,6 +31,7 @@ function unwrapReducerState(state, iState, nextIState) {
 }
 
 export default combineReducers({
+  router: routerReducer,
   app: wrapReducerState(app),
   message: wrapReducerState(message),
 

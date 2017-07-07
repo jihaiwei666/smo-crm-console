@@ -33,20 +33,41 @@ body {
         .nav-items {
             padding: 10px 0;
             li {
+                position: relative;
                 cursor: pointer;
                 transition: all 0.5s;
-                padding: 10px 20px;
                 color: #ccc;
 
                 a {
-                    color: #ccc;
+                    box-sizing: border-box;
                     display: block;
+                    padding: 10px 20px;
                     width: 100%;
+                    color: #ccc;
                 }
 
                 &:hover {
                     color: #EFF4FA;
                     background: lighten(#4F556D, 10%);
+                }
+
+                &.active {
+                    color: #fff;
+                    background: darken(#4F556D, 10%);
+
+                    a {
+                        color: #fff;
+                    }
+
+                }
+                &.active:after {
+                    z-index: 1;
+                    content: '';
+                    position: absolute;
+                    width: 5px;
+                    top: 0;
+                    bottom: 0;
+                    background-color: #ff4400;
                 }
             }
         }

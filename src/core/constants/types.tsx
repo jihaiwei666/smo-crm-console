@@ -19,6 +19,11 @@ export const TODO_REMIND = {
 
 }
 
+export const CLIENTS = {
+  FETCH_LIST: null,
+
+}
+
 export const PROJECT = {
   FETCH_LIST: null,
   FETCH_DETAIL: null,

@@ -9,6 +9,10 @@ import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import {LimitInput, LimitTextArea} from 'app-core/form/'
 
+import CheckBox from '../../../components/form/CheckBox'
+import Button from '../../../components/button/Button'
+import RelevantItemDialog from './RelevantItemDialog'
+
 interface SendRemindDialogProps {
   sendRemind: () => void
   sendRemindSuccess: boolean
@@ -19,8 +23,12 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
   state = {
     show: true,
     showAddConfirm: false,
+    showRelevantItemDialog: false,
+
     receiver: '',
     content: '',
+    isSystemMessageRemind: false,
+    isEmailRemind: false,
   }
 
   close = () => {
@@ -41,6 +49,12 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     return (
       <Modal show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
+          this.state.showRelevantItemDialog && (
+            <RelevantItemDialog
+              onExited={() => this.setState({showRelevantItemDialog: false})}/>
+          )
+        }
+        {
           this.state.showAddConfirm && (
             <Confirm message="确定发出提醒吗？"
                      onExited={() => this.setState({showAddConfirm: false})}
@@ -54,11 +68,8 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
         <Modal.Body>
           <FlexDiv>
             <Part>接收人：</Part>
-            <Part>
-              <LimitInput
-                limit={20}
-                onExceed={() => null}
-                value={this.state.receiver} onChange={e => this.setState({receiver: e.target.value})}/>
+            <Part weight={2}>
+              <Select1 options={[]} value={this.state.receiver} onChange={value => this.setState({receiver: value})}/>
             </Part>
           </FlexDiv>
 
@@ -66,8 +77,9 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
           <FlexDiv>
             <Part>待办内容：</Part>
-            <Part>
-              <LimitInput
+            <Part weight={2}>
+              <LimitTextArea
+                rows={5}
                 limit={500}
                 onExceed={() => null}
                 value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
@@ -76,21 +88,20 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           <Line/>
           <FlexDiv>
             <Part>提醒方式：</Part>
-            <Part>
-              <LimitInput
-                limit={500}
-                onExceed={() => null}
-                value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
+            <Part weight={2}>
+              <CheckBox checked={this.state.isSystemMessageRemind} onChange={checked => this.setState({isSystemMessageRemind: checked})}>
+                系统消息
+              </CheckBox>
+              <CheckBox checked={this.state.isEmailRemind} onChange={checked => this.setState({isEmailRemind: checked})}>
+                邮件
+              </CheckBox>
             </Part>
           </FlexDiv>
           <Line/>
           <FlexDiv>
             <Part>关联项：</Part>
-            <Part>
-              <LimitInput
-                limit={500}
-                onExceed={() => null}
-                value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
+            <Part weight={2}>
+              <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
             </Part>
           </FlexDiv>
           <Line/>

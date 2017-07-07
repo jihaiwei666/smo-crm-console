@@ -1,3 +1,7 @@
+/**
+ *
+ * @type {webpack}
+ */
 const webpack = require('webpack')
 const moment = require('moment')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -8,13 +12,12 @@ process.env.NODE_ENV = 'production'
 
 module.exports = {
   entry: [
-    './src/boot/index.js'
+    './src/main.tsx'
   ],
   output: {
-    // path: 'D:/2017/company/app-parent/backed-web/src/main/webapp/platform-new/build/',
     path: __dirname + '/build/prod/',
     filename: 'bundle' + '.min.js',
-    publicPath: '/backend/platform-new/build/',
+    publicPath: '/crm/build/prod/',
     chunkFilename: '[name].chunk.js?v=' + moment().format('YYYY-MM-DD')
   },
   resolve: {

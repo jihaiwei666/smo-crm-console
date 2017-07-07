@@ -6,11 +6,11 @@ import {connect} from 'react-redux'
 import {FlexDiv, Part} from 'app-core/layout/'
 
 import './todo-remind.scss'
+import Button from '../../components/button/Button'
 import SendRemindDialog from './dialog/SendRemindDialog'
 
 import * as actions from './todo-remind.action'
 import {handleListData} from '../../reducers/data.reducer'
-import Button from '../../components/button/Button'
 
 class TodoRemind extends React.Component<any> {
   state = {
@@ -45,7 +45,7 @@ class TodoRemind extends React.Component<any> {
           )
         }
 
-        <div className="m10">
+        <div className="m15">
           <Button onClick={() => this.setState({showSendRemindDialog: true})}>发提醒</Button>
         </div>
         <div className="todo-remind-list">

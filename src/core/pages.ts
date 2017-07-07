@@ -6,4 +6,5 @@ export default {
 
   accountManage: 'account-manage',
   todoRemind: 'todo-remind',
+  clients: 'clients'
 }

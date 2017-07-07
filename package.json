@@ -90,6 +90,7 @@
     "less": "2.7.2",
     "less-loader": "4.0.4",
     "mocha": "3.4.2",
+    "moment": "^2.18.1",
     "node-sass": "4.5.3",
     "postcss-loader": "2.0.6",
     "react-addons-test-utils": "15.6.0",

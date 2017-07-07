@@ -5,7 +5,7 @@ export let context = ''
 
 export function getPathPrefix() {
   if (process.env.NODE_ENV == 'production') {
-    return context + '/'
+    return context + '/prod/'
   }
   if (process.env.NODE_ENV == 'inline') {
     return context + '/inline/'

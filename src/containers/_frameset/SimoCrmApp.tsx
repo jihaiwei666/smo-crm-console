@@ -4,6 +4,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import classnames from 'classnames'
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
@@ -12,10 +13,19 @@ import PageContent from './PageContent'
 import {getPath} from '../../core/env'
 import pages from '../../core/pages'
 
-class SimoCrmApp extends Component<any> {
+interface SimoCrmAppProps {
+  message: any
+  changeMessageStatus: any
+  match: any
+  currentPath: string
+}
+
+class SimoCrmApp extends Component<SimoCrmAppProps> {
   render() {
+    const currentPath = this.props.currentPath
     const todoRemind = getPath(pages.todoRemind)
     const accountManage = getPath(pages.accountManage)
+    const clients = getPath(pages.clients)
 
     return (
       <div className="app">
@@ -26,25 +36,25 @@ class SimoCrmApp extends Component<any> {
           </header>
           <nav className="nav-container">
             <ul className="nav-items">
-              <li>
+              <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})}>
                 <Link to={todoRemind}>待办提醒</Link>
               </li>
-              <li>
-                客户
+              <li className={classnames({'active': currentPath == getPath(pages.clients)})}>
+                <Link to={clients}>客户</Link>
               </li>
               <li>
-                项目
+                <Link to={todoRemind}>项目</Link>
               </li>
               <li>
-                合同
+                <Link to={todoRemind}>合同</Link>
               </li>
               <li>
-                报表
+                <Link to={todoRemind}>报表</Link>
               </li>
               <li>
-                回收站
+                <Link to={todoRemind}>回收站</Link>
               </li>
-              <li>
+              <li className={classnames({'active': currentPath == getPath(pages.accountManage)})}>
                 <Link to={accountManage}>
                   账号管理
                 </Link>
@@ -64,9 +74,11 @@ class SimoCrmApp extends Component<any> {
 }
 
 function mapStateToProps(state) {
+  let currentPath = state.router.location.pathname
   return {
     ...state['app'],
-    message: state.message
+    message: state.message,
+    currentPath
   }
 }
 

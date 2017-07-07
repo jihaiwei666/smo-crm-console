@@ -3,31 +3,30 @@
  * Created by jiangyukun on 2016/12/9.
  */
 const webpack = require('webpack')
-const moment = require('moment')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 process.env.NODE_ENV = 'production'
 
 const vendors = [
   'babel-polyfill',
   'classnames',
-  'prop-types',
   'dom-helpers',
   'history',
   'immutable',
-  'moment',
+  'isomorphic-fetch',
+  'prop-types',
   'react',
   'react-dom',
   'react-redux',
   'react-router',
+  'react-router-dom',
   'react-router-redux',
-  'redux',
-  'redux-thunk'
+  'redux'
 ]
 
 module.exports = {
   output: {
     path: __dirname + '/build',
-    filename: 'lib-' + moment().format('MMDD') + '.min.js',
+    filename: 'lib' + '.min.js',
     library: '[name]'
   },
   entry: {
@@ -44,7 +43,7 @@ module.exports = {
   },
 
   plugins: [
-    new ExtractTextPlugin('common-' + moment().format('MMDD') + '.css'),
+    new ExtractTextPlugin('common' + '.css'),
     new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)}),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
