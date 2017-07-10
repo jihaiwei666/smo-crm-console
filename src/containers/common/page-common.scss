@@ -1,0 +1,47 @@
+.input-unit {
+    padding: 10px 0 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.input-unit-illustrate {
+    padding: 7px 0;
+    color: gray;
+}
+
+.input-label {
+    width: 150px;
+}
+
+.input-group {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.row-line {
+    border-bottom: 1px solid #ddd;
+}
+
+.category-title {
+    margin: 0 -15px;
+    background: #eee;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 7px;
+    .icon {
+        background: #00a854;
+        display: inline-block;
+        vertical-align: middle;
+        width: 10px;
+        height: 16px;
+    }
+    span {
+        color: #999;
+        margin-left: 5px;
+    }
+}
+
+.serial-number {
+    width: 75px;
+    border-right: 1px solid #ccc;
+}
+

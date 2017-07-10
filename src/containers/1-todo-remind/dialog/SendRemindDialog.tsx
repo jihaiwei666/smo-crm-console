@@ -9,7 +9,7 @@ import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import {LimitInput, LimitTextArea} from 'app-core/form/'
 
-import CheckBox from '../../../components/form/CheckBox'
+import CheckBox from '../../../components/form/checkbox/CheckBox'
 import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
 

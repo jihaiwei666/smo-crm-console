@@ -8,6 +8,7 @@ import './clients.scss'
 import Button from '../../components/button/Button'
 
 import * as actions from './clients.action'
+import AddClientDialog from './dialog/AddClientDialog'
 
 interface ClientsProps {
   fetchList: any
@@ -15,7 +16,9 @@ interface ClientsProps {
 
 class Clients extends React.Component<ClientsProps> {
   state = {
-    currentPage: 0
+    showAddClientDialog: true,
+    currentPage: 0,
+
   }
 
   toPage = (newPage) => {
@@ -29,14 +32,21 @@ class Clients extends React.Component<ClientsProps> {
   }
 
   componentDidMount() {
-    this.toPage(0)
+    // this.toPage(0)
   }
 
   render() {
     return (
       <div className="clients">
+        {
+          this.state.showAddClientDialog && (
+            <AddClientDialog
+              onExited={() => this.setState({showAddClientDialog: false})}/>
+          )
+        }
+
         <div className="m15">
-          <Button>创建</Button>
+          <Button onClick={() => this.setState({showAddClientDialog: true})}>创建</Button>
           <Button>导入数据</Button>
         </div>
       </div>
