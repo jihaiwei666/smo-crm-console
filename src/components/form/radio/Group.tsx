@@ -11,7 +11,12 @@ interface GroupProps {
 
 class Group extends React.Component<GroupProps> {
   static childContextTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
+
+  onChange = (value) => {
+    this.props.onChange(value)
   }
 
   render() {
@@ -24,7 +29,8 @@ class Group extends React.Component<GroupProps> {
 
   getChildContext() {
     return {
-      value: this.props.value
+      value: this.props.value,
+      onChange: this.onChange
     }
   }
 }

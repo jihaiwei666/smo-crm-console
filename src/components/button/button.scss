@@ -10,7 +10,7 @@
     background-color: #3A82D7;
 
     &.danger {
-        background-color: #ff4400;
+        background-color: #d9534f;
     }
 
     &.small, &.sm {
@@ -29,5 +29,9 @@
 
     & + .button {
         margin-left: 5px;
+    }
+
+    &[disabled] {
+        background-color: #ccc;
     }
 }

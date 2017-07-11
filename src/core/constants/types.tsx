@@ -10,8 +10,7 @@ function generatorValueFromKey(prefix: string, obj: object): void {
 }
 
 export const APP = {
-  SHOW_MESSAGE: null,
-  CHANGE_MESSAGE_STATUS: null,
+  FETCH_BD: null,
 }
 
 export const TODO_REMIND = {
@@ -21,6 +20,7 @@ export const TODO_REMIND = {
 
 export const CLIENTS = {
   FETCH_LIST: null,
+  FETCH_BD_LIST: null,
 
 }
 

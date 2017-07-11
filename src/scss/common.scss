@@ -1,3 +1,25 @@
+$array: 5, 10, 15, 20;
+
+@mixin ttt($key, $p) {
+    @for $i from 1 through length($array) {
+        $item: nth($array, $i);
+        .#{$key}#{$item} {
+            #{$p}: #{$item}px
+        }
+    }
+}
+
+@include ttt('p', 'padding')
+@include ttt('pl', 'padding-left')
+@include ttt('pr', 'padding-right')
+@include ttt('pb', 'padding-bottom')
+
+@include ttt('m', 'margin')
+@include ttt('mt', 'margin-top')
+@include ttt('ml', 'margin-left')
+@include ttt('mr', 'margin-right')
+@include ttt('mb', 'margin-bottom')
+
 blockquote, body, button, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, li, ol, p, pre, td, textarea, th, ul {
     margin: 0;
     padding: 0;
@@ -27,46 +49,6 @@ h1 {
 
 ul {
     list-style-type: none;
-}
-
-.m5 {
-    margin: 5px;
-}
-
-.m10 {
-    margin: 10px;
-}
-
-.m15 {
-    margin: 15px;
-}
-
-.p5 {
-    padding: 5px;
-}
-
-.p10 {
-    padding: 10px;
-}
-
-.p15 {
-    padding: 15px;
-}
-
-.pl5 {
-    padding-left: 5px;
-}
-
-.pr5 {
-    padding-right: 5px;
-}
-
-.pt5 {
-    padding-top: 5px;
-}
-
-.pb5 {
-    padding-bottom: 5px;
 }
 
 .clearfix {
@@ -99,4 +81,20 @@ ul {
 
 .bl {
     border-left: 1px solid #ddd;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+input[disabled], button[disabled] {
+    cursor: not-allowed;
 }

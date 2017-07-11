@@ -9,9 +9,10 @@ import {routerReducer} from 'react-router-redux'
 import data from './data.reducer'
 
 import app from './app.reducer'
+import clients from '../containers/2-clients/clients.reducer'
 import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
-import {TODO_REMIND, ACCOUNT_MANAGE} from '../core/constants/types'
+import {TODO_REMIND, CLIENTS, ACCOUNT_MANAGE} from '../core/constants/types'
 
 /**
  * 使用immutable，将reducer的state封装为iState，不可变数据
@@ -35,7 +36,11 @@ export default combineReducers({
   app: wrapReducerState(app),
   message: wrapReducerState(message),
 
-  todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
+  todoRemindList: wrapReducerState(clients),
+
+  clients: wrapReducerState(clients),
+  clientList: wrapReducerState(data(CLIENTS.FETCH_LIST)),
+  BDList: wrapReducerState(data(CLIENTS.FETCH_BD_LIST)),
 
   accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),

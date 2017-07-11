@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name]-bundle.js',
+    filename: 'bundle.js',
     publicPath: 'http://' + ipAddress + ':' + port + '/static/',
     chunkFilename: '[name].chunk.js'
   },

@@ -23,7 +23,11 @@ class Item extends React.Component<any> {
   }
 }
 
-class FixRow extends React.Component<any> {
+interface FixRowProps extends React.HTMLProps<HTMLUListElement> {
+  selected?: boolean
+}
+
+class FixRow extends React.Component<FixRowProps> {
   static Item = Item
   static contextTypes = {
     weights: PropTypes.array

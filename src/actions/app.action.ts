@@ -3,6 +3,8 @@
  */
 import {APP} from '../core/constants/types'
 import phase from '../core/constants/phase'
+import {THREE_PHASE} from '../middlewares/request_3_phase'
+import {_get} from '../core/http'
 
 export function clearState(type: string) {
   return {
@@ -10,8 +12,12 @@ export function clearState(type: string) {
   }
 }
 
-export function changeMessageStatus(msgId: any, newStatus: any) {
+export function fetchBD() {
   return {
-    type: APP.CHANGE_MESSAGE_STATUS, msgId, newStatus
+    [THREE_PHASE]: {
+      type: APP.FETCH_BD,
+      http: () => _get('/user/v1/getUserInfoByBD'),
+      handleResponse: data => null
+    }
   }
 }

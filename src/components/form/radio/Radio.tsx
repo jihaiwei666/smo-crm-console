@@ -15,18 +15,23 @@ interface RadioProps {
 class Radio extends React.Component<RadioProps> {
   static Group = Group
   static contextTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
+
+  onChange = () => {
+    this.context.onChange(this.props.value)
   }
 
   render() {
     return (
-      <div className="radio-wrapper">
+      <label className="radio-wrapper" onClick={this.onChange}>
         <span className={classnames('radio', {'radio-checked': this.context.value == this.props.value})}>
           <input type="radio" className="radio-input"/>
           <span className="radio-inner"></span>
         </span>
         <span>{this.props.children}</span>
-      </div>
+      </label>
     )
   }
 }

@@ -33,7 +33,7 @@ class Login extends Component<any> {
       this.props.clearState(LOGIN)
     }
     if (this.props.loginSuccess) {
-      console.log('login success')
+      location.href = 'prod/index'
     }
   }
 

@@ -11,15 +11,22 @@ import Input from '../../components/form/Input'
 interface LabelAndInputProps {
   label: string,
   className?: string
+  disabled?: boolean
+  value?: string
+  onChange?: (value: string) => void
 }
 
 class LabelAndInput extends React.Component<LabelAndInputProps> {
   render() {
     return (
-      <FlexDiv className={classnames('m5', this.props.className)}>
+      <FlexDiv className={classnames('mt5 mb5', this.props.className)}>
         <Label>{this.props.label + '：'}</Label>
         <Part>
-          <Input placeholder="请输入"/>
+          <Input
+            placeholder="请输入" value={this.props.value}
+            onChange={(e: any) => this.props.onChange(e.target.value)}
+            disabled={this.props.disabled}
+          />
         </Part>
       </FlexDiv>
     )
