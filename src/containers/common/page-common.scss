@@ -1,9 +1,9 @@
 .input-unit {
     padding: 10px 0 5px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
 }
 
-.input-unit-illustrate {
+.tip, .input-unit-illustrate {
     padding: 7px 0;
     color: gray;
 }
@@ -24,8 +24,8 @@
 .category-title {
     margin-left: -15px;
     background: #eee;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     padding: 7px;
     .icon {
         background: #00a854;
@@ -45,9 +45,14 @@
     border-right: 1px solid #ccc;
 }
 
+.body-box {
+    margin: -15px;
+    height: calc(100% + 30px);
+}
+
 .form-container {
     height: 100%;
     overflow: auto;
-    margin: -15px 0 -15px 0;
+    margin: 0 0 -15px 0;
     padding: 0 15px;
 }

@@ -5,20 +5,24 @@ import React from 'react'
 import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
-import Input from '../../../../components/form/Input'
 import Label from '../../../common/Label'
 import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
+import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
 
 interface BD_BDPC_Props {
   customerId: string
+  fetchBD: () => void
   BDList: any
+  fetchBDPC: () => void
   BDPCList: any
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
   state = {
+    showApply: false,
+
     bd: '',
     bdpc: ''
   }
@@ -33,6 +37,14 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
     }
     return (
       <div>
+        {
+          this.state.showApply && (
+            <ApplyBdpcFollowUpDialog
+              onExited={() => this.setState({showApply: false})}
+            />
+          )
+        }
+
         <InputUnit>
           <FlexDiv>
             <Label>客户所有人：</Label>
@@ -52,7 +64,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </FlexDiv>
           <div className="input-unit-illustrate">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
           <div className="pull-right">
-            <Button className="small">申请BDPC跟进</Button>
+            <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showApply: true})}>申请BDPC跟进</Button>
           </div>
 
         </InputUnit>

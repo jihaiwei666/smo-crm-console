@@ -10,17 +10,18 @@ import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import addCommonFunction from '../../_frameset/addCommonFunction'
+import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
-import BD_BDPC from './add-part/BD_BDPC'
+import BD_BDPC from './edit-part/BD_BDPC'
 import CustomerInfo from '././add-part/CustomerInfo'
-import Subcompany from './add-part/Subcompany'
-import Contact from './add-part/Contact'
-import CDA from './add-part/CDA'
-import Supplier from './add-part/Supplier'
-import RFI from './add-part/RFI'
-import AssociateInfo from './add-part/AssociateInfo'
-import RemarkAndAttachment from './add-part/RemarkAndAttachment'
-import OperationRecord from './add-part/OperationRecord'
+import Subcompany from './edit-part/Subcompany'
+import Contact from './edit-part/Contact'
+import CDA from './edit-part/CDA'
+import Supplier from './edit-part/Supplier'
+import RFI from './edit-part/RFI'
+import AssociateInfo from './edit-part/AssociateInfo'
+import RemarkAndAttachment from './edit-part/RemarkAndAttachment'
+import OperationRecord from './edit-part/OperationRecord'
 
 import {CLIENTS} from '../../../core/constants/types'
 import {addCustomer, updateCustomer} from '../clients.action'
@@ -53,6 +54,11 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
     this.setState({show: false})
   }
 
+  componentDidMount() {
+    this.props.fetchBD()
+    this.props.fetchBDPC()
+  }
+
   componentWillReceiveProps(nextProps: AddClientDialogProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.props.showSuccess('添加客户信息成功！')
@@ -75,11 +81,13 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
           <Modal.Title>添加客户</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row className="h-100">
+          <Row className="body-box">
             <Part className="form-container">
               <BD_BDPC
                 customerId={this.props.customerId}
+                fetchBD={this.props.fetchBD}
                 BDList={this.props.BDList}
+                fetchBDPC={this.props.fetchBDPC}
                 BDPCList={this.props.BDPCList}
               />
 
@@ -139,11 +147,12 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
 function mapStateToProps(state) {
   return {
     ...state.clients,
-    BDList: state.BDList
+    BDList: state.BDList,
+    BDPCList: state.BDPCList
   }
 }
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   addCustomer, updateCustomer
-})(addCommonFunction(AddClientDialog))
+})(addCommonFunction(cache(AddClientDialog)))

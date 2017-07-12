@@ -20,9 +20,9 @@ export function handleClientInfo(clientData) {
   return {
     customerBaseInfo: {
       customerName: baseInfo['customer_name'] || '',
-      customerCategory: (baseInfo['customer_type'] || null) + '',
+      customerCategory: (baseInfo['customer_type'] + '') || null,
       customerAddress: baseInfo['customer_address'] || '',
-      importantLevel: null,
+      importantLevel: (baseInfo['customer_important_level'] + '') || null,
       taxpayerIdentifyNumber: baseInfo['billing_taxpayer_number'] || '',
       bank: baseInfo['billing_open_bank'],
       bankAccount: baseInfo['billing_open_bank_account'],

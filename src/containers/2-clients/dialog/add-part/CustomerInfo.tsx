@@ -115,7 +115,7 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
         </InputUnit>
 
         <InputUnit>
-          <LabelAndInput label="客户编码" disabled={true} value={this.state.customerNumber}/>
+          <LabelAndInput placeholder="" label="客户编码" disabled={true} value={this.state.customerNumber}/>
           <div className="input-unit-illustrate">进入项目合作或进入供应商，则系统自动生成客户编码（流水号），无法修改</div>
         </InputUnit>
 

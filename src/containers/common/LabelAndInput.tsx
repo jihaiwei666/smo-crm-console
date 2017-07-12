@@ -10,6 +10,7 @@ import Input from '../../components/form/Input'
 
 interface LabelAndInputProps {
   label: string,
+  placeholder?: string
   className?: string
   disabled?: boolean
   value?: string
@@ -17,13 +18,17 @@ interface LabelAndInputProps {
 }
 
 class LabelAndInput extends React.Component<LabelAndInputProps> {
+  static defaultProps = {
+    placeholder: '请输入'
+  }
+
   render() {
     return (
       <FlexDiv className={classnames('mt5 mb5', this.props.className)}>
         <Label>{this.props.label + '：'}</Label>
         <Part>
           <Input
-            placeholder="请输入" value={this.props.value}
+            placeholder={this.props.placeholder} value={this.props.value}
             onChange={(e: any) => this.props.onChange(e.target.value)}
             disabled={this.props.disabled}
           />
