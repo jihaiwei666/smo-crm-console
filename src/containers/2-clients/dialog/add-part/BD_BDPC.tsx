@@ -11,19 +11,33 @@ import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
 
-interface Part1Props {
+interface BD_BDPC_Props {
   customerId: string
+  BDList: any
+  BDPCList: any
 }
 
-class Part1 extends React.Component<Part1Props> {
+class BD_BDPC extends React.Component<BD_BDPC_Props> {
+  state = {
+    bd: '',
+    bdpc: ''
+  }
+
   render() {
+    let BDList = [], BDPCList = []
+    if (this.props.BDList.loaded) {
+      BDList = this.props.BDList.data
+    }
+    if (this.props.BDPCList.loaded) {
+      BDPCList = this.props.BDPCList.data
+    }
     return (
       <div>
         <InputUnit>
           <FlexDiv>
             <Label>客户所有人：</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={[]} value={''} onChange={() => null}/>
+              <Select1 disabled={!this.props.customerId} options={BDList} value={this.state.bd} onChange={v => this.setState({bd: v})}/>
             </Part>
           </FlexDiv>
           <div className="input-unit-illustrate">客户所有人为产生相关项目或产生MSA后，系统自动匹配BD，有争议时由BD负责人线下确认后修改</div>
@@ -33,7 +47,7 @@ class Part1 extends React.Component<Part1Props> {
           <FlexDiv>
             <Label>所属BDPC：</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={[]} value={''} onChange={() => null}/>
+              <Select1 disabled={!this.props.customerId} options={BDPCList} value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}/>
             </Part>
           </FlexDiv>
           <div className="input-unit-illustrate">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
@@ -48,4 +62,4 @@ class Part1 extends React.Component<Part1Props> {
   }
 }
 
-export default Part1
+export default BD_BDPC

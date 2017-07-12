@@ -8,14 +8,13 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import Save from '../../../common/Save'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 
-interface CustomerInfoProps {
+interface UpdateCustomerInfoProps {
   customerId: string
-  addCustomer: (baseInfo) => void
-
+  customerBaseInfo: any
   updateCustomer: (baseInfo) => void
 }
 
-class CustomerInfo extends React.Component<CustomerInfoProps> {
+class UpdateCustomerInfo extends React.Component<UpdateCustomerInfoProps> {
   state = {
     valid: false,
 
@@ -49,22 +48,13 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
     }
   }
 
-  save = () => {
-    let options = this.getOptions()
-    if (this.props.customerId) {
-      options['customer_info_id'] = this.props.customerId
-      this.props.updateCustomer(options)
-    } else {
-      this.props.addCustomer(options)
-    }
-  }
-
-  getOptions = () => {
+  update = () => {
     const {
       customerName, customerCategory, customerAddress, importantLevel,
       taxpayerIdentifyNumber, bank, bankAccount, billAddress, telephone, billPostAddress, billReceiver, receiverContactInfo
     } = this.state
-    return {
+    this.props.updateCustomer({
+      "customer_info_id": this.props.customerId,
       "customer_name": customerName,
       "customer_type": customerCategory,
       "customer_address": customerAddress,
@@ -78,7 +68,11 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
       "billing_invoice_mailing_address": billPostAddress,
       "billing_invoice_recipient": billReceiver,
       "billing_recipient_contact": receiverContactInfo,
-    }
+    })
+  }
+
+  componentWillMount() {
+    this.setState(this.props.customerBaseInfo)
   }
 
   render() {
@@ -101,12 +95,12 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
         </InputUnit>
 
         <InputUnit>
-          <LabelAndInput label="地址（!）" value={this.state.customerAddress} onChange={v => this.setState({customerAddress: v})}/>
+          <LabelAndInput label="地址（!）" value={this.state.customerAddress} onChange={v => this.setState({customerAddress: v}, this.checkValid)}/>
         </InputUnit>
 
         <InputUnit>
           <LabelAndInput1 label="重要级别（!）">
-            <Radio.Group value={this.state.importantLevel} onChange={v => this.setState({importantLevel: v})}>
+            <Radio.Group value={this.state.importantLevel} onChange={v => this.setState({importantLevel: v}, this.checkValid)}>
               <Radio value="1">关键客户</Radio>
               <Radio value="2">重要客户</Radio>
               <Radio value="3">普通客户</Radio>
@@ -125,51 +119,51 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
               <LabelAndInput
                 label="纳税人识别号"
                 value={this.state.taxpayerIdentifyNumber}
-                onChange={v => this.setState({taxpayerIdentifyNumber: v})}
+                onChange={v => this.setState({taxpayerIdentifyNumber: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="开户银行"
                 value={this.state.bank}
-                onChange={v => this.setState({bank: v})}
+                onChange={v => this.setState({bank: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="开户银行账号"
                 value={this.state.bankAccount}
-                onChange={v => this.setState({bankAccount: v})}
+                onChange={v => this.setState({bankAccount: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="开票地址"
                 value={this.state.billAddress}
-                onChange={v => this.setState({billAddress: v})}
+                onChange={v => this.setState({billAddress: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="电话"
                 value={this.state.telephone}
-                onChange={v => this.setState({telephone: v})}
+                onChange={v => this.setState({telephone: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="发票邮寄地址"
                 value={this.state.billPostAddress}
-                onChange={v => this.setState({billPostAddress: v})}
+                onChange={v => this.setState({billPostAddress: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="发票接收人"
                 value={this.state.billReceiver}
-                onChange={v => this.setState({billReceiver: v})}
+                onChange={v => this.setState({billReceiver: v}, this.checkValid)}
               />
               <LabelAndInput
                 label="接收人联系方式"
                 value={this.state.receiverContactInfo}
-                onChange={v => this.setState({receiverContactInfo: v})}
+                onChange={v => this.setState({receiverContactInfo: v}, this.checkValid)}
               />
             </div>
           </LabelAndInput1>
         </InputUnit>
 
-        <Save disabled={!this.state.valid} onClick={this.save}/>
+        <Save disabled={!this.state.valid} onClick={this.update}/>
       </div>
     )
   }
 }
 
-export default CustomerInfo
+export default UpdateCustomerInfo

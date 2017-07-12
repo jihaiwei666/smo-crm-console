@@ -1,14 +1,17 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
+import CommonFunction from '../../common/interface/CommonFunction'
+
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import addCommonFunction from '../../_frameset/addCommonFunction'
 import CategoryTitle from '../../common/CategoryTitle'
-import Part1 from './add-part/Part1'
+import BD_BDPC from './add-part/BD_BDPC'
 import CustomerInfo from '././add-part/CustomerInfo'
 import Subcompany from './add-part/Subcompany'
 import Contact from './add-part/Contact'
@@ -19,15 +22,23 @@ import AssociateInfo from './add-part/AssociateInfo'
 import RemarkAndAttachment from './add-part/RemarkAndAttachment'
 import OperationRecord from './add-part/OperationRecord'
 
-import {addCustomer} from '../clients.action'
-import {fetchBD} from '../../../actions/app.action'
+import {CLIENTS} from '../../../core/constants/types'
+import {addCustomer, updateCustomer} from '../clients.action'
+import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
-interface AddClientDialogProps {
+interface AddClientDialogProps extends CommonFunction {
   customerId: string
   addCustomer: (options) => void
   addCustomerSuccess: boolean
   updateCustomer: (options) => void
   updateCustomerSuccess: boolean
+
+  fetchBD: () => void
+  BDList: any
+
+  fetchBDPC: () => void
+  BDPCList: any
+
   onExited: () => void
 }
 
@@ -43,9 +54,14 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: AddClientDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-     this.close()
-     }*/
+    if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
+      this.props.showSuccess('添加客户信息成功！')
+      this.props.clearState(CLIENTS.ADD_CUSTOMER)
+    }
+    if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
+      this.props.showSuccess('更新客户信息成功！')
+      this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+    }
   }
 
   render() {
@@ -61,15 +77,17 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
         <Modal.Body>
           <Row className="h-100">
             <Part className="form-container">
-              <Part1
+              <BD_BDPC
                 customerId={this.props.customerId}
+                BDList={this.props.BDList}
+                BDPCList={this.props.BDPCList}
               />
 
               <CategoryTitle title="客户信息"/>
               <CustomerInfo
                 customerId={this.props.customerId}
                 addCustomer={this.props.addCustomer}
-                addCustomerSuccess={this.props.addCustomerSuccess}
+                updateCustomer={this.props.updateCustomer}
               />
 
               <CategoryTitle title="分/子公司或下属院区"/>
@@ -126,6 +144,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchBD,
-  addCustomer
-})(AddClientDialog)
+  fetchBD, fetchBDPC,
+  addCustomer, updateCustomer
+})(addCommonFunction(AddClientDialog))

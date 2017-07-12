@@ -1,12 +1,13 @@
 /**
  * Created by jiangyukun on 2017/7/3.
  */
+import AppFunctionPage from '../common/interface/AppFunctionPage'
+
 import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
 import './account-manage.scss'
-import AppFunctionPage from '../common/AppFunctionPage'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import PageCountNav from '../../components/nav/PageCountNav'

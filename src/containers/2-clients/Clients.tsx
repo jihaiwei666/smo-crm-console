@@ -4,15 +4,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
 import './clients.scss'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 
 import * as actions from './clients.action'
 import AddClientDialog from './dialog/AddClientDialog'
+import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
 
-interface ClientsProps {
+interface ClientsProps extends AppFunctionPage {
   clientList: any[]
   fetchList: any
 }
@@ -43,13 +45,21 @@ class Clients extends React.Component<ClientsProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.clientList)
-    console.log(list)
+    const item = list[this.state.index]
+
     return (
       <div className="clients">
         {
           this.state.showAddClientDialog && (
             <AddClientDialog
               onExited={() => this.setState({showAddClientDialog: false})}/>
+          )
+        }
+        {
+          this.state.showEditClientDialog && (
+            <UpdateClientDialog
+              customerId={item['customerId']}
+              onExited={() => this.setState({showEditClientDialog: false})}/>
           )
         }
 

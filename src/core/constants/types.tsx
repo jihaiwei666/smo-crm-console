@@ -11,6 +11,7 @@ function generatorValueFromKey(prefix: string, obj: object): void {
 
 export const APP = {
   FETCH_BD: null,
+  FETCH_BDPC: null,
 }
 
 export const TODO_REMIND = {
@@ -21,7 +22,9 @@ export const TODO_REMIND = {
 export const CLIENTS = {
   FETCH_LIST: null,
   FETCH_BD_LIST: null,
-
+  ADD_CUSTOMER: null,
+  UPDATE_CUSTOMER: null,
+  FETCH_CUSTOMER_INFO: null,
 }
 
 export const PROJECT = {
@@ -42,5 +45,6 @@ export const ACCOUNT_MANAGE = {
 
 generatorValueFromKey('APP', APP)
 generatorValueFromKey('PROJECT', PROJECT)
+generatorValueFromKey('CLIENTS', CLIENTS)
 
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

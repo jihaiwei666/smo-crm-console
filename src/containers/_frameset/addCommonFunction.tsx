@@ -18,6 +18,7 @@ export default function addCommonFunction(Component) {
     render() {
       return (
         <Component
+          {...this.props}
           showMessage={bindActionCreators(showMessage, this.context.store.dispatch)}
           showSuccess={bindActionCreators(showSuccess, this.context.store.dispatch)}
           showWarning={bindActionCreators(showWarning, this.context.store.dispatch)}
