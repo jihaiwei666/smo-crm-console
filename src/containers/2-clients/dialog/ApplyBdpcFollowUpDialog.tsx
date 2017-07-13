@@ -10,13 +10,15 @@ import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import CheckBox from '../../../components/form/checkbox/CheckBox'
 
 interface ApplyBdpcFollowUpDialogProps {
-
+  fetchBDPC: () => void
+  BDPCList: any
   onExited: () => void
 }
 
 class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogProps> {
   state = {
     show: true,
+    bdpc: '',
     showAddConfirm: false,
     systemMessage: false,
     email: false
@@ -33,6 +35,11 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
   }
 
   render() {
+    let BDPCList = []
+
+    if (this.props.BDPCList.loaded) {
+      BDPCList = this.props.BDPCList.data
+    }
     return (
       <Modal style={{marginTop: '150px'}} show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
@@ -52,7 +59,10 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
               接收人：
             </Part>
             <Part>
-              <Select1 options={[]} value="" onChange={() => null}/>
+              <Select1 options={BDPCList}
+                       value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
+                       lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
+              />
             </Part>
           </FlexDiv>
 

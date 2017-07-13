@@ -10,7 +10,8 @@ import {handleClearState} from '../common/reduxUtils'
 const initValue = {
   customerId: '',
   addCustomerSuccess: false,
-  updateCustomerSuccess: false
+  updateCustomerSuccess: false,
+  updateBdAndBdpcSuccess: false
 }
 
 export default function clients(iState = fromJS(initValue), action) {
@@ -25,10 +26,15 @@ export default function clients(iState = fromJS(initValue), action) {
     case CLIENTS.UPDATE_CUSTOMER + phase.SUCCESS:
       nextIState = nextIState.set('updateCustomerSuccess', true)
       break
+
+    case CLIENTS.UPDATE_BD_AND_BDPC + phase.SUCCESS:
+      nextIState = nextIState.set('updateBdAndBdpcSuccess', true)
+      break
   }
 
   nextIState = handleClearState(nextIState, action, CLIENTS.ADD_CUSTOMER, 'addCustomerSuccess')
   nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_CUSTOMER, 'updateCustomerSuccess')
+  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_BD_AND_BDPC, 'updateBdAndBdpcSuccess')
 
   return nextIState
 }

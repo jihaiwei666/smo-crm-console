@@ -23,7 +23,7 @@ class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: false,
+    showEditClientDialog: true,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
@@ -58,7 +58,7 @@ class Clients extends React.Component<ClientsProps> {
         {
           this.state.showEditClientDialog && (
             <UpdateClientDialog
-              customerId={item['customerId']}
+              customerId={'170712104134682784'}
               onExited={() => this.setState({showEditClientDialog: false})}/>
           )
         }

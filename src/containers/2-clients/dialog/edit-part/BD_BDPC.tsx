@@ -17,6 +17,7 @@ interface BD_BDPC_Props {
   BDList: any
   fetchBDPC: () => void
   BDPCList: any
+  updateBdAndBdpc: any
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
@@ -25,6 +26,14 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
 
     bd: '',
     bdpc: ''
+  }
+
+  update = () => {
+    this.props.updateBdAndBdpc({
+      "customer_info_id": this.props.customerId,
+      "customer_owner": this.state.bd,
+      "customer_the_bdpc": this.state.bdpc
+    })
   }
 
   render() {
@@ -40,6 +49,8 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
         {
           this.state.showApply && (
             <ApplyBdpcFollowUpDialog
+              fetchBDPC={this.props.fetchBDPC}
+              BDPCList={this.props.BDPCList}
               onExited={() => this.setState({showApply: false})}
             />
           )
@@ -49,7 +60,10 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           <FlexDiv>
             <Label>客户所有人：</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={BDList} value={this.state.bd} onChange={v => this.setState({bd: v})}/>
+              <Select1 disabled={!this.props.customerId} options={BDList}
+                       value={this.state.bd} onChange={v => this.setState({bd: v})}
+                       lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
+              />
             </Part>
           </FlexDiv>
           <div className="input-unit-illustrate">客户所有人为产生相关项目或产生MSA后，系统自动匹配BD，有争议时由BD负责人线下确认后修改</div>
@@ -59,7 +73,10 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           <FlexDiv>
             <Label>所属BDPC：</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={BDPCList} value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}/>
+              <Select1 disabled={!this.props.customerId} options={BDPCList}
+                       value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
+                       lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
+              />
             </Part>
           </FlexDiv>
           <div className="input-unit-illustrate">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
@@ -68,7 +85,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </div>
 
         </InputUnit>
-        <Save disabled={!this.props.customerId}/>
+        <Save disabled={!this.props.customerId} onClick={this.update}/>
       </div>
     )
   }

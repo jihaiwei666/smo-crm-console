@@ -46,3 +46,12 @@ export function fetchCustomerInfo(customerId) {
     }
   }
 }
+
+export function updateBdAndBdpc(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CLIENTS.UPDATE_BD_AND_BDPC,
+      http: () => _post(urlPrefix + '/v1/info/edit/belong', {body: options})
+    }
+  }
+}

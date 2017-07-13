@@ -25,6 +25,7 @@ export const CLIENTS = {
   ADD_CUSTOMER: null,
   UPDATE_CUSTOMER: null,
   FETCH_CUSTOMER_INFO: null,
+  UPDATE_BD_AND_BDPC: null,
 }
 
 export const PROJECT = {

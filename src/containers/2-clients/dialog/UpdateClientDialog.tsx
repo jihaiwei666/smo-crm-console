@@ -24,8 +24,8 @@ import RemarkAndAttachment from './edit-part/RemarkAndAttachment'
 import OperationRecord from './edit-part/OperationRecord'
 
 import {CLIENTS} from '../../../core/constants/types'
-import {addCustomer, updateCustomer, fetchCustomerInfo} from '../clients.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import {addCustomer, updateCustomer, fetchCustomerInfo, updateBdAndBdpc} from '../clients.action'
 import UpdateCustomerInfo from './edit-part/UpateCustomerInfo'
 
 interface UpdateClientDialogProps extends CommonFunction {
@@ -40,6 +40,9 @@ interface UpdateClientDialogProps extends CommonFunction {
 
   fetchBDPC: () => void
   BDPCList: any
+
+  updateBdAndBdpc: (options) => void
+  updateBdAndBdpcSuccess: boolean
 
   onExited: () => void
 }
@@ -65,6 +68,10 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     }
     if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
       this.props.showSuccess('更新客户信息成功！')
+      this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+    }
+    if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
+      this.props.showSuccess('更新 所有人、所属BDPC 成功！')
       this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
     }
   }
@@ -98,6 +105,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     BDList={this.props.BDList}
                     fetchBDPC={this.props.fetchBDPC}
                     BDPCList={this.props.BDPCList}
+                    updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
 
                   <CategoryTitle title="客户信息"/>
@@ -167,5 +175,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
+  updateBdAndBdpc,
   addCustomer, updateCustomer, fetchCustomerInfo
 })(addCommonFunction(cache(UpdateClientDialog)))

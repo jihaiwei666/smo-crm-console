@@ -24,7 +24,7 @@ import RemarkAndAttachment from './edit-part/RemarkAndAttachment'
 import OperationRecord from './edit-part/OperationRecord'
 
 import {CLIENTS} from '../../../core/constants/types'
-import {addCustomer, updateCustomer} from '../clients.action'
+import {addCustomer, updateCustomer, updateBdAndBdpc} from '../clients.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
 interface AddClientDialogProps extends CommonFunction {
@@ -39,6 +39,9 @@ interface AddClientDialogProps extends CommonFunction {
 
   fetchBDPC: () => void
   BDPCList: any
+
+  updateBdAndBdpc: (options) => void
+  updateBdAndBdpcSuccess: boolean
 
   onExited: () => void
 }
@@ -89,6 +92,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
                 BDList={this.props.BDList}
                 fetchBDPC={this.props.fetchBDPC}
                 BDPCList={this.props.BDPCList}
+                updateBdAndBdpc={this.props.updateBdAndBdpc}
               />
 
               <CategoryTitle title="客户信息"/>
@@ -154,5 +158,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
+  updateBdAndBdpc,
   addCustomer, updateCustomer
 })(addCommonFunction(cache(AddClientDialog)))
