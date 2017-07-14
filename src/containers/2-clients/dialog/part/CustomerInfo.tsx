@@ -10,9 +10,9 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 
 interface CustomerInfoProps {
   customerId: string
-  addCustomer: (baseInfo) => void
-
-  updateCustomer: (baseInfo) => void
+  addCustomer?: (baseInfo) => void
+  customerBaseInfo?: any
+  updateCustomer?: (baseInfo) => void
 }
 
 class CustomerInfo extends React.Component<CustomerInfoProps> {
@@ -78,6 +78,12 @@ class CustomerInfo extends React.Component<CustomerInfoProps> {
       "billing_invoice_mailing_address": billPostAddress,
       "billing_invoice_recipient": billReceiver,
       "billing_recipient_contact": receiverContactInfo,
+    }
+  }
+
+  componentWillMount() {
+    if (this.props.customerBaseInfo) {
+      this.setState(this.props.customerBaseInfo)
     }
   }
 

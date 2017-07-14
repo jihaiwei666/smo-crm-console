@@ -23,7 +23,7 @@ class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: true,
+    showEditClientDialog: false,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
@@ -58,7 +58,7 @@ class Clients extends React.Component<ClientsProps> {
         {
           this.state.showEditClientDialog && (
             <UpdateClientDialog
-              customerId={'170712104134682784'}
+              customerId={item.customerId}
               onExited={() => this.setState({showEditClientDialog: false})}/>
           )
         }
@@ -80,7 +80,7 @@ class Clients extends React.Component<ClientsProps> {
             {
               list.map((item, index) => {
                 return (
-                  <FixRow key={item['customerId']}
+                  <FixRow key={item.customerId}
                           selected={this.state.index == index}
                           onClick={() => this.setState({index})}
                   >

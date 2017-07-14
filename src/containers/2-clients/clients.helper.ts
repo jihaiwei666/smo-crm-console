@@ -16,7 +16,10 @@ export function handleClientList(serverData) {
 }
 
 export function handleClientInfo(clientData) {
-  const baseInfo = clientData['customerInfo']
+  const baseInfo = clientData['customerInfo'] || {}
+  const bdAndBdpc = clientData['bdAndBdpc'] || {}
+  const subCompany = clientData['customerSubsidiarys'] || []
+  const contactList = clientData['customerContactsInfos'] || []
   return {
     customerBaseInfo: {
       customerName: baseInfo['customer_name'] || '',
@@ -31,6 +34,36 @@ export function handleClientInfo(clientData) {
       billPostAddress: baseInfo['billing_invoice_mailing_address'],
       billReceiver: baseInfo['billing_invoice_recipient'],
       receiverContactInfo: baseInfo['billing_recipient_contact'],
-    }
+    },
+    bdAndBdpc: {
+      owner: bdAndBdpc['customer_owner'],
+      bdpc: bdAndBdpc['customer_the_bdpc'],
+    },
+    subCompanyList: subCompany.map(c => ({
+      companyId: c['subsidiary_id'],
+      companyName: c['subsidiary_name'],
+      contactName: c['contacts_name'],
+      contactMobile: c['contacts_telephone'],
+      contactEmail: c['contacts_mail'],
+
+      taxpayerIdentifyNumber: c['billing_taxpayer_number'],
+      bank: c['billing_open_bank'],
+      bankAccount: c['billing_open_bank_account'],
+      billAddress: c['billing_address'],
+      billMobile: c['billing_telephone'],
+      billPostAddress: c['billing_invoice_mailing_address'],
+      billReceiver: c['billing_invoice_recipient'],
+      receiverContactInfo: c['billing_recipient_contact'],
+    })),
+    contactList: contactList.map(c => ({
+      contactId: c['contacts_info_id'],
+      name: c['contacts_info_name'],
+      mobile: c['contacts_info_telephone'],
+      email: c['contacts_info_mail'],
+      position: c['contacts_info_position'],
+      sex: (c['contacts_info_sex'] + '') || null,
+      address: c['contacts_info_address'],
+      remark: c['contacts_info_remark'],
+    }))
   }
 }

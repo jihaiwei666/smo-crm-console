@@ -26,6 +26,12 @@ export const CLIENTS = {
   UPDATE_CUSTOMER: null,
   FETCH_CUSTOMER_INFO: null,
   UPDATE_BD_AND_BDPC: null,
+  ADD_SUB_COMPANY: null,
+  UPDATE_SUB_COMPANY: null,
+  REMOVE_SUB_COMPANY: null,
+  ADD_CONTACT: null,
+  UPDATE_CONTACT: null,
+  REMOVE_CONTACT: null,
 }
 
 export const PROJECT = {

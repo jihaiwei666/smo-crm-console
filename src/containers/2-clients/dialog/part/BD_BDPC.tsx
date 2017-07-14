@@ -18,22 +18,32 @@ interface BD_BDPC_Props {
   fetchBDPC: () => void
   BDPCList: any
   updateBdAndBdpc: any
+
+  bdAndBdpc?: any
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
   state = {
     showApply: false,
 
-    bd: '',
+    owner: '',
     bdpc: ''
   }
 
   update = () => {
     this.props.updateBdAndBdpc({
       "customer_info_id": this.props.customerId,
-      "customer_owner": this.state.bd,
+      "customer_owner": this.state.owner,
       "customer_the_bdpc": this.state.bdpc
     })
+  }
+
+  componentWillMount() {
+    if (this.props.bdAndBdpc) {
+      this.setState(this.props.bdAndBdpc)
+      this.props.fetchBD()
+      this.props.fetchBDPC()
+    }
   }
 
   render() {
@@ -61,7 +71,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
             <Label>客户所有人：</Label>
             <Part>
               <Select1 disabled={!this.props.customerId} options={BDList}
-                       value={this.state.bd} onChange={v => this.setState({bd: v})}
+                       value={this.state.owner} onChange={v => this.setState({owner: v})}
                        lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
               />
             </Part>
