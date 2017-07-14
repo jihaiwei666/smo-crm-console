@@ -8,14 +8,21 @@ import Label from './Label'
 
 interface InputGroupProps {
   label: string
+  inputType?: '1' | '2'
 }
 
 class InputGroup extends React.Component<InputGroupProps> {
   render() {
+    let type = ''
+    if (this.props.inputType == '1') {
+      type = '（*）'
+    } else if (this.props.inputType == '2') {
+      type = '（!）'
+    }
     return (
       <FlexDiv className="input-group">
-        <Label>{this.props.label + '：'}</Label>
-        <Part style={{borderLeft: '1px solid #ddd', paddingLeft: '5px'}}>
+        <Label>{this.props.label + type + '：'}</Label>
+        <Part className="bl pl10">
           {this.props.children}
         </Part>
       </FlexDiv>

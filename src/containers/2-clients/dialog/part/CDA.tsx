@@ -2,23 +2,29 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
-import {FlexDiv, Part} from 'app-core/layout'
-import Select1 from 'app-core/common/Select1'
-
-import Input from '../../../../components/form/Input'
-import Label from '../../../common/Label'
-import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../../../components/fix-head-list/'
 import Save from '../../../common/Save'
+import CDA_Dialog from '../CDA_Dialog'
 
 interface CDAProps {
 }
 
 class CDA extends React.Component<CDAProps> {
+  state = {
+    showAddCDA: true
+  }
+
   render() {
     return (
       <div className="p5">
+        {
+          this.state.showAddCDA && (
+            <CDA_Dialog
+              onExited={() => this.setState({showAddCDA: false})}
+            />
+          )
+        }
         <FixHeadList>
           <FixHead>
             <FixHead.Item></FixHead.Item>
@@ -38,7 +44,7 @@ class CDA extends React.Component<CDAProps> {
           </FixBody>
         </FixHeadList>
         <div className="m10 text-right">
-          <Button className="small">添加</Button>
+          <Button className="small" onClick={() => this.setState({showAddCDA: true})}>添加</Button>
         </div>
         <Save/>
       </div>

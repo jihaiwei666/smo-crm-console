@@ -102,31 +102,32 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
             loaded && (
               <Row className="body-box">
                 <Part className="form-container">
-                  <BD_BDPC
-                    customerId={this.props.customerId}
-                    bdAndBdpc={bdAndBdpc}
-                    fetchBD={this.props.fetchBD}
-                    BDList={this.props.BDList}
-                    fetchBDPC={this.props.fetchBDPC}
-                    BDPCList={this.props.BDPCList}
-                    updateBdAndBdpc={this.props.updateBdAndBdpc}
-                  />
+                  {/**
+                   <BD_BDPC
+                   customerId={this.props.customerId}
+                   bdAndBdpc={bdAndBdpc}
+                   fetchBD={this.props.fetchBD}
+                   BDList={this.props.BDList}
+                   fetchBDPC={this.props.fetchBDPC}
+                   BDPCList={this.props.BDPCList}
+                   updateBdAndBdpc={this.props.updateBdAndBdpc}
+                   />
 
-                  <CategoryTitle title="客户信息"/>
-                  <CustomerInfo
-                    customerId={this.props.customerId}
-                    customerBaseInfo={customerBaseInfo}
-                    updateCustomer={this.props.updateCustomer}
-                  />
+                   <CategoryTitle title="客户信息"/>
+                   <CustomerInfo
+                   customerId={this.props.customerId}
+                   customerBaseInfo={customerBaseInfo}
+                   updateCustomer={this.props.updateCustomer}
+                   />
 
-                  <CategoryTitle title="分/子公司或下属院区"/>
-                  <SubCompany
-                    customerId={this.props.customerId}
-                    subCompanyList={subCompanyList}
-                  />
-                  <CategoryTitle title="联系人"/>
-                  <ContactInfo customerId={this.props.customerId} contactList={contactList}/>
-
+                   <CategoryTitle title="分/子公司或下属院区"/>
+                   <SubCompany
+                   customerId={this.props.customerId}
+                   subCompanyList={subCompanyList}
+                   />
+                   <CategoryTitle title="联系人"/>
+                   <ContactInfo customerId={this.props.customerId} contactList={contactList}/>
+                   */}
                   <CategoryTitle title="CDA"/>
                   <CDA/>
 

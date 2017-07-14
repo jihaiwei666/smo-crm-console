@@ -23,7 +23,7 @@ class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: false,
+    showEditClientDialog: true,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
@@ -45,7 +45,12 @@ class Clients extends React.Component<ClientsProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.clientList)
-    const item = list[this.state.index]
+    const item = list[this.state.index] || {}
+
+    let customerId = item.customerId
+    if (process.env.NODE_ENV != 'production') {
+      customerId = '170712104134682784'
+    }
 
     return (
       <div className="clients">
@@ -58,7 +63,7 @@ class Clients extends React.Component<ClientsProps> {
         {
           this.state.showEditClientDialog && (
             <UpdateClientDialog
-              customerId={item.customerId}
+              customerId={customerId}
               onExited={() => this.setState({showEditClientDialog: false})}/>
           )
         }
