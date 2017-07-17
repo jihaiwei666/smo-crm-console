@@ -32,6 +32,12 @@ export const CLIENTS = {
   ADD_CONTACT: null,
   UPDATE_CONTACT: null,
   REMOVE_CONTACT: null,
+  FETCH_CDA_DETAIL: null,
+  ADD_CDA: null,
+  UPDATE_CDA: null,
+  REMOVE_CDA: null,
+  FETCH_PROJECT_LIST: null,
+  FETCH_CONTACT_LIST: null,
 }
 
 export const PROJECT = {

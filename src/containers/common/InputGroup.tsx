@@ -6,6 +6,9 @@ import {FlexDiv, Part} from 'app-core/layout'
 
 import Label from './Label'
 
+export const NECESSARY = '1'
+export const IMPORTANT = '2'
+
 interface InputGroupProps {
   label: string
   inputType?: '1' | '2'
@@ -14,9 +17,9 @@ interface InputGroupProps {
 class InputGroup extends React.Component<InputGroupProps> {
   render() {
     let type = ''
-    if (this.props.inputType == '1') {
+    if (this.props.inputType == NECESSARY) {
       type = '（*）'
-    } else if (this.props.inputType == '2') {
+    } else if (this.props.inputType == IMPORTANT) {
       type = '（!）'
     }
     return (

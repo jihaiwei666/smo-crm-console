@@ -9,13 +9,13 @@ import './radio.scss'
 import Group from './Group'
 
 interface RadioProps {
-  value: string
+  value: string | number
 }
 
 class Radio extends React.Component<RadioProps> {
   static Group = Group
   static contextTypes = {
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func
   }
 

@@ -5,13 +5,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 interface GroupProps {
-  value: string
+  value: string | number
   onChange?: any
 }
 
 class Group extends React.Component<GroupProps> {
   static childContextTypes = {
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func
   }
 

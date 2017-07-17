@@ -15,11 +15,48 @@ export function handleClientList(serverData) {
   }
 }
 
+export function handleCustomerProjectList(data) {
+  return data.map(item => ({
+    value: item.value,
+    text: item.text
+  }))
+}
+
+export function handleCDA_Detail(data) {
+  let cda = data['customerCda']
+  return {
+    startDate: cda['cda_validity_begin_time'],
+    endDate: cda['cda_validity_end_time'],
+    protocolType: cda['cda_agreement_type'],
+    projectId: cda['cda_agreement_project_id'],
+    projectName: cda['cda_agreement_project_name'] || '',
+    cdaList: data['customerCdaPersons'].map(item => ({
+      id: item['cda_id'],
+      username: item['contacts_info_name'],
+      telephone: item['contacts_info_telephone'],
+      email: item['contacts_info_mail'],
+      position: item['contacts_info_position']
+    })),
+    remark: cda['cda_remark']
+  }
+}
+
+export function handleCustomerContactList(data) {
+  return data.map(item => ({
+    contactId: item['contacts_info_id'],
+    contactName: item['contacts_info_name'],
+    telephone: item['contacts_info_telephone'],
+    email: item['contacts_info_mail'],
+    position: item['contacts_info_position'],
+  }))
+}
+
 export function handleClientInfo(clientData) {
   const baseInfo = clientData['customerInfo'] || {}
   const bdAndBdpc = clientData['bdAndBdpc'] || {}
   const subCompany = clientData['customerSubsidiarys'] || []
   const contactList = clientData['customerContactsInfos'] || []
+  const cdaList = clientData['customerCdas'] || []
   return {
     customerBaseInfo: {
       customerName: baseInfo['customer_name'] || '',
@@ -64,6 +101,12 @@ export function handleClientInfo(clientData) {
       sex: (c['contacts_info_sex'] + '') || null,
       address: c['contacts_info_address'],
       remark: c['contacts_info_remark'],
+    })),
+    cdaList: cdaList.map(item => ({
+      id: item['cda_id'],
+      startDate: item['cda_validity_begin_time'],
+      endDate: item['cda_validity_end_time'],
+      remark: item['cda_remark'],
     }))
   }
 }

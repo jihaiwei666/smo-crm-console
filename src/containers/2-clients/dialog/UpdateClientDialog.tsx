@@ -83,6 +83,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     const bdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
     const contactList = data.contactList
+    const cdaList = data.cdaList
     return (
       <Modal
         style={{width: '60%'}}
@@ -127,10 +128,10 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                    />
                    <CategoryTitle title="联系人"/>
                    <ContactInfo customerId={this.props.customerId} contactList={contactList}/>
-                   */}
-                  <CategoryTitle title="CDA"/>
-                  <CDA/>
 
+                   <CategoryTitle title="CDA"/>
+                   <CDA customerId={this.props.customerId} cdaList={cdaList}/>
+                   */}
                   <CategoryTitle title="供应商"/>
                   <Supplier/>
 
