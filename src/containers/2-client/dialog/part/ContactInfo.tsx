@@ -9,7 +9,7 @@ import Button from '../../../../components/button/Button'
 import Contact from './_Contact'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {addContact, updateContact, removeContact} from '../../clients.action'
+import {addContact, updateContact, removeContact} from '../../client.action'
 import {CLIENTS} from '../../../../core/constants/types'
 
 interface ContactProps extends CommonFunction {

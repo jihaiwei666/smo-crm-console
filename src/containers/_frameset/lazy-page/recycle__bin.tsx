@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function load(callback) {
   require.ensure([], require => {
-    const Clients = require('../../2-clients/Clients')
-    callback(Clients)
+    const RecycleBin = require('../../6-recycle-bin/RecycleBin')
+    callback(RecycleBin)
   })
 }

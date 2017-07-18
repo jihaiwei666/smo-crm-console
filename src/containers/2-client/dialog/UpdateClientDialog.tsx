@@ -26,7 +26,7 @@ import OperationRecord from './part/OperationRecord'
 
 import {CLIENTS} from '../../../core/constants/types'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import * as actions from '../clients.action'
+import * as actions from '../client.action'
 
 interface UpdateClientDialogProps extends CommonFunction {
   customerId: string

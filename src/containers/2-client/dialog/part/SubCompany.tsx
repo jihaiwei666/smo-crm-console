@@ -11,7 +11,7 @@ import Company from './_Company'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {CLIENTS} from '../../../../core/constants/types'
-import {addSubCompany, updateSubCompany, removeSubCompany} from '../../clients.action'
+import {addSubCompany, updateSubCompany, removeSubCompany} from '../../client.action'
 
 interface SubCompanyProps extends CommonFunction {
   customerId: string

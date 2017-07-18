@@ -24,9 +24,13 @@ interface SimoCrmAppProps {
 class SimoCrmApp extends Component<SimoCrmAppProps> {
   render() {
     const currentPath = this.props.currentPath
+
     const todoRemind = getPath(pages.todoRemind)
+    const client = getPath(pages.client)
+    const project = getPath(pages.project)
+    const contract = getPath(pages.contract)
+    const recycleBin = getPath(pages.recycleBin)
     const accountManage = getPath(pages.accountManage)
-    const clients = getPath(pages.clients)
 
     return (
       <div className="app">
@@ -40,20 +44,20 @@ class SimoCrmApp extends Component<SimoCrmAppProps> {
               <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})}>
                 <Link to={todoRemind}>待办提醒</Link>
               </li>
-              <li className={classnames({'active': currentPath == getPath(pages.clients)})}>
-                <Link to={clients}>客户</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.client)})}>
+                <Link to={client}>客户</Link>
               </li>
-              <li>
-                <Link to={todoRemind}>项目</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.project)})}>
+                <Link to={project}>项目</Link>
               </li>
-              <li>
-                <Link to={todoRemind}>合同</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.contract)})}>
+                <Link to={contract}>合同</Link>
               </li>
               <li>
                 <Link to={todoRemind}>报表</Link>
               </li>
-              <li>
-                <Link to={todoRemind}>回收站</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
+                <Link to={recycleBin}>回收站</Link>
               </li>
               <li className={classnames({'active': currentPath == getPath(pages.accountManage)})}>
                 <Link to={accountManage}>

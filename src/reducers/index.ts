@@ -9,10 +9,10 @@ import {routerReducer} from 'react-router-redux'
 import data from './data.reducer'
 
 import app from './app.reducer'
-import clients from '../containers/2-clients/clients.reducer'
+import client from '../containers/2-client/client.reducer'
 import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
-import {APP, TODO_REMIND, CLIENTS, ACCOUNT_MANAGE} from '../core/constants/types'
+import {APP, TODO_REMIND, CLIENTS, ACCOUNT_MANAGE, PROJECT, CONTRACT} from '../core/constants/types'
 
 /**
  * 使用immutable，将reducer的state封装为iState，不可变数据
@@ -38,7 +38,7 @@ export default combineReducers({
 
   todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
 
-  clients: wrapReducerState(clients),
+  client: wrapReducerState(client),
   clientList: wrapReducerState(data(CLIENTS.FETCH_LIST)),
   customerInfo: wrapReducerState(data(CLIENTS.FETCH_CUSTOMER_INFO)),
   BDList: wrapReducerState(data(APP.FETCH_BD)),
@@ -46,6 +46,10 @@ export default combineReducers({
   customerProjectData: wrapReducerState(data(CLIENTS.FETCH_PROJECT_LIST)),
   customerContactData: wrapReducerState(data(CLIENTS.FETCH_CONTACT_LIST)),
   cdaDetail: wrapReducerState(data(CLIENTS.FETCH_CDA_DETAIL)),
+
+  projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),
+
+  contractList: wrapReducerState(data(CONTRACT.FETCH_LIST)),
 
   accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),

@@ -24,7 +24,7 @@ import RemarkAndAttachment from './part/RemarkAndAttachment'
 import OperationRecord from './part/OperationRecord'
 
 import {CLIENTS} from '../../../core/constants/types'
-import {addCustomer, updateCustomer, updateBdAndBdpc} from '../clients.action'
+import {addCustomer, updateCustomer, updateBdAndBdpc} from '../client.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
 interface AddClientDialogProps extends CommonFunction {

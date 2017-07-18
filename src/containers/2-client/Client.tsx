@@ -1,15 +1,16 @@
 /**
  * Created by jiangyukun on 2017/7/7.
  */
+import AppFunctionPage from '../common/interface/AppFunctionPage'
+
 import React from 'react'
 import {connect} from 'react-redux'
 
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-import './clients.scss'
+import './client.scss'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 
-import * as actions from './clients.action'
+import * as actions from './client.action'
 import AddClientDialog from './dialog/AddClientDialog'
 import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
@@ -23,7 +24,7 @@ class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: true,
+    showEditClientDialog: false,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
@@ -110,7 +111,7 @@ class Clients extends React.Component<ClientsProps> {
 
 function mapStateToProps(state) {
   return {
-    ...state.clients,
+    ...state.client,
     clientList: state.clientList
   }
 }

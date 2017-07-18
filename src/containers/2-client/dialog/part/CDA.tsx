@@ -12,7 +12,7 @@ import AddCDA_Dialog from '../cda/AddCDA_Dialog'
 import LookCDA_Dialog from '../cda/LookCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
-import {fetchCDA_Detail, addCDA, updateCDA, removeCDA, fetchProjectList, fetchContactList} from '../../clients.action'
+import {fetchCDA_Detail, addCDA, updateCDA, removeCDA, fetchProjectList, fetchContactList} from '../../client.action'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {CLIENTS} from '../../../../core/constants/types'
 

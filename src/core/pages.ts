@@ -2,9 +2,10 @@
  * Created by jiangyukun on 2017/6/20.
  */
 export default {
-  project: 'project',
-
-  accountManage: 'account-manage',
   todoRemind: 'todo-remind',
-  clients: 'clients'
+  client: 'client',
+  project: 'project',
+  contract: 'contract',
+  recycleBin: 'recycle-bin',
+  accountManage: 'account-manage',
 }

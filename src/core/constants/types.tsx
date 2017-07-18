@@ -48,6 +48,19 @@ export const PROJECT = {
   DELETE: null,
 }
 
+export const CONTRACT = {
+  FETCH_LIST: null,
+  FETCH_DETAIL: null,
+  ADD: null,
+  UPDATE: null,
+  DELETE: null,
+}
+
+export const RECYCLE_BIN = {
+  FETCH_LIST: null,
+  FETCH_DETAIL: null,
+}
+
 export const ACCOUNT_MANAGE = {
   FETCH_LIST: null,
   ADD_ACCOUNT: null,
@@ -59,5 +72,6 @@ export const ACCOUNT_MANAGE = {
 generatorValueFromKey('APP', APP)
 generatorValueFromKey('PROJECT', PROJECT)
 generatorValueFromKey('CLIENTS', CLIENTS)
+generatorValueFromKey('CONTRACT', CONTRACT)
 
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

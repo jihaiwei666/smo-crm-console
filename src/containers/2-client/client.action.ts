@@ -4,7 +4,7 @@
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CLIENTS} from '../../core/constants/types'
 import {_get, _post} from '../../core/http'
-import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList, handleCDA_Detail} from './clients.helper'
+import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList, handleCDA_Detail} from './client.helper'
 
 const urlPrefix = '/customer'
 
