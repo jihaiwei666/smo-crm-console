@@ -15,3 +15,9 @@ export function adaptTodoRemindList(data) {
     }))
   }
 }
+
+export function adapteUserCategoryInfo(data) {
+  return {
+
+  }
+}

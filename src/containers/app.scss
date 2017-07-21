@@ -17,7 +17,7 @@ body {
 .app {
     height: 100%;
 
-    aside {
+    & > aside {
         height: 100%;
         width: 200px;
         overflow: hidden;
@@ -33,12 +33,32 @@ body {
 
         .nav-container {
             flex: 1;
-            width: 210px;
             background-color: #4F556D;
+
+            .modules, .recent-open {
+                header {
+                    cursor: pointer;
+                    border: 1px solid #efefef;
+                    border-radius: 5px;
+                    background-color: #efefef;
+                    margin-right: 5px;
+                    padding: 7px 15px;
+                    font-size: 14px;
+                }
+                main {
+                    &.leave {
+                        animation: slide-up .5s;
+                        animation-fill-mode: forwards;
+                    }
+                }
+            }
+
+            .recent-open {
+                margin-top: 15px;
+            }
         }
 
         .nav-items {
-            padding: 10px 0;
             li {
                 position: relative;
                 cursor: pointer;
@@ -46,7 +66,6 @@ body {
                 color: #ccc;
 
                 a {
-                    box-sizing: border-box;
                     display: block;
                     padding: 10px 20px;
                     width: 100%;
@@ -68,19 +87,21 @@ body {
 
                 }
                 &.active:after {
+                    transition: height 0.5s;
                     z-index: 1;
                     content: '';
                     position: absolute;
                     width: 5px;
-                    top: 0;
-                    bottom: 0;
+                    top: 10px;
+                    left: 7px;
+                    bottom: 10px;
                     background-color: #ff4400;
                 }
             }
         }
     }
 
-    main {
+    & > main {
         margin-left: 200px;
         height: 100%;
         display: flex;

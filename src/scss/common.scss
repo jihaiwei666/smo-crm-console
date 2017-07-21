@@ -102,3 +102,19 @@ ul {
 input[disabled], button[disabled] {
     cursor: not-allowed;
 }
+
+.flex1 {
+    flex: 1;
+}
+
+@keyframes slide-up {
+    from {
+        height: 200px;
+        opacity: 0.2;
+    }
+
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}

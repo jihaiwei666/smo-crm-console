@@ -23,3 +23,21 @@
         }
     }
 }
+
+.search-box {
+    display: flex;
+    .choice-category {
+        width: 85px;
+        margin-right: 5px;
+    }
+    .relevant-item-category {
+        .selected-item {
+            border: none;
+            .select-item-text {
+                padding: 5px;
+            }
+        }
+    }
+
+}
+

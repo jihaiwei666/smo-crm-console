@@ -8,19 +8,27 @@ import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import LimitInput from 'app-core/form/LimitInput'
+import {category} from '../todo-remind.constant'
+import Button from '../../../components/button/Button'
+import Input from '../../../components/form/Input'
 
 interface RelevantItemDialogProps {
+  fetchRelevantItemList: (category: string, searchKey: string) => void
   onExited: () => void
 }
 
 class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
   state = {
     show: true,
-
+    category: '',
   }
 
   close = () => {
     this.setState({show: false})
+  }
+
+  componentDidMount() {
+    this.props.fetchRelevantItemList('1', '')
   }
 
   componentWillReceiveProps(nextProps: RelevantItemDialogProps) {
@@ -34,7 +42,23 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
           <Modal.Title>插入关联项</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
+          <div className="search-box">
+            <div className="choice-category">
+              <Select1
+                className="relevant-item-category"
+                placeholder="关联项分类"
+                options={category}
+                value={this.state.category}
+                onChange={v => this.setState({category: v})}
+              />
+            </div>
+            <div className="flex1">
+              <Input/>
+            </div>
+            <div className="pl5">
+              <Button className="">搜索</Button>
+            </div>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <ConfirmOrClose onCancel={this.close} onConfirm={() => null}/>

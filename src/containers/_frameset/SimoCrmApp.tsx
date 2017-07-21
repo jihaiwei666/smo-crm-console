@@ -3,8 +3,8 @@
  */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import classnames from 'classnames'
+
+
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
@@ -12,7 +12,9 @@ import '../../scss/common.scss'
 import '../common/page-common.scss'
 import PageContent from './PageContent'
 import {getPath} from '../../core/env'
-import pages from '../../core/pages'
+
+import Modules from './Modules'
+import RecentOpen from './RecentOpen'
 
 interface SimoCrmAppProps {
   message: any
@@ -23,15 +25,6 @@ interface SimoCrmAppProps {
 
 class SimoCrmApp extends Component<SimoCrmAppProps> {
   render() {
-    const currentPath = this.props.currentPath
-
-    const todoRemind = getPath(pages.todoRemind)
-    const client = getPath(pages.client)
-    const project = getPath(pages.project)
-    const contract = getPath(pages.contract)
-    const recycleBin = getPath(pages.recycleBin)
-    const accountManage = getPath(pages.accountManage)
-
     return (
       <div className="app">
         <MessageManage messageList={this.props.message.msgQueue} changeMessageStatus={this.props.changeMessageStatus}/>
@@ -40,31 +33,8 @@ class SimoCrmApp extends Component<SimoCrmAppProps> {
             <img src={require('../images/simo.png')}/>
           </header>
           <nav className="nav-container">
-            <ul className="nav-items">
-              <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})}>
-                <Link to={todoRemind}>待办提醒</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.client)})}>
-                <Link to={client}>客户</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.project)})}>
-                <Link to={project}>项目</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.contract)})}>
-                <Link to={contract}>合同</Link>
-              </li>
-              <li>
-                <Link to={todoRemind}>报表</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
-                <Link to={recycleBin}>回收站</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.accountManage)})}>
-                <Link to={accountManage}>
-                  账号管理
-                </Link>
-              </li>
-            </ul>
+            <Modules currentPath={this.props.currentPath}/>
+            <RecentOpen/>
           </nav>
         </aside>
         <main>

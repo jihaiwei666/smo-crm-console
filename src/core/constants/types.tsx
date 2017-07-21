@@ -16,6 +16,7 @@ export const APP = {
 
 export const TODO_REMIND = {
   FETCH_LIST: null,
+  FETCH_USER_CATEGORY_INFO: null,
 
 }
 

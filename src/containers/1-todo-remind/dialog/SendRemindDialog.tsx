@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/6.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {FlexDiv, Part, Line} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
@@ -13,7 +14,12 @@ import CheckBox from '../../../components/form/checkbox/CheckBox'
 import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
 
+import {fetchUserCategoryInfo, fetchRelevantItemList} from '../todo-remind.action'
+
 interface SendRemindDialogProps {
+  fetchUserCategoryInfo: () => void
+  fetchRelevantItemList: (category: string, searchKey: string) => void
+  userCategoryInfo: any
   sendRemind: () => void
   sendRemindSuccess: boolean
   onExited: () => void
@@ -39,6 +45,10 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
   }
 
+  componentDidMount() {
+    this.props.fetchUserCategoryInfo()
+  }
+
   componentWillReceiveProps(nextProps: SendRemindDialogProps) {
     if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {
       this.close()
@@ -51,6 +61,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
         {
           this.state.showRelevantItemDialog && (
             <RelevantItemDialog
+              fetchRelevantItemList={this.props.fetchRelevantItemList}
               onExited={() => this.setState({showRelevantItemDialog: false})}/>
           )
         }
@@ -117,4 +128,12 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
   }
 }
 
-export default SendRemindDialog
+function mapStateToProps(state) {
+  return {
+    userCategoryInfo: state.userCategoryInfo
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchUserCategoryInfo, fetchRelevantItemList
+})(SendRemindDialog)
