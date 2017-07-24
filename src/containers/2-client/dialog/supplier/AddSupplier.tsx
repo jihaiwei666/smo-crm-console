@@ -2,7 +2,10 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import {FlexDiv, Part} from 'app-core/layout'
+import Select1 from 'app-core/common/Select1'
+
 import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup, {NECESSARY, IMPORTANT} from '../../../common/InputGroup'
@@ -11,9 +14,18 @@ import Radio from '../../../../components/form/radio/Radio'
 import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
 import Save from '../../../common/Save'
+
 import {addListItem} from '../../../../core/utils/arrayUtils'
+import {fetchContactList} from '../../client.action'
+import {addSupplier} from './supplier.action'
 
 interface SupplierProps {
+  customerId: string
+  supplierId?: string
+  fetchContactList: (customerId: string) => void
+  customerContactData: any
+  addSupplier: (options) => void
+
 }
 
 let id = 1
@@ -22,9 +34,6 @@ function getNextBroker() {
   return {
     id: id++,
     broker: '',
-    telephone: '',
-    email: '',
-    position: ''
   }
 }
 
@@ -43,7 +52,39 @@ function getNextSupplier() {
 class Supplier extends React.Component<SupplierProps> {
   state = {
     supplierType: '',
+    isDeployment: '',
     supplierList: [getNextSupplier()]
+  }
+
+  save = () => {
+    let options = this.getOptions()
+    this.props.addSupplier(options)
+  }
+
+  getOptions() {
+    const {supplierList} = this.state
+    let list = supplierList.map(supplier => ({
+      "customerProviderInfo": {
+        "validity_begin_time": supplier.startDate,
+        "validity_end_time": supplier.endDate,
+        "validity_select_time": supplier.chosenDate,
+        "is_fixed": supplier.isFixed,
+        "price": supplier.unitPrice,
+      },
+      "customerProviderInfoDockers": supplier.brokerList.map(broker => ({
+        "contacts_info_id": broker.broker,
+        "sign": 2
+      }))
+    }))
+    return {
+      customerProvider: {
+        "customer_info_id": this.props.customerId,
+        "provider_type": this.state.supplierType,
+        "is_signed_msa": this.state.isDeployment
+      },
+      customerProviderInfos: list,
+      latestCustomerProviderMsa: {}
+    }
   }
 
   addSupplier = () => {
@@ -66,6 +107,10 @@ class Supplier extends React.Component<SupplierProps> {
   }
 
   render() {
+    const contactList = this.props.customerContactData.data || []
+    const contactOptions = contactList.map(item => ({
+      value: item.contactId, text: item.contactName
+    }))
     return (
       <div>
         <InputGroup label="供应商类别" inputType={NECESSARY}>
@@ -81,7 +126,7 @@ class Supplier extends React.Component<SupplierProps> {
               return (
                 <FlexDiv key={supplier.id}>
                   <div style={{width: '30px'}}></div>
-                  <Part className="bl bb">
+                  <Part className="bl">
                     <InputGroup label="有效期限（!）">
                       <LabelAndInput
                         label="起始日期"
@@ -113,27 +158,40 @@ class Supplier extends React.Component<SupplierProps> {
                     <InputGroup label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
+                          let telephone = '', email = '', position = ''
+                          if (broker.broker) {
+                            let contact = contactList.data.find(d => d.contactId == broker.broker)
+                            telephone = contact.telephone
+                            email = contact.email
+                            position = contact.position
+                          }
+
                           return (
                             <div key={broker.id} className="bb p5">
-                              <LabelAndInput
-                                label="对接人"
-                                value={broker.broker}
-                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
-                              />
+                              <LabelAndInput1 label="对接人">
+                                <Select1 options={contactOptions}
+                                         onOpen={() => this.props.fetchContactList(this.props.customerId)}
+                                         value={broker.broker}
+                                         onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
+                                />
+                              </LabelAndInput1>
                               <LabelAndInput
                                 label="电话"
-                                value={broker.telephone}
-                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'telephone', v)}
+                                disabled={true}
+                                value={telephone}
+                                onChange={() => null}
                               />
                               <LabelAndInput
                                 label="邮箱"
-                                value={broker.email}
-                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'email', v)}
+                                disabled={true}
+                                value={email}
+                                onChange={() => null}
                               />
                               <LabelAndInput
                                 label="职位"
-                                value={broker.position}
-                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'position', v)}
+                                disabled={true}
+                                value={position}
+                                onChange={() => null}
                               />
                             </div>
                           )
@@ -143,7 +201,6 @@ class Supplier extends React.Component<SupplierProps> {
                         <AddButton onClick={() => this.addBroker(supplierIndex)}/>
                       </TextAndButton>
                     </InputGroup>
-                    <Save/>
                   </Part>
                 </FlexDiv>
               )
@@ -156,8 +213,13 @@ class Supplier extends React.Component<SupplierProps> {
           </div>
         </div>
 
-        <LabelAndInput label="MSA（*）" className="pt5 pb5 bb"/>
-        <InputGroup label="">
+        <InputGroup label="MSA">
+          <LabelAndInput1 label="是否签署（*）">
+            <Radio.Group value={this.state.isDeployment} onChange={v => this.setState({isDeployment: v})}>
+              <Radio value="1">是</Radio>
+              <Radio value="0">否</Radio>
+            </Radio.Group>
+          </LabelAndInput1>
           <LabelAndInput label="起始日期"/>
           <LabelAndInput label="结束日期"/>
           <LabelAndInput1 label="MSA扫描件">
@@ -166,12 +228,21 @@ class Supplier extends React.Component<SupplierProps> {
         </InputGroup>
 
         <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-          <Button className="small">...查看更多</Button>
+          <Button className="small" disabled={true}>...查看更多</Button>
         </TextAndButton>
-        <Save/>
+        <Save disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.save}/>
       </div>
     )
   }
 }
 
-export default Supplier
+function mapStateToProps(state, props) {
+  return {
+    customerId: props.customerId,
+    customerContactData: state.customerContactData
+  }
+}
+
+export default connect(mapStateToProps, {
+  addSupplier, fetchContactList
+})(Supplier)

@@ -46,6 +46,7 @@ export default combineReducers({
   customerProjectData: wrapReducerState(data(CLIENTS.FETCH_PROJECT_LIST)),
   customerContactData: wrapReducerState(data(CLIENTS.FETCH_CONTACT_LIST)),
   cdaDetail: wrapReducerState(data(CLIENTS.FETCH_CDA_DETAIL)),
+  msaListInfo: wrapReducerState(data(CLIENTS.FETCH_MSA_LIST)),
 
   projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),
 

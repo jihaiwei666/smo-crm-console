@@ -1,6 +1,9 @@
 /**
  * Created by jiangyukun on 2017/7/11.
  */
+import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
+import {handleRfiServerData} from './dialog/rfi/rfi.helper'
+
 
 export function handleClientList(serverData) {
   return {
@@ -57,6 +60,9 @@ export function handleClientInfo(clientData) {
   const subCompany = clientData['customerSubsidiarys'] || []
   const contactList = clientData['customerContactsInfos'] || []
   const cdaList = clientData['customerCdas'] || []
+  const supplierInfo = clientData['customerProvider'] || {}
+  const rfi = clientData['customerRfi'] || {}
+
   return {
     customerBaseInfo: {
       customerName: baseInfo['customer_name'] || '',
@@ -107,6 +113,8 @@ export function handleClientInfo(clientData) {
       startDate: item['cda_validity_begin_time'],
       endDate: item['cda_validity_end_time'],
       remark: item['cda_remark'],
-    }))
+    })),
+    supplierInfo: handleSupplierServerData(supplierInfo),
+    rfiInfo: handleRfiServerData(rfi)
   }
 }

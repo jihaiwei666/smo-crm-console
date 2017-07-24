@@ -17,8 +17,8 @@ import CustomerInfo from '././part/CustomerInfo'
 import SubCompany from './part/SubCompany'
 import ContactInfo from './part/ContactInfo'
 import CDA from './part/CDA'
-import Supplier from './part/Supplier'
-import RFI from './part/RFI'
+import AddSupplier from './supplier/AddSupplier'
+import AddRFI from './rfi/AddRFI'
 import AssociateInfo from './part/AssociateInfo'
 import RemarkAndAttachment from './part/RemarkAndAttachment'
 import OperationRecord from './part/OperationRecord'
@@ -113,10 +113,10 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <CDA/>
 
               <CategoryTitle title="供应商"/>
-              <Supplier/>
+              <AddSupplier/>
 
               <CategoryTitle title="RFI"/>
-              <RFI/>
+              <AddRFI/>
 
               <CategoryTitle title="关联信息"/>
               <AssociateInfo/>

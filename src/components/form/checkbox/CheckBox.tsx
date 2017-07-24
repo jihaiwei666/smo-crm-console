@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import './checkbox.scss'
 
 interface CheckBoxProps {
+  className?: string
   checked: boolean
   onChange: (checked: boolean) => void
 }
@@ -18,7 +19,7 @@ class CheckBox extends React.Component<CheckBoxProps> {
 
   render() {
     return (
-      <label className="checkbox-wrapper">
+      <label className={classnames('checkbox-wrapper', this.props.className)}>
         <span className={classnames('checkbox', {'checkbox-checked': this.props.checked})}>
           <input className="checkbox-input" type="checkbox" onChange={this.handleChange}/>
           <span className="checkbox-inner"></span>

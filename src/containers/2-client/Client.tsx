@@ -14,17 +14,23 @@ import * as actions from './client.action'
 import AddClientDialog from './dialog/AddClientDialog'
 import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
+import {CLIENTS} from '../../core/constants/types'
 
 interface ClientsProps extends AppFunctionPage {
   clientList: any[]
   fetchList: any
+
+  updateCustomerSuccess: boolean
+  updateBdAndBdpcSuccess: boolean
+  addSupplierSuccess: boolean
+  updateSupplierSuccess: boolean
 }
 
 class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: false,
+    showEditClientDialog: true,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
@@ -42,6 +48,25 @@ class Clients extends React.Component<ClientsProps> {
 
   componentDidMount() {
     this.toPage(0)
+  }
+
+  componentWillReceiveProps(nextProps: ClientsProps) {
+    if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
+      this.props.showSuccess('更新客户信息成功！')
+      this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+    }
+    if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
+      this.props.showSuccess('更新 所有人、所属BDPC 成功！')
+      this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+    }
+    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
+      this.props.showSuccess('添加供应商成功！')
+      this.props.clearState(CLIENTS.ADD_SUPPLIER)
+    }
+    if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
+      this.props.showSuccess('更新供应商信息成功！')
+      this.props.clearState(CLIENTS.UPDATE_SUPPLIER)
+    }
   }
 
   render() {

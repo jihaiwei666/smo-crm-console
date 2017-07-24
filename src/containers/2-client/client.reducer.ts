@@ -22,6 +22,10 @@ const initValue = {
   addContactSuccess: false,
   updateContactSuccess: false,
   removeContactSuccess: false,
+
+  addSupplierSuccess: false,
+  supplierInfo: null,
+  updateSupplierSuccess: false
 }
 
 export default function clients(iState = fromJS(initValue), action) {
@@ -76,6 +80,14 @@ export default function clients(iState = fromJS(initValue), action) {
     case CLIENTS.REMOVE_CONTACT + phase.SUCCESS:
       nextIState = nextIState.set('removeContactSuccess', true)
       break
+
+    case CLIENTS.ADD_SUPPLIER + phase.SUCCESS:
+      nextIState = nextIState.set('addSupplierSuccess', true).set('supplierInfo', action.data)
+      break
+
+    case CLIENTS.UPDATE_SUPPLIER + phase.SUCCESS:
+      nextIState = nextIState.set('updateSupplierSuccess', true)
+      break
   }
 
   nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_CUSTOMER, 'updateCustomerSuccess')
@@ -84,6 +96,7 @@ export default function clients(iState = fromJS(initValue), action) {
   nextIState = handleClearState(nextIState, action, CLIENTS.REMOVE_SUB_COMPANY, 'removeSubCompanySuccess')
   nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_CONTACT, 'updateContactSuccess')
   nextIState = handleClearState(nextIState, action, CLIENTS.REMOVE_CONTACT, 'removeContactSuccess')
+  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_SUPPLIER, 'updateSupplierSuccess')
 
   return nextIState
 }

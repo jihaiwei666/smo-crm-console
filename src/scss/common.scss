@@ -10,6 +10,7 @@ $array: 5, 10, 15, 20;
 }
 
 @include ttt('p', 'padding')
+@include ttt('pt', 'padding-top')
 @include ttt('pl', 'padding-left')
 @include ttt('pr', 'padding-right')
 @include ttt('pb', 'padding-bottom')

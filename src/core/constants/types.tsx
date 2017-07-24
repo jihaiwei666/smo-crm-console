@@ -27,18 +27,31 @@ export const CLIENTS = {
   UPDATE_CUSTOMER: null,
   FETCH_CUSTOMER_INFO: null,
   UPDATE_BD_AND_BDPC: null,
+
   ADD_SUB_COMPANY: null,
   UPDATE_SUB_COMPANY: null,
   REMOVE_SUB_COMPANY: null,
+
   ADD_CONTACT: null,
   UPDATE_CONTACT: null,
   REMOVE_CONTACT: null,
+
   FETCH_CDA_DETAIL: null,
   ADD_CDA: null,
   UPDATE_CDA: null,
   REMOVE_CDA: null,
   FETCH_PROJECT_LIST: null,
   FETCH_CONTACT_LIST: null,
+
+  ADD_SUPPLIER: null,
+  UPDATE_SUPPLIER: null,
+  FETCH_MSA_LIST: null,
+  ADD_MSA: null,
+  UPDATE_MSA: null,
+
+  ADD_RFI: null,
+  UPDATE_RFI: null,
+  REMOVE_RFI: null
 }
 
 export const PROJECT = {
