@@ -3,8 +3,9 @@
  */
 
 export function handleSupplierServerData(data) {
-  let base = data['customerProvider']
-  let supplierList = data['customerProviderInfos']
+  data = data || {}
+  let base = data['customerProvider'] || {}
+  let supplierList = data['customerProviderInfos'] || []
   return {
     supplierId: base['provider_id'],
     supplierType: base['provider_type'],

@@ -21,7 +21,8 @@ interface CDA_DialogProps {
   customerProjectData: any
   fetchContactList: (customerId) => void
   customerContactData: any
-  addCDA: (options) => void
+  addCda: (options) => void
+  addCdaSuccess: boolean
   onExited: () => void
 }
 
@@ -79,7 +80,7 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
     let cdaList = this.state.cdaList.map(item => ({
       "contacts_info_id": item.username, "sign": 2
     }))
-    this.props.addCDA({
+    this.props.addCda({
       customerCda: {
         "customer_info_id": this.props.customerId,
         "cda_validity_begin_time": '2017-07-17',
@@ -99,9 +100,9 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
   }
 
   componentWillReceiveProps(nextProps: CDA_DialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-     this.close()
-     }*/
+    if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
+      this.close()
+    }
   }
 
   render() {

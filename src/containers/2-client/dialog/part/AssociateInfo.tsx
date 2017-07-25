@@ -26,7 +26,7 @@ class AssociateInfo extends React.Component<AssociateInfoProps> {
           <div className="p5 input-unit-illustrate">项目中关联该客户后，自动产生，不可修改</div>
         </div>
 
-        <div className="bb">
+        <div>
           <FlexDiv>
             <Label>关联合同</Label>
             <Part>

@@ -1,33 +1,29 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
-import CommonFunction from '../../common/interface/CommonFunction'
-
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
-import addCommonFunction from '../../_frameset/addCommonFunction'
 import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
 import CustomerInfo from '././part/CustomerInfo'
-import SubCompany from './part/SubCompany'
-import ContactInfo from './part/ContactInfo'
-import CDA from './part/CDA'
+import SubCompany from './sub-company/SubCompany'
+import ContactInfo from './contact/ContactInfo'
+import CDA from './cda/CDA'
 import AddSupplier from './supplier/AddSupplier'
-import AddRFI from './rfi/AddRFI'
+import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import RemarkAndAttachment from './part/RemarkAndAttachment'
 import OperationRecord from './part/OperationRecord'
 
-import {CLIENTS} from '../../../core/constants/types'
 import {addCustomer, updateCustomer, updateBdAndBdpc} from '../client.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
-interface AddClientDialogProps extends CommonFunction {
+interface AddClientDialogProps {
   newCustomerId: string
   addCustomer: (options) => void
   addCustomerSuccess: boolean
@@ -64,13 +60,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
 
   componentWillReceiveProps(nextProps: AddClientDialogProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
-      this.props.showSuccess('添加客户信息成功！')
-      this.setState({customerId: this.props.newCustomerId})
-      this.props.clearState(CLIENTS.ADD_CUSTOMER)
-    }
-    if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
-      this.props.showSuccess('更新客户信息成功！')
-      this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+      this.setState({customerId: nextProps.newCustomerId})
     }
   }
 
@@ -107,16 +97,16 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <SubCompany customerId={this.state.customerId}/>
 
               <CategoryTitle title="联系人"/>
-              <ContactInfo/>
+              <ContactInfo customerId={this.state.customerId}/>
 
               <CategoryTitle title="CDA"/>
-              <CDA/>
+              <CDA customerId={this.state.customerId}/>
 
               <CategoryTitle title="供应商"/>
-              <AddSupplier/>
+              <AddSupplier customerId={this.state.customerId}/>
 
               <CategoryTitle title="RFI"/>
-              <AddRFI/>
+              <RFI customerId={this.state.customerId}/>
 
               <CategoryTitle title="关联信息"/>
               <AssociateInfo/>
@@ -125,7 +115,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <RemarkAndAttachment/>
 
               <CategoryTitle title="操作记录"/>
-              <OperationRecord/>
+              <OperationRecord operationRecordList={[]}/>
             </Part>
             <div className="client-nav">
               <ul className="client-category-group">
@@ -151,7 +141,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
 
 function mapStateToProps(state) {
   return {
-    ...state.clients,
+    ...state.client,
     BDList: state.BDList,
     BDPCList: state.BDPCList
   }
@@ -161,4 +151,4 @@ export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   updateBdAndBdpc,
   addCustomer, updateCustomer
-})(addCommonFunction(cache(AddClientDialog)))
+})(cache(AddClientDialog))

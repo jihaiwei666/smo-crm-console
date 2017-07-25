@@ -41,9 +41,12 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   componentWillMount() {
     if (this.props.bdAndBdpc) {
       this.setState(this.props.bdAndBdpc)
-      this.props.fetchBD()
-      this.props.fetchBDPC()
     }
+  }
+
+  componentDidMount() {
+    this.props.fetchBD()
+    this.props.fetchBDPC()
   }
 
   render() {
@@ -71,6 +74,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
             <Label>客户所有人：</Label>
             <Part>
               <Select1 disabled={!this.props.customerId} options={BDList}
+                       showClear={true}
                        value={this.state.owner} onChange={v => this.setState({owner: v})}
                        lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
               />
@@ -84,6 +88,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
             <Label>所属BDPC：</Label>
             <Part>
               <Select1 disabled={!this.props.customerId} options={BDPCList}
+                       showClear={true}
                        value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
                        lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
               />

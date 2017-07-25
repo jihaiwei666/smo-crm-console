@@ -5,7 +5,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
-
+  onChange?: (e: any) => void
 }
 
 class Input extends React.Component<InputProps> {

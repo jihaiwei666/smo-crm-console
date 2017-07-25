@@ -19,7 +19,7 @@ import {addListItem} from '../../../../core/utils/arrayUtils'
 import {fetchContactList} from '../../client.action'
 import {addSupplier} from './supplier.action'
 
-interface SupplierProps {
+interface AddSupplierProps {
   customerId: string
   supplierId?: string
   fetchContactList: (customerId: string) => void
@@ -45,15 +45,15 @@ function getNextSupplier() {
     chosenDate: '',
     isFixed: '',
     unitPrice: '',
-    brokerList: [getNextBroker()]
+    brokerList: []
   }
 }
 
-class Supplier extends React.Component<SupplierProps> {
+class AddSupplier extends React.Component<AddSupplierProps> {
   state = {
     supplierType: '',
     isDeployment: '',
-    supplierList: [getNextSupplier()]
+    supplierList: []
   }
 
   save = () => {
@@ -160,7 +160,7 @@ class Supplier extends React.Component<SupplierProps> {
                         supplier.brokerList.map((broker, brokerIndex) => {
                           let telephone = '', email = '', position = ''
                           if (broker.broker) {
-                            let contact = contactList.data.find(d => d.contactId == broker.broker)
+                            let contact = contactList.find(d => d.contactId == broker.broker)
                             telephone = contact.telephone
                             email = contact.email
                             position = contact.position
@@ -245,4 +245,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addSupplier, fetchContactList
-})(Supplier)
+})(AddSupplier)

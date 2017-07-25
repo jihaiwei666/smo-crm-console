@@ -15,14 +15,14 @@ import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import CustomerInfo from './part/CustomerInfo'
 import BD_BDPC from './part/BD_BDPC'
-import SubCompany from './part/SubCompany'
-import ContactInfo from './part/ContactInfo'
-import CDA from './part/CDA'
+import SubCompany from './sub-company/SubCompany'
+import ContactInfo from './contact/ContactInfo'
+import CDA from './cda/CDA'
 
 import AddSupplier from './supplier/AddSupplier'
 import EditSupplier from './supplier/EditSupplier'
 
-import AddRFI from './rfi/AddRFI'
+import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import RemarkAndAttachment from './part/RemarkAndAttachment'
 import OperationRecord from './part/OperationRecord'
@@ -46,6 +46,8 @@ interface UpdateClientDialogProps extends CommonFunction {
   updateBdAndBdpc: (options) => void
   updateBdAndBdpcSuccess: boolean
 
+  fetchContactList: (customerId: string) => void
+
   addSupplierSuccess: boolean
   supplierInfo: any
   updateSupplierSuccess: boolean
@@ -58,6 +60,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     show: true,
     showAddConfirm: false,
     supplierId: '',
+    rfiId: '',
   }
 
   close = () => {
@@ -66,13 +69,18 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
 
   componentDidMount() {
     this.props.fetchCustomerInfo(this.props.customerId)
+    this.props.fetchContactList(this.props.customerId)
   }
 
   componentWillReceiveProps(nextProps: UpdateClientDialogProps) {
     if (!this.props.customerInfo.loaded && nextProps.customerInfo.loaded) {
-      const supplierInfo = nextProps.customerInfo.data.supplierInfo
+      const data = nextProps.customerInfo.data
+      const {supplierInfo, rfiInfo} = data
       if (supplierInfo) {
         this.setState({supplierId: supplierInfo.supplierId})
+      }
+      if (rfiInfo) {
+        this.setState({rfiId: rfiInfo.rfiId})
       }
     }
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
@@ -86,9 +94,11 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     const customerBaseInfo = data.customerBaseInfo
     const bdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
-    const contactList = data.contactList
+    const contactInfo = data.contactInfo
     const cdaList = data.cdaList
     const supplierInfo = data.supplierInfo
+    const rfiInfo = data.rfiInfo
+    const operationRecordList = data.operationRecordList
 
     return (
       <Modal
@@ -119,42 +129,42 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     BDPCList={this.props.BDPCList}
                     updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
-                  {/**
-                   <CategoryTitle title="客户信息"/>
-                   <CustomerInfo
-                   customerId={this.props.customerId}
-                   customerBaseInfo={customerBaseInfo}
-                   updateCustomer={this.props.updateCustomer}
-                   />
+                  {/** */}
+                  <CategoryTitle title="客户信息"/>
+                  <CustomerInfo
+                    customerId={this.props.customerId}
+                    customerBaseInfo={customerBaseInfo}
+                    updateCustomer={this.props.updateCustomer}
+                  />
 
-                   <CategoryTitle title="分/子公司或下属院区"/>
-                   <SubCompany
-                   customerId={this.props.customerId}
-                   subCompanyList={subCompanyList}
-                   />
-                   <CategoryTitle title="联系人"/>
-                   <ContactInfo customerId={this.props.customerId} contactList={contactList}/>
+                  <CategoryTitle title="分/子公司或下属院区"/>
+                  <SubCompany
+                    customerId={this.props.customerId}
+                    subCompanyList={subCompanyList}
+                  />
+                  <CategoryTitle title="联系人"/>
+                  <ContactInfo customerId={this.props.customerId} contactInfo={contactInfo}/>
 
-                   <CategoryTitle title="CDA"/>
-                   <CDA customerId={this.props.customerId} cdaList={cdaList}/>
+                  <CategoryTitle title="CDA"/>
+                  <CDA customerId={this.props.customerId} cdaList={cdaList}/>
 
-                   <CategoryTitle title="供应商"/>
-                   {
-                     !this.state.supplierId && (
-                       <AddSupplier customerId={this.props.customerId}/>
-                     )
-                   }
-                   {
-                     this.state.supplierId && (
-                       <EditSupplier
-                         customerId={this.props.customerId}
-                         supplierId={this.state.supplierId}
-                         supplierInfo={supplierInfo}/>
-                     )
-                   }
-                   */}
+                  <CategoryTitle title="供应商"/>
+                  {
+                    !this.state.supplierId && (
+                      <AddSupplier customerId={this.props.customerId}/>
+                    )
+                  }
+                  {
+                    this.state.supplierId && (
+                      <EditSupplier
+                        customerId={this.props.customerId}
+                        supplierId={this.state.supplierId}
+                        supplierInfo={supplierInfo}/>
+                    )
+                  }
+
                   <CategoryTitle title="RFI"/>
-                  <AddRFI customerId={this.props.customerId}/>
+                  <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={rfiInfo}/>
 
                   <CategoryTitle title="关联信息"/>
                   <AssociateInfo/>
@@ -163,7 +173,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <RemarkAndAttachment/>
 
                   <CategoryTitle title="操作记录"/>
-                  <OperationRecord/>
+                  <OperationRecord operationRecordList={operationRecordList}/>
                 </Part>
                 <div className="client-nav">
                   <ul className="client-category-group">

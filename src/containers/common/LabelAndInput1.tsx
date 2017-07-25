@@ -15,7 +15,7 @@ interface LabelAndInput1Props {
 class LabelAndInput1 extends React.Component<LabelAndInput1Props> {
   render() {
     return (
-      <FlexDiv className={classnames('mt5 mb5', this.props.className)}>
+      <FlexDiv className={classnames('mt7 mb7', this.props.className)}>
         <Label>{this.props.label + '：'}</Label>
         <Part>
           {this.props.children}

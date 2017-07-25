@@ -5,12 +5,14 @@ import {fromJS} from 'immutable'
 
 import {CLIENTS} from '../../core/constants/types'
 import phase from '../../core/constants/phase'
-import {handleClearState} from '../common/reduxUtils'
+import {handleFlagState} from '../common/reduxUtils'
+import ClientState from './ClientState'
 
-const initValue = {
+const initValue: ClientState = {
   newCustomerId: '',
   addCustomerSuccess: false,
   updateCustomerSuccess: false,
+
   updateBdAndBdpcSuccess: false,
 
   newSubCompanyId: '',
@@ -25,7 +27,10 @@ const initValue = {
 
   addSupplierSuccess: false,
   supplierInfo: null,
-  updateSupplierSuccess: false
+  updateSupplierSuccess: false,
+
+  addRfiSuccess: false,
+  updateRfiSuccess: false,
 }
 
 export default function clients(iState = fromJS(initValue), action) {
@@ -34,69 +39,53 @@ export default function clients(iState = fromJS(initValue), action) {
   switch (action.type) {
     case CLIENTS.ADD_CUSTOMER + phase.SUCCESS:
       let newCustomerId = action.data
-      nextIState = nextIState.set('addCustomerSuccess', true).set('newCustomerId', newCustomerId)
+      nextIState = nextIState.set('newCustomerId', newCustomerId)
       break
 
     case phase.CLEAR + CLIENTS.ADD_CUSTOMER:
-      nextIState = nextIState.set('addCustomerSuccess', false).set('newCustomerId', '')
-      break
-
-    case CLIENTS.UPDATE_CUSTOMER + phase.SUCCESS:
-      nextIState = nextIState.set('updateCustomerSuccess', true)
-      break
-
-    case CLIENTS.UPDATE_BD_AND_BDPC + phase.SUCCESS:
-      nextIState = nextIState.set('updateBdAndBdpcSuccess', true)
+      nextIState = nextIState.set('newCustomerId', '')
       break
 
     case CLIENTS.ADD_SUB_COMPANY + phase.SUCCESS:
-      nextIState = nextIState.set('newSubCompanyId', action.data).set('addSubCompanySuccess', true)
+      nextIState = nextIState.set('newSubCompanyId', action.data)
       break
 
     case phase.CLEAR + CLIENTS.ADD_SUB_COMPANY:
-      nextIState = nextIState.set('addSubCompanySuccess', false).set('newSubCompanyId', '')
-      break
-
-    case CLIENTS.UPDATE_SUB_COMPANY + phase.SUCCESS:
-      nextIState = nextIState.set('updateSubCompanySuccess', true)
-      break
-
-    case CLIENTS.REMOVE_SUB_COMPANY + phase.SUCCESS:
-      nextIState = nextIState.set('removeSubCompanySuccess', true)
+      nextIState = nextIState.set('newSubCompanyId', '')
       break
 
     case CLIENTS.ADD_CONTACT + phase.SUCCESS:
-      nextIState = nextIState.set('newContactId', action.data).set('addContactSuccess', true)
+      nextIState = nextIState.set('newContactId', action.data)
       break
 
     case phase.CLEAR + CLIENTS.ADD_CONTACT:
-      nextIState = nextIState.set('addContactSuccess', false).set('newContactId', '')
-      break
-
-    case CLIENTS.UPDATE_CONTACT + phase.SUCCESS:
-      nextIState = nextIState.set('updateContactSuccess', true)
-      break
-
-    case CLIENTS.REMOVE_CONTACT + phase.SUCCESS:
-      nextIState = nextIState.set('removeContactSuccess', true)
+      nextIState = nextIState.set('newContactId', '')
       break
 
     case CLIENTS.ADD_SUPPLIER + phase.SUCCESS:
-      nextIState = nextIState.set('addSupplierSuccess', true).set('supplierInfo', action.data)
+      nextIState = nextIState.set('supplierInfo', action.data)
       break
 
-    case CLIENTS.UPDATE_SUPPLIER + phase.SUCCESS:
-      nextIState = nextIState.set('updateSupplierSuccess', true)
-      break
   }
 
-  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_CUSTOMER, 'updateCustomerSuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_BD_AND_BDPC, 'updateBdAndBdpcSuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_SUB_COMPANY, 'updateSubCompanySuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.REMOVE_SUB_COMPANY, 'removeSubCompanySuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_CONTACT, 'updateContactSuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.REMOVE_CONTACT, 'removeContactSuccess')
-  nextIState = handleClearState(nextIState, action, CLIENTS.UPDATE_SUPPLIER, 'updateSupplierSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_CUSTOMER, 'addCustomerSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_CUSTOMER, 'updateCustomerSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_BD_AND_BDPC, 'updateBdAndBdpcSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_SUB_COMPANY, 'addSubCompanySuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_SUB_COMPANY, 'updateSubCompanySuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_SUB_COMPANY, 'removeSubCompanySuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_CONTACT, 'addContactSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_CONTACT, 'updateContactSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_CONTACT, 'removeContactSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_SUPPLIER, 'addSupplierSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_SUPPLIER, 'updateSupplierSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_RFI, 'addRfiSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_RFI, 'updateRfiSuccess')
 
   return nextIState
 }

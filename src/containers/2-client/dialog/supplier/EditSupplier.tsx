@@ -53,7 +53,7 @@ function getNextSupplier() {
     chosenDate: '',
     isFixed: '',
     unitPrice: '',
-    brokerList: [getNextBroker()],
+    brokerList: [],
     isLocal: true
   }
 }

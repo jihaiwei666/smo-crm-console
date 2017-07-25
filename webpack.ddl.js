@@ -12,6 +12,7 @@ const vendors = [
   'dom-helpers',
   'history',
   'immutable',
+  'moment',
   'isomorphic-fetch',
   'prop-types',
   'react',

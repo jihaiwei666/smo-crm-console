@@ -1,19 +1,15 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
-import CommonFunction from '../../../common/interface/CommonFunction'
-
 import React from 'react'
 import {connect} from 'react-redux'
+
 import Button from '../../../../components/button/Button'
+import Company from './Company'
 
-import Company from './_Company'
-
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {CLIENTS} from '../../../../core/constants/types'
 import {addSubCompany, updateSubCompany, removeSubCompany} from '../../client.action'
 
-interface SubCompanyProps extends CommonFunction {
+interface SubCompanyProps {
   customerId: string
   addSubCompany?: (options) => void
   addSubCompanySuccess?: boolean
@@ -32,7 +28,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
   companyUid: 0
   lastCompanyId: ''
   state = {
-    companyList: [{uid: id++, companyId: null, addFlag: true}]
+    companyList: []
   }
 
   addCompany = () => {
@@ -64,20 +60,12 @@ class SubCompany extends React.Component<SubCompanyProps> {
       let companyList = this.state.companyList
       companyList.find(c => c.uid == this.companyUid).companyId = nextProps.newSubCompanyId
       this.setState({companyList})
-      this.props.showSuccess('添加子公司成功！')
-      this.props.clearState(CLIENTS.ADD_SUB_COMPANY)
-    }
-    if (!this.props.updateSubCompanySuccess && nextProps.updateSubCompanySuccess) {
-      this.props.showSuccess('更新子公司信息成功！')
-      this.props.clearState(CLIENTS.UPDATE_SUB_COMPANY)
     }
     if (!this.props.removeSubCompanySuccess && nextProps.removeSubCompanySuccess) {
-      this.props.showSuccess('删除子公司信息成功！')
       let companyList = this.state.companyList
       let index = companyList.indexOf(companyList.find(c => c.companyId == this.lastCompanyId))
       companyList.splice(index, 1)
       this.setState({companyList})
-      this.props.clearState(CLIENTS.REMOVE_SUB_COMPANY)
     }
   }
 
@@ -100,15 +88,14 @@ class SubCompany extends React.Component<SubCompanyProps> {
         {
           this.state.companyList.map((c, index) => {
             return (
-              <Company key={c.addFlag ? c.uid : c.companyId }
+              <Company key={c.addFlag ? c.uid : c.companyId}
                        customerId={this.props.customerId}
                        companyId={c.companyId}
-                       addCompany={this.saveSubCompany}
+                       addCompany={(options) => this.saveSubCompany(c.uid, options)}
                        companyInfo={this._getCompanyInfo(c.companyId)}
                        updateCompany={this.props.updateSubCompany}
                        removeCompany={this.removeSubCompany}
                        index={index}
-                       uid={c.uid}
               />
             )
           })
@@ -134,4 +121,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addSubCompany, updateSubCompany, removeSubCompany
-})(addCommonFunction(SubCompany))
+})(SubCompany)

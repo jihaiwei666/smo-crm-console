@@ -8,18 +8,17 @@ import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
 
-interface _CompanyProps {
+interface CompanyProps {
   customerId: string
   companyId: string
   index: number
-  uid: number
-  addCompany: (index, options) => void
+  addCompany: (options) => void
   companyInfo?: any
   updateCompany: (options) => void
   removeCompany: (companyId: string) => void
 }
 
-class _Company extends React.Component<_CompanyProps> {
+class Company extends React.Component<CompanyProps> {
   state = {
     showRemoveConfirm: false,
 
@@ -44,7 +43,7 @@ class _Company extends React.Component<_CompanyProps> {
       options['subsidiary_id'] = this.props.companyId
       this.props.updateCompany(options)
     } else {
-      this.props.addCompany(this.props.uid, options)
+      this.props.addCompany(options)
     }
   }
 
@@ -130,4 +129,4 @@ class _Company extends React.Component<_CompanyProps> {
   }
 }
 
-export default _Company
+export default Company

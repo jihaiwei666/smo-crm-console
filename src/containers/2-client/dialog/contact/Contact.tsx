@@ -12,9 +12,8 @@ import Button from '../../../../components/button/Button'
 interface _ContactProps {
   customerId: string
   contactId: string
-  localId: number //新增时候的唯一id
   index: number
-  addContact: (uid, options) => void
+  addContact: (options) => void
   updateContact: (options) => void
   contactInfo: any
   removeContact: (contactId) => void
@@ -28,7 +27,7 @@ class _Contact extends React.Component<_ContactProps> {
     mobile: '',
     email: '',
     position: '',
-    sex: '',
+    sex: null,
     address: '',
     remark: '',
   }
@@ -39,7 +38,7 @@ class _Contact extends React.Component<_ContactProps> {
       options['contacts_info_id'] = this.props.contactId
       this.props.updateContact(options)
     } else {
-      this.props.addContact(this.props.localId, options)
+      this.props.addContact(options)
     }
   }
 

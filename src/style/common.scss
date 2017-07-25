@@ -1,4 +1,4 @@
-$array: 5, 10, 15, 20;
+$array: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20;
 
 @mixin ttt($key, $p) {
     @for $i from 1 through length($array) {
@@ -39,13 +39,14 @@ button, input, select, textarea {
 }
 */
 
+h1 {
+    font-size: 18px;
+}
+/*
+
 a {
     text-decoration: none;
     color: #fff;
-}
-
-h1 {
-    font-size: 18px;
 }
 
 ul {
@@ -59,6 +60,7 @@ ul {
         display: block;
     }
 }
+*/
 
 .pull-left {
     float: left;
@@ -74,6 +76,10 @@ ul {
 
 .text-right {
     text-align: right;
+}
+
+.bt {
+    border-top: 1px solid #ddd;
 }
 
 .bb {

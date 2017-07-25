@@ -3,6 +3,7 @@
  */
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleRfiServerData} from './dialog/rfi/rfi.helper'
+import {getDateStr} from '../../core/utils/dateUtils'
 
 
 export function handleClientList(serverData) {
@@ -58,10 +59,11 @@ export function handleClientInfo(clientData) {
   const baseInfo = clientData['customerInfo'] || {}
   const bdAndBdpc = clientData['bdAndBdpc'] || {}
   const subCompany = clientData['customerSubsidiarys'] || []
-  const contactList = clientData['customerContactsInfos'] || []
+  const contactInfo = clientData['customerContactsInfos'] || []
   const cdaList = clientData['customerCdas'] || []
   const supplierInfo = clientData['customerProvider'] || {}
   const rfi = clientData['customerRfi'] || {}
+  const operationRecordList = clientData['operations'] || []
 
   return {
     customerBaseInfo: {
@@ -98,13 +100,13 @@ export function handleClientInfo(clientData) {
       billReceiver: c['billing_invoice_recipient'],
       receiverContactInfo: c['billing_recipient_contact'],
     })),
-    contactList: contactList.map(c => ({
+    contactInfo: contactInfo.map(c => ({
       contactId: c['contacts_info_id'],
       name: c['contacts_info_name'],
       mobile: c['contacts_info_telephone'],
       email: c['contacts_info_mail'],
       position: c['contacts_info_position'],
-      sex: (c['contacts_info_sex'] + '') || null,
+      sex: c['contacts_info_sex'] || null,
       address: c['contacts_info_address'],
       remark: c['contacts_info_remark'],
     })),
@@ -115,6 +117,29 @@ export function handleClientInfo(clientData) {
       remark: item['cda_remark'],
     })),
     supplierInfo: handleSupplierServerData(supplierInfo),
-    rfiInfo: handleRfiServerData(rfi)
+    rfiInfo: handleRfiServerData(rfi),
+    operationRecordList: operationRecordList.map(item => ({
+      date: getDateStr(item['operation_time']),
+      type: item['operation_type'],
+      module: item['operation_model'],
+      email: item['operation_person'],
+      content: item['operation_content'],
+    }))
   }
+}
+
+export function getOperationType(type) {
+  switch (type) {
+    case 1:
+      return '删除'
+    case 2:
+      return '新增'
+    case 3:
+      return '修改'
+    case 4:
+      return '上传'
+    case 5:
+      return '下载'
+  }
+  return '未知操作'
 }

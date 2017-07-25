@@ -36,6 +36,7 @@ export const CLIENTS = {
   UPDATE_CONTACT: null,
   REMOVE_CONTACT: null,
 
+  FETCH_CDA_LIST: null,
   FETCH_CDA_DETAIL: null,
   ADD_CDA: null,
   UPDATE_CDA: null,
@@ -51,7 +52,12 @@ export const CLIENTS = {
 
   ADD_RFI: null,
   UPDATE_RFI: null,
-  REMOVE_RFI: null
+  REMOVE_RFI: null,
+
+  FETCH_VISIT_RECORD_LIST: null,
+  ADD_VISIT_RECORD: null,
+  UPDATE_VISIT_RECORD: null,
+  REMOVE_VISIT_RECORD: null,
 }
 
 export const PROJECT = {

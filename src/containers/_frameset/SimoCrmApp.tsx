@@ -8,10 +8,7 @@ import {connect} from 'react-redux'
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
-import '../../scss/common.scss'
-import '../common/page-common.scss'
 import PageContent from './PageContent'
-import {getPath} from '../../core/env'
 
 import Modules from './Modules'
 import RecentOpen from './RecentOpen'

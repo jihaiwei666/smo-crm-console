@@ -1,8 +1,6 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
-import CommonFunction from '../../../common/interface/CommonFunction'
-
 import React from 'react'
 import {connect} from 'react-redux'
 import Button from '../../../../components/button/Button'
@@ -11,28 +9,29 @@ import AddCDA_Dialog from '../cda/AddCDA_Dialog'
 import LookCDA_Dialog from '../cda/LookCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
-import {fetchCDA_Detail, addCDA, updateCDA, removeCDA, fetchProjectList, fetchContactList} from '../../client.action'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {CLIENTS} from '../../../../core/constants/types'
+import {fetchProjectList, fetchContactList} from '../../client.action'
+import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda.action'
 
-interface CDAProps extends CommonFunction {
+interface CDAProps {
   customerId: string
   cdaList: any[]
+  fetchCdaList: (customerId) => void
   fetchProjectList: (customerId) => void
   customerProjectData: any
   fetchContactList: (customerId) => void
   customerContactData: any
   fetchCDA_Detail: (cdaId: string) => void
   cdaDetail: any
-  addCDA: any
-  addCDASuccess: boolean
-  updateCDA: (options) => void
-  updateCDASuccess: boolean
-  removeCDA: (cdaId: string) => void
-  removeCDASuccess: boolean
+  addCda: any
+  addCdaSuccess: boolean
+  updateCda: (options) => void
+  updateCdaSuccess: boolean
+  removeCda: (cdaId: string) => void
+  removeCdaSuccess: boolean
 }
 
 class CDA extends React.Component<CDAProps> {
+  cdaList = []
   state = {
     showAddCDA: false,
     showLookDialog: false,
@@ -41,15 +40,20 @@ class CDA extends React.Component<CDAProps> {
     index: -1
   }
 
+  componentWillMount() {
+    if (this.props.cdaList) {
+      this.cdaList = this.props.cdaList
+    }
+  }
+
   componentWillReceiveProps(nextProps: CDAProps) {
-    if (!this.props.addCDASuccess && nextProps.addCDASuccess) {
-      this.props.showSuccess('添加CDA成功！')
-      this.props.clearState(CLIENTS.ADD_CDA)
+    if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
+
     }
   }
 
   render() {
-    const item = this.props.cdaList[this.state.index] || {}
+    const item = this.cdaList[this.state.index] || {}
     return (
       <div className="p5">
         {
@@ -60,7 +64,8 @@ class CDA extends React.Component<CDAProps> {
               customerProjectData={this.props.customerProjectData}
               fetchContactList={this.props.fetchContactList}
               customerContactData={this.props.customerContactData}
-              addCDA={this.props.addCDA}
+              addCda={this.props.addCda}
+              addCdaSuccess={this.props.addCdaSuccess}
               onExited={() => this.setState({showAddCDA: false})}
             />
           )
@@ -88,10 +93,10 @@ class CDA extends React.Component<CDAProps> {
               customerProjectData={this.props.customerProjectData}
               fetchContactList={this.props.fetchContactList}
               customerContactData={this.props.customerContactData}
-              updateCDA={this.props.updateCDA}
-              updateCDASuccess={this.props.updateCDASuccess}
-              removeCDA={this.props.removeCDA}
-              removeCDASuccess={this.props.removeCDASuccess}
+              updateCda={this.props.updateCda}
+              updateCdaSuccess={this.props.updateCdaSuccess}
+              removeCda={this.props.removeCda}
+              removeCdaSuccess={this.props.removeCdaSuccess}
               onExited={() => this.setState({showEditDialog: false})}
             />
           )
@@ -105,7 +110,7 @@ class CDA extends React.Component<CDAProps> {
           </FixHead>
           <FixBody>
             {
-              this.props.cdaList.map((item, index) => {
+              this.cdaList.map((item, index) => {
                 return (
                   <FixRow key={item.id} selected={this.state.index == index}
                           onClick={() => this.setState({index})}
@@ -143,5 +148,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  fetchCDA_Detail, addCDA, updateCDA, removeCDA, fetchProjectList, fetchContactList
-})(addCommonFunction(CDA))
+  fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda, fetchProjectList, fetchContactList
+})(CDA)

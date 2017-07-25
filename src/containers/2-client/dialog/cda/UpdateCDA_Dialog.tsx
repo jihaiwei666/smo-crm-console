@@ -21,10 +21,10 @@ interface UpdateCDA_DialogProps {
   customerProjectData: any
   fetchContactList: (customerId) => void
   customerContactData: any
-  updateCDA: (options) => void
-  updateCDASuccess: boolean
-  removeCDA: (cdaId: string) => void
-  removeCDASuccess: boolean
+  updateCda: (options) => void
+  updateCdaSuccess: boolean
+  removeCda: (cdaId: string) => void
+  removeCdaSuccess: boolean
   onExited: () => void
 }
 
@@ -80,7 +80,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
 
   update = () => {
     let cdaList = []
-    this.props.updateCDA({
+    this.props.updateCda({
       customerCda: {
         "customer_info_id": this.props.customerId,
         "cda_validity_begin_time": '2017-07-17',

@@ -1,28 +1,35 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
-import CommonFunction from '../../../common/interface/CommonFunction'
-
 import React from 'react'
 import {connect} from 'react-redux'
 import Button from '../../../../components/button/Button'
-import Contact from './_Contact'
+import Contact from './Contact'
+import VisitRecordDialog from './VisitRecordDialog'
 
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {addContact, updateContact, removeContact} from '../../client.action'
-import {CLIENTS} from '../../../../core/constants/types'
+import {
+  addContact, updateContact, removeContact,
+  fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
+} from './contact.action'
+import {getContactOptions} from './contact.helper'
 
-interface ContactProps extends CommonFunction {
+interface ContactProps {
   customerId: string
   addContact: (options) => void
   newContactId: string
-  contactList: any[]
+  contactInfo: any[]
   updateContact: (options) => void
   removeContact: (contactId: string) => void
+  customerContactData: any
 
   addContactSuccess: boolean
   updateContactSuccess: boolean
   removeContactSuccess: boolean
+
+  fetchVisitRecordList: any
+  addVisitRecord: any
+  updateVisitRecord: any
+  removeVisitRecord: any
 }
 
 let id = 1
@@ -31,7 +38,8 @@ class ContactInfo extends React.Component<ContactProps> {
   localContactUid: number
   lastContactId: string
   state = {
-    list: [{uid: id++, contactId: null, addFlag: true}]
+    showMoreVisitRecordDialog: false,
+    list: [{uid: id++, contactId: null, addFlag: true}],
   }
 
   addLocalContact = () => {
@@ -51,9 +59,9 @@ class ContactInfo extends React.Component<ContactProps> {
   }
 
   componentWillMount() {
-    let contactList = this.props.contactList
-    if (contactList && contactList.length != 0) {
-      let list = contactList.map(c => ({uid: c.contactId, contactId: c.contactId}))
+    let contactInfo = this.props.contactInfo
+    if (contactInfo && contactInfo.length != 0) {
+      let list = contactInfo.map(c => ({uid: c.contactId, contactId: c.contactId}))
       this.setState({list})
     }
   }
@@ -63,26 +71,18 @@ class ContactInfo extends React.Component<ContactProps> {
       let list = this.state.list
       list.find(c => c.uid == this.localContactUid).contactId = nextProps.newContactId
       this.setState({list})
-      this.props.showSuccess('添加联系人成功！')
-      this.props.clearState(CLIENTS.ADD_CONTACT)
-    }
-    if (!this.props.updateContactSuccess && nextProps.updateContactSuccess) {
-      this.props.showSuccess('更新联系人信息成功！')
-      this.props.clearState(CLIENTS.UPDATE_CONTACT)
     }
     if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
-      this.props.showSuccess('删除联系人成功！')
       let list = this.state.list
       let index = list.indexOf(list.find(c => c.contactId == this.lastContactId))
       list.splice(index, 1)
       this.setState({list})
-      this.props.clearState(CLIENTS.REMOVE_CONTACT)
     }
   }
 
   _getCompanyInfo = (contactId) => {
     let contactInfo = null
-    let list = this.props.contactList
+    let list = this.props.contactInfo
     if (list) {
       let match = list.find(c => c.contactId == contactId)
       if (match) {
@@ -94,8 +94,22 @@ class ContactInfo extends React.Component<ContactProps> {
   }
 
   render() {
+    const contactOptions = getContactOptions(this.props.customerContactData)
+
     return (
       <div>
+        {
+          this.state.showMoreVisitRecordDialog && (
+            <VisitRecordDialog
+              contactId=""
+              contactOptions={contactOptions}
+              fetchVisitRecordList={this.props.fetchVisitRecordList}
+              addVisitRecord={this.props.addVisitRecord}
+              updateVisitRecord={this.props.updateVisitRecord}
+              removeVisitRecord={this.props.removeVisitRecord}
+              onExited={() => this.setState({showMoreVisitRecordDialog: false})}/>
+          )
+        }
         {
           this.state.list.map((c, index) => {
             return (
@@ -103,9 +117,8 @@ class ContactInfo extends React.Component<ContactProps> {
                 key={c.addFlag ? c.uid : c.contactId}
                 customerId={this.props.customerId}
                 contactId={c.contactId}
-                localId={c.uid}
                 index={index}
-                addContact={this.saveContact}
+                addContact={(options) => this.saveContact(c.uid, options)}
                 contactInfo={this._getCompanyInfo(c.contactId)}
                 updateContact={this.props.updateContact}
                 removeContact={this.removeContact}
@@ -125,7 +138,9 @@ class ContactInfo extends React.Component<ContactProps> {
             拜访记录（!）：
           </div>
           <div className="pull-right">
-            <Button className="small" disabled={!this.props.customerId}>...查看更多</Button>
+            <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showMoreVisitRecordDialog: true})}>
+              ...查看更多
+            </Button>
           </div>
           <div className="input-unit-illustrate">
             详细记录对该客户的拜访记录，拜访内容中填写该次拜访的主要讨论事宜
@@ -140,10 +155,12 @@ function mapStateToProps(state, props) {
   return {
     ...state.clients,
     customerId: props.customerId,
-    contactList: props.contactList
+    contactInfo: props.contactInfo,
+    customerContactData: state.customerContactData
   }
 }
 
 export default connect(mapStateToProps, {
-  addContact, updateContact, removeContact
-})(addCommonFunction(ContactInfo))
+  addContact, updateContact, removeContact,
+  fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
+})(ContactInfo)
