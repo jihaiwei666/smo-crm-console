@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import DatePicker from 'antd/lib/date-picker'
 import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
@@ -16,16 +17,16 @@ import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
-import CheckBox from '../../../../components/form/checkbox/CheckBox'
 import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 
+import {MODULES} from './rfi.constants'
+import {ADD, EDIT} from '../../../../core/CRUD'
 import {fetchContactList} from '../../client.action'
 import {addRfi, updateRfi, removeRfi} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
-import {ADD, EDIT} from '../../../../core/CRUD'
-import Update from '../../../common/Update'
 import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
-import {MODULES} from './rfi.constants'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface RFIProps {
   customerId: string
@@ -49,9 +50,9 @@ function getNextBroker() {
 
 class RFI extends React.Component<RFIProps> {
   state = {
-    fillDate: '',
+    fillDate: null,
     fillPerson: '',
-    brokerList: [getNextBroker()],
+    brokerList: [],
     auditPerson: '',
     language: '',
     modules: [],
@@ -62,7 +63,7 @@ class RFI extends React.Component<RFIProps> {
     this.props.addRfi({
       "customerRfi": {
         "customer_info_id": this.props.customerId,
-        "write_time": this.state.fillDate,
+        "write_time": getDateStr(this.state.fillDate),
         "write_person": this.state.fillPerson,
         "review_person": this.state.auditPerson,
         "language": this.state.language,
@@ -122,7 +123,9 @@ class RFI extends React.Component<RFIProps> {
       <div>
         <FlexDiv>
           <Part>
-            <LabelAndInput label="填写日期（*）" value={this.state.fillDate} onChange={v => this.setState({fillDate: v})}/>
+            <LabelAndInput1 label="填写日期（*）">
+              <DatePicker value={this.state.fillDate} onChange={v => this.setState({fillDate: v})}/>
+            </LabelAndInput1>
             <LabelAndInput label="填写人（*）" value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}/>
             <InputGroup label="RFI对接人（!）" className="bt">
               {
@@ -151,7 +154,7 @@ class RFI extends React.Component<RFIProps> {
                 })
               }
               <TextAndButton text="请先完善联系人信息，之后才能选择该联系人">
-                <AddButton onClick={this.addBroker}/>
+                <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
               </TextAndButton>
             </InputGroup>
             <LabelAndInput className="pb5 bb" label="审阅人（!）" value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
@@ -172,7 +175,7 @@ class RFI extends React.Component<RFIProps> {
           </Part>
         </FlexDiv>
         <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-          <Button className="small">...查看更多</Button>
+          <Button className="small" disabled={!this.props.customerId}>...查看更多</Button>
         </TextAndButton>
         {
           !this.props.rfiId && (

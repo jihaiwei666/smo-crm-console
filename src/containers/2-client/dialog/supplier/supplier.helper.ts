@@ -1,6 +1,7 @@
 /**
  * Created by jiangyukun on 2017/7/24.
  */
+import {getDate} from '../../../../core/utils/dateUtils'
 
 export function handleSupplierServerData(data) {
   data = data || {}
@@ -15,9 +16,9 @@ export function handleSupplierServerData(data) {
       const brokers = supplier['customerProviderInfoDockers'] || []
       return {
         id: supplierBaseInfo['provider_info_id'],
-        startDate: supplierBaseInfo['validity_begin_time'] || '',
-        endDate: supplierBaseInfo['validity_end_time'] || '',
-        chosenDate: supplierBaseInfo['validity_select_time'] || '',
+        startDate: getDate(supplierBaseInfo['validity_begin_time']),
+        endDate: getDate(supplierBaseInfo['validity_end_time']),
+        chosenDate: getDate(supplierBaseInfo['validity_select_time']),
         isFixed: supplierBaseInfo['is_fixed'] || '',
         unitPrice: supplierBaseInfo['price'] || '',
         brokerList: brokers.map(broker => ({

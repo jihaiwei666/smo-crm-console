@@ -1,8 +1,6 @@
 /**
  * Created by jiangyukun on 2017/7/10.
  */
-import CommonFunction from '../../common/interface/CommonFunction'
-
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
@@ -10,8 +8,8 @@ import {Row, Part} from 'app-core/layout/'
 import Spinner from 'app-core/common/Spinner'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
-import addCommonFunction from '../../_frameset/addCommonFunction'
 import cache from '../../cache/cache'
+import ClientState from '../ClientState'
 import CategoryTitle from '../../common/CategoryTitle'
 import CustomerInfo from './part/CustomerInfo'
 import BD_BDPC from './part/BD_BDPC'
@@ -30,32 +28,23 @@ import OperationRecord from './part/OperationRecord'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import * as actions from '../client.action'
 
-interface UpdateClientDialogProps extends CommonFunction {
+interface UpdateClientDialogProps extends ClientState {
   customerId: string
   fetchCustomerInfo: any
   customerInfo: any
   updateCustomer: (options) => void
-  updateCustomerSuccess: boolean
-
   fetchBD: () => void
   BDList: any
-
   fetchBDPC: () => void
   BDPCList: any
-
   updateBdAndBdpc: (options) => void
-  updateBdAndBdpcSuccess: boolean
-
   fetchContactList: (customerId: string) => void
-
-  addSupplierSuccess: boolean
-  supplierInfo: any
-  updateSupplierSuccess: boolean
-
   onExited: () => void
 }
 
 class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
+  supplierInfo: any
+  rfiInfo: any
   state = {
     show: true,
     showAddConfirm: false,
@@ -77,14 +66,21 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
       const data = nextProps.customerInfo.data
       const {supplierInfo, rfiInfo} = data
       if (supplierInfo) {
+        this.supplierInfo = supplierInfo
         this.setState({supplierId: supplierInfo.supplierId})
       }
       if (rfiInfo) {
+        this.rfiInfo = rfiInfo
         this.setState({rfiId: rfiInfo.rfiId})
       }
     }
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
+      this.supplierInfo = nextProps.supplierInfo
       this.setState({supplierId: nextProps.supplierInfo.supplierId})
+    }
+    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.rfiInfo = nextProps.rfiInfo
+      this.setState({rfiId: nextProps.rfiInfo.rfiId})
     }
   }
 
@@ -95,9 +91,9 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     const bdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
     const contactInfo = data.contactInfo
-    const cdaList = data.cdaList
-    const supplierInfo = data.supplierInfo
-    const rfiInfo = data.rfiInfo
+    // const cdaList = data.cdaList
+    // const supplierInfo = data.supplierInfo
+    // const rfiInfo = data.rfiInfo
     const operationRecordList = data.operationRecordList
 
     return (
@@ -129,7 +125,6 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     BDPCList={this.props.BDPCList}
                     updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
-                  {/** */}
                   <CategoryTitle title="客户信息"/>
                   <CustomerInfo
                     customerId={this.props.customerId}
@@ -146,7 +141,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <ContactInfo customerId={this.props.customerId} contactInfo={contactInfo}/>
 
                   <CategoryTitle title="CDA"/>
-                  <CDA customerId={this.props.customerId} cdaList={cdaList}/>
+                  <CDA customerId={this.props.customerId}/>
 
                   <CategoryTitle title="供应商"/>
                   {
@@ -159,18 +154,18 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                       <EditSupplier
                         customerId={this.props.customerId}
                         supplierId={this.state.supplierId}
-                        supplierInfo={supplierInfo}/>
+                        supplierInfo={this.supplierInfo}/>
                     )
                   }
 
                   <CategoryTitle title="RFI"/>
-                  <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={rfiInfo}/>
+                  <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>
 
                   <CategoryTitle title="关联信息"/>
                   <AssociateInfo/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment/>
+                  <RemarkAndAttachment customerId={this.props.customerId}/>
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>
@@ -212,4 +207,4 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   ...actions
-})(addCommonFunction(cache(UpdateClientDialog)))
+})(cache(UpdateClientDialog))

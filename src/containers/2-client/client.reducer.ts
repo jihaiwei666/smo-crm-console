@@ -24,6 +24,13 @@ const initValue: ClientState = {
   addContactSuccess: false,
   updateContactSuccess: false,
   removeContactSuccess: false,
+  addVisitRecordSuccess: false,
+  updateVisitRecordSuccess: false,
+  removeVisitRecordSuccess: false,
+
+  addCdaSuccess: false,
+  updateCdaSuccess: false,
+  removeCdaSuccess: false,
 
   addSupplierSuccess: false,
   supplierInfo: null,
@@ -80,6 +87,13 @@ export default function clients(iState = fromJS(initValue), action) {
   nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_CONTACT, 'addContactSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_CONTACT, 'updateContactSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_CONTACT, 'removeContactSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_VISIT_RECORD, 'addVisitRecordSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_VISIT_RECORD, 'updateVisitRecordSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_VISIT_RECORD, 'removeVisitRecordSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_CDA, 'addCdaSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_CDA, 'updateCdaSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_CDA, 'removeCdaSuccess')
 
   nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_SUPPLIER, 'addSupplierSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_SUPPLIER, 'updateSupplierSuccess')

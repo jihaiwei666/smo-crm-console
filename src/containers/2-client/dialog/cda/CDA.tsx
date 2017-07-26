@@ -3,6 +3,8 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+
+import Data from '../../../common/interface/Data'
 import Button from '../../../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../../../components/fix-head-list/'
 import AddCDA_Dialog from '../cda/AddCDA_Dialog'
@@ -14,7 +16,7 @@ import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda
 
 interface CDAProps {
   customerId: string
-  cdaList: any[]
+  cdaList?: Data
   fetchCdaList: (customerId) => void
   fetchProjectList: (customerId) => void
   customerProjectData: any
@@ -40,20 +42,26 @@ class CDA extends React.Component<CDAProps> {
     index: -1
   }
 
-  componentWillMount() {
-    if (this.props.cdaList) {
-      this.cdaList = this.props.cdaList
-    }
+  componentDidMount() {
+    this.props.fetchCdaList(this.props.customerId)
   }
 
   componentWillReceiveProps(nextProps: CDAProps) {
     if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
-
+      this.props.fetchCdaList(this.props.customerId)
+    }
+    if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
+      this.props.fetchCdaList(this.props.customerId)
+    }
+    if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
+      this.props.fetchCdaList(this.props.customerId)
     }
   }
 
   render() {
-    const item = this.cdaList[this.state.index] || {}
+    const {loaded, data} = this.props.cdaList
+    const list = data || []
+    const item = list[this.state.index] || {}
     return (
       <div className="p5">
         {
@@ -75,7 +83,7 @@ class CDA extends React.Component<CDAProps> {
           this.state.showLookDialog && (
             <LookCDA_Dialog
               customerId={this.props.customerId}
-              cdaId={item.id}
+              cdaId={item.cdaId}
               fetchCDA_Detail={this.props.fetchCDA_Detail}
               cdaDetail={this.props.cdaDetail}
               fetchProjectList={this.props.fetchProjectList}
@@ -89,6 +97,7 @@ class CDA extends React.Component<CDAProps> {
           this.state.showEditDialog && (
             <UpdateCDA_Dialog
               customerId={this.props.customerId}
+              cdaId={item.cdaId}
               fetchProjectList={this.props.fetchProjectList}
               customerProjectData={this.props.customerProjectData}
               fetchContactList={this.props.fetchContactList}
@@ -110,9 +119,9 @@ class CDA extends React.Component<CDAProps> {
           </FixHead>
           <FixBody>
             {
-              this.cdaList.map((item, index) => {
+              list.map((item, index) => {
                 return (
-                  <FixRow key={item.id} selected={this.state.index == index}
+                  <FixRow key={item.cdaId} selected={this.state.index == index}
                           onClick={() => this.setState({index})}
                   >
                     <FixRow.Item>{item.startDate}</FixRow.Item>
@@ -130,7 +139,7 @@ class CDA extends React.Component<CDAProps> {
           </FixBody>
         </FixHeadList>
         <div className="m10 text-right">
-          <Button className="small" onClick={() => this.setState({showAddCDA: true})}>添加</Button>
+          <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showAddCDA: true})}>添加</Button>
         </div>
       </div>
     )
@@ -139,8 +148,9 @@ class CDA extends React.Component<CDAProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.client,
     customerId: props.customerId,
-    cdaList: props.cdaList,
+    cdaList: state.cdaList,
     cdaDetail: state.cdaDetail,
     customerProjectData: state.customerProjectData,
     customerContactData: state.customerContactData

@@ -4,6 +4,7 @@
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
 import {CLIENTS} from '../../../../core/constants/types'
 import {_post, _get} from '../../../../core/http'
+import {handleVisitRecordList} from './contact.helper'
 
 const urlPrefix = '/customer'
 
@@ -35,11 +36,12 @@ export function removeContact(contactId) {
   }
 }
 
-export function fetchVisitRecordList(contactId) {
+export function fetchVisitRecordList(options) {
   return {
     [THREE_PHASE]: {
       type: CLIENTS.FETCH_VISIT_RECORD_LIST,
-      http: () => _get(urlPrefix + `/v1/contacts/visit/list/${contactId}`)
+      http: () => _post(urlPrefix + `/v1/contacts/visit/list/`, {body: options}),
+      handleResponse: handleVisitRecordList
     }
   }
 }

@@ -15,27 +15,23 @@ import AddClientDialog from './dialog/AddClientDialog'
 import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
 import {CLIENTS} from '../../core/constants/types'
+import PageCountNav from '../../components/nav/PageCountNav'
 
 interface ClientsProps extends AppFunctionPage, ClientState {
   clientList: any[]
-
-  addCdaSuccess: boolean
-  updateCdaSuccess: boolean
-  removeCdaSuccess: boolean
-
 }
 
 class Clients extends React.Component<ClientsProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
-    showEditClientDialog: true,
+    showEditClientDialog: false,
     showDeleteClientConfirm: false,
 
     currentPage: 0,
   }
 
-  toPage = (newPage) => {
+  toPage = (newPage?: number) => {
     if (newPage && newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
@@ -45,22 +41,33 @@ class Clients extends React.Component<ClientsProps> {
     })
   }
 
+  refreshCurrentPage = () => {
+    this.toPage(this.state.currentPage)
+  }
+
   componentDidMount() {
     this.toPage(0)
   }
 
   componentDidUpdate() {
+    setTimeout(() => this.tipAndClear(), 0)
+  }
+
+  tipAndClear() {
     if (this.props.addCustomerSuccess) {
       this.props.showSuccess('添加客户信息成功！')
       this.props.clearState(CLIENTS.ADD_CUSTOMER)
+      this.toPage(0)
     }
     if (this.props.updateCustomerSuccess) {
       this.props.showSuccess('更新客户信息成功！')
       this.props.clearState(CLIENTS.UPDATE_CUSTOMER)
+      this.refreshCurrentPage()
     }
     if (this.props.updateBdAndBdpcSuccess) {
       this.props.showSuccess('更新 所有人、所属BDPC 成功！')
       this.props.clearState(CLIENTS.UPDATE_BD_AND_BDPC)
+      this.refreshCurrentPage()
     }
     if (this.props.addSubCompanySuccess) {
       this.props.showSuccess('添加子公司成功！')
@@ -86,9 +93,29 @@ class Clients extends React.Component<ClientsProps> {
       this.props.showSuccess('删除联系人成功！')
       this.props.clearState(CLIENTS.REMOVE_CONTACT)
     }
+    if (this.props.addVisitRecordSuccess) {
+      this.props.showSuccess('添加随访记录成功！')
+      this.props.clearState(CLIENTS.ADD_VISIT_RECORD)
+    }
+    if (this.props.updateVisitRecordSuccess) {
+      this.props.showSuccess('更新随访记录成功！')
+      this.props.clearState(CLIENTS.UPDATE_VISIT_RECORD)
+    }
+    if (this.props.removeVisitRecordSuccess) {
+      this.props.showSuccess('删除随访记录成功！')
+      this.props.clearState(CLIENTS.REMOVE_VISIT_RECORD)
+    }
     if (this.props.addCdaSuccess) {
       this.props.showSuccess('添加CDA成功！')
       this.props.clearState(CLIENTS.ADD_CDA)
+    }
+    if (this.props.updateCdaSuccess) {
+      this.props.showSuccess('更新CDA成功！')
+      this.props.clearState(CLIENTS.UPDATE_CDA)
+    }
+    if (this.props.removeCdaSuccess) {
+      this.props.showSuccess('删除CDA成功！')
+      this.props.clearState(CLIENTS.REMOVE_CDA)
     }
     if (this.props.addSupplierSuccess) {
       this.props.showSuccess('添加供应商成功！')
@@ -98,6 +125,14 @@ class Clients extends React.Component<ClientsProps> {
       this.props.showSuccess('更新供应商信息成功！')
       this.props.clearState(CLIENTS.UPDATE_SUPPLIER)
     }
+    if (this.props.addRfiSuccess) {
+      this.props.showSuccess('新增RFI信息成功！')
+      this.props.clearState(CLIENTS.ADD_RFI)
+    }
+    if (this.props.updateRfiSuccess) {
+      this.props.showSuccess('更新RFI信息成功！')
+      this.props.clearState(CLIENTS.UPDATE_RFI)
+    }
   }
 
   render() {
@@ -105,9 +140,9 @@ class Clients extends React.Component<ClientsProps> {
     const item = list[this.state.index] || {}
 
     let customerId = item.customerId
-    if (process.env.NODE_ENV != 'production') {
+    /*if (process.env.NODE_ENV != 'production') {
       customerId = '170712104134682784'
-    }
+    }*/
 
     return (
       <div className="clients">
@@ -160,6 +195,7 @@ class Clients extends React.Component<ClientsProps> {
             }
           </FixBody>
         </FixHeadList>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }

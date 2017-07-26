@@ -9,6 +9,7 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Save from '../../../common/Save'
 
 interface RemarkAndAttachmentProps {
+  customerId: string
 }
 
 class RemarkAndAttachment extends React.Component<RemarkAndAttachmentProps> {
@@ -21,10 +22,10 @@ class RemarkAndAttachment extends React.Component<RemarkAndAttachmentProps> {
         <FlexDiv className="p5 bb">
           <Label>附件</Label>
           <Part>
-            <Button className="small">上传</Button>
+            <Button className="small" disabled={!this.props.customerId}>上传</Button>
           </Part>
         </FlexDiv>
-        <Save/>
+        <Save disabled={!this.props.customerId}/>
       </div>
     )
   }

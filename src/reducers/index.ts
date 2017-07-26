@@ -45,8 +45,10 @@ export default combineReducers({
   BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
   customerProjectData: wrapReducerState(data(CLIENTS.FETCH_PROJECT_LIST)),
   customerContactData: wrapReducerState(data(CLIENTS.FETCH_CONTACT_LIST)),
+  cdaList: wrapReducerState(data(CLIENTS.FETCH_CDA_LIST)),
   cdaDetail: wrapReducerState(data(CLIENTS.FETCH_CDA_DETAIL)),
   msaListInfo: wrapReducerState(data(CLIENTS.FETCH_MSA_LIST)),
+  visitRecordListInfo: wrapReducerState(data(CLIENTS.FETCH_VISIT_RECORD_LIST)),
 
   projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),
 

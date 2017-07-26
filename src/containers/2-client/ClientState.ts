@@ -3,28 +3,36 @@
  */
 
 interface ClientState {
-  newCustomerId: string,
-  addCustomerSuccess: boolean,
-  updateCustomerSuccess: boolean,
+  newCustomerId: string
+  addCustomerSuccess: boolean
+  updateCustomerSuccess: boolean
 
-  updateBdAndBdpcSuccess: boolean,
+  updateBdAndBdpcSuccess: boolean
 
-  newSubCompanyId: string,
-  addSubCompanySuccess: boolean,
-  updateSubCompanySuccess: boolean,
-  removeSubCompanySuccess: boolean,
+  newSubCompanyId: string
+  addSubCompanySuccess: boolean
+  updateSubCompanySuccess: boolean
+  removeSubCompanySuccess: boolean
 
-  newContactId: string,
-  addContactSuccess: boolean,
-  updateContactSuccess: boolean,
-  removeContactSuccess: boolean,
+  newContactId: string
+  addContactSuccess: boolean
+  updateContactSuccess: boolean
+  removeContactSuccess: boolean
+  addVisitRecordSuccess: boolean
+  updateVisitRecordSuccess: boolean
+  removeVisitRecordSuccess: boolean
 
-  addSupplierSuccess: boolean,
-  supplierInfo: any,
-  updateSupplierSuccess: boolean,
+  addCdaSuccess: boolean
+  updateCdaSuccess: boolean
+  removeCdaSuccess: boolean
 
-  addRfiSuccess: boolean,
-  updateRfiSuccess: boolean,
+  addSupplierSuccess: boolean
+  supplierInfo: any
+  updateSupplierSuccess: boolean
+
+  addRfiSuccess: boolean
+  rfiInfo: any
+  updateRfiSuccess: boolean
 }
 
 export default ClientState

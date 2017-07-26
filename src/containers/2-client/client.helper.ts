@@ -26,25 +26,6 @@ export function handleCustomerProjectList(data) {
   }))
 }
 
-export function handleCDA_Detail(data) {
-  let cda = data['customerCda']
-  return {
-    startDate: cda['cda_validity_begin_time'],
-    endDate: cda['cda_validity_end_time'],
-    protocolType: cda['cda_agreement_type'],
-    projectId: cda['cda_agreement_project_id'],
-    projectName: cda['cda_agreement_project_name'] || '',
-    cdaList: data['customerCdaPersons'].map(item => ({
-      id: item['cda_id'],
-      username: item['contacts_info_name'],
-      telephone: item['contacts_info_telephone'],
-      email: item['contacts_info_mail'],
-      position: item['contacts_info_position']
-    })),
-    remark: cda['cda_remark']
-  }
-}
-
 export function handleCustomerContactList(data) {
   return data.map(item => ({
     contactId: item['contacts_info_id'],
@@ -112,8 +93,8 @@ export function handleClientInfo(clientData) {
     })),
     cdaList: cdaList.map(item => ({
       id: item['cda_id'],
-      startDate: item['cda_validity_begin_time'],
-      endDate: item['cda_validity_end_time'],
+      startDate: getDateStr(item['cda_validity_begin_time']),
+      endDate: getDateStr(item['cda_validity_end_time']),
       remark: item['cda_remark'],
     })),
     supplierInfo: handleSupplierServerData(supplierInfo),

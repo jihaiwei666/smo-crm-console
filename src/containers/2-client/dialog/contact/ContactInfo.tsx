@@ -12,19 +12,16 @@ import {
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
 } from './contact.action'
 import {getContactOptions} from './contact.helper'
+import ClientState from '../../ClientState'
 
-interface ContactProps {
+interface ContactProps extends ClientState {
   customerId: string
   addContact: (options) => void
-  newContactId: string
   contactInfo: any[]
   updateContact: (options) => void
   removeContact: (contactId: string) => void
   customerContactData: any
-
-  addContactSuccess: boolean
-  updateContactSuccess: boolean
-  removeContactSuccess: boolean
+  visitRecordListInfo: any
 
   fetchVisitRecordList: any
   addVisitRecord: any
@@ -38,8 +35,8 @@ class ContactInfo extends React.Component<ContactProps> {
   localContactUid: number
   lastContactId: string
   state = {
-    showMoreVisitRecordDialog: false,
-    list: [{uid: id++, contactId: null, addFlag: true}],
+    showVisitRecordDialog: false,
+    list: [],
   }
 
   addLocalContact = () => {
@@ -99,15 +96,19 @@ class ContactInfo extends React.Component<ContactProps> {
     return (
       <div>
         {
-          this.state.showMoreVisitRecordDialog && (
+          this.state.showVisitRecordDialog && (
             <VisitRecordDialog
-              contactId=""
+              customerId={this.props.customerId}
               contactOptions={contactOptions}
               fetchVisitRecordList={this.props.fetchVisitRecordList}
+              visitRecordListInfo={this.props.visitRecordListInfo}
               addVisitRecord={this.props.addVisitRecord}
+              addVisitRecordSuccess={this.props.addVisitRecordSuccess}
               updateVisitRecord={this.props.updateVisitRecord}
+              updateVisitRecordSuccess={this.props.updateVisitRecordSuccess}
               removeVisitRecord={this.props.removeVisitRecord}
-              onExited={() => this.setState({showMoreVisitRecordDialog: false})}/>
+              removeVisitRecordSuccess={this.props.removeVisitRecordSuccess}
+              onExited={() => this.setState({showVisitRecordDialog: false})}/>
           )
         }
         {
@@ -138,7 +139,7 @@ class ContactInfo extends React.Component<ContactProps> {
             拜访记录（!）：
           </div>
           <div className="pull-right">
-            <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showMoreVisitRecordDialog: true})}>
+            <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showVisitRecordDialog: true})}>
               ...查看更多
             </Button>
           </div>
@@ -153,10 +154,12 @@ class ContactInfo extends React.Component<ContactProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.clients,
+    ...state.client,
     customerId: props.customerId,
     contactInfo: props.contactInfo,
-    customerContactData: state.customerContactData
+    customerContactData: state.customerContactData,
+    visitRecordListInfo: state.visitRecordListInfo,
+
   }
 }
 

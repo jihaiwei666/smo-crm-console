@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import DatePicker from 'antd/lib/date-picker'
 import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
@@ -18,6 +19,7 @@ import Save from '../../../common/Save'
 import {addListItem} from '../../../../core/utils/arrayUtils'
 import {fetchContactList} from '../../client.action'
 import {addSupplier} from './supplier.action'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface AddSupplierProps {
   customerId: string
@@ -53,7 +55,9 @@ class AddSupplier extends React.Component<AddSupplierProps> {
   state = {
     supplierType: '',
     isDeployment: '',
-    supplierList: []
+    supplierList: [],
+    startDate: null,
+    endDate: null
   }
 
   save = () => {
@@ -65,9 +69,9 @@ class AddSupplier extends React.Component<AddSupplierProps> {
     const {supplierList} = this.state
     let list = supplierList.map(supplier => ({
       "customerProviderInfo": {
-        "validity_begin_time": supplier.startDate,
-        "validity_end_time": supplier.endDate,
-        "validity_select_time": supplier.chosenDate,
+        "validity_begin_time": getDateStr(supplier.startDate),
+        "validity_end_time": getDateStr(supplier.endDate),
+        "validity_select_time": getDateStr(supplier.chosenDate),
         "is_fixed": supplier.isFixed,
         "price": supplier.unitPrice,
       },
@@ -83,7 +87,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
         "is_signed_msa": this.state.isDeployment
       },
       customerProviderInfos: list,
-      latestCustomerProviderMsa: {}
+      latestCustomerProviderMsa: null
     }
   }
 
@@ -128,21 +132,15 @@ class AddSupplier extends React.Component<AddSupplierProps> {
                   <div style={{width: '30px'}}></div>
                   <Part className="bl">
                     <InputGroup label="有效期限（!）">
-                      <LabelAndInput
-                        label="起始日期"
-                        value={supplier.startDate}
-                        onChange={v => this.handleSupplierChange(supplierIndex, 'startDate', v)}
-                      />
-                      <LabelAndInput
-                        label="结束日期"
-                        value={supplier.endDate}
-                        onChange={v => this.handleSupplierChange(supplierIndex, 'endDate', v)}
-                      />
-                      <LabelAndInput
-                        label="入选时间"
-                        value={supplier.chosenDate}
-                        onChange={v => this.handleSupplierChange(supplierIndex, 'chosenDate', v)}
-                      />
+                      <LabelAndInput1 label="起始日期">
+                        <DatePicker value={supplier.startDate} onChange={v => this.handleSupplierChange(supplierIndex, 'startDate', v)}/>
+                      </LabelAndInput1>
+                      <LabelAndInput1 label="结束日期">
+                        <DatePicker value={supplier.endDate} onChange={v => this.handleSupplierChange(supplierIndex, 'endDate', v)}/>
+                      </LabelAndInput1>
+                      <LabelAndInput1 label="入选时间">
+                        <DatePicker value={supplier.chosenDate} onChange={v => this.handleSupplierChange(supplierIndex, 'chosenDate', v)}/>
+                      </LabelAndInput1>
                       <LabelAndInput1 label="是否固定">
                         <Radio.Group value={supplier.isFixed} onChange={v => this.handleSupplierChange(supplierIndex, 'isFixed', v)}>
                           <Radio value="1">是</Radio>
@@ -208,7 +206,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
           }
           <div>
             <TextAndButton text="点此添加按钮添加一条供应商信息">
-              <AddButton onClick={this.addSupplier}/>
+              <AddButton disabled={!this.props.customerId} onClick={this.addSupplier}/>
             </TextAndButton>
           </div>
         </div>
@@ -220,10 +218,14 @@ class AddSupplier extends React.Component<AddSupplierProps> {
               <Radio value="0">否</Radio>
             </Radio.Group>
           </LabelAndInput1>
-          <LabelAndInput label="起始日期"/>
-          <LabelAndInput label="结束日期"/>
+          <LabelAndInput1 label="起始日期">
+            <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
+          </LabelAndInput1>
+          <LabelAndInput1 label="结束日期">
+            <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
+          </LabelAndInput1>
           <LabelAndInput1 label="MSA扫描件">
-            <Button className="small">上传</Button>
+            <Button className="small" disabled={!this.props.customerId}>上传</Button>
           </LabelAndInput1>
         </InputGroup>
 

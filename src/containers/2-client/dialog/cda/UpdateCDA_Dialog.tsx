@@ -2,21 +2,25 @@
  * Created by jiangyukun on 2017/7/14.
  */
 import React from 'react'
+import DatePicker from 'antd/lib/date-picker'
 import Modal from 'app-core/modal'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
-import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
+import {FlexDiv, Part} from 'app-core/layout/'
+
 import InputGroup from '../../../common/InputGroup'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Input from '../../../../components/form/Input'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
 import AddButton from '../../../common/AddButton'
+
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface UpdateCDA_DialogProps {
   customerId: string
+  cdaId: string
   fetchProjectList: (customerId) => void
   customerProjectData: any
   fetchContactList: (customerId) => void
@@ -36,11 +40,11 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
     showAddConfirm: false,
     valid: false,
 
-    startDate: '',
-    endDate: '',
+    startDate: null,
+    endDate: null,
     protocolType: '',
     projectId: '',
-    cdaList: [{id: cdaBrokerId++, username: '', telephone: '', email: '', position: ''}],
+    cdaList: [],
     remark: '',
   }
 
@@ -82,12 +86,12 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
     let cdaList = []
     this.props.updateCda({
       customerCda: {
+        "cda_id": this.props.cdaId,
         "customer_info_id": this.props.customerId,
-        "cda_validity_begin_time": '2017-07-17',
-        "cda_validity_end_time": '2017-07-17',
+        "cda_validity_begin_time": getDateStr(this.state.startDate),
+        "cda_validity_end_time": getDateStr(this.state.endDate),
         "cda_agreement_type": this.state.protocolType,
         "cda_agreement_project_id": this.state.projectId,
-        // "cda_agreement_project_name": '',
         "cda_remark": this.state.remark,
       },
       customerCdaPersons: cdaList,
@@ -100,9 +104,12 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
   }
 
   componentWillReceiveProps(nextProps: UpdateCDA_DialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-     this.close()
-     }*/
+    if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
+      this.close()
+    }
+    if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
+      this.close()
+    }
   }
 
   render() {
@@ -124,13 +131,13 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
         <Modal.Header closeButton={true}>
           <Modal.Title>编辑CDA</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="bt">
+        <Modal.Body>
           <InputGroup label="有效期" inputType="1">
             <LabelAndInput1 label="起始日期">
-              <Input value={this.state.startDate} onChange={(e: any) => this.setState({startDate: e.target.value})}/>
+              <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
             </LabelAndInput1>
             <LabelAndInput1 label="结束日期">
-              <Input value={this.state.endDate} onChange={(e: any) => this.setState({endDate: e.target.value})}/>
+              <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
             </LabelAndInput1>
             <div className="tip">CDA超过有效期的前一天，会自动向该客户所属BD发送提醒</div>
           </InputGroup>
@@ -183,7 +190,14 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
           </LabelAndInput1>
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose okBtnName="添加" onCancel={this.close} onConfirm={() => this.setState({showAddConfirm: true})}/>
+          <FlexDiv>
+            <Part className="pl5 pr5">
+              <Button className="block danger" onClick={() => this.props.removeCda(this.props.cdaId)}>删除</Button>
+            </Part>
+            <Part className="pl5 pr5">
+              <Button className="block" onClick={this.update}>更新</Button>
+            </Part>
+          </FlexDiv>
         </Modal.Footer>
       </Modal>
     )

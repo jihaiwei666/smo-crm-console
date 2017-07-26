@@ -4,13 +4,11 @@
 import React from 'react'
 import Modal from 'app-core/modal'
 import Spinner from 'app-core/common/Spinner'
-import Select1 from 'app-core/common/Select1'
 import InputGroup, {NECESSARY, IMPORTANT} from '../../../common/InputGroup'
-import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Input from '../../../../components/form/Input'
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndText from '../../../common/LabelAndText'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface LookCDA_DialogProps {
   customerId: string
@@ -21,8 +19,6 @@ interface LookCDA_DialogProps {
   customerProjectData: any
   onExited: () => void
 }
-
-let cdaBrokerId = 1
 
 class LookCDA_Dialog extends React.Component<LookCDA_DialogProps> {
   state = {
@@ -57,8 +53,8 @@ class LookCDA_Dialog extends React.Component<LookCDA_DialogProps> {
             loaded && (
               <div>
                 <InputGroup label="有效期" inputType={NECESSARY}>
-                  <LabelAndText label="起始日期" text={startDate}/>
-                  <LabelAndText label="结束日期" text={endDate}/>
+                  <LabelAndText label="起始日期" text={getDateStr(startDate)}/>
+                  <LabelAndText label="结束日期" text={getDateStr(endDate)}/>
                   <div className="tip">CDA超过有效期的前一天，会自动向该客户所属BD发送提醒</div>
                 </InputGroup>
                 <InputGroup label="保密协议" inputType={NECESSARY}>

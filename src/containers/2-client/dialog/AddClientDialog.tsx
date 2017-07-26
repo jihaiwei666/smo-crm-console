@@ -7,6 +7,7 @@ import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import ClientState from '../ClientState'
 import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
@@ -22,8 +23,9 @@ import OperationRecord from './part/OperationRecord'
 
 import {addCustomer, updateCustomer, updateBdAndBdpc} from '../client.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import EditSupplier from './supplier/EditSupplier'
 
-interface AddClientDialogProps {
+interface AddClientDialogProps extends ClientState {
   newCustomerId: string
   addCustomer: (options) => void
   addCustomerSuccess: boolean
@@ -43,10 +45,14 @@ interface AddClientDialogProps {
 }
 
 class AddClientDialog extends React.Component<AddClientDialogProps> {
+  supplierInfo: any
+  rfiInfo: any
   state = {
     show: true,
     showAddConfirm: false,
-    customerId: null
+    customerId: null,
+    supplierId: '',
+    rfiId: ''
   }
 
   close = () => {
@@ -61,6 +67,14 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
   componentWillReceiveProps(nextProps: AddClientDialogProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.setState({customerId: nextProps.newCustomerId})
+    }
+    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
+      this.supplierInfo = nextProps.supplierInfo
+      this.setState({supplierId: nextProps.supplierInfo.supplierId})
+    }
+    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.rfiInfo = nextProps.rfiInfo
+      this.setState({rfiId: nextProps.rfiInfo.rfiId})
     }
   }
 
@@ -103,16 +117,28 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <CDA customerId={this.state.customerId}/>
 
               <CategoryTitle title="供应商"/>
-              <AddSupplier customerId={this.state.customerId}/>
+              {
+                !this.state.supplierId && (
+                  <AddSupplier customerId={this.state.customerId}/>
+                )
+              }
+              {
+                this.state.supplierId && (
+                  <EditSupplier
+                    customerId={this.state.customerId}
+                    supplierId={this.state.supplierId}
+                    supplierInfo={this.supplierInfo}/>
+                )
+              }
 
               <CategoryTitle title="RFI"/>
-              <RFI customerId={this.state.customerId}/>
+              <RFI customerId={this.state.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>
 
               <CategoryTitle title="关联信息"/>
               <AssociateInfo/>
 
               <CategoryTitle title="备注及附件"/>
-              <RemarkAndAttachment/>
+              <RemarkAndAttachment customerId={this.state.customerId}/>
 
               <CategoryTitle title="操作记录"/>
               <OperationRecord operationRecordList={[]}/>

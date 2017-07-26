@@ -15,6 +15,7 @@ import {getDateStr} from '../../../../core/utils/dateUtils'
 interface AddVisitRecordDialogProps {
   contactOptions: any[]
   addVisitRecord: any
+  addVisitRecordSuccess: boolean
   onExited: () => void
 }
 
@@ -43,9 +44,9 @@ class AddVisitRecordDialog extends React.Component<AddVisitRecordDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: AddVisitRecordDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
+    if (!this.props.addVisitRecordSuccess && nextProps.addVisitRecordSuccess) {
       this.close()
-    }*/
+    }
   }
 
   render() {

@@ -4,7 +4,7 @@
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
 import {CLIENTS} from '../../../../core/constants/types'
 import {_get, _post} from '../../../../core/http'
-import {handleCDA_Detail} from '../../client.helper'
+import {handleCdaDetail, handleCdaList} from './cda.helper'
 
 const urlPrefix = '/customer'
 
@@ -13,7 +13,7 @@ export function fetchCdaList(customerId) {
     [THREE_PHASE]: {
       type: CLIENTS.FETCH_CDA_LIST,
       http: () => _get(urlPrefix + `/v1/cda/list/${customerId}`),
-      handleResponse: handleCDA_Detail
+      handleResponse: handleCdaList
     }
   }
 }
@@ -23,7 +23,7 @@ export function fetchCDA_Detail(cdaId) {
     [THREE_PHASE]: {
       type: CLIENTS.FETCH_CDA_DETAIL,
       http: () => _get(urlPrefix + `/v1/cda/detail/${cdaId}`),
-      handleResponse: handleCDA_Detail
+      handleResponse: handleCdaDetail
     }
   }
 }
@@ -37,20 +37,20 @@ export function addCda(options) {
   }
 }
 
-export function updateCda(contactId) {
+export function updateCda(options) {
   return {
     [THREE_PHASE]: {
       type: CLIENTS.UPDATE_CDA,
-      http: () => _post(urlPrefix + `/v1/contacts/del//${contactId}`)
+      http: () => _post(urlPrefix + `/v1/cda/edit/`, {body: options})
     }
   }
 }
 
-export function removeCda(contactId) {
+export function removeCda(cdaId) {
   return {
     [THREE_PHASE]: {
       type: CLIENTS.REMOVE_CDA,
-      http: () => _post(urlPrefix + `/v1/contacts/del//${contactId}`)
+      http: () => _post(urlPrefix + `/v1/cda/del/${cdaId}`)
     }
   }
 }
