@@ -8,10 +8,11 @@ import {connect} from 'react-redux'
 
 import './project.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
-import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'
+import AddProjectDialog from './dialog/AddProjectDialog'
 
 import {fetchList} from './project.action'
+import {handleListData} from '../../reducers/data.reducer'
 
 interface ProjectProps extends AppFunctionPage {
   projectList: any
@@ -21,6 +22,7 @@ class Project extends React.Component<ProjectProps> {
   state = {
     index: -1,
     currentPage: 0,
+    showAddDialog: false,
   }
 
   toPage = (newPage) => {
@@ -42,6 +44,17 @@ class Project extends React.Component<ProjectProps> {
 
     return (
       <div className="project">
+        {
+          this.state.showAddDialog && (
+            <AddProjectDialog
+              onExited={() => this.setState({showAddDialog: false})}
+            />
+          )
+        }
+
+        <div className="m15">
+          <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+        </div>
         <FixHeadList>
           <FixHead>
             <FixHead.Item>客户名称</FixHead.Item>
@@ -55,15 +68,15 @@ class Project extends React.Component<ProjectProps> {
             {
               list.map((item, index) => {
                 return (
-                  <FixRow key={item.customerId}
+                  <FixRow key={item.projectId}
                           selected={this.state.index == index}
                           onClick={() => this.setState({index})}
                   >
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
+                    <FixRow.Item>{item['customerName']}</FixRow.Item>
+                    <FixRow.Item>{item['projectName']}</FixRow.Item>
+                    <FixRow.Item>{item['projectCode']}</FixRow.Item>
+                    <FixRow.Item>{item['bd']}</FixRow.Item>
+                    <FixRow.Item>{item['bdpc']}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditClientDialog: true, index})}>查看</Button>
                       <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>

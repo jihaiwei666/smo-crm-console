@@ -81,9 +81,9 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
   render() {
     return (
       <Modal
-        style={{width: '60%'}}
-        contentComponent={FullDialogContent}
-        show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+        style={{width: '60%'}} contentComponent={FullDialogContent}
+        show={this.state.show} onHide={this.close} onExited={this.props.onExited}
+      >
 
         <Modal.Header closeButton={true}>
           <Modal.Title>添加客户</Modal.Title>
@@ -144,7 +144,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <OperationRecord operationRecordList={[]}/>
             </Part>
             <div className="client-nav">
-              <ul className="client-category-group">
+              <ul className="nav-category-group">
                 <li className="active">
                   客户信息
                 </li>

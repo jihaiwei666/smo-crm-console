@@ -20,3 +20,7 @@ export function handleRfiServerData(data) {
     }))
   }
 }
+
+export function handleRfiListServerData(data) {
+  return []
+}

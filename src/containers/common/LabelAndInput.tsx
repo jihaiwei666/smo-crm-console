@@ -5,10 +5,10 @@ import React from 'react'
 import classnames from 'classnames'
 import {FlexDiv, Part} from 'app-core/layout'
 
-import Label from './Label'
+import Label, {LabelProps} from './Label'
 import Input from '../../components/form/Input'
 
-interface LabelAndInputProps {
+interface LabelAndInputProps extends LabelProps{
   label: string,
   placeholder?: string
   className?: string
@@ -24,8 +24,8 @@ class LabelAndInput extends React.Component<LabelAndInputProps> {
 
   render() {
     return (
-      <FlexDiv className={classnames('mt7 mb7', this.props.className)}>
-        <Label>{this.props.label + '：'}</Label>
+      <FlexDiv className={classnames('mt7 mb5', this.props.className)}>
+        <Label inputType={this.props.inputType}>{this.props.label}</Label>
         <Part>
           <Input
             placeholder={this.props.placeholder} value={this.props.value}

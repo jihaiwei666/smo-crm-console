@@ -37,6 +37,7 @@ const initValue: ClientState = {
   updateSupplierSuccess: false,
 
   addRfiSuccess: false,
+  rfiInfo: null,
   updateRfiSuccess: false,
 }
 

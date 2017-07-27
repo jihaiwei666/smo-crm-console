@@ -21,29 +21,6 @@
     width: 150px;
 }
 
-.client-category-group {
-    li {
-        cursor: pointer;
-        padding: 7px 10px;
-        border-bottom: 1px solid #ddd;
-
-        &.active {
-            &:before {
-                content: '';
-                display: inline-block;
-                width: 8px;
-                height: 16px;
-                vertical-align: middle;
-                margin-right: 10px;
-                background-color: #ff4400;
-            }
-        }
-        span {
-            text-align: center;
-        }
-    }
-}
-
 .visit-record-item {
     padding: 5px 15px;
     border: 1px solid #ddd;

@@ -5,7 +5,6 @@ import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleRfiServerData} from './dialog/rfi/rfi.helper'
 import {getDateStr} from '../../core/utils/dateUtils'
 
-
 export function handleClientList(serverData) {
   return {
     total: serverData['totalCount'],
@@ -21,8 +20,8 @@ export function handleClientList(serverData) {
 
 export function handleCustomerProjectList(data) {
   return data.map(item => ({
-    value: item.value,
-    text: item.text
+    value: item['project_info_id'],
+    text: item['project_info_name']
   }))
 }
 

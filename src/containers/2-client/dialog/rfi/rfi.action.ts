@@ -4,9 +4,19 @@
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
 import {_post} from '../../../../core/http'
 import {CLIENTS} from '../../../../core/constants/types'
-import {handleRfiServerData} from './rfi.helper'
+import {handleRfiServerData, handleRfiListServerData} from './rfi.helper'
 
 const urlPrefix = '/customer'
+
+export function fetchRfiList(clientId) {
+  return {
+    [THREE_PHASE]: {
+      type: CLIENTS.ADD_RFI,
+      http: () => _post(urlPrefix + `/v1/rfi/list/${clientId}`),
+      handleResponse: handleRfiListServerData
+    }
+  }
+}
 
 export function addRfi(options) {
   return {

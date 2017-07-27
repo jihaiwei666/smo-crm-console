@@ -5,28 +5,18 @@ import React from 'react'
 import classnames from 'classnames'
 import {FlexDiv, Part} from 'app-core/layout'
 
-import Label from './Label'
+import Label, {LabelProps} from './Label'
 
-export const NECESSARY = '1'
-export const IMPORTANT = '2'
-
-interface InputGroupProps {
+interface InputGroupProps extends LabelProps {
   className?: string
   label: string
-  inputType?: '1' | '2'
 }
 
 class InputGroup extends React.Component<InputGroupProps> {
   render() {
-    let type = ''
-    if (this.props.inputType == NECESSARY) {
-      type = '（*）'
-    } else if (this.props.inputType == IMPORTANT) {
-      type = '（!）'
-    }
     return (
       <FlexDiv className={classnames('input-group', this.props.className)}>
-        <Label>{this.props.label + type + '：'}</Label>
+        <Label inputType={this.props.inputType}>{this.props.label}</Label>
         <Part className="bl pl10">
           {this.props.children}
         </Part>

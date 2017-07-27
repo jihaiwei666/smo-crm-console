@@ -16,7 +16,7 @@ import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda
 
 interface CDAProps {
   customerId: string
-  cdaList?: Data
+  cdaList?: Data<any[]>
   fetchCdaList: (customerId) => void
   fetchProjectList: (customerId) => void
   customerProjectData: any

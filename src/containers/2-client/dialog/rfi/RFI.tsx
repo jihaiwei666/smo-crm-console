@@ -8,8 +8,7 @@ import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
 import Input from '../../../../components/form/Input'
-import Label from '../../../common/Label'
-import InputUnit from '../../../common/InputUnit'
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
@@ -19,13 +18,14 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
+import RFI_ListDialog from './RFI_ListDialog'
+import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 
 import {MODULES} from './rfi.constants'
 import {ADD, EDIT} from '../../../../core/CRUD'
 import {fetchContactList} from '../../client.action'
-import {addRfi, updateRfi, removeRfi} from './rfi.action'
+import {fetchRfiList, addRfi, updateRfi, removeRfi} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
-import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface RFIProps {
@@ -34,6 +34,7 @@ interface RFIProps {
   rfiInfo: any
   fetchContactList: (customerId: string) => void
   customerContactData: any
+  fetchRfiList: (clientId) => void
   addRfi: (options) => void
   updateRfi: (options) => void
 }
@@ -50,6 +51,8 @@ function getNextBroker() {
 
 class RFI extends React.Component<RFIProps> {
   state = {
+    showRfiListDialog: true,
+
     fillDate: null,
     fillPerson: '',
     brokerList: [],
@@ -121,13 +124,22 @@ class RFI extends React.Component<RFIProps> {
     }))
     return (
       <div>
+        {
+          this.state.showRfiListDialog && (
+            <RFI_ListDialog
+              fetchRfiList={this.props.fetchRfiList}
+              onExited={() => this.setState({showRfiListDialog: false})}
+            />
+          )
+        }
+
         <FlexDiv>
           <Part>
-            <LabelAndInput1 label="填写日期（*）">
+            <LabelAndInput1 label="填写日期" inputType={NECESSARY}>
               <DatePicker value={this.state.fillDate} onChange={v => this.setState({fillDate: v})}/>
             </LabelAndInput1>
-            <LabelAndInput label="填写人（*）" value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}/>
-            <InputGroup label="RFI对接人（!）" className="bt">
+            <LabelAndInput label="填写人" inputType={NECESSARY} value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}/>
+            <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt">
               {
                 this.state.brokerList.map((broker, index) => {
                   let telephone = '', email = '', position = ''
@@ -157,14 +169,14 @@ class RFI extends React.Component<RFIProps> {
                 <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
               </TextAndButton>
             </InputGroup>
-            <LabelAndInput className="pb5 bb" label="审阅人（!）" value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
-            <LabelAndInput1 className="bb" label="语言（!）">
+            <LabelAndInput className="pb5 bb" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
+            <LabelAndInput1 className="bb" label="语言" inputType={IMPORTANT}>
               <Radio.Group value={this.state.language} onChange={v => this.setState({language: v})}>
                 <Radio value="1">中文</Radio>
                 <Radio value="2">English</Radio>
               </Radio.Group>
             </LabelAndInput1>
-            <LabelAndInput1 label="模块（!）" className="pb5 bb">
+            <LabelAndInput1 label="模块" inputType={IMPORTANT} className="pb5 bb">
               <CheckGroup options={MODULES} value={this.state.modules} onChange={v => this.setState({modules: v})}/>
               {
                 this.state.modules.indexOf('9') != -1 && (
@@ -174,8 +186,8 @@ class RFI extends React.Component<RFIProps> {
             </LabelAndInput1>
           </Part>
         </FlexDiv>
-        <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-          <Button className="small" disabled={!this.props.customerId}>...查看更多</Button>
+        <TextAndButton text="只显示最近一条RFI信息，更多请点击查看更多按钮查看">
+          <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showRfiListDialog: true})}>...查看更多</Button>
         </TextAndButton>
         {
           !this.props.rfiId && (
@@ -202,5 +214,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  addRfi, updateRfi, removeRfi, fetchContactList
+  fetchRfiList, addRfi, updateRfi, removeRfi, fetchContactList
 })(RFI)

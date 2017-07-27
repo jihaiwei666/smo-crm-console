@@ -63,9 +63,10 @@ export const CLIENTS = {
 export const PROJECT = {
   FETCH_LIST: null,
   FETCH_DETAIL: null,
-  ADD: null,
-  UPDATE: null,
-  DELETE: null,
+  UPDATE_BD_AND_BDPC: null,
+  FETCH_CLIENT_LIST: null,
+  ADD_PROJECT_INFO: null,
+
 }
 
 export const CONTRACT = {

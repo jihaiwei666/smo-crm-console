@@ -51,6 +51,7 @@ export default combineReducers({
   visitRecordListInfo: wrapReducerState(data(CLIENTS.FETCH_VISIT_RECORD_LIST)),
 
   projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),
+  projectClientList: wrapReducerState(data(PROJECT.FETCH_CLIENT_LIST)),
 
   contractList: wrapReducerState(data(CONTRACT.FETCH_LIST)),
 
