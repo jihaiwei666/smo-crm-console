@@ -43,6 +43,7 @@ export function handleClientInfo(clientData) {
   const cdaList = clientData['customerCdas'] || []
   const supplierInfo = clientData['customerProvider'] || {}
   const rfi = clientData['customerRfi'] || {}
+  const relationInfo = clientData['customerRelationInfo'] || []
   const operationRecordList = clientData['operations'] || []
 
   return {
@@ -98,6 +99,12 @@ export function handleClientInfo(clientData) {
     })),
     supplierInfo: handleSupplierServerData(supplierInfo),
     rfiInfo: handleRfiServerData(rfi),
+    relationInfo: {
+      projects: relationInfo['relationProjects'].map(item => ({
+        projectId: item['project_info_id'],
+        projectName: item['project_info_name']
+      }))
+    },
     operationRecordList: operationRecordList.map(item => ({
       date: getDateStr(item['operation_time']),
       type: item['operation_type'],

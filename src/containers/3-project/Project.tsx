@@ -13,6 +13,7 @@ import AddProjectDialog from './dialog/AddProjectDialog'
 
 import {fetchList} from './project.action'
 import {handleListData} from '../../reducers/data.reducer'
+import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 
 interface ProjectProps extends AppFunctionPage {
   projectList: any
@@ -23,6 +24,7 @@ class Project extends React.Component<ProjectProps> {
     index: -1,
     currentPage: 0,
     showAddDialog: false,
+    showEditDialog: false,
   }
 
   toPage = (newPage) => {
@@ -41,6 +43,7 @@ class Project extends React.Component<ProjectProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.projectList)
+    const item = list[this.state.index]
 
     return (
       <div className="project">
@@ -51,7 +54,14 @@ class Project extends React.Component<ProjectProps> {
             />
           )
         }
-
+        {
+          this.state.showEditDialog && (
+            <UpdateProjectDialog
+              projectId={item.projectId}
+              onExited={() => this.setState({showEditDialog: false})}
+            />
+          )
+        }
         <div className="m15">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
@@ -78,8 +88,8 @@ class Project extends React.Component<ProjectProps> {
                     <FixRow.Item>{item['bd']}</FixRow.Item>
                     <FixRow.Item>{item['bdpc']}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditClientDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
+                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>
                 )

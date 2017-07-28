@@ -27,16 +27,20 @@ import {fetchContactList} from '../../client.action'
 import {fetchRfiList, addRfi, updateRfi, removeRfi} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import ClientState from '../../ClientState'
+import Data from '../../../common/interface/Data'
+import SelectContact from '../base/SelectContact'
 
-interface RFIProps {
+interface RFIProps extends ClientState {
   customerId: string
   rfiId?: string
-  rfiInfo: any
   fetchContactList: (customerId: string) => void
   customerContactData: any
   fetchRfiList: (clientId) => void
+  rfiList: Data<any[]>
   addRfi: (options) => void
   updateRfi: (options) => void
+  removeRfi: (rifId) => void
 }
 
 let id = 1
@@ -51,7 +55,7 @@ function getNextBroker() {
 
 class RFI extends React.Component<RFIProps> {
   state = {
-    showRfiListDialog: true,
+    showRfiListDialog: false,
 
     fillDate: null,
     fillPerson: '',
@@ -127,7 +131,17 @@ class RFI extends React.Component<RFIProps> {
         {
           this.state.showRfiListDialog && (
             <RFI_ListDialog
+              clientId={this.props.customerId}
+              fetchContactList={this.props.fetchContactList}
+              customerContactData={this.props.customerContactData}
+              addRfi={this.props.addRfi}
+              addRfiSuccess={this.props.addRfiSuccess}
+              updateRfi={this.props.updateRfi}
+              updateRfiSuccess={this.props.updateRfiSuccess}
+              removeRfi={this.props.removeRfi}
+              removeRfiSuccess={this.props.removeRfiSuccess}
               fetchRfiList={this.props.fetchRfiList}
+              rfiList={this.props.rfiList}
               onExited={() => this.setState({showRfiListDialog: false})}
             />
           )
@@ -142,26 +156,12 @@ class RFI extends React.Component<RFIProps> {
             <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt">
               {
                 this.state.brokerList.map((broker, index) => {
-                  let telephone = '', email = '', position = ''
-                  if (broker.contactId) {
-                    let contact = contactList.find(d => d.contactId == broker.contactId) || {}
-                    telephone = contact.telephone
-                    email = contact.email
-                    position = contact.position
-                  }
                   return (
-                    <div key={broker.id}>
-                      <LabelAndInput1 label="对接人">
-                        <Select1 options={contactOptions}
-                                 onOpen={() => this.props.fetchContactList(this.props.customerId)}
-                                 value={broker.contactId}
-                                 onChange={v => this.handleBrokerChange(index, 'contactId', v)}
-                        />
-                      </LabelAndInput1>
-                      <LabelAndInput label="电话" disabled={true} value={telephone} onChange={v => null}/>
-                      <LabelAndInput label="邮箱" disabled={true} value={email} onChange={v => null}/>
-                      <LabelAndInput label="职位" disabled={true} value={position} onChange={v => null}/>
-                    </div>
+                    <SelectContact key={broker.id} contactId={broker.contactId}
+                                   contactList={contactList}
+                                   onOpen={() => this.props.fetchContactList(this.props.customerId)}
+                                   onChange={v => this.handleBrokerChange(index, 'contactId', v)}
+                    />
                   )
                 })
               }
@@ -206,10 +206,12 @@ class RFI extends React.Component<RFIProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.client,
     customerId: props.customerId,
     rfiId: props.rfiId,
     rfiInfo: props.rfiInfo,
-    customerContactData: state.customerContactData
+    customerContactData: state.customerContactData,
+    rfiList: state.rfiList
   }
 }
 

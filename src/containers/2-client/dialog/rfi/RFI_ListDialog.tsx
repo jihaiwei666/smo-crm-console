@@ -3,21 +3,32 @@
  */
 import React from 'react'
 import Modal from 'app-core/modal'
-import {FlexDiv, Part, Line} from 'app-core/layout'
-import Select1 from 'app-core/common/Select1'
-import Confirm from 'app-core/common/Confirm'
-import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
-import LimitInput from 'app-core/form/LimitInput'
+import {Row, Part} from 'app-core/layout'
+import FullDialogContent from 'app-core/common/content/FullDialogContent'
+import Button from '../../../../components/button/Button'
+import AddRfiDialog from './AddRfiDialog'
+import Data from '../../../common/interface/Data'
+import UpdateRFI_Item from './UpdateRFI_Item'
 
 interface RFI_ListDialogProps {
+  clientId: string
+  fetchContactList: (clientId) => void
+  customerContactData: Data<any>
   fetchRfiList: (clientId) => void
+  rfiList: Data<any[]>
+  addRfi: (options) => void
+  addRfiSuccess: boolean
+  updateRfi: (options) => void
+  updateRfiSuccess: boolean
+  removeRfi: (rfiId) => void
+  removeRfiSuccess: boolean
   onExited: () => void
 }
 
 class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   state = {
     show: true,
-    showAddConfirm: false,
+    showAddRfi: false,
 
   }
 
@@ -25,20 +36,32 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
     this.setState({show: false})
   }
 
+  componentDidMount() {
+    this.props.fetchRfiList(this.props.clientId)
+  }
+
   componentWillReceiveProps(nextProps: RFI_ListDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-      this.close()
-    }*/
+    if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
+      this.props.fetchRfiList(this.props.clientId)
+    }
   }
 
   render() {
+    const rfiList = this.props.rfiList.data || []
     return (
-      <Modal show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+      <Modal
+        contentComponent={FullDialogContent} style={{width: '50%'}}
+        show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
-          this.state.showAddConfirm && (
-            <Confirm message="？"
-                     onExited={() => this.setState({showAddConfirm: false})}
-                     onConfirm={() => null}/>
+          this.state.showAddRfi && (
+            <AddRfiDialog
+              clientId={this.props.clientId}
+              fetchContactList={this.props.fetchContactList}
+              customerContactData={this.props.customerContactData}
+              addRfi={this.props.addRfi}
+              addRfiSuccess={this.props.addRfiSuccess}
+              onExited={() => this.setState({showAddRfi: false})}
+            />
           )
         }
 
@@ -46,10 +69,36 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
           <Modal.Title>查看RFI</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
+          {
+            rfiList.map((rfi, index) => {
+              return (
+                <Row key={rfi.rfiId} className="bb">
+                  <div className="item-index">{index + 1}</div>
+                  <Part>
+                    <UpdateRFI_Item
+                      clientId={this.props.clientId}
+                      fetchContactList={this.props.fetchContactList}
+                      customerContactData={this.props.customerContactData}
+                      rfiId={rfi.rfiId}
+                      rfi={rfi}
+                      updateRfi={this.props.updateRfi}
+                      removeRfi={this.props.removeRfi}
+                    />
+                  </Part>
+                </Row>
+              )
+            })
+          }
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose onCancel={this.close} onConfirm={() => this.setState({showAddConfirm: true})}/>
+          <Row>
+            <Part className="p5">
+              <Button className="block default" onClick={this.close}>取消</Button>
+            </Part>
+            <Part className="p5">
+              <Button className="block" onClick={() => this.setState({showAddRfi: true})}>添加</Button>
+            </Part>
+          </Row>
         </Modal.Footer>
       </Modal>
     )

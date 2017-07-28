@@ -22,5 +22,6 @@ export function handleRfiServerData(data) {
 }
 
 export function handleRfiListServerData(data) {
-  return []
+  data = data || []
+  return data.map(handleRfiServerData)
 }

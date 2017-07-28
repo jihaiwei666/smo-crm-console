@@ -18,3 +18,19 @@ export function handleClientList(data) {
     text: item['customer_name']
   }))
 }
+
+export function handleProjectDetail(data) {
+  const baseInfo = data['projectInfo']
+  const bdAndBdpc = data['bdAndBdpc']
+  return {
+    baseInfo: {
+      projectName: baseInfo['project_info_name'] || '',
+      projectCode: baseInfo['project_info_code'] || '',
+      relativeClient: baseInfo['customer_info_id'] || '',
+    },
+    bdAndBdpc: {
+      bd: bdAndBdpc['project_the_bd'],
+      bdpc: ''
+    }
+  }
+}

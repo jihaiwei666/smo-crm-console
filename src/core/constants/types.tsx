@@ -50,6 +50,7 @@ export const CLIENTS = {
   ADD_MSA: null,
   UPDATE_MSA: null,
 
+  FETCH_RFI_LIST: null,
   ADD_RFI: null,
   UPDATE_RFI: null,
   REMOVE_RFI: null,
@@ -62,10 +63,11 @@ export const CLIENTS = {
 
 export const PROJECT = {
   FETCH_LIST: null,
-  FETCH_DETAIL: null,
+  FETCH_PROJECT_DETAIL: null,
   UPDATE_BD_AND_BDPC: null,
   FETCH_CLIENT_LIST: null,
   ADD_PROJECT_INFO: null,
+  UPDATE_PROJECT_BASE_INFO: null,
 
 }
 

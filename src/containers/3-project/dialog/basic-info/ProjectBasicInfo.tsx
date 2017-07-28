@@ -11,15 +11,19 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
 import Save from '../../../common/Save'
 
-import {fetchClientList, addProjectInfo} from '../../project.action'
+import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
+import Update from '../../../common/Update'
 
-interface ProjectInfoProps {
+interface ProjectBasicInfoProps {
+  projectId?: string
+  baseInfo?: any
   fetchClientList: () => void
   clientList: Data<any[]>
-  addProjectInfo: (options) => void
+  addProjectBaseInfo: (options) => void
+  updateProjectBaseInfo: (options) => void
 }
 
-class ProjectInfo extends React.Component<ProjectInfoProps> {
+class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   state = {
     projectName: '',
     projectCode: '',
@@ -27,11 +31,30 @@ class ProjectInfo extends React.Component<ProjectInfoProps> {
   }
 
   add = () => {
-    this.props.addProjectInfo({
+    this.props.addProjectBaseInfo({
       "project_info_name": this.state.projectName,
       "project_info_code": this.state.projectCode,
       "customer_info_id": this.state.relativeClient
     })
+  }
+
+  update = () => {
+    this.props.updateProjectBaseInfo({
+      "project_info_id": this.props.projectId,
+      "project_info_name": this.state.projectName,
+      "project_info_code": this.state.projectCode,
+      "customer_info_id": this.state.relativeClient
+    })
+  }
+
+  componentWillMount() {
+    if (this.props.baseInfo) {
+      this.setState(this.props.baseInfo)
+    }
+  }
+
+  componentDidMount() {
+    this.props.fetchClientList()
   }
 
   render() {
@@ -53,23 +76,32 @@ class ProjectInfo extends React.Component<ProjectInfoProps> {
 
         <LabelAndInput1 label="关联客户" inputType={NECESSARY}>
           <Select1
-            lazyLoad={true} onFirstOpen={this.props.fetchClientList} loadSuccess={this.props.clientList.loaded}
             options={this.props.clientList.data || []}
             value={this.state.relativeClient} onChange={v => this.setState({relativeClient: v})}/>
         </LabelAndInput1>
 
-        <Save onClick={this.add}/>
+        {
+          this.props.projectId && (
+            <Update onClick={this.update}/>
+          )
+        }
+        {
+          !this.props.projectId && (
+            <Save onClick={this.add}/>
+          )
+        }
       </div>
     )
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
+    projectId: props.projectId,
     clientList: state.projectClientList,
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchClientList, addProjectInfo
-})(ProjectInfo)
+  fetchClientList, addProjectBaseInfo, updateProjectBaseInfo
+})(ProjectBasicInfo)

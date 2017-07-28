@@ -36,6 +36,11 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
     }
   }
 
+  componentDidMount() {
+    this.props.fetchBD()
+    this.props.fetchBDPC()
+  }
+
   render() {
     let BDList = [], BDPCList = []
     if (this.props.BDList.loaded) {
@@ -53,7 +58,6 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
               <Select1 disabled={this.props.disabled} options={BDList}
                        showClear={true}
                        value={this.state.bd} onChange={v => this.setState({bd: v})}
-                       lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
               />
             </Part>
           </FlexDiv>
@@ -67,7 +71,6 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
               <Select1 disabled={this.props.disabled} options={BDPCList}
                        showClear={true}
                        value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
-                       lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
               />
             </Part>
           </FlexDiv>

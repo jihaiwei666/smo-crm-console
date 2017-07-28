@@ -11,7 +11,7 @@ import BD_BDPC from './base/BD_BDPC'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateBdAndBdpc} from '../project.action'
 import CategoryTitle from '../../common/CategoryTitle'
-import ProjectInfo from './base/ProjectInfo'
+import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
 import BeforeQuotation from './base/BeforeQuotation'
 import AfterQuotation from './base/AfterQuotation'
 
@@ -76,7 +76,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
               />
 
               <CategoryTitle title="项目信息"/>
-              <ProjectInfo/>
+              <ProjectBasicInfo/>
 
               <CategoryTitle title="报价前"/>
               <BeforeQuotation/>

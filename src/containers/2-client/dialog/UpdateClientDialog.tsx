@@ -94,6 +94,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     // const cdaList = data.cdaList
     // const supplierInfo = data.supplierInfo
     // const rfiInfo = data.rfiInfo
+    const relationInfo = data.relationInfo
     const operationRecordList = data.operationRecordList
 
     return (
@@ -162,7 +163,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>
 
                   <CategoryTitle title="关联信息"/>
-                  <AssociateInfo/>
+                  <AssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
                   <RemarkAndAttachment customerId={this.props.customerId}/>
@@ -171,7 +172,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <OperationRecord operationRecordList={operationRecordList}/>
                 </Part>
                 <div className="client-nav">
-                  <ul className="client-category-group">
+                  <ul className="nav-category-group">
                     <li className="active">
                       客户信息
                     </li>

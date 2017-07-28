@@ -22,9 +22,27 @@ interface BeforeQuotationProps {
 
 class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   state = {
+    indication: '',
+    serviceType: null,
+    centerNumber: '',
+    enrollmentCount: '',
+    enrollmentPeriod: '',
+    bidParty: '',
+    cro: null,
+    projectCategoryList: [],
+    testPeriod: '',
+    planCode: '',
+    researchProduct: '',
+    treatDomain: '',
+    filterCount: '',
+    possibility: '',
+    isArrangeBid: null,
+    bidSupportPM: '',
+    remark: '',
+    attachment: '',
+    roster: '',
+
     projectName: '',
-    categoryList: [],
-    isArrangeBid: null
   }
 
   render() {
@@ -59,7 +77,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </div>
 
         <LabelAndInput1 label="项目分类">
-          <CheckGroup options={PROJECT_CATEGORY} value={this.state.categoryList} onChange={v => this.setState({categoryList: v})}/>
+          <CheckGroup options={PROJECT_CATEGORY} value={this.state.projectCategoryList} onChange={v => this.setState({categoryList: v})}/>
           <Input/>
         </LabelAndInput1>
 

@@ -33,6 +33,7 @@ interface ClientState {
   addRfiSuccess: boolean
   rfiInfo: any
   updateRfiSuccess: boolean
+  removeRfiSuccess: boolean
 }
 
 export default ClientState

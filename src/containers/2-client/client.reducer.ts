@@ -39,6 +39,7 @@ const initValue: ClientState = {
   addRfiSuccess: false,
   rfiInfo: null,
   updateRfiSuccess: false,
+  removeRfiSuccess: false,
 }
 
 export default function clients(iState = fromJS(initValue), action) {
@@ -73,7 +74,9 @@ export default function clients(iState = fromJS(initValue), action) {
     case CLIENTS.ADD_SUPPLIER + phase.SUCCESS:
       nextIState = nextIState.set('supplierInfo', action.data)
       break
-
+    case CLIENTS.ADD_RFI + phase.SUCCESS:
+      nextIState = nextIState.set('rfiInfo', action.data)
+      break
   }
 
   nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_CUSTOMER, 'addCustomerSuccess')
@@ -101,6 +104,7 @@ export default function clients(iState = fromJS(initValue), action) {
 
   nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_RFI, 'addRfiSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_RFI, 'updateRfiSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_RFI, 'removeRfiSuccess')
 
   return nextIState
 }

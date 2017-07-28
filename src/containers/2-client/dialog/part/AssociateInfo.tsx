@@ -6,21 +6,30 @@ import {FlexDiv, Part} from 'app-core/layout'
 import Label from '../../../common/Label'
 
 interface AssociateInfoProps {
+  relationInfo?: any
 }
 
 class AssociateInfo extends React.Component<AssociateInfoProps> {
   render() {
+    const {projects} = this.props.relationInfo || {projects: []}
     return (
       <div>
         <div className="bb">
           <FlexDiv>
             <Label>关联项目</Label>
             <Part>
-              <div className="associate-item">关联项目名称1</div>
-              <div className="associate-item">关联项目名称2</div>
-              <div className="associate-item">关联项目名称3</div>
-              <div className="associate-item">关联项目名称4</div>
-              <div className="associate-item">关联项目名称5</div>
+              {
+                projects.length != 0 && projects.map(project => {
+                  return (
+                    <div key={project.projectId} className="associate-item">{project.projectName}</div>
+                  )
+                })
+              }
+              {
+                !projects.length && (
+                  <div className="associate-item">暂无关联信息</div>
+                )
+              }
             </Part>
           </FlexDiv>
           <div className="p5 input-unit-illustrate">项目中关联该客户后，自动产生，不可修改</div>

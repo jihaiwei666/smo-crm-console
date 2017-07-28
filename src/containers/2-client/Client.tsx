@@ -133,6 +133,10 @@ class Clients extends React.Component<ClientsProps> {
       this.props.showSuccess('更新RFI信息成功！')
       this.props.clearState(CLIENTS.UPDATE_RFI)
     }
+    if (this.props.removeRfiSuccess) {
+      this.props.showSuccess('删除RFI成功！')
+      this.props.clearState(CLIENTS.REMOVE_RFI)
+    }
   }
 
   render() {
@@ -141,7 +145,7 @@ class Clients extends React.Component<ClientsProps> {
 
     let customerId = item.customerId
     /*if (process.env.NODE_ENV != 'production') {
-      customerId = '170712104134682784'
+      customerId = '170726050419799740'
     }*/
 
     return (
