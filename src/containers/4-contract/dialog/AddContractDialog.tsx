@@ -1,23 +1,21 @@
 /**
- * Created by jiangyukun on 2017/7/27.
+ * Created by jiangyukun on 2017/7/31.
  */
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import {Row, Part, Line} from 'app-core/layout'
+import FullDialogContent from 'app-core/common/content/FullDialogContent'
+import Select1 from 'app-core/common/Select1'
+import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 
-import BD_BDPC from './base/BD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
-import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
-import BeforeQuotation from './base/BeforeQuotation'
-import AfterQuotation from './base/AfterQuotation'
+import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import {updateBdAndBdpc} from '../project.action'
+import ContractBasicInfo from './basic-info/ContractBasicInfo'
 
-interface AddProjectDialogProps {
-
+interface AddContractDialogProps {
   fetchBD: () => void
   BDList: any
 
@@ -30,11 +28,10 @@ interface AddProjectDialogProps {
   onExited: () => void
 }
 
-class AddProjectDialog extends React.Component<AddProjectDialogProps> {
+class AddContractDialog extends React.Component<AddContractDialogProps> {
   state = {
     show: true,
-    showAddConfirm: false,
-    projectId: '',
+    contractId: '',
   }
 
   close = () => {
@@ -43,13 +40,13 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
 
   updateBdAndBdpc = (bd, bdpc) => {
     this.props.updateBdAndBdpc({
-      "project_info_id": this.state.projectId,
-      "customer_owner": bd,
-      "customer_the_bdpc": bdpc
+      "contract_info_id": this.state.contractId,
+      "contract_the_bd": bd,
+      "contract_the_bdpc": bdpc
     })
   }
 
-  componentWillReceiveProps(nextProps: AddProjectDialogProps) {
+  componentWillReceiveProps(nextProps: AddContractDialogProps) {
     /*if (!this.props.Success && nextProps.Success) {
       this.close()
     }*/
@@ -62,13 +59,13 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
         <Modal.Header closeButton={true}>
-          <Modal.Title>添加项目</Modal.Title>
+          <Modal.Title>添加合同</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row className="body-box">
             <Part className="form-container">
               <BD_BDPC
-                disabled={this.state.projectId == ''}
+                disabled={this.state.contractId == ''}
                 fetchBD={this.props.fetchBD}
                 BDList={this.props.BDList}
                 fetchBDPC={this.props.fetchBDPC}
@@ -77,27 +74,22 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
               />
 
               <CategoryTitle title="项目信息"/>
-              <ProjectBasicInfo/>
+              <ContractBasicInfo/>
 
-              <CategoryTitle title="报价前"/>
-              <BeforeQuotation/>
+              <CategoryTitle title="签署前"/>
 
-              <CategoryTitle title="报价后"/>
-              <AfterQuotation/>
-
+              <CategoryTitle title="签署后"/>
+              <CategoryTitle title="收款"/>
               <CategoryTitle title="关联信息"/>
-
               <CategoryTitle title="备注及附件"/>
-
               <CategoryTitle title="操作记录"/>
-
-
             </Part>
-            <div className="project-nav">
+            <div className="contract-nav">
               <ul className="nav-category-group">
-                <li className="active">项目信息</li>
-                <li>报价前</li>
-                <li>报价后</li>
+                <li className="active">合同信息</li>
+                <li>签署前</li>
+                <li>签署后</li>
+                <li>收款</li>
                 <li>关联信息</li>
                 <li>备注及附件</li>
                 <li>操作记录</li>
@@ -110,7 +102,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     BDList: state.BDList,
     BDPCList: state.BDPCList
@@ -119,5 +111,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
-  updateBdAndBdpc,
-})(AddProjectDialog)
+})(AddContractDialog)

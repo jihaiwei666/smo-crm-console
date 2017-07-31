@@ -119,3 +119,15 @@ body {
     }
 }
 
+.__select1-container {
+    &.small {
+        .selected-item {
+            .select-item-text {
+                padding: 4px 6px;
+            }
+        }
+        .dropdown {
+            height: 20px;
+        }
+    }
+}

@@ -1,8 +1,6 @@
-
-
-export function handleProjectList(data) {
-  console.log(data)
+export function handleContractList(data) {
   return {
-
+    total: data['totalCount'] || 0,
+    list: data['contractList'] || []
   }
 }

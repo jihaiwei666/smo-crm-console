@@ -10,6 +10,7 @@ import './contract.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'
+import AddContractDialog from './dialog/AddContractDialog'
 
 import {fetchList} from './contract.action'
 
@@ -21,6 +22,7 @@ class Contract extends React.Component<ContractProps> {
   state = {
     index: -1,
     currentPage: 0,
+    showAddDialog: true,
   }
 
   toPage = (newPage) => {
@@ -42,6 +44,18 @@ class Contract extends React.Component<ContractProps> {
 
     return (
       <div className="project">
+        {
+          this.state.showAddDialog && (
+            <AddContractDialog
+              onExited={() => this.setState({showAddDialog: false})}
+            />
+          )
+        }
+
+        <div className="m15">
+          <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+        </div>
+
         <FixHeadList>
           <FixHead>
             <FixHead.Item>合同名称</FixHead.Item>

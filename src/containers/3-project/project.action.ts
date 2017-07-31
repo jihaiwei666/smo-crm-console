@@ -65,3 +65,39 @@ export function updateProjectBaseInfo(options) {
     }
   }
 }
+
+export function addBeforeQuotation(options) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.ADD_BEFORE_QUOTATION,
+      http: () => _post(urlPrefix + '/v1/before/offer/add', {body: options})
+    }
+  }
+}
+
+export function updateBeforeQuotation(options) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.UPDATE_BEFORE_QUOTATION,
+      http: () => _post(urlPrefix + '/v1/before/offer/edit', {body: options})
+    }
+  }
+}
+
+export function addAfterQuotation(options) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.ADD_AFTER_QUOTATION,
+      http: () => _post(urlPrefix + '/v1/after/offer/add', {body: options})
+    }
+  }
+}
+
+export function updateAfterQuotation(options) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.UPDATE_AFTER_QUOTATION,
+      http: () => _post(urlPrefix + '/v1/after/offer/edit', {body: options})
+    }
+  }
+}

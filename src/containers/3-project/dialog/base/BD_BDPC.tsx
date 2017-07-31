@@ -7,7 +7,7 @@ import Select1 from 'app-core/common/Select1'
 
 import Label from '../../../common/Label'
 import InputUnit from '../../../common/InputUnit'
-import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 
 interface BD_BDPC_Props {
   disabled: boolean
@@ -53,7 +53,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
       <div>
         <InputUnit>
           <FlexDiv>
-            <Label>所属BD：</Label>
+            <Label>所属BD</Label>
             <Part>
               <Select1 disabled={this.props.disabled} options={BDList}
                        showClear={true}
@@ -66,7 +66,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
 
         <InputUnit>
           <FlexDiv>
-            <Label>所属BDPC：</Label>
+            <Label>所属BDPC</Label>
             <Part>
               <Select1 disabled={this.props.disabled} options={BDPCList}
                        showClear={true}
@@ -76,7 +76,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </FlexDiv>
           <div className="input-unit-illustrate">默认所属BDPC为关联客户的所属BDPC，有争议时由BDPC负责人线下确认后修改</div>
         </InputUnit>
-        <Save disabled={this.props.disabled} onClick={this.update}/>
+        <Update disabled={this.props.disabled} onClick={this.update}/>
       </div>
     )
   }

@@ -17,7 +17,7 @@ import AfterQuotation from './base/AfterQuotation'
 
 import {fetchProjectDetail, updateBdAndBdpc} from '../project.action'
 
-interface AddProjectDialogProps {
+interface UpdateProjectDialogProps {
   projectId: string
   fetchProjectDetail: (projectId) => void
   projectDetail: any
@@ -33,7 +33,7 @@ interface AddProjectDialogProps {
   onExited: () => void
 }
 
-class AddProjectDialog extends React.Component<AddProjectDialogProps> {
+class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
   state = {
     show: true,
     showAddConfirm: false,
@@ -46,8 +46,8 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
   updateBdAndBdpc = (bd, bdpc) => {
     this.props.updateBdAndBdpc({
       "project_info_id": this.props.projectId,
-      "customer_owner": bd,
-      "customer_the_bdpc": bdpc
+      "project_the_bd": bd,
+      "project_the_bdpc": bdpc
     })
   }
 
@@ -55,7 +55,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
     this.props.fetchProjectDetail(this.props.projectId)
   }
 
-  componentWillReceiveProps(nextProps: AddProjectDialogProps) {
+  componentWillReceiveProps(nextProps: UpdateProjectDialogProps) {
     /*if (!this.props.Success && nextProps.Success) {
       this.close()
     }*/
@@ -101,10 +101,10 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
                   <ProjectBasicInfo projectId={this.props.projectId} baseInfo={baseInfo}/>
 
                   <CategoryTitle title="报价前"/>
-                  <BeforeQuotation/>
+                  <BeforeQuotation projectId={this.props.projectId}/>
 
                   <CategoryTitle title="报价后"/>
-                  <AfterQuotation/>
+                  <AfterQuotation projectId={this.props.projectId}/>
 
                   <CategoryTitle title="关联信息"/>
 
@@ -142,4 +142,4 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   fetchProjectDetail, updateBdAndBdpc,
-})(AddProjectDialog)
+})(UpdateProjectDialog)
