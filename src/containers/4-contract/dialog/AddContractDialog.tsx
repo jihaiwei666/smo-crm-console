@@ -6,14 +6,14 @@ import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {Row, Part, Line} from 'app-core/layout'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
-import Select1 from 'app-core/common/Select1'
-import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import ContractBasicInfo from './basic-info/ContractBasicInfo'
+import BeforeSign from './basic-info/BeforeSign'
+import AfterSign from './basic-info/AfterSign'
 
 interface AddContractDialogProps {
   fetchBD: () => void
@@ -77,8 +77,11 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               <ContractBasicInfo/>
 
               <CategoryTitle title="签署前"/>
+              <BeforeSign/>
 
               <CategoryTitle title="签署后"/>
+              <AfterSign/>
+
               <CategoryTitle title="收款"/>
               <CategoryTitle title="关联信息"/>
               <CategoryTitle title="备注及附件"/>

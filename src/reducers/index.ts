@@ -56,6 +56,7 @@ export default combineReducers({
   projectDetail: wrapReducerState(data(PROJECT.FETCH_PROJECT_DETAIL)),
 
   contractList: wrapReducerState(data(CONTRACT.FETCH_LIST)),
+  contractProjectList: wrapReducerState(data(CONTRACT.FETCH_PROJECT_LIST)),
 
   accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),

@@ -5,14 +5,19 @@ import React from 'react'
 import classnames from 'classnames'
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
+  width?: string
   onChange?: (e: any) => void
 }
 
 class Input extends React.Component<InputProps> {
   render() {
-    const {className, ...otherProps} = this.props
+    const {width, className, ...otherProps} = this.props
+    let style: any = {}
+    if (width) {
+      style.width = width
+    }
     return (
-      <input className={classnames('input', className)} {...otherProps} />
+      <input style={style} className={classnames('input', className)} {...otherProps} />
     )
   }
 }
