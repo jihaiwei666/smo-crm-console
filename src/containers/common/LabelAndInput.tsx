@@ -28,6 +28,7 @@ class LabelAndInput extends React.Component<LabelAndInputProps> {
         <Label inputType={this.props.inputType}>{this.props.label}</Label>
         <Part>
           <Input
+            width="200px"
             placeholder={this.props.placeholder} value={this.props.value}
             onChange={(e: any) => this.props.onChange(e.target.value)}
             disabled={this.props.disabled}

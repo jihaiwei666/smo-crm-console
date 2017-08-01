@@ -78,9 +78,9 @@ export const PROJECT = {
 export const CONTRACT = {
   FETCH_LIST: null,
   FETCH_DETAIL: null,
-  ADD: null,
-  UPDATE: null,
-  DELETE: null,
+  FETCH_PROJECT_LIST: null,
+  FETCH_CONTRACTCODE_PREFIX: null,
+
 }
 
 export const RECYCLE_BIN = {

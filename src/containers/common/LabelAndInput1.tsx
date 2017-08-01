@@ -10,6 +10,7 @@ import Label, {LabelProps} from './Label'
 interface LabelAndInput1Props extends LabelProps {
   className?: string
   label: string
+  children?: any
 }
 
 class LabelAndInput1 extends React.Component<LabelAndInput1Props> {
@@ -17,7 +18,7 @@ class LabelAndInput1 extends React.Component<LabelAndInput1Props> {
     return (
       <FlexDiv className={classnames('mt7 mb7', this.props.className)}>
         <Label inputType={this.props.inputType}>{this.props.label}</Label>
-        <Part>
+        <Part style={{width: '200px'}}>
           {this.props.children}
         </Part>
       </FlexDiv>
