@@ -6,7 +6,7 @@ import Modal from 'app-core/modal'
 import {FlexDiv, Part, Line} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
-import LimitInput from 'app-core/form/LimitInput'
+import {LimitInput} from 'app-core/form'
 
 import {positionList} from '../account-manage.constant'
 import Button from '../../../components/button/Button'
