@@ -27,3 +27,9 @@ export const positionList = [
     value: '8', text: '系统管理员'
   }
 ]
+
+// 账户状态(1.启用 2.停用)
+export const accountStatus = {
+  disabled: 1,
+  enabled: 2
+}

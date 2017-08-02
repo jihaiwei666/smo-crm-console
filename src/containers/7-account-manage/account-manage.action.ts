@@ -33,11 +33,11 @@ export function addAccount(email, username, shortName, position) {
   }
 }
 
-export function disableAccount(id) {
+export function disableAccount(id, status) {
   return {
     [THREE_PHASE]: {
       type: ACCOUNT_MANAGE.DISABLE_ACCOUNT,
-      http: () => _patch(prefix + `/v1/disabledUser/${id}`)
+      http: () => _patch(prefix + `/v1/disabledUser/${id}/${status}`)
     }
   }
 }

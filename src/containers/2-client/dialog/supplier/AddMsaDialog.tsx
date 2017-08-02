@@ -7,7 +7,7 @@ import {Row, Part, Line} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
-import LimitInput from 'app-core/form/LimitInput'
+import {LimitInput} from 'app-core/form'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 

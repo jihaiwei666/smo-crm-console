@@ -17,6 +17,7 @@ import UpdateAccountDialog from './dialog/UpdateAccountDialog'
 import * as actions from './account-manage.action'
 import {ACCOUNT_MANAGE} from '../../core/constants/types'
 import {handleListData} from '../../reducers/data.reducer'
+import {accountStatus} from './account-manage.constant'
 
 interface AccountManageProps extends AppFunctionPage {
   accountList: any
@@ -49,7 +50,7 @@ class AccountManage extends React.Component<AccountManageProps> {
 
   disableAccount = () => {
     const item = this.props.accountList.data.list[this.state.index]
-    this.props.disableAccount(item['user_id'])
+    this.props.disableAccount(item['user_id'], item['account_status'] === accountStatus.disabled ? accountStatus.enabled : accountStatus.disabled)
   }
 
   componentDidMount() {
@@ -68,7 +69,9 @@ class AccountManage extends React.Component<AccountManageProps> {
       this.toPage(0)
     }
     if (this.props.disableAccountSuccess) {
-      this.props.showSuccess('禁用账号信息成功！')
+      const item = this.props.accountList.data.list[this.state.index]
+      const msg = item['account_status'] === accountStatus.disabled ? "禁用账号信息成功! " : "启用账号信息成功! "
+      this.props.showSuccess(msg)
       this.props.clearState(ACCOUNT_MANAGE.DISABLE_ACCOUNT)
       this.toPage(0)
     }
@@ -107,7 +110,7 @@ class AccountManage extends React.Component<AccountManageProps> {
         }
         {
           this.state.showDisabledConfirm && (
-            <Confirm message="确定停用此账号吗？" onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
+              <Confirm message={list[this.state.index]['account_status'] === accountStatus.disabled ? "确定停用此账号吗?" : "确定启用此账号吗?"} onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
           )
         }
 
@@ -135,7 +138,7 @@ class AccountManage extends React.Component<AccountManageProps> {
                     <FixRow.Item>{item['post_type']}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDisabledConfirm: true, index})}>停用</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDisabledConfirm: true, index})}>{item['account_status'] === accountStatus.disabled ? "停用" : "已停用"}</Button>
                     </FixRow.Item>
                   </FixRow>
                 )
