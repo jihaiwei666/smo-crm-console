@@ -11,7 +11,7 @@ import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import cache from '../../cache/cache'
 import ClientState from '../ClientState'
 import CategoryTitle from '../../common/CategoryTitle'
-import CustomerInfo from './part/CustomerInfo'
+import ClientBasicInfo from './part/ClientBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
@@ -127,7 +127,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
                   <CategoryTitle title="客户信息"/>
-                  <CustomerInfo
+                  <ClientBasicInfo
                     customerId={this.props.customerId}
                     customerBaseInfo={customerBaseInfo}
                     updateCustomer={this.props.updateCustomer}

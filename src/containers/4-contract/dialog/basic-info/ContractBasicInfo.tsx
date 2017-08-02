@@ -8,22 +8,34 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import {NECESSARY} from '../../../common/Label'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
+
 import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 import Input from '../../../../components/form/Input'
 import Data from '../../../common/interface/Data'
 
-import {fetchProjectList, fetchContractCodePrefix} from '../../contract.action'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
+import {CONTRACT} from '../../../../core/constants/types'
 
-interface ContractBasicInfoProps {
+interface ContractBasicInfoProps extends CommonFunction {
+  contractId?: string
   fetchProjectList: () => void
   projectList: Data<any[]>
   fetchContractCodePrefix: (projectId) => void
+  fetchCodePrefixSuccess: boolean
   newContractCodePrefix: string
+  addContract: (options) => void
+  updateContract: (options) => void
 }
 
 class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
   state = {
     contractName: '',
+    codePrefix: '',
+    serialNumber: '',
+    bdCode: '',
     projectId: '',
   }
 
@@ -32,8 +44,36 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
     this.setState({projectId: v})
   }
 
+  add = () => {
+    this.props.addContract({
+      "contract_name": this.state.contractName,
+      "contract_project_info_code": this.state.codePrefix,
+      "contract_serial_code": this.state.serialNumber,
+      "contract_bd_code": this.state.bdCode,
+      "project_info_id": this.state.projectId,
+    })
+  }
+
+  update = () => {
+    this.props.updateContract({
+      "contract_info_id": this.props.contractId,
+      "contract_name": this.state.contractName,
+      "contract_project_info_code": this.state.codePrefix,
+      "contract_serial_code": this.state.serialNumber,
+      "contract_bd_code": this.state.bdCode,
+      "project_info_id": this.state.projectId,
+    })
+  }
+
   componentDidMount() {
     this.props.fetchProjectList()
+  }
+
+  componentWillReceiveProps(nextProps: ContractBasicInfoProps) {
+    if (!this.props.fetchCodePrefixSuccess && nextProps.fetchCodePrefixSuccess) {
+      this.setState({codePrefix: nextProps.newContractCodePrefix || '无项目编号'})
+      this.props.clearState(CONTRACT.FETCH_CONTRACT_CODE_PREFIX)
+    }
   }
 
   render() {
@@ -48,11 +88,16 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
 
         <div className="bb">
           <LabelAndInput1 label="合同编号" inputType={NECESSARY}>
-            <Input width="30%" disabled={true} placeholder="选择关联项目后自动产生" className="m5"/>
+            <Input width="30%" disabled={true} placeholder="选择关联项目后自动产生" className="m5"
+                   value={this.state.codePrefix}/>
             -
-            <Input width="20%" className="m5" placeholder="请输入流水号"/>
+            <Input width="20%" className="m5" placeholder="请输入流水号"
+                   value={this.state.serialNumber} onChange={e => this.setState({serialNumber: e.target.value})}
+            />
             -
-            <Input width="30%" className="m5" placeholder="请输入协同BD缩写"/>
+            <Input width="30%" className="m5" placeholder="请输入协同BD缩写"
+                   value={this.state.bdCode} onChange={e => this.setState({bdCode: e.target.value})}
+            />
           </LabelAndInput1>
           <div className="tip">合同编号格式为：项目编号-流水号（3位数字）-协同BD，项目编号关联项目后产生</div>
         </div>
@@ -66,7 +111,17 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
                    value={this.state.projectId} onChange={this.handleProjectChange}
           />
         </LabelAndInput1>
-        <Save/>
+
+        {
+          this.props.contractId && (
+            <Update onClick={this.update}/>
+          )
+        }
+        {
+          !this.props.contractId && (
+            <Save onClick={this.add}/>
+          )
+        }
       </div>
     )
   }
@@ -74,10 +129,12 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
 
 function mapStateToProps(state, props) {
   return {
-    projectList: state.contractProjectList
+    ...state.contract,
+    projectList: state.contractProjectList,
+    contractId: props.contractId
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchProjectList, fetchContractCodePrefix
-})(ContractBasicInfo)
+  fetchProjectList, fetchContractCodePrefix, addContract, updateContract
+})(addCommonFunction(ContractBasicInfo))

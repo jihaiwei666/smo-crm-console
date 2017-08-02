@@ -8,6 +8,7 @@ import 'app-core/form/form.scss'
 import './style/antd/date-picker/style/'
 import './components/form/input.scss'
 import './style/common.scss'
+import './style/file-upload.scss'
 import './containers/common/page-common.scss'
 
 import React from 'react'

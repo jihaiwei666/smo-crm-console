@@ -10,6 +10,7 @@ import data from './data.reducer'
 
 import app from './app.reducer'
 import client from '../containers/2-client/client.reducer'
+import contract from '../containers/4-contract/contract.reducer'
 import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
 import {APP, TODO_REMIND, CLIENTS, ACCOUNT_MANAGE, PROJECT, CONTRACT} from '../core/constants/types'
@@ -55,6 +56,7 @@ export default combineReducers({
   projectClientList: wrapReducerState(data(PROJECT.FETCH_CLIENT_LIST)),
   projectDetail: wrapReducerState(data(PROJECT.FETCH_PROJECT_DETAIL)),
 
+  contract: wrapReducerState(contract),
   contractList: wrapReducerState(data(CONTRACT.FETCH_LIST)),
   contractProjectList: wrapReducerState(data(CONTRACT.FETCH_PROJECT_LIST)),
 

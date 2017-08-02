@@ -15,7 +15,8 @@ import AfterSign from './basic-info/AfterSign'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
-interface AddContractDialogProps {
+interface UpdateContractDialogProps {
+  contractId: string
   fetchBD: () => void
   BDList: any
 
@@ -28,10 +29,9 @@ interface AddContractDialogProps {
   onExited: () => void
 }
 
-class AddContractDialog extends React.Component<AddContractDialogProps> {
+class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   state = {
     show: true,
-    contractId: '',
   }
 
   close = () => {
@@ -40,13 +40,13 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
 
   updateBdAndBdpc = (bd, bdpc) => {
     this.props.updateBdAndBdpc({
-      "contract_info_id": this.state.contractId,
+      "contract_info_id": this.props.contractId,
       "contract_the_bd": bd,
       "contract_the_bdpc": bdpc
     })
   }
 
-  componentWillReceiveProps(nextProps: AddContractDialogProps) {
+  componentWillReceiveProps(nextProps: UpdateContractDialogProps) {
     /*if (!this.props.Success && nextProps.Success) {
       this.close()
     }*/
@@ -65,7 +65,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
           <Row className="body-box">
             <Part className="form-container">
               <BD_BDPC
-                disabled={this.state.contractId == ''}
+                disabled={this.props.contractId == ''}
                 fetchBD={this.props.fetchBD}
                 BDList={this.props.BDList}
                 fetchBDPC={this.props.fetchBDPC}
@@ -107,6 +107,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
 
 function mapStateToProps(state, props) {
   return {
+    contractId: props.contractId,
     BDList: state.BDList,
     BDPCList: state.BDPCList
   }
@@ -114,4 +115,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
-})(AddContractDialog)
+})(UpdateContractDialog)

@@ -11,7 +11,7 @@ import ClientState from '../ClientState'
 import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
-import CustomerInfo from '././part/CustomerInfo'
+import ClientBasicInfo from '././part/ClientBasicInfo'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
@@ -101,7 +101,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               />
 
               <CategoryTitle title="客户信息"/>
-              <CustomerInfo
+              <ClientBasicInfo
                 customerId={this.state.customerId}
                 addCustomer={this.props.addCustomer}
                 updateCustomer={this.props.updateCustomer}

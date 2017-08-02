@@ -28,12 +28,48 @@ export function fetchProjectList() {
   }
 }
 
-export function fetchContractCodePrefix() {
+export function fetchContractCodePrefix(projectId) {
   return {
     [THREE_PHASE]: {
-      type: CONTRACT.FETCH_CONTRACTCODE_PREFIX,
-      http: () => _get(urlPrefix + '/v1/'),
-      handleResponse: data => data
+      type: CONTRACT.FETCH_CONTRACT_CODE_PREFIX,
+      http: () => _get(urlPrefix + `/v1/getProjectCodeByProjectId/${projectId}`),
+      handleResponse: data => data || ''
+    }
+  }
+}
+
+export function addContract(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.ADD_CONTRACT,
+      http: () => _post(urlPrefix + '/v1/addContractInfo', {body: options})
+    }
+  }
+}
+
+export function updateContract(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.UPDATE_CONTRACT,
+      http: () => _post(urlPrefix + '/v1/updateContractInfo', {body: options})
+    }
+  }
+}
+
+export function addBeforeSign(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.ADD_BEFORE_SIGN,
+      http: () => _post(urlPrefix + '/v1/addContractBeforeSigned', {body: options})
+    }
+  }
+}
+
+export function updateBeforeSign(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.UPDATE_BEFORE_SIGN,
+      http: () => _post(urlPrefix + '/v1/updateContractBeforeSigned', {body: options})
     }
   }
 }

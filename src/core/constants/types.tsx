@@ -79,7 +79,11 @@ export const CONTRACT = {
   FETCH_LIST: null,
   FETCH_DETAIL: null,
   FETCH_PROJECT_LIST: null,
-  FETCH_CONTRACTCODE_PREFIX: null,
+  FETCH_CONTRACT_CODE_PREFIX: null,
+  ADD_CONTRACT: null,
+  UPDATE_CONTRACT: null,
+  ADD_BEFORE_SIGN: null,
+  UPDATE_BEFORE_SIGN: null,
 
 }
 

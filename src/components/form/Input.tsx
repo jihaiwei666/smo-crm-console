@@ -10,6 +10,14 @@ interface InputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 class Input extends React.Component<InputProps> {
+  static defaultProps = {
+    onChange: () => null
+  }
+
+  getDisplayName() {
+    return this.props.placeholder || 'Input'
+  }
+
   render() {
     const {width, className, ...otherProps} = this.props
     let style: any = {}
