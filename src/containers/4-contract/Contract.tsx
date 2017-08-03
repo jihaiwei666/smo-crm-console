@@ -90,7 +90,7 @@ class Contract extends React.Component<ContractProps> {
                     <FixRow.Item>{item.bd}</FixRow.Item>
                     <FixRow.Item>{item.bdpc}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditClientDialog: true, index})}>查看</Button>
+                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
                       <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>

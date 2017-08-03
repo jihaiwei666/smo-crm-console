@@ -7,7 +7,8 @@ import phase from '../../core/constants/phase'
 import {handleFlagState} from '../common/reduxUtils'
 
 const initValue = {
-  fetchCodePrefixSuccess: false
+  fetchCodePrefixSuccess: false,
+  isFirstOperation: null
 }
 
 export default function contract(iState = fromJS(initValue), action) {
@@ -15,7 +16,8 @@ export default function contract(iState = fromJS(initValue), action) {
 
   switch (action.type) {
     case CONTRACT.FETCH_CONTRACT_CODE_PREFIX + phase.SUCCESS:
-      nextIState = nextIState.set('newContractCodePrefix', action.data)
+      const {newContractCodePrefix, isFirstOperation} = action.data
+      nextIState = nextIState.set('newContractCodePrefix', newContractCodePrefix).set('isFirstOperation', isFirstOperation)
       break
   }
 

@@ -10,18 +10,47 @@ import Radio from '../../../../components/form/radio/Radio'
 import Save from '../../../common/Save'
 import Input from '../../../../components/form/Input'
 
-import {addBeforeSign, updateContract} from '../../contract.action'
+import {addBeforeSign, updateBeforeSign} from '../../contract.action'
+import Update from '../../../common/Update'
 
 interface BeforeSignProps {
+  contractId?: string
+  beforeSignId?: string
   addBeforeSign: (options) => void
-  updateContract: (options) => void
+  initBeforeSign: any
+  updateBeforeSign: (options) => void
 }
 
 class BeforeSign extends React.Component<BeforeSignProps> {
   state = {
     contractType: null,
-    templateType: null,
-    remark: ''
+    remark: '',
+    templateType: null
+  }
+
+  add = () => {
+    this.props.addBeforeSign({
+      "contract_info_id": this.props.contractId,
+      "contract_type": this.state.contractType,
+      "contract_type_remark": this.state.remark,
+      "contract_template": this.state.templateType,
+    })
+  }
+
+  update = () => {
+    this.props.updateBeforeSign({
+      "contract_info_id": this.props.contractId,
+      "before_signed_id": this.props.beforeSignId,
+      "contract_type": this.state.contractType,
+      "contract_type_remark": this.state.remark,
+      "contract_template": this.state.templateType,
+    })
+  }
+
+  componentWillMount() {
+    if (this.props.initBeforeSign) {
+      this.setState(this.props.initBeforeSign)
+    }
   }
 
   render() {
@@ -45,16 +74,29 @@ class BeforeSign extends React.Component<BeforeSignProps> {
             <Radio value="2">客户模板</Radio>
           </Radio.Group>
         </LabelAndInput1>
-        <Save/>
+        {
+          !this.props.beforeSignId && (
+            <Save onClick={this.add} disabled={!this.props.contractId}/>
+          )
+        }
+        {
+          this.props.beforeSignId && (
+            <Update onClick={this.update}/>
+          )
+        }
       </div>
     )
   }
 }
 
 function mapStateToProps(state, props) {
-  return {}
+  return {
+    contractId: props.contractId,
+    beforeSignId: props.beforeSignId,
+    initBeforeSign: props.initBeforeSign
+  }
 }
 
 export default connect(mapStateToProps, {
-  addBeforeSign, updateContract
+  addBeforeSign, updateBeforeSign
 })(BeforeSign)

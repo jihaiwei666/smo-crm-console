@@ -9,9 +9,9 @@ import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
-import ContractBasicInfo from './basic-info/ContractBasicInfo'
-import BeforeSign from './basic-info/BeforeSign'
-import AfterSign from './basic-info/AfterSign'
+import AddContractBasicInfo from './basic-info/AddContractBasicInfo'
+import BeforeSign from './before-sign/BeforeSign'
+import AfterSign from './after-sign/AfterSign'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 
@@ -74,7 +74,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               />
 
               <CategoryTitle title="合同信息"/>
-              <ContractBasicInfo/>
+              <AddContractBasicInfo/>
 
               <CategoryTitle title="签署前"/>
               <BeforeSign/>
