@@ -83,8 +83,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   render() {
     return (
       <div>
-        <LabelAndInput label="适应症" inputType={NECESSARY}
-                       value={this.state.indication} onChange={v => this.setState({indication: v})}
+        <LabelAndInput
+          label="适应症" inputType={NECESSARY}
+          value={this.state.indication} onChange={v => this.setState({indication: v})}
         />
         <LabelAndInput1 label="服务类别" inputType={NECESSARY}>
           <CheckGroup options={SERVICE_TYPE} value={this.state.serviceType} onChange={v => this.setState({serviceType: v})}/>

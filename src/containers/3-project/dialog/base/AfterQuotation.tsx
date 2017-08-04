@@ -82,7 +82,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               />
             </div>
             <Part>
-              <Input value={this.state.serviceChargeValue} onChange={e => this.setState({serviceChargeValue: e.target.value})}/>
+              <Input value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
             </Part>
           </Row>
         </LabelAndInput1>
@@ -92,7 +92,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               <Select1 className="small" options={MONEY_UNIT} value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
             </div>
             <Part>
-              <Input value={this.state.contractMoneyValue} onChange={e => this.setState({contractMoneyValue: e.target.value})}/>
+              <Input value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
             </Part>
           </Row>
         </LabelAndInput1>

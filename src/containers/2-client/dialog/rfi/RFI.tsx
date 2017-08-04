@@ -30,6 +30,7 @@ import {getDateStr} from '../../../../core/utils/dateUtils'
 import ClientState from '../../ClientState'
 import Data from '../../../common/interface/Data'
 import SelectContact from '../base/SelectContact'
+import Form from '../../../../components/form/Form'
 
 interface RFIProps extends ClientState {
   customerId: string
@@ -55,6 +56,7 @@ function getNextBroker() {
 
 class RFI extends React.Component<RFIProps> {
   state = {
+    valid: true,
     showRfiListDialog: false,
 
     fillDate: null,
@@ -127,7 +129,7 @@ class RFI extends React.Component<RFIProps> {
       value: item.contactId, text: item.contactName
     }))
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         {
           this.state.showRfiListDialog && (
             <RFI_ListDialog
@@ -152,7 +154,11 @@ class RFI extends React.Component<RFIProps> {
             <LabelAndInput1 label="填写日期" inputType={NECESSARY}>
               <DatePicker value={this.state.fillDate} onChange={v => this.setState({fillDate: v})}/>
             </LabelAndInput1>
-            <LabelAndInput label="填写人" inputType={NECESSARY} value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}/>
+            <LabelAndInput
+              required={true} format={value => value.trim().length != 0} name="fillPerson"
+              label="填写人" inputType={NECESSARY}
+              value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}
+            />
             <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt">
               {
                 this.state.brokerList.map((broker, index) => {
@@ -180,7 +186,7 @@ class RFI extends React.Component<RFIProps> {
               <CheckGroup options={MODULES} value={this.state.modules} onChange={v => this.setState({modules: v})}/>
               {
                 this.state.modules.indexOf('9') != -1 && (
-                  <Input placeholder="请输入备注" value={this.state.remark} onChange={e => this.setState({remark: e.target.value})}/>
+                  <Input placeholder="请输入备注" value={this.state.remark} onChange={v => this.setState({remark: v})}/>
                 )
               }
             </LabelAndInput1>
@@ -191,15 +197,15 @@ class RFI extends React.Component<RFIProps> {
         </TextAndButton>
         {
           !this.props.rfiId && (
-            <Save disabled={!this.props.customerId} onClick={this.add}/>
+            <Save disabled={!this.props.customerId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
           this.props.rfiId && (
-            <Update onClick={this.update}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }

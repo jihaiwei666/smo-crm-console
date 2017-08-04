@@ -1,24 +1,29 @@
+.label-and-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .input-unit {
     padding: 10px 0 5px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e6e6e6;
 }
 
 .tip, .input-unit-illustrate {
-    padding: 7px 0;
+    padding: 6px 0 10px;
     color: gray;
 }
 
 .input-label {
+    margin-top: 5px;
     width: 150px;
 }
 
 .input-group {
     padding: 5px 5px 5px 0;
-    border-bottom: 1px solid #ddd;
 }
 
 .row-line {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e6e6e6;
 }
 
 .category-title {

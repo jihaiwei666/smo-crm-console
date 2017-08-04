@@ -2,11 +2,13 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
-import InputUnit from '../../../common/InputUnit'
+
+import Form from '../../../../components/form/Form'
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndInput from '../../../common/LabelAndInput'
 import Save from '../../../common/Save'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
 interface ClientBasicInfoProps {
   customerId: string
@@ -33,20 +35,6 @@ class ClientBasicInfo extends React.Component<ClientBasicInfoProps> {
     billPostAddress: '',
     billReceiver: '',
     receiverContactInfo: ''
-  }
-
-  checkValid = () => {
-    let valid = true
-    const {customerName, customerCategory} = this.state
-    if (customerName.trim() == '') {
-      valid = false
-    }
-    if (customerCategory == null) {
-      valid = false
-    }
-    if (valid != this.state.valid) {
-      this.setState({valid})
-    }
   }
 
   save = () => {
@@ -89,44 +77,45 @@ class ClientBasicInfo extends React.Component<ClientBasicInfoProps> {
 
   render() {
     return (
-      <div>
-        <InputUnit>
-          <LabelAndInput label="客户名称（*）" value={this.state.customerName} onChange={v => this.setState({customerName: v}, this.checkValid)}/>
+      <Form onValidChange={valid => this.setState({valid})}>
+        <div className="bb">
+          <LabelAndInput
+            label="客户名称" inputType={NECESSARY}
+            required={true} name="customerName"
+            value={this.state.customerName} onChange={v => this.setState({customerName: v})}/>
           <div className="input-unit-illustrate">客户名称只能输入汉字、英文、数字、-、（、）， “-”作为母公司名与子公司名的连接符号</div>
-        </InputUnit>
+        </div>
 
-        <InputUnit>
-          <LabelAndInput1 label="客户性质（*）">
-            <Radio.Group value={this.state.customerCategory} onChange={v => this.setState({customerCategory: v}, this.checkValid)}>
-              <Radio value="1">Sponsor</Radio>
-              <Radio value="2">CRO</Radio>
-              <Radio value="3">SMO</Radio>
-              <Radio value="4">Site</Radio>
-            </Radio.Group>
-          </LabelAndInput1>
-        </InputUnit>
+        <LabelAndInput1 label="客户性质" inputType={NECESSARY}>
+          <Radio.Group
+            required={true} name="customerCategory"
+            value={this.state.customerCategory} onChange={v => this.setState({customerCategory: v})}>
+            <Radio value="1">Sponsor</Radio>
+            <Radio value="2">CRO</Radio>
+            <Radio value="3">SMO</Radio>
+            <Radio value="4">Site</Radio>
+          </Radio.Group>
+        </LabelAndInput1>
 
-        <InputUnit>
-          <LabelAndInput label="地址（!）" value={this.state.customerAddress} onChange={v => this.setState({customerAddress: v})}/>
-        </InputUnit>
+        <LabelAndInput
+          label="地址" inputType={IMPORTANT}
+          value={this.state.customerAddress} onChange={v => this.setState({customerAddress: v})}/>
 
-        <InputUnit>
-          <LabelAndInput1 label="重要级别（!）">
-            <Radio.Group value={this.state.importantLevel} onChange={v => this.setState({importantLevel: v})}>
-              <Radio value="1">关键客户</Radio>
-              <Radio value="2">重要客户</Radio>
-              <Radio value="3">普通客户</Radio>
-            </Radio.Group>
-          </LabelAndInput1>
-        </InputUnit>
+        <LabelAndInput1 label="重要级别" inputType={IMPORTANT}>
+          <Radio.Group value={this.state.importantLevel} onChange={v => this.setState({importantLevel: v})}>
+            <Radio value="1">关键客户</Radio>
+            <Radio value="2">重要客户</Radio>
+            <Radio value="3">普通客户</Radio>
+          </Radio.Group>
+        </LabelAndInput1>
 
-        <InputUnit>
+        <div className="bb">
           <LabelAndInput placeholder="" label="客户编码" disabled={true} value={this.state.customerNumber}/>
           <div className="input-unit-illustrate">进入项目合作或进入供应商，则系统自动生成客户编码（流水号），无法修改</div>
-        </InputUnit>
+        </div>
 
-        <InputUnit>
-          <LabelAndInput1 label="开票信息（!）">
+        <div className="bb">
+          <LabelAndInput1 label="开票信息" inputType={IMPORTANT}>
             <div className="bill-info">
               <LabelAndInput
                 label="纳税人识别号"
@@ -170,10 +159,10 @@ class ClientBasicInfo extends React.Component<ClientBasicInfoProps> {
               />
             </div>
           </LabelAndInput1>
-        </InputUnit>
+        </div>
 
         <Save disabled={!this.state.valid} onClick={this.save}/>
-      </div>
+      </Form>
     )
   }
 }

@@ -24,7 +24,7 @@ class Contract extends React.Component<ContractProps> {
     index: -1,
     currentPage: 0,
     showAddDialog: false,
-    showEditDialog: false
+    showEditDialog: true
   }
 
   toPage = (newPage) => {
@@ -57,7 +57,7 @@ class Contract extends React.Component<ContractProps> {
         {
           this.state.showEditDialog && (
             <UpdateContractDialog
-              contractId={item.contractId}
+              contractId={'170803053909587457'}
               onExited={() => this.setState({showEditDialog: false})}
             />
           )

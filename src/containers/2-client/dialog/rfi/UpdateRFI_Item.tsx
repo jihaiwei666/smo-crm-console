@@ -149,7 +149,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
           <CheckGroup options={MODULES} value={this.state.modules} onChange={v => this.setState({modules: v})}/>
           {
             this.state.modules.indexOf('9') != -1 && (
-              <Input placeholder="请输入备注" value={this.state.remark} onChange={e => this.setState({remark: e.target.value})}/>
+              <Input placeholder="请输入备注" value={this.state.remark} onChange={v => this.setState({remark: v})}/>
             )
           }
         </LabelAndInput1>

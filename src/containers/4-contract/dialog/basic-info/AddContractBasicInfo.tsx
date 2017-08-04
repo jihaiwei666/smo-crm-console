@@ -9,6 +9,7 @@ import {NECESSARY} from '../../../common/Label'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
 
+import Form from '../../../../components/form/Form'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import Input from '../../../../components/form/Input'
@@ -33,6 +34,7 @@ interface AddContractBasicInfoProps extends CommonFunction {
 
 class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
   state = {
+    valid: true,
     contractName: '',
     codePrefix: '',
     isFirstOperation: '',
@@ -81,10 +83,12 @@ class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
 
   render() {
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         <div className="bb">
-          <LabelAndInput label="合同名称" inputType={NECESSARY}
-                         value={this.state.contractName} onChange={v => this.setState({contractName: v})}
+          <LabelAndInput
+            label="合同名称" inputType={NECESSARY}
+            required={true} name="contractName"
+            value={this.state.contractName} onChange={v => this.setState({contractName: v})}
           />
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
@@ -99,11 +103,13 @@ class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
                    value={this.state.codePrefix || '无项目编号'}/>
             -
             <Input width="20%" className="m5" placeholder="请输入流水号"
-                   value={this.state.serialNumber} onChange={e => this.setState({serialNumber: e.target.value})}
+                   required={true} name="serialNumber"
+                   value={this.state.serialNumber} onChange={v => this.setState({serialNumber: v})}
             />
             -
             <Input width="30%" className="m5" placeholder="请输入协同BD缩写"
-                   value={this.state.bdCode} onChange={e => this.setState({bdCode: e.target.value})}
+                   required={true} name="bdCode"
+                   value={this.state.bdCode} onChange={v => this.setState({bdCode: v})}
             />
           </LabelAndInput1>
           <div className="tip">合同编号格式为：项目编号-流水号（3位数字）-协同BD，项目编号关联项目后产生</div>
@@ -115,15 +121,15 @@ class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
 
         {
           this.props.contractId && (
-            <Update onClick={this.update}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
           !this.props.contractId && (
-            <Save onClick={this.add}/>
+            <Save disabled={!this.state.valid} onClick={this.add}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }
