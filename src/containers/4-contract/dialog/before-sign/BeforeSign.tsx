@@ -3,15 +3,15 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-
+import Form from 'app-core/form/Form'
+import Input from '../../../../components/form/Input'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import {NECESSARY} from '../../../common/Label'
 import Radio from '../../../../components/form/radio/Radio'
 import Save from '../../../common/Save'
-import Input from '../../../../components/form/Input'
+import Update from '../../../common/Update'
 
 import {addBeforeSign, updateBeforeSign} from '../../contract.action'
-import Update from '../../../common/Update'
 
 interface BeforeSignProps {
   contractId?: string
@@ -23,6 +23,7 @@ interface BeforeSignProps {
 
 class BeforeSign extends React.Component<BeforeSignProps> {
   state = {
+    valid: true,
     contractType: null,
     remark: '',
     templateType: null
@@ -55,9 +56,12 @@ class BeforeSign extends React.Component<BeforeSignProps> {
 
   render() {
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         <LabelAndInput1 className="pb5 bb" label="合同类型" inputType={NECESSARY}>
-          <Radio.Group value={this.state.contractType} onChange={v => this.setState({contractType: v})}>
+          <Radio.Group
+            required={true} name="contractType"
+            value={this.state.contractType} onChange={v => this.setState({contractType: v})}
+          >
             <Radio value="1">大项目主合同</Radio>
             <Radio value="2">CRC三方协议</Radio>
             <Radio value="3">思默和Site两方协议</Radio>
@@ -76,15 +80,15 @@ class BeforeSign extends React.Component<BeforeSignProps> {
         </LabelAndInput1>
         {
           !this.props.beforeSignId && (
-            <Save onClick={this.add} disabled={!this.props.contractId}/>
+            <Save disabled={!this.props.contractId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
           this.props.beforeSignId && (
-            <Update onClick={this.update}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }

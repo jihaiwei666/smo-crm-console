@@ -4,6 +4,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import Form from 'app-core/form/Form'
 
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import LabelAndInput from '../../../common/LabelAndInput'
@@ -24,11 +25,14 @@ interface BeforeQuotationProps {
   projectId: string
   beforeQuotationId?: string
   addBeforeQuotation: (options) => void
+  initBeforeQuotation: any
   updateBeforeQuotation: (options) => void
 }
 
 class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   state = {
+    valid: true,
+
     indication: '',
     serviceType: [],
     centerNumber: '',
@@ -80,66 +84,85 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     }
   }
 
+  componentWillMount() {
+    if (this.props.initBeforeQuotation) {
+      this.setState(this.props.initBeforeQuotation)
+    }
+  }
+
   render() {
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         <LabelAndInput
           label="适应症" inputType={NECESSARY}
+          required={true} name="indication"
           value={this.state.indication} onChange={v => this.setState({indication: v})}
         />
         <LabelAndInput1 label="服务类别" inputType={NECESSARY}>
-          <CheckGroup options={SERVICE_TYPE} value={this.state.serviceType} onChange={v => this.setState({serviceType: v})}/>
+          <CheckGroup
+            required={true} name="serviceType"
+            options={SERVICE_TYPE} value={this.state.serviceType} onChange={v => this.setState({serviceType: v})}/>
         </LabelAndInput1>
-        <LabelAndInput label="中心数" inputType={NECESSARY}
-                       value={this.state.centerNumber} onChange={v => this.setState({centerNumber: v})}
+        <LabelAndInput
+          label="中心数" inputType={NECESSARY}
+          required={true} name="centerNumber"
+          value={this.state.centerNumber} onChange={v => this.setState({centerNumber: v})}
         />
-        <LabelAndInput label="入组例数" inputType={NECESSARY}
-                       value={this.state.enrollmentCount} onChange={v => this.setState({enrollmentCount: v})}
+        <LabelAndInput
+          name="enrollmentCount" label="入组例数" inputType={NECESSARY}
+          required={true}
+          value={this.state.enrollmentCount} onChange={v => this.setState({enrollmentCount: v})}
         />
-        <LabelAndInput label="入组期" inputType={NECESSARY}
-                       value={this.state.enrollmentPeriod} onChange={v => this.setState({enrollmentPeriod: v})}
+        <LabelAndInput
+          name="enrollmentPeriod" label="入组期" inputType={NECESSARY}
+          required={true}
+          value={this.state.enrollmentPeriod} onChange={v => this.setState({enrollmentPeriod: v})}
         />
         <div className="bb">
-          <LabelAndInput label="申办方" inputType={IMPORTANT}
-                         value={this.state.bidParty} onChange={v => this.setState({bidParty: v})}
+          <LabelAndInput
+            name="bidParty" label="申办方" inputType={IMPORTANT}
+            value={this.state.bidParty} onChange={v => this.setState({bidParty: v})}
           />
           <div className="tip">默认申办方为所关联客户</div>
         </div>
         <div className="bb">
-          <LabelAndInput label="CRO" inputType={IMPORTANT}
-                         value={this.state.cro} onChange={v => this.setState({cro: v})}
+          <LabelAndInput
+            name="cro" label="CRO" inputType={IMPORTANT}
+            value={this.state.cro} onChange={v => this.setState({cro: v})}
           />
           <div className="tip">如果关联客户的类别是CRO，则默认为客户</div>
         </div>
 
-        <LabelAndInput1 label="项目分类">
-          <Radio.Group value={this.state.projectCategory}>
+        <LabelAndInput1 className="bb" label="项目分类">
+          <Radio.Group name="projectCategory" value={this.state.projectCategory} onChange={v => this.setState({projectCategory: v})}>
             <Radio value="1">药物</Radio>
             <Radio value="2">器械</Radio>
             <Radio value="3">试剂</Radio>
             <Radio value="4">非干预</Radio>
-            <Radio value="5">其它，请备注：</Radio>
+            <div className="pt5 mt5 bt">
+              <Radio value="5">其它，请备注：</Radio>
+              <Input width="200px"/>
+            </div>
           </Radio.Group>
-          <Input/>
         </LabelAndInput1>
 
-        <LabelAndInput label="试验分期" inputType={IMPORTANT}
+        <LabelAndInput name="testPeriod" label="试验分期" inputType={IMPORTANT}
                        value={this.state.testPeriod} onChange={v => this.setState({testPeriod: v})}
         />
-        <LabelAndInput label="方案号" inputType={IMPORTANT}
+        <LabelAndInput name="planCode" label="方案号" inputType={IMPORTANT}
                        value={this.state.planCode} onChange={v => this.setState({planCode: v})}
         />
-        <LabelAndInput label="研究产品" inputType={IMPORTANT}
+        <LabelAndInput name="researchProduct" label="研究产品" inputType={IMPORTANT}
                        value={this.state.researchProduct} onChange={v => this.setState({researchProduct: v})}
         />
-        <LabelAndInput label="治疗领域" inputType={IMPORTANT}
+        <LabelAndInput name="treatDomain" label="治疗领域" inputType={IMPORTANT}
                        value={this.state.treatDomain} onChange={v => this.setState({treatDomain: v})}
         />
-        <LabelAndInput label="筛选例数" inputType={IMPORTANT}
+        <LabelAndInput name="filterCount" label="筛选例数" inputType={IMPORTANT}
                        value={this.state.filterCount} onChange={v => this.setState({filterCount: v})}
         />
         <LabelAndInput1 label="成单可能性">
-          <Select1 options={POSSIBILITY} value={this.state.possibility} onChange={v => this.setState({possibility: v})}/>
+          <Select1 width="200px" options={POSSIBILITY} value={this.state.possibility} onChange={v => this.setState({possibility: v})}/>
         </LabelAndInput1>
         <LabelAndInput1 label="是否安排竞标">
           <Radio.Group value={this.state.isArrangeBid} onChange={v => this.setState({isArrangeBid: v})}>
@@ -167,15 +190,15 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </div>
         {
           this.props.beforeQuotationId && (
-            <Update/>
+            <Update disabled={!this.state.valid}/>
           )
         }
         {
           !this.props.beforeQuotationId && (
-            <Save disabled={!this.props.projectId} onClick={this.save}/>
+            <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.save}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }
@@ -183,7 +206,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
 function mapStateToProps(state, props) {
   return {
     ...state.project,
-    projectId: props.projectId
+    projectId: props.projectId,
+    beforeQuotationId: props.beforeQuotationId,
+    initBeforeQuotation: props.initBeforeQuotation
   }
 }
 

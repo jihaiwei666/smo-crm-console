@@ -24,7 +24,7 @@ class LabelAndInput extends React.Component<LabelAndInputProps> {
       <Row className={classnames('label-and-input', className)}>
         <Label inputType={inputType}>{label}</Label>
         <Part>
-          <Input {...otherProps as any}/>
+          <Input {...otherProps as any} name={this.props.label || label}/>
         </Part>
       </Row>
     )

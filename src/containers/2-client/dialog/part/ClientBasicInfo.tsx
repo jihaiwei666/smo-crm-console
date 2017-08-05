@@ -2,8 +2,8 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
+import Form from 'app-core/form/Form'
 
-import Form from '../../../../components/form/Form'
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndInput from '../../../common/LabelAndInput'
 import Save from '../../../common/Save'

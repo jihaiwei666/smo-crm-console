@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+import addFormSupport from 'app-core/core/hoc/addFormSupport'
 
 interface GroupProps {
   value: string | number
@@ -27,28 +28,6 @@ class Group extends React.Component<GroupProps> {
     this.props.onChange(value)
   }
 
-  componentWillMount() {
-    if (this.props.required) {
-      if (!this.props.name) {
-        throw new Error('name is required when Radio.Group is required')
-      }
-      this.valid = this.props.value != null
-      if (this.context.setValid) {
-        this.context.setValid(this.props.name, this.valid)
-      }
-    }
-  }
-
-  componentWillReceiveProps(nextProps: GroupProps) {
-    if (this.props.required) {
-      let valid = this.props.value != null
-      if (valid != this.valid && this.context.setValid) {
-        this.context.setValid(this.props.name, valid)
-      }
-      this.valid = valid
-    }
-  }
-
   render() {
     return (
       <div className="radio-group">
@@ -65,4 +44,4 @@ class Group extends React.Component<GroupProps> {
   }
 }
 
-export default Group
+export default addFormSupport(Group, ({props}) => props.value != null)

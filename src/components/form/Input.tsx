@@ -4,6 +4,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import addFormSupport from 'app-core/core/hoc/addFormSupport'
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   value?: string
@@ -15,53 +16,30 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
 class Input extends React.Component<InputProps> {
   static defaultProps = {
     onChange: () => null,
-    format: value => value.trim().length != 0
+    format: value => {
+      if (value == null) return false
+      if (typeof value == 'number') return true
+      return value.trim().length != 0
+    }
   }
   static contextTypes = {
     setValid: PropTypes.func
   }
 
-  state = {
-    valid: true
-  }
-
   componentWillMount() {
-    if (this.props.required) {
-      if (!this.props.name) {
-        throw new Error('name is required when Input is required')
-      }
-      let valid = this._checkValid(this.props.format, this.props.value)
-      this.setState({valid})
-      if (this.context.setValid) {
-        this.context.setValid(this.props.name, valid)
-      }
+    if (this.props.value == null) {
+      console.log((this.props.name || this.props.placeholder) + '\'s value is null !!!')
     }
   }
 
   componentWillReceiveProps(nextProps: InputProps) {
-    if (nextProps.required) {
-      let valid = this._checkValid(nextProps.format, nextProps.value)
-      if (valid != this.state.valid) {
-        this.setState({valid})
-        if (this.context.setValid) {
-          this.context.setValid(this.props.name, valid)
-        }
-      }
+    if (nextProps.value == null) {
+      console.log((nextProps.name || nextProps.placeholder) + '\'s value is null !!!')
     }
-  }
-
-  _checkValid = (format, value): boolean => {
-    let valid = true
-    if (format instanceof RegExp) {
-      valid = format.test(value)
-    } else if (format instanceof Function) {
-      valid = format(value)
-    }
-    return valid
   }
 
   render() {
-    const {width, className, onChange, ...otherProps} = this.props
+    const {width, className, onChange, format, ...otherProps} = this.props
     let style: any = {}
     if (width) {
       style.width = width
@@ -70,10 +48,21 @@ class Input extends React.Component<InputProps> {
       <input
         style={style}
         className={classnames('input', className)} {...otherProps}
+        value={this.props.value || ''}
         onChange={e => this.props.onChange(e.target.value)}
       />
     )
   }
 }
 
-export default Input
+function checkValid(format, value): boolean {
+  let valid = true
+  if (format instanceof RegExp) {
+    valid = format.test(value)
+  } else if (format instanceof Function) {
+    valid = format(value)
+  }
+  return valid
+}
+
+export default addFormSupport(Input, ({props}) => checkValid(props.format, props.value))

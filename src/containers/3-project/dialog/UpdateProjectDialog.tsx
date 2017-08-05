@@ -63,10 +63,15 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 
   render() {
     const {loaded, data} = this.props.projectDetail
-    let baseInfo = null, initBdAndBdpc = null
+    let baseInfo = null, initBdAndBdpc = null, initBeforeQuotation = null
+    let beforeQuotationId = ''
     if (loaded) {
       baseInfo = data.baseInfo
       initBdAndBdpc = data.bdAndBdpc
+      initBeforeQuotation = data.beforeQuotation
+      if (initBeforeQuotation) {
+        beforeQuotationId = initBeforeQuotation.beforeQuotationId
+      }
     }
 
     return (
@@ -101,7 +106,10 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
                   <ProjectBasicInfo projectId={this.props.projectId} baseInfo={baseInfo}/>
 
                   <CategoryTitle title="报价前"/>
-                  <BeforeQuotation projectId={this.props.projectId}/>
+                  <BeforeQuotation projectId={this.props.projectId}
+                                   beforeQuotationId={beforeQuotationId}
+                                   initBeforeQuotation={initBeforeQuotation}
+                  />
 
                   <CategoryTitle title="报价后"/>
                   <AfterQuotation projectId={this.props.projectId}/>

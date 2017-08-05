@@ -113,7 +113,10 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   />
 
                   <CategoryTitle title="签署后"/>
-                  <AfterSign projectId={projectId}/>
+                  <AfterSign
+                    contractId={this.props.contractId}
+                    projectId={projectId}
+                  />
 
                   <CategoryTitle title="收款"/>
                   <CategoryTitle title="关联信息"/>

@@ -8,8 +8,8 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import {NECESSARY} from '../../../common/Label'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
+import Form from 'app-core/form/Form'
 
-import Form from '../../../../components/form/Form'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import Input from '../../../../components/form/Input'
@@ -93,9 +93,11 @@ class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
-          <Select1 options={this.props.projectList.data || []}
-                   value={this.state.projectId} onChange={this.handleProjectChange}
-          />
+          <div style={{width: '250px'}}>
+            <Select1 options={this.props.projectList.data || []}
+                     value={this.state.projectId} onChange={this.handleProjectChange}
+            />
+          </div>
         </LabelAndInput1>
         <div className="bb">
           <LabelAndInput1 label="合同编号" inputType={NECESSARY}>

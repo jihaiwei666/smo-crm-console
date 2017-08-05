@@ -72,28 +72,28 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
   render() {
     return (
       <div>
-        <LabelAndInput1 label="服务费">
+        <LabelAndInput1 label="服务费" inputType={NECESSARY}>
           <Row>
-            <div style={{width: '70px', marginRight: '15px'}}>
+            <div style={{marginRight: '15px'}}>
               <Select1
                 className="small" options={MONEY_UNIT}
                 value={this.state.serviceChargeUnit}
                 onChange={v => this.setState({serviceChargeUnit: v})}
               />
             </div>
-            <Part>
-              <Input value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
-            </Part>
+            <Input
+              width="200px"
+              value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
           </Row>
         </LabelAndInput1>
-        <LabelAndInput1 label="合同额">
+        <LabelAndInput1 label="合同额" inputType={NECESSARY}>
           <Row>
             <div style={{width: '70px', marginRight: '15px'}}>
               <Select1 className="small" options={MONEY_UNIT} value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
             </div>
-            <Part>
-              <Input value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
-            </Part>
+            <Input
+              width="200px"
+              value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
           </Row>
         </LabelAndInput1>
         <LabelAndInput1 label="是否成单">

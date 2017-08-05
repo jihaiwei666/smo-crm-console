@@ -6,7 +6,8 @@ export const serviceTypeOptions = [
   {value: '2', text: '招募'},
   {value: '3', text: '呼叫中心'},
 ]
-export const trailPeriodOptions = [
+
+export const trailPhaseOptions = [
   {value: '1', text: '准备'},
   {value: '2', text: '启动'},
   {value: '3', text: '入组'},
