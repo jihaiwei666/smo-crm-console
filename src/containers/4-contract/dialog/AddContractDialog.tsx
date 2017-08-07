@@ -14,6 +14,8 @@ import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import ContractAssociateInfo from './other/ContractAssociateInfo'
 
 interface AddContractDialogProps {
   fetchBD: () => void
@@ -83,8 +85,13 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               <AfterSign/>
 
               <CategoryTitle title="收款"/>
+
               <CategoryTitle title="关联信息"/>
+              <ContractAssociateInfo relationInfo={{}}/>
+
               <CategoryTitle title="备注及附件"/>
+              <RemarkAndAttachment disabled={!this.state.contractId}/>
+
               <CategoryTitle title="操作记录"/>
             </Part>
             <div className="contract-nav">

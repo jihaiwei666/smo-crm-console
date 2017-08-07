@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import classnames from 'classnames'
-import {Row, Part} from 'app-core/layout'
+import {FlexDiv, Part} from 'app-core/layout'
 
 import Label, {LabelProps} from './Label'
 import Input, {InputProps} from '../../components/form/Input'
@@ -21,12 +21,12 @@ class LabelAndInput extends React.Component<LabelAndInputProps> {
   render() {
     const {className, inputType, label, ...otherProps} = this.props
     return (
-      <Row className={classnames('label-and-input', className)}>
+      <FlexDiv className={classnames('label-and-input', className)}>
         <Label inputType={inputType}>{label}</Label>
         <Part>
           <Input {...otherProps as any} name={this.props.label || label}/>
         </Part>
-      </Row>
+      </FlexDiv>
     )
   }
 }

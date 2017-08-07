@@ -22,8 +22,8 @@ import EditSupplier from './supplier/EditSupplier'
 
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
-import RemarkAndAttachment from './part/RemarkAndAttachment'
-import OperationRecord from './part/OperationRecord'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import OperationRecord from '../../common/OperationRecord'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import * as actions from '../client.action'
@@ -166,7 +166,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <AssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment customerId={this.props.customerId}/>
+                  <RemarkAndAttachment disabled={!this.props.customerId}/>
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>

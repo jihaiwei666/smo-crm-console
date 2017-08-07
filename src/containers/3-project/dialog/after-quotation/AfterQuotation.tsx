@@ -6,6 +6,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import DatePicker from 'antd/lib/date-picker'
 import {Row, Part} from 'app-core/layout/'
+import Form from 'app-core/form/Form'
 
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import LabelAndInput from '../../../common/LabelAndInput'
@@ -20,6 +21,7 @@ import Update from '../../../common/Update'
 import {MONEY_UNIT} from '../../project.constant'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import MoneyUnit from '../../../common/MoneyUnit'
 
 interface AfterQuotationProps {
   projectId?: string
@@ -30,6 +32,8 @@ interface AfterQuotationProps {
 
 class AfterQuotation extends React.Component<AfterQuotationProps> {
   state = {
+    valid: false,
+
     serviceChargeUnit: '',
     serviceChargeValue: '',
     contractMoneyUnit: '',
@@ -71,60 +75,56 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
   render() {
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         <LabelAndInput1 label="服务费" inputType={NECESSARY}>
           <Row>
-            <div style={{marginRight: '15px'}}>
-              <Select1
-                className="small" options={MONEY_UNIT}
-                value={this.state.serviceChargeUnit}
-                onChange={v => this.setState({serviceChargeUnit: v})}
-              />
-            </div>
+            <MoneyUnit
+              required={true} name="serviceChargeUnit"
+              value={this.state.serviceChargeUnit} onChange={v => this.setState({serviceChargeUnit: v})}/>
             <Input
-              width="200px"
+              width="200px" required={true} name="serviceChargeValue"
               value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
           </Row>
         </LabelAndInput1>
-        <LabelAndInput1 label="合同额" inputType={NECESSARY}>
+        <LabelAndInput1 className="bb" label="合同额" inputType={NECESSARY}>
           <Row>
-            <div style={{width: '70px', marginRight: '15px'}}>
-              <Select1 className="small" options={MONEY_UNIT} value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
-            </div>
+            <MoneyUnit
+              required={true} name="contractMoneyUnit"
+              value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
             <Input
-              width="200px"
+              width="200px" required={true} name="contractMoneyValue"
               value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
           </Row>
         </LabelAndInput1>
-        <LabelAndInput1 label="是否成单">
+        <LabelAndInput1 className="bb" label="是否成单" inputType={IMPORTANT}>
           <Radio.Group value={this.state.is_A_Order} onChange={v => this.setState({is_A_Order: v})}>
             <Radio value="1">是</Radio>
             <Radio value="2">否</Radio>
           </Radio.Group>
         </LabelAndInput1>
 
-        <LabelAndInput label="预估PM工时" inputType={NECESSARY}
+        <LabelAndInput label="预估PM工时" inputType={IMPORTANT}
                        value={this.state.pmWorkingHours} onChange={v => this.setState({pmWorkingHours: v})}
         />
-        <LabelAndInput label="预估CRC工时" inputType={NECESSARY}
+        <LabelAndInput label="预估CRC工时" inputType={IMPORTANT}
                        value={this.state.crcWorkingHours} onChange={v => this.setState({crcWorkingHours: v})}
         />
-        <LabelAndInput label="预计介入时间" inputType={NECESSARY}
+        <LabelAndInput label="预计介入时间" inputType={IMPORTANT}
                        value={this.state.involveYearMonth} onChange={v => this.setState({involveYearMonth: v})}
         />
-        <LabelAndInput1 label="现场竞标时间" inputType={NECESSARY}>
+        <LabelAndInput1 className="bb" label="现场竞标时间">
           <DatePicker
             value={this.state.bidDate} onChange={v => this.setState({bidDate: v})}
           />
         </LabelAndInput1>
 
-        <LabelAndInput1 label="标书语言">
+        <LabelAndInput1 className="bb" label="标书语言">
           <Radio.Group value={this.state.bookLanguage} onChange={v => this.setState({bookLanguage: v})}>
             <Radio value="1">中文</Radio>
             <Radio value="2">English</Radio>
           </Radio.Group>
         </LabelAndInput1>
-        <LabelAndInput1 label="竞标PPT语言">
+        <LabelAndInput1 className="bb" label="竞标PPT语言">
           <Radio.Group value={this.state.pptLanguage} onChange={v => this.setState({pptLanguage: v})}>
             <Radio value="1">中文</Radio>
             <Radio value="2">English</Radio>
@@ -140,15 +140,15 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
         {
           this.props.afterQuotationId && (
-            <Update onClick={this.save}/>
+            <Update onClick={this.save} disabled={!this.state.valid}/>
           )
         }
         {
           !this.props.afterQuotationId && (
-            <Save disabled={!this.props.projectId} onClick={this.save}/>
+            <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.save}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }

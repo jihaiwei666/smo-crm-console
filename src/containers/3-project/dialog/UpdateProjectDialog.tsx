@@ -12,10 +12,13 @@ import BD_BDPC from './base/BD_BDPC'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
-import BeforeQuotation from './base/BeforeQuotation'
-import AfterQuotation from './base/AfterQuotation'
+import BeforeQuotation from './before-quotation/BeforeQuotation'
+import AfterQuotation from './after-quotation/AfterQuotation'
 
 import {fetchProjectDetail, updateBdAndBdpc} from '../project.action'
+import OperationRecord from '../../common/OperationRecord'
+import ProjectAssociateInfo from './base/ProjectAssociateInfo'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 
 interface UpdateProjectDialogProps {
   projectId: string
@@ -63,12 +66,14 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 
   render() {
     const {loaded, data} = this.props.projectDetail
-    let baseInfo = null, initBdAndBdpc = null, initBeforeQuotation = null
+    let baseInfo = null, initBdAndBdpc = null, initBeforeQuotation = null, relationInfo = null, operationRecordList = []
     let beforeQuotationId = ''
     if (loaded) {
       baseInfo = data.baseInfo
       initBdAndBdpc = data.bdAndBdpc
       initBeforeQuotation = data.beforeQuotation
+      relationInfo = data.relationInfo
+      operationRecordList = data.operationRecordList
       if (initBeforeQuotation) {
         beforeQuotationId = initBeforeQuotation.beforeQuotationId
       }
@@ -115,10 +120,14 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
                   <AfterQuotation projectId={this.props.projectId}/>
 
                   <CategoryTitle title="关联信息"/>
+                  <ProjectAssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
+                  <RemarkAndAttachment disabled={!this.props.projectId}/>
 
                   <CategoryTitle title="操作记录"/>
+                  <OperationRecord operationRecordList={operationRecordList}/>
+
                 </Part>
                 <div className="project-nav">
                   <ul className="nav-category-group">

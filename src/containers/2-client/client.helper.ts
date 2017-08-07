@@ -4,6 +4,7 @@
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleRfiServerData} from './dialog/rfi/rfi.helper'
 import {getDateStr} from '../../core/utils/dateUtils'
+import {handleOperationList} from '../common/common.helper'
 
 export function handleClientList(serverData) {
   return {
@@ -105,28 +106,6 @@ export function handleClientInfo(clientData) {
         projectName: item['project_info_name']
       }))
     },
-    operationRecordList: operationRecordList.map(item => ({
-      date: getDateStr(item['operation_time']),
-      type: item['operation_type'],
-      module: item['operation_model'],
-      email: item['operation_person'],
-      content: item['operation_content'],
-    }))
+    operationRecordList: handleOperationList(operationRecordList)
   }
-}
-
-export function getOperationType(type) {
-  switch (type) {
-    case 1:
-      return '删除'
-    case 2:
-      return '新增'
-    case 3:
-      return '修改'
-    case 4:
-      return '上传'
-    case 5:
-      return '下载'
-  }
-  return '未知操作'
 }

@@ -1,3 +1,6 @@
+import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
+import {handleOperationList} from '../common/common.helper'
+
 export function handleContractList(data) {
   return {
     total: data['totalCount'] || 0,
@@ -16,6 +19,8 @@ export function handleContractDetail(data) {
   const baseInfo = data['contract_info']
   const bdAnBdpc = data['bdAndBdpc']
   const beforeSign = data['contract_before_signed_info'] || {}
+  const relationInfo = data['contractRelation_info'] || {}
+  const operationList = data['operations'].list || []
 
   return {
     bdAnBdpc: {
@@ -35,7 +40,19 @@ export function handleContractDetail(data) {
       contractType: beforeSign['contract_type'],
       remark: beforeSign['contract_type_remark'],
       templateType: beforeSign['contract_template'],
-    }
+    },
+    afterSign: handleAfterSign(data['contract_after_signed_info']),
+    relationInfo: {
+      projects: relationInfo['relationProjects'].map(item => ({
+        projectId: item['project_info_id'],
+        projectName: item['project_info_name']
+      })),
+      customers: relationInfo['relationCustomers'].map(item => ({
+        customerId: item['customer_info_id'],
+        customerName: item['customer_name']
+      }))
+    },
+    operationRecordList: handleOperationList(operationList)
   }
 }
 

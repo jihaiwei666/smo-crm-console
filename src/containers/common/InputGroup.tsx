@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import classnames from 'classnames'
-import {Row, Part} from 'app-core/layout'
+import {FlexDiv, Part} from 'app-core/layout'
 
 import Label, {LabelProps} from './Label'
 
@@ -15,12 +15,12 @@ interface InputGroupProps extends LabelProps {
 class InputGroup extends React.Component<InputGroupProps> {
   render() {
     return (
-      <Row className={classnames('input-group', this.props.className)}>
+      <FlexDiv className={classnames('input-group', this.props.className)}>
         <Label inputType={this.props.inputType}>{this.props.label}</Label>
         <Part className="bl pl10">
           {this.props.children}
         </Part>
-      </Row>
+      </FlexDiv>
     )
   }
 }

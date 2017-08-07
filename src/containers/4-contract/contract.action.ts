@@ -126,3 +126,23 @@ export function updateAfterSign(options) {
     }
   }
 }
+
+export function fetchCollectionList(contractId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_COLLECTION_LIST,
+      http: () => _get(urlPrefix + `/v1/getCollectionList/${contractId}`),
+      handleResponse: handlePartAfterSignInfo
+    }
+  }
+}
+
+export function updateCollection(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.UPDATE_COLLECTION,
+      http: () => _post(urlPrefix + '/v1/updateCollection', {body: options}),
+      handleResponse: handlePartAfterSignInfo
+    }
+  }
+}

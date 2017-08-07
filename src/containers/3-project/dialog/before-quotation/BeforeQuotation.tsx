@@ -41,6 +41,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     bidParty: '',
     cro: '',
     projectCategory: '',
+    categoryRemark: '',
     testPeriod: '',
     planCode: '',
     researchProduct: '',
@@ -55,33 +56,55 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
 
   }
 
-  save = () => {
-    if (this.props.beforeQuotationId) {
+  add = () => {
+    this.props.addBeforeQuotation({
+      "projectBeforeOffer": {
+        "project_info_id": this.props.projectId,
+        "indication": this.state.indication,
+        "service_type": this.state.serviceType.join(','),
+        "center_number": this.state.centerNumber,
+        "group_number": this.state.enrollmentCount,
+        "group_stage": this.state.enrollmentPeriod,
+        "bidders": this.state.bidParty,
+        "cro": this.state.cro,
+        "project_type": this.state.projectCategory,
+        "test_stage": this.state.testPeriod,
+        "program_number": this.state.planCode,
+        "research_product": this.state.researchProduct,
+        "therapeutic_field": this.state.treatDomain,
+        "screening_number": this.state.filterCount,
+        "possibility": this.state.possibility,
+        "is_bid": this.state.isArrangeBid,
+        "remark": this.state.remark,
+      },
+      "projectBeforeOfferPmList": []
+    })
+  }
 
-    } else {
-      this.props.addBeforeQuotation({
-        "projectBeforeOffer": {
-          "project_info_id": this.props.projectId,
-          "indication": this.state.indication,
-          "service_type": 1,
-          "center_number": this.state.centerNumber,
-          "group_number": this.state.enrollmentCount,
-          "group_stage": this.state.enrollmentPeriod,
-          "bidders": this.state.bidParty,
-          "cro": this.state.cro,
-          "project_type": this.state.projectCategory,
-          "test_stage": this.state.testPeriod,
-          "program_number": this.state.planCode,
-          "research_product": this.state.researchProduct,
-          "therapeutic_field": this.state.treatDomain,
-          "screening_number": this.state.filterCount,
-          "possibility": this.state.possibility,
-          "is_bid": this.state.isArrangeBid,
-          "remark": this.state.remark,
-        },
-        "projectBeforeOfferPmList": []
-      })
-    }
+  update = () => {
+    this.props.updateBeforeQuotation({
+      "projectBeforeOffer": {
+        "before_offer_id": this.props.beforeQuotationId,
+        "project_info_id": this.props.projectId,
+        "indication": this.state.indication,
+        "service_type": this.state.serviceType.join(','),
+        "center_number": this.state.centerNumber,
+        "group_number": this.state.enrollmentCount,
+        "group_stage": this.state.enrollmentPeriod,
+        "bidders": this.state.bidParty,
+        "cro": this.state.cro,
+        "project_type": this.state.projectCategory,
+        "test_stage": this.state.testPeriod,
+        "program_number": this.state.planCode,
+        "research_product": this.state.researchProduct,
+        "therapeutic_field": this.state.treatDomain,
+        "screening_number": this.state.filterCount,
+        "possibility": this.state.possibility,
+        "is_bid": this.state.isArrangeBid,
+        "remark": this.state.remark,
+      },
+      "projectBeforeOfferPmList": []
+    })
   }
 
   componentWillMount() {
@@ -141,7 +164,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
             <Radio value="4">非干预</Radio>
             <div className="pt5 mt5 bt">
               <Radio value="5">其它，请备注：</Radio>
-              <Input width="200px"/>
+              <Input
+                width="200px" disabled={this.state.projectCategory != '5'}
+                value={this.state.categoryRemark} onChange={v => this.setState({categoryRemark: v})}/>
             </div>
           </Radio.Group>
         </LabelAndInput1>
@@ -175,7 +200,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
                        value={this.state.bidSupportPM} onChange={v => this.setState({bidSupportPM: v})}
         />
         <LabelAndInput1 label="备注">
-          <TextArea/>
+          <TextArea
+            value={this.state.remark} onChange={v => this.setState({remark: v})}
+          />
         </LabelAndInput1>
 
         <LabelAndInput1 label="方案附件">
@@ -190,12 +217,12 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </div>
         {
           this.props.beforeQuotationId && (
-            <Update disabled={!this.state.valid}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
           !this.props.beforeQuotationId && (
-            <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.save}/>
+            <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.add}/>
           )
         }
       </Form>

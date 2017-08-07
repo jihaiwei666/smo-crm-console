@@ -18,8 +18,8 @@ import CDA from './cda/CDA'
 import AddSupplier from './supplier/AddSupplier'
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
-import RemarkAndAttachment from './part/RemarkAndAttachment'
-import OperationRecord from './part/OperationRecord'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import OperationRecord from '../../common/OperationRecord'
 
 import {addCustomer, updateCustomer, updateBdAndBdpc} from '../client.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
@@ -138,7 +138,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <AssociateInfo/>
 
               <CategoryTitle title="备注及附件"/>
-              <RemarkAndAttachment customerId={this.state.customerId}/>
+              <RemarkAndAttachment disabled={!this.state.customerId}/>
 
               <CategoryTitle title="操作记录"/>
               <OperationRecord operationRecordList={[]}/>

@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DatePicker from 'antd/lib/date-picker'
-import {Row, Part} from 'app-core/layout/'
+import {Row} from 'app-core/layout/'
 import Select1 from 'app-core/common/Select1'
 import Form from 'app-core/form/Form'
 
+import DatePicker from '../../../../components/form/DatePicker'
 import InputGroup from '../../../common/InputGroup'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
@@ -16,7 +16,11 @@ import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import Input from '../../../../components/form/Input'
 import MoneyUnit from '../../../common/MoneyUnit'
 import Radio from '../../../../components/form/radio/Radio'
-import Button from '../../../../components/button/Button'
+import NodeDate from './NodeDate'
+import Progress from './Progress'
+import ContractSignatory from './ContractSignatory'
+import PM from './PM'
+import CoordinateBD from './CoordinateBD'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
@@ -29,6 +33,8 @@ interface AfterSignProps {
   afterSignId?: string
   fetchPartAfterSignInfoFromProject: (projectId) => void
   addAfterSign: (options) => void
+  initAfterSign: any
+  updateAfterSign: (options) => void
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
@@ -62,6 +68,12 @@ class AfterSign extends React.Component<AfterSignProps> {
     pmWorkingHours: '',
     crcWorkingHours: '',
     kpi: null,
+
+    nodeDateList: [],
+    progressList: [],
+    signatoryList: [],
+    pmList: [],
+    bdList: []
   }
 
   add = () => {
@@ -88,7 +100,6 @@ class AfterSign extends React.Component<AfterSignProps> {
         "billing_way": this.state.chargingType,
         "billing_way_remark": this.state.remark,
         "center_name": this.state.centerName,
-        // "synergy_bd"
         "research_product": this.state.researchProduct,
         "test_stage": this.state.trailPeriod,
         "contract_deadline": this.state.contractDeadLine,
@@ -97,16 +108,101 @@ class AfterSign extends React.Component<AfterSignProps> {
         "crc_contract_working_hours": this.state.crcWorkingHours,
         "kpi": this.state.kpi,
       },
-      "contractSignedList": [],
-      "pmList": [],
+      "contractSignedList": this.state.signatoryList.map(item => ({
+        "value": item.signatory,
+        "type": 1
+      })),
+      "pmList": this.state.pmList.map(item => ({
+        "value": item.pm,
+        "type": 3
+      })),
       "bdList": [],
       "fileList": [],
-      "paymentNodeList": [],
+      "paymentNodeList": this._getPaymentNode()
     })
   }
 
+  update = () => {
+    this.props.updateAfterSign({
+      "contractAfterSignedVo": {
+        "after_signed_id": this.props.afterSignId,
+        "contract_info_id": this.props.contractId,
+        "project_indication": this.state.indication,
+        "project_service_type": this.state.serviceTypes.join(','),
+        "project_center_number": this.state.centerNumber,
+        "project_group_number": this.state.enrollmentCount,
+        "project_service_stage": this.state.servicePeriod,
+        "cost_detail_crc_service_fee_unit": this.state.crcMoneyUnit,
+        "cost_detail_crc_service_fee_value": this.state.crcMoneyValue,
+        "cost_detail_pm_service_fee_unit": this.state.pmServeFeeUnit,
+        "cost_detail_pm_service_fee_value": this.state.pmServeFeeValue,
+        "cost_detail_acting_mat_fee": this.state.replacementFee,
+        "cost_detail_taxes_fee": this.state.taxes,
+        "cost_detail_taxes_rate": this.state.taxRate,
+        "payment_node": this.state.paymentNode,
+        "payer": this.state.payer,
+        "contract_award_date": this.state.contractSignDate,
+        "effective_date": this.state.takeEffectDate,
+        "end_date": this.state.endDate,
+        "billing_way": this.state.chargingType,
+        "billing_way_remark": this.state.remark,
+        "center_name": this.state.centerName,
+        "research_product": this.state.researchProduct,
+        "test_stage": this.state.trailPeriod,
+        "contract_deadline": this.state.contractDeadLine,
+        "test_phase": this.state.trailPhase,
+        "pm_contract_working_hours": this.state.pmWorkingHours,
+        "crc_contract_working_hours": this.state.crcWorkingHours,
+        "kpi": this.state.kpi,
+      },
+      "contractSignedList": this.state.signatoryList.map(item => ({
+        "value": item.signatory,
+        "type": 1,
+        "sign": item.crud
+      })),
+      "pmList": this.state.pmList.map(item => ({
+        "after_signed_id": this.props.afterSignId,
+        "value": item.pm,
+        "type": 3,
+        "sign": item.crud
+      })),
+      "bdList": this.state.bdList.map(item => ({
+        "after_signed_id": this.props.afterSignId,
+        "value": item.bd,
+        "type": 2,
+        "sign": item.crud
+      })),
+      "fileList": [],
+      "paymentNodeList": this._getPaymentNode()
+    })
+  }
+
+  _getPaymentNode() {
+    if (this.state.paymentNode == '1') {
+      return this.state.nodeDateList.map(item => ({
+        "after_signed_id": this.props.afterSignId,
+        "payment_node_date": item.nodeDate,
+        "sign": item.crud
+      }))
+    } else {
+      return this.state.progressList.map(item => ({
+        "after_signed_id": this.props.afterSignId,
+        "payment_node_key": item.node,
+        "payment_node_value": item.quota,
+        "payment_node_estimated_date": item.date,
+        "sign": item.crud
+      }))
+    }
+  }
+
+  componentWillMount() {
+    if (this.props.initAfterSign) {
+      this.setState(this.props.initAfterSign)
+    }
+  }
+
   componentDidMount() {
-    if (this.props.projectId) {
+    if (this.props.projectId && !this.props.afterSignId) {
       this.props.fetchPartAfterSignInfoFromProject(this.props.projectId)
     }
   }
@@ -179,29 +275,12 @@ class AfterSign extends React.Component<AfterSignProps> {
             </Radio.Group>
             {
               this.state.paymentNode == '1' && (
-                <div>
-                  <div>
-                    <LabelAndInput1 label="节点日期">
-                      <DatePicker value={null}/>
-                      <Button className="ml10 small danger">删除</Button>
-                    </LabelAndInput1>
-                  </div>
-                  <Button className="small">添加</Button>
-                </div>
+                <NodeDate list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}/>
               )
             }
             {
               this.state.paymentNode == '2' && (
-                <div className="pb5 pt5 bb bt">
-                  <LabelAndInput1 label="节点">
-                    <Select1/>
-                  </LabelAndInput1>
-                  <LabelAndInput label="指标"/>
-                  <LabelAndInput1 label="预估日期">
-                    <DatePicker value={null}/>
-                  </LabelAndInput1>
-                  <Button className="small danger">删除</Button>
-                </div>
+                <Progress showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
               )
             }
           </InputGroup>
@@ -209,7 +288,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         </div>
 
         <LabelAndInput1 className="bb" label="合同签署方" inputType={NECESSARY}>
-          <Button className="small">添加</Button>
+          <ContractSignatory list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -218,11 +297,17 @@ class AfterSign extends React.Component<AfterSignProps> {
           value={this.state.payer} onChange={v => this.setState({payer: v})}
         />
 
-        <LabelAndInput1 className="bb" label="合同签署日期">
-          <DatePicker value={this.state.contractSignDate} onChange={v => this.setState({contractSignDate: v})}/>
+        <LabelAndInput1 className="bb" label="合同签署日期" inputType={NECESSARY}>
+          <DatePicker
+            required={true} name="contractSignDate"
+            value={this.state.contractSignDate} onChange={v => this.setState({contractSignDate: v})}
+          />
         </LabelAndInput1>
-        <LabelAndInput1 className="bb" label="生效日期">
-          <DatePicker value={this.state.takeEffectDate} onChange={v => this.setState({takeEffectDate: v})}/>
+        <LabelAndInput1 className="bb" label="生效日期" inputType={NECESSARY}>
+          <DatePicker
+            required={true} name="takeEffectDate"
+            value={this.state.takeEffectDate} onChange={v => this.setState({takeEffectDate: v})}
+          />
         </LabelAndInput1>
         <LabelAndInput
           className="bb" label="终止日期" inputType={NECESSARY}
@@ -251,7 +336,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         </LabelAndInput1>
 
         <LabelAndInput1 className="bb" label="PM" inputType={IMPORTANT}>
-          <Button className="small">添加</Button>
+          <PM list={this.state.pmList} onChange={list => this.setState({pmList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -259,7 +344,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           value={this.state.centerName} onChange={v => this.setState({centerName: v})}
         />
         <LabelAndInput1 className="bb" label="协同BD" inputType={IMPORTANT}>
-          <Button className="small">添加</Button>
+          <CoordinateBD list={this.state.bdList} onChange={list => this.setState({bdList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -300,7 +385,7 @@ class AfterSign extends React.Component<AfterSignProps> {
 
         {
           this.props.afterSignId && (
-            <Update disabled={!this.state.valid}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
@@ -316,7 +401,9 @@ class AfterSign extends React.Component<AfterSignProps> {
 function mapStateToProps(state, props) {
   return {
     contractId: props.contractId,
-    projectId: props.projectId
+    projectId: props.projectId,
+    afterSignId: props.afterSignId,
+    initAfterSign: props.initAfterSign,
   }
 }
 

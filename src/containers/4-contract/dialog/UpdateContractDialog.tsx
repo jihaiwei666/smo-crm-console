@@ -13,10 +13,14 @@ import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 import UpdateContractBasicInfo from './basic-info/UpdateContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
+import MakeCollection from './make-collections/MakeCollection'
 
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import {fetchContractDetail, updateBdAndBdpc} from '../contract.action'
 import Data from '../../common/interface/Data'
+import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import {fetchContractDetail, updateBdAndBdpc, fetchCollectionList, updateCollection} from '../contract.action'
+import ContractAssociateInfo from './other/ContractAssociateInfo'
+import OperationRecord from '../../common/OperationRecord'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -31,12 +35,19 @@ interface UpdateContractDialogProps {
   updateBdAndBdpc: (options) => void
   updateBdAndBdpcSuccess: boolean
 
+  addAfterSignSuccess: boolean
+  updateAfterSignSuccess: boolean
+
+  fetchCollectionList: (contractId) => void
+  updateCollection: (options) => void
+
   onExited: () => void
 }
 
 class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   state = {
     show: true,
+    collectionList: []
   }
 
   close = () => {
@@ -56,24 +67,35 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: UpdateContractDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-      this.close()
-    }*/
+    if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
+      this.props.fetchCollectionList(this.props.contractId)
+    }
+    if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
+      this.props.fetchCollectionList(this.props.contractId)
+    }
   }
 
   render() {
-    let baseInfo: any = {}, bdAnBdpc = {}, beforeSign: any = {}
-    let projectId = '', beforeSignId = ''
+    let baseInfo = null, bdAnBdpc = null, beforeSign = null, afterSign = null, relationInfo = null, operationRecordList = []
+    let projectId = '', beforeSignId = '', afterSignId = ''
+
     const {loaded, data} = this.props.contractDetail
     if (loaded) {
       baseInfo = data.baseInfo
       projectId = baseInfo.projectId
       bdAnBdpc = data.bdAnBdpc
       beforeSign = data.beforeSign
+      afterSign = data.afterSign
+      relationInfo = data.relationInfo
+      operationRecordList = data.operationRecordList
       if (beforeSign) {
         beforeSignId = beforeSign.beforeSignId
       }
+      if (afterSign) {
+        afterSignId = afterSign.afterSignId
+      }
     }
+
     return (
       <Modal
         style={{width: '60%'}} contentComponent={FullDialogContent}
@@ -116,12 +138,24 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   <AfterSign
                     contractId={this.props.contractId}
                     projectId={projectId}
+                    afterSignId={afterSignId}
+                    initAfterSign={afterSign}
                   />
 
                   <CategoryTitle title="收款"/>
+                  <MakeCollection
+                    collectionId=""
+                    updateCollection={this.props.updateCollection}
+                  />
+
                   <CategoryTitle title="关联信息"/>
+                  <ContractAssociateInfo relationInfo={relationInfo}/>
+
                   <CategoryTitle title="备注及附件"/>
+                  <RemarkAndAttachment disabled={!this.props.contractId}/>
+
                   <CategoryTitle title="操作记录"/>
+                  <OperationRecord operationRecordList={operationRecordList}/>
                 </Part>
                 <div className="contract-nav">
                   <ul className="nav-category-group">
@@ -153,5 +187,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC, fetchContractDetail, updateBdAndBdpc
+  fetchBD, fetchBDPC, updateBdAndBdpc,
+  fetchContractDetail,
+  fetchCollectionList, updateCollection
 })(UpdateContractDialog)

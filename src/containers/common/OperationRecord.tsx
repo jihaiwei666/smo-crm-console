@@ -3,7 +3,7 @@
  */
 import React from 'react'
 
-import {getOperationType} from '../../client.helper'
+import {getOperationType} from './common.helper'
 
 interface OperationRecordProps {
   operationRecordList: Record[]
