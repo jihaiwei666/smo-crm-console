@@ -15,13 +15,16 @@ import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
 
 import Data from '../../common/interface/Data'
-import {fetchUserCategoryInfo, fetchRelevantItemList} from '../todo-remind.action'
+import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
+import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
+import {remindType} from '../todo-remind.constant'
 
 interface SendRemindDialogProps {
   fetchUserCategoryInfo: () => void
   fetchRelevantItemList: (category: string, searchKey: string) => void
+  relevantItemList: Data<any>
   userCategory: Data<any[]>
-  sendRemind: () => void
+  sendRemind: (options) => void
   sendRemindSuccess: boolean
   onExited: () => void
 }
@@ -34,16 +37,27 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
     receiver: '',
     content: '',
-    isSystemMessageRemind: false,
-    isEmailRemind: false,
+    remindType: [],
+    relevantItem: ''
   }
+  text = ''
 
   close = () => {
     this.setState({show: false})
   }
 
   sendRemind = () => {
+    this.props.sendRemind({
+      "recipient": this.state.receiver,
+      "content": this.state.receiver,
+      "reminder_type": 1,
+      "relation_id": this.state.relevantItem,
+    })
+  }
 
+  handleRelevantItemChange = (value, text) => {
+    this.setState({relevantItem: value})
+    this.text = text
   }
 
   componentDidMount() {
@@ -63,6 +77,8 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           this.state.showRelevantItemDialog && (
             <RelevantItemDialog
               fetchRelevantItemList={this.props.fetchRelevantItemList}
+              relevantItemList={this.props.relevantItemList}
+              onSelect={this.handleRelevantItemChange}
               onExited={() => this.setState({showRelevantItemDialog: false})}/>
           )
         }
@@ -101,19 +117,28 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           <FlexDiv>
             <Part>提醒方式：</Part>
             <Part weight={2}>
-              <CheckBox checked={this.state.isSystemMessageRemind} onChange={checked => this.setState({isSystemMessageRemind: checked})}>
-                系统消息
-              </CheckBox>
-              <CheckBox checked={this.state.isEmailRemind} onChange={checked => this.setState({isEmailRemind: checked})}>
-                邮件
-              </CheckBox>
+              <CheckGroup options={remindType} value={this.state.remindType} onChange={v => this.setState({remindType: v})}>
+              </CheckGroup>
             </Part>
           </FlexDiv>
           <Line/>
           <FlexDiv>
             <Part>关联项：</Part>
             <Part weight={2}>
-              <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
+
+              {
+                !this.state.relevantItem && (
+                  <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
+                )
+              }
+              {
+                this.state.relevantItem && (
+                  <div>
+                    <span className="mr10">{this.text}</span>
+                    <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>修改</Button>
+                  </div>
+                )
+              }
             </Part>
           </FlexDiv>
           <Line/>
@@ -131,10 +156,11 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
 function mapStateToProps(state) {
   return {
-    userCategory: state.userCategory
+    userCategory: state.userCategory,
+    relevantItemList: state.relevantItemList
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchUserCategoryInfo, fetchRelevantItemList
+  fetchUserCategoryInfo, fetchRelevantItemList, sendRemind
 })(SendRemindDialog)

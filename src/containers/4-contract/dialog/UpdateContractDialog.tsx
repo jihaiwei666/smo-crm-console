@@ -21,6 +21,7 @@ import {fetchContractDetail, updateBdAndBdpc, fetchCollectionList, updateCollect
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import CollectionList from './make-collections/CollectionList'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -71,13 +72,13 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       this.props.fetchCollectionList(this.props.contractId)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
-      console.log(1)
       this.props.fetchCollectionList(this.props.contractId)
     }
   }
 
   render() {
     let baseInfo = null, bdAnBdpc = null, beforeSign = null, afterSign = null, relationInfo = null, operationRecordList = []
+    let collectionList = []
     let projectId = '', beforeSignId = '', afterSignId = ''
 
     const {loaded, data} = this.props.contractDetail
@@ -89,6 +90,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       afterSign = data.afterSign
       relationInfo = data.relationInfo
       operationRecordList = data.operationRecordList
+      collectionList = data.collectionList
       if (beforeSign) {
         beforeSignId = beforeSign.beforeSignId
       }
@@ -144,10 +146,9 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   />
 
                   <CategoryTitle title="收款"/>
-                  <MakeCollection
-                    collectionId=""
-                    updateCollection={this.props.updateCollection}
-                  />
+                  <CollectionList
+                    collectionList={collectionList}
+                    updateCollection={this.props.updateCollection}/>
 
                   <CategoryTitle title="关联信息"/>
                   <ContractAssociateInfo relationInfo={relationInfo}/>

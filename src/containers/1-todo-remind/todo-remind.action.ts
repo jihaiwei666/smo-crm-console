@@ -4,7 +4,7 @@
 import {_get, _post} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {TODO_REMIND} from '../../core/constants/types'
-import {adaptTodoRemindList, handleUserCategoryInfo} from './todo-remind.helper'
+import {adaptTodoRemindList, handleUserCategoryInfo, handleRelevantItemList} from './todo-remind.helper'
 
 const urlPrefix = '/todoReminder'
 
@@ -37,7 +37,16 @@ export function fetchRelevantItemList(category, searchKey) {
     [THREE_PHASE]: {
       type: TODO_REMIND.FETCH_RELEVANT_ITEM_LIST,
       http: () => _post(urlPrefix + '/v1/getTodoRelationByType', {body: options}),
-      handleResponse: () => null
+      handleResponse: handleRelevantItemList
+    }
+  }
+}
+
+export function sendRemind(options) {
+  return {
+    [THREE_PHASE]: {
+      type: TODO_REMIND.SEND_REMIND,
+      http: () => _post(urlPrefix + '/v1/addTodoReminder', {body: options})
     }
   }
 }

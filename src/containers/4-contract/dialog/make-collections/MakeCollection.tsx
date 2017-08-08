@@ -11,10 +11,11 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
-import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 
 interface MakeCollectionProps {
   collectionId: string
+  initCollection: any
   updateCollection: (options) => void
 }
 
@@ -37,9 +38,9 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     makeCollectionsValue: ''
   }
 
-  add = () => {
+  update = () => {
     this.props.updateCollection({
-      "subsidiary_id": this.props.collectionId,
+      "collection_id": this.props.collectionId,
       "receivables_amount": this.state.collectionMoney,
       "invoice_content_po": this.state.po,
       "invoice_content_title": this.state.invoiceTitle,
@@ -52,9 +53,15 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
       "biling_date": this.state.invoiceDate,
       "remind_reminders_date": this.state.pressForMoneyDate,
       "payment_date": this.state.makeCollectionsDate,
-      "payment_money": this.state.collectionMoney,
+      "payment_money": this.state.makeCollectionsValue,
       "payment_node_date": this.state.nodeDate,
     })
+  }
+
+  componentWillMount() {
+    if (this.props.initCollection) {
+      this.setState(this.props.initCollection)
+    }
   }
 
   render() {
@@ -142,7 +149,7 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
             />
           </Form>
         </Row>
-        <Save/>
+        <Update onClick={this.update}/>
       </div>
     )
   }

@@ -25,3 +25,11 @@ export function handleUserCategoryInfo(data) {
     }))
   }))
 }
+
+export function handleRelevantItemList(data) {
+  return data.map((relevantItem, index) => ({
+    id: relevantItem['relation_id'],
+    name: relevantItem['relation_name'],
+    hospital: 'xx',
+  }))
+}

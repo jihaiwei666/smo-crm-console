@@ -39,6 +39,7 @@ export default combineReducers({
 
   todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
   userCategory: wrapReducerState(data(TODO_REMIND.FETCH_USER_CATEGORY_INFO)),
+  relevantItemList: wrapReducerState(data(TODO_REMIND.FETCH_RELEVANT_ITEM_LIST)),
 
   client: wrapReducerState(client),
   clientList: wrapReducerState(data(CLIENTS.FETCH_LIST)),

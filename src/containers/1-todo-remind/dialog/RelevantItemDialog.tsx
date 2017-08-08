@@ -3,17 +3,20 @@
  */
 import React from 'react'
 import Modal from 'app-core/modal'
-import {FlexDiv, Part, Line} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
-import Confirm from 'app-core/common/Confirm'
+import Spinner from 'app-core/common/Spinner'
+import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
-import {LimitInput} from 'app-core/form'
 import {category} from '../todo-remind.constant'
 import Button from '../../../components/button/Button'
 import Input from '../../../components/form/Input'
+import Data from '../../common/interface/Data'
+import Radio from '../../../components/form/radio/Radio'
 
 interface RelevantItemDialogProps {
   fetchRelevantItemList: (category: string, searchKey: string) => void
+  relevantItemList: Data<any[]>
+  onSelect: (value, text) => void
   onExited: () => void
 }
 
@@ -21,23 +24,29 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
   state = {
     show: true,
     category: '',
+    relevantItem: ''
   }
 
   close = () => {
     this.setState({show: false})
   }
 
+  onSelect = () => {
+    let item = this.props.relevantItemList.data.find(d => d.id == this.state.relevantItem)
+    let text = item.name + item.hospital
+    this.props.onSelect(this.state.relevantItem, text)
+    this.close()
+  }
+
   componentDidMount() {
     this.props.fetchRelevantItemList('1', '')
   }
 
-  componentWillReceiveProps(nextProps: RelevantItemDialogProps) {
-
-  }
-
   render() {
+    const {loaded, data} = this.props.relevantItemList
     return (
-      <Modal style={{width: '450px', marginTop: '120px'}} show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+      <Modal style={{width: '450px'}}
+             show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         <Modal.Header closeButton={true}>
           <Modal.Title>插入关联项</Modal.Title>
         </Modal.Header>
@@ -59,9 +68,31 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
               <Button className="">搜索</Button>
             </div>
           </div>
+          <div className="relevant-item-list">
+            {
+              !loaded && (
+                <Spinner/>
+              )
+            }
+            {
+              loaded && (
+                <Radio.Group value={this.state.relevantItem} onChange={v => this.setState({relevantItem: v})}>
+                  {
+                    data.map(item => {
+                      return (
+                        <div key={item.id} className="m10">
+                          <Radio value={item.id}>{item.name} ( {item.hospital} ) </Radio>
+                        </div>
+                      )
+                    })
+                  }
+                </Radio.Group>
+              )
+            }
+          </div>
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose onCancel={this.close} onConfirm={() => null}/>
+          <ConfirmOrClose onCancel={this.close} onConfirm={this.onSelect} disabled={!this.state.relevantItem}/>
         </Modal.Footer>
       </Modal>
     )

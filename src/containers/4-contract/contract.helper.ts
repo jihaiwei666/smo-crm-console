@@ -1,5 +1,6 @@
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 import {handleOperationList} from '../common/common.helper'
+import {handleCollection} from './dialog/make-collections/make-collection.helper'
 
 export function handleContractList(data) {
   return {
@@ -21,6 +22,7 @@ export function handleContractDetail(data) {
   const beforeSign = data['contract_before_signed_info'] || {}
   const relationInfo = data['contractRelation_info'] || {}
   const operationList = data['operations'].list || []
+  const collectionList = data['collection_info'] || []
 
   return {
     bdAnBdpc: {
@@ -42,6 +44,7 @@ export function handleContractDetail(data) {
       templateType: beforeSign['contract_template'],
     },
     afterSign: handleAfterSign(data['contract_after_signed_info']),
+    collectionList: handleCollection(collectionList),
     relationInfo: {
       projects: relationInfo['relationProjects'].map(item => ({
         projectId: item['project_info_id'],

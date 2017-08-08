@@ -12,3 +12,8 @@ export const category = [
   {value: relevantType.CLIENT, text: '客户'},
   {value: relevantType.CONTRACT, text: '合同'},
 ]
+
+export const remindType = [
+  {value: '1', text: '系统消息'},
+  {value: '2', text: '邮件'},
+]
