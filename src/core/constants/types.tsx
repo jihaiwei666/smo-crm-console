@@ -17,6 +17,7 @@ export const APP = {
 export const TODO_REMIND = {
   FETCH_LIST: null,
   FETCH_USER_CATEGORY_INFO: null,
+  FETCH_RELEVANT_ITEM_LIST: null,
 
 }
 
@@ -107,8 +108,9 @@ export const ACCOUNT_MANAGE = {
 }
 
 generatorValueFromKey('APP', APP)
+generatorValueFromKey('TODO_REMIND', TODO_REMIND)
 generatorValueFromKey('PROJECT', PROJECT)
 generatorValueFromKey('CLIENTS', CLIENTS)
 generatorValueFromKey('CONTRACT', CONTRACT)
-
+generatorValueFromKey('RECYCLE_BIN', RECYCLE_BIN)
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

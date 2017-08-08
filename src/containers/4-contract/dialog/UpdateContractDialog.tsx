@@ -71,6 +71,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       this.props.fetchCollectionList(this.props.contractId)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
+      console.log(1)
       this.props.fetchCollectionList(this.props.contractId)
     }
   }
@@ -179,6 +180,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.contract,
     contractId: props.contractId,
     contractDetail: state.contractDetail,
     BDList: state.BDList,

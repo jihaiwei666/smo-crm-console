@@ -26,6 +26,7 @@ import Update from '../../../common/Update'
 
 import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
 import {fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
+import {handleCrudList} from '../../../../core/CRUD'
 
 interface AfterSignProps {
   contractId?: string
@@ -155,11 +156,21 @@ class AfterSign extends React.Component<AfterSignProps> {
         "crc_contract_working_hours": this.state.crcWorkingHours,
         "kpi": this.state.kpi,
       },
-      "contractSignedList": this.state.signatoryList.map(item => ({
-        "value": item.signatory,
-        "type": 1,
-        "sign": item.crud
-      })),
+      "contractSignedList": handleCrudList(this.state.signatoryList, {
+        ifAdd: item => ({
+          "value": item.signatory,
+          "type": 1,
+        }),
+        ifUpdate: item => ({
+          "id": item.id,
+          "value": item.signatory,
+          "type": 1,
+        }),
+        ifDelete: item => ({
+          "id": item.id,
+          "type": 1,
+        })
+      }),
       "pmList": this.state.pmList.map(item => ({
         "after_signed_id": this.props.afterSignId,
         "value": item.pm,
@@ -179,19 +190,37 @@ class AfterSign extends React.Component<AfterSignProps> {
 
   _getPaymentNode() {
     if (this.state.paymentNode == '1') {
-      return this.state.nodeDateList.map(item => ({
-        "after_signed_id": this.props.afterSignId,
-        "payment_node_date": item.nodeDate,
-        "sign": item.crud
-      }))
+      return handleCrudList(this.state.nodeDateList, {
+        ifAdd: item => ({
+          "after_signed_id": this.props.afterSignId,
+          "payment_node_date": item.nodeDate,
+        }),
+        ifUpdate: item => ({
+          "payment_node_id": item.id,
+          "payment_node_date": item.nodeDate,
+        }),
+        ifDelete: item => ({
+          "payment_node_id": item.id,
+        })
+      })
     } else {
-      return this.state.progressList.map(item => ({
-        "after_signed_id": this.props.afterSignId,
-        "payment_node_key": item.node,
-        "payment_node_value": item.quota,
-        "payment_node_estimated_date": item.date,
-        "sign": item.crud
-      }))
+      return handleCrudList(this.state.progressList, {
+        ifAdd: item => ({
+          "after_signed_id": this.props.afterSignId,
+          "payment_node_key": item.node,
+          "payment_node_value": item.quota,
+          "payment_node_estimated_date": item.date,
+        }),
+        ifUpdate: item => ({
+          "payment_node_id": item.id,
+          "payment_node_key": item.node,
+          "payment_node_value": item.quota,
+          "payment_node_estimated_date": item.date,
+        }),
+        ifDelete: item => ({
+          "payment_node_id": item.id,
+        })
+      })
     }
   }
 

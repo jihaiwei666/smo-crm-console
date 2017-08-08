@@ -28,13 +28,13 @@ class Input extends React.Component<InputProps> {
 
   componentWillMount() {
     if (this.props.value == null) {
-      console.log((this.props.name || this.props.placeholder) + '\'s value is null !!!')
+      // console.log((this.props.name || this.props.placeholder) + '\'s value is null !!!')
     }
   }
 
   componentWillReceiveProps(nextProps: InputProps) {
     if (nextProps.value == null) {
-      console.log((nextProps.name || nextProps.placeholder) + '\'s value is null !!!')
+      // console.log((nextProps.name || nextProps.placeholder) + '\'s value is null !!!')
     }
   }
 

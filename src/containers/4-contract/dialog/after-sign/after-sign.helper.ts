@@ -5,6 +5,7 @@ import {getDate} from '../../../../core/utils/dateUtils'
 
 export function handleAfterSign(afterSign) {
   const base = afterSign['contractAfterSignedVo'] || {}
+  const nodeList = afterSign['paymentNodeList'] || []
   return {
     afterSignId: base['after_signed_id'],
     indication: base['project_indication'] || '',
@@ -35,10 +36,35 @@ export function handleAfterSign(afterSign) {
     crcWorkingHours: base['crc_contract_working_hours'] || '',
     kpi: base['kpi'] || '',
 
-    nodeDateList: [],
-    progressList: [],
-    signatoryList: [],
+    nodeDateList: getNodeDateList(base['payment_node'], nodeList),
+    progressList: getProgressList(base['payment_node'], nodeList),
+    signatoryList: afterSign['contractSignedList'].map(item => ({
+      id: item['id'],
+      signatory: item['value']
+    })),
     pmList: [],
     bdList: []
   }
+}
+
+function getNodeDateList(paymentNode, nodeList) {
+  if (paymentNode != '1') {
+    return []
+  }
+  return nodeList.map(item => ({
+    id: item['payment_node_id'],
+    nodeDate: getDate(item['payment_node_date'])
+  }))
+}
+
+function getProgressList(paymentNode, nodeList) {
+  if (paymentNode != '2') {
+    return []
+  }
+  return nodeList.map(item => ({
+    id: item['payment_node_id'],
+    node: item['payment_node_key'],
+    quota: item['payment_node_value'],
+    date: getDate(item['payment_node_estimated_date'])
+  }))
 }

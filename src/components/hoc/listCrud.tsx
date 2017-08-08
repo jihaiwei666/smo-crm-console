@@ -32,11 +32,12 @@ function listCrud(WrapperComponent, defaultItem) {
       this.props.onChange(list)
     }
 
-    onUpdate = (item, index) => {
+    onUpdate = (id, updateInfo) => {
       let list = copyList(this.props.list)
+      let index = list.indexOf(list.find(item => item.id == id))
       list[index] = {
         ...list[index],
-        ...item
+        ...updateInfo
       }
       if (list[index].crud != ADD) {
         list[index].crud = UPDATE
@@ -44,8 +45,9 @@ function listCrud(WrapperComponent, defaultItem) {
       this.props.onChange(list)
     }
 
-    onRemove = (index) => {
+    onRemove = (id) => {
       let list = copyList(this.props.list)
+      let index = list.indexOf(list.find(item => item.id == id))
       if (list[index].crud == ADD) {
         list.splice(index, 1)
       } else {
@@ -61,10 +63,11 @@ function listCrud(WrapperComponent, defaultItem) {
     }
 
     render() {
+      const list = this.props.list.filter(item => item.crud != DELETE)
       return (
         <div>
           {
-            this.props.list.map((item, index) => {
+            list.map((item, index) => {
               if (item.crud == DELETE) {
                 return null
               }
@@ -73,16 +76,16 @@ function listCrud(WrapperComponent, defaultItem) {
                   key={item.id}
                   item={item}
                   index={index}
-                  total={this.props.list.length}
+                  total={list.length}
                   onAdd={() => this.onAdd()}
-                  onUpdate={(item) => this.onUpdate(item, index)}
-                  onRemove={() => this.onRemove(index)}
+                  onUpdate={(updateInfo) => this.onUpdate(item.id, updateInfo)}
+                  onRemove={() => this.onRemove(item.id)}
                 />
               )
             })
           }
           {
-            (this.props.list.length == 0 || this.props.showAdd) && (
+            (list.length == 0 || this.props.showAdd) && (
               <AddIcon onClick={this.onAdd}/>
             )
           }

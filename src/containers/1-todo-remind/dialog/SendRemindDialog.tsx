@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {FlexDiv, Part, Line} from 'app-core/layout'
-import Select1 from 'app-core/common/Select1'
+import CategorySelect from 'app-core/category-select/CategorySelect'
 import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import {LimitInput, LimitTextArea} from 'app-core/form/'
@@ -14,12 +14,13 @@ import CheckBox from '../../../components/form/checkbox/CheckBox'
 import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
 
+import Data from '../../common/interface/Data'
 import {fetchUserCategoryInfo, fetchRelevantItemList} from '../todo-remind.action'
 
 interface SendRemindDialogProps {
   fetchUserCategoryInfo: () => void
   fetchRelevantItemList: (category: string, searchKey: string) => void
-  userCategoryInfo: any
+  userCategory: Data<any[]>
   sendRemind: () => void
   sendRemindSuccess: boolean
   onExited: () => void
@@ -80,7 +81,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           <FlexDiv>
             <Part>接收人：</Part>
             <Part weight={2}>
-              <Select1 options={[]} value={this.state.receiver} onChange={value => this.setState({receiver: value})}/>
+              <CategorySelect categoryOptions={this.props.userCategory.data || []} value={this.state.receiver} onChange={value => this.setState({receiver: value})}/>
             </Part>
           </FlexDiv>
 
@@ -130,7 +131,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
 function mapStateToProps(state) {
   return {
-    userCategoryInfo: state.userCategoryInfo
+    userCategory: state.userCategory
   }
 }
 

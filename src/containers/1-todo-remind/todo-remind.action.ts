@@ -1,10 +1,10 @@
 /**
  * Created by jiangyukun on 2017/7/6.
  */
-import {_get} from '../../core/http'
+import {_get, _post} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {TODO_REMIND} from '../../core/constants/types'
-import {adaptTodoRemindList, adapteUserCategoryInfo} from './todo-remind.helper'
+import {adaptTodoRemindList, handleUserCategoryInfo} from './todo-remind.helper'
 
 const urlPrefix = '/todoReminder'
 
@@ -23,17 +23,21 @@ export function fetchUserCategoryInfo() {
     [THREE_PHASE]: {
       type: TODO_REMIND.FETCH_USER_CATEGORY_INFO,
       http: () => _get(`/user/v1/getUserInfo`),
-      handleResponse: adapteUserCategoryInfo
+      handleResponse: handleUserCategoryInfo
     }
   }
 }
 
 export function fetchRelevantItemList(category, searchKey) {
+  const options = {
+    "type": category,
+    "content": searchKey
+  }
   return {
     [THREE_PHASE]: {
-      type: TODO_REMIND.FETCH_USER_CATEGORY_INFO,
-      http: () => _get(urlPrefix + `/v1/getTodoRelationByType/${category}?content=${searchKey}`),
-      handleResponse: adapteUserCategoryInfo
+      type: TODO_REMIND.FETCH_RELEVANT_ITEM_LIST,
+      http: () => _post(urlPrefix + '/v1/getTodoRelationByType', {body: options}),
+      handleResponse: () => null
     }
   }
 }

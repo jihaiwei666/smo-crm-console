@@ -18,6 +18,7 @@ import * as actions from './account-manage.action'
 import {ACCOUNT_MANAGE} from '../../core/constants/types'
 import {handleListData} from '../../reducers/data.reducer'
 import {accountStatus} from './account-manage.constant'
+import {getPositionName} from './account-manage.helper'
 
 interface AccountManageProps extends AppFunctionPage {
   accountList: any
@@ -110,7 +111,8 @@ class AccountManage extends React.Component<AccountManageProps> {
         }
         {
           this.state.showDisabledConfirm && (
-              <Confirm message={list[this.state.index]['account_status'] === accountStatus.disabled ? "确定停用此账号吗?" : "确定启用此账号吗?"} onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
+            <Confirm message={list[this.state.index]['account_status'] === accountStatus.disabled ? "确定停用此账号吗?" : "确定启用此账号吗?"}
+                     onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
           )
         }
 
@@ -135,10 +137,11 @@ class AccountManage extends React.Component<AccountManageProps> {
                     <FixRow.Item>{item['user_account']}</FixRow.Item>
                     <FixRow.Item>{item['user_short_name']}</FixRow.Item>
                     <FixRow.Item>{item['user_name']}</FixRow.Item>
-                    <FixRow.Item>{item['post_type']}</FixRow.Item>
+                    <FixRow.Item>{getPositionName(item['post_type'])}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDisabledConfirm: true, index})}>{item['account_status'] === accountStatus.disabled ? "停用" : "已停用"}</Button>
+                      <Button className="small danger"
+                              onClick={() => this.setState({showDisabledConfirm: true, index})}>{item['account_status'] === accountStatus.disabled ? "停用" : "已停用"}</Button>
                     </FixRow.Item>
                   </FixRow>
                 )

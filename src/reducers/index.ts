@@ -38,6 +38,7 @@ export default combineReducers({
   message: wrapReducerState(message),
 
   todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
+  userCategory: wrapReducerState(data(TODO_REMIND.FETCH_USER_CATEGORY_INFO)),
 
   client: wrapReducerState(client),
   clientList: wrapReducerState(data(CLIENTS.FETCH_LIST)),
