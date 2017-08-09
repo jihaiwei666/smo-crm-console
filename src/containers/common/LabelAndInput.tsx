@@ -6,33 +6,25 @@ import classnames from 'classnames'
 import {FlexDiv, Part} from 'app-core/layout'
 
 import Label, {LabelProps} from './Label'
-import Input from '../../components/form/Input'
+import Input, {InputProps} from '../../components/form/Input'
 
-interface LabelAndInputProps extends LabelProps{
-  label: string,
-  placeholder?: string
-  className?: string
-  disabled?: boolean
-  value?: string
-  onChange?: (value: string) => void
+interface LabelAndInputProps extends LabelProps, InputProps {
+
 }
 
 class LabelAndInput extends React.Component<LabelAndInputProps> {
   static defaultProps = {
-    placeholder: '请输入'
+    placeholder: '请输入',
+    width: '200px'
   }
 
   render() {
+    const {className, inputType, label, ...otherProps} = this.props
     return (
-      <FlexDiv className={classnames('mt7 mb5', this.props.className)}>
-        <Label inputType={this.props.inputType}>{this.props.label}</Label>
+      <FlexDiv className={classnames('label-and-input', className)}>
+        <Label inputType={inputType}>{label}</Label>
         <Part>
-          <Input
-            width="200px"
-            placeholder={this.props.placeholder} value={this.props.value}
-            onChange={(e: any) => this.props.onChange(e.target.value)}
-            disabled={this.props.disabled}
-          />
+          <Input {...otherProps as any} name={this.props.label || label}/>
         </Part>
       </FlexDiv>
     )

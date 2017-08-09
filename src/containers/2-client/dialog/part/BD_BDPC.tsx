@@ -71,7 +71,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
 
         <InputUnit>
           <FlexDiv>
-            <Label>客户所有人：</Label>
+            <Label>客户所有人</Label>
             <Part>
               <Select1 disabled={!this.props.customerId} options={BDList}
                        showClear={true}
@@ -85,7 +85,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
 
         <InputUnit className="clearfix">
           <FlexDiv>
-            <Label>所属BDPC：</Label>
+            <Label>所属BDPC</Label>
             <Part>
               <Select1 disabled={!this.props.customerId} options={BDPCList}
                        showClear={true}

@@ -2,6 +2,8 @@
  * Created by jiangyukun on 2017/7/25.
  */
 import React from 'react'
+import addFormSupport from 'app-core/core/hoc/addFormSupport'
+
 import CheckBox from '../checkbox/CheckBox'
 import {copyList} from '../../../core/utils/common'
 
@@ -11,6 +13,8 @@ interface CheckGroupProps {
   options: { value: any, text: string }[]
   value: any[]
   onChange: (value: any[]) => void
+  required?: boolean
+  name?: string
 }
 
 class CheckGroup extends React.Component<CheckGroupProps> {
@@ -47,4 +51,4 @@ class CheckGroup extends React.Component<CheckGroupProps> {
   }
 }
 
-export default CheckGroup
+export default addFormSupport(CheckGroup, ({props}) => props.value.length != 0)

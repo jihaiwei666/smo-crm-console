@@ -72,7 +72,7 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
         {
           this.state.removeVisitId && (
             <Confirm
-              message="确定删除此随访记录吗？"
+              message="确定删除此拜访记录吗？"
               onExited={() => this.setState({removeVisitId: ''})}
               onConfirm={() => this.props.removeVisitRecord(this.state.removeVisitId)}
             />

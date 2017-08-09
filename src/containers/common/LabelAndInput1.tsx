@@ -16,7 +16,7 @@ interface LabelAndInput1Props extends LabelProps {
 class LabelAndInput1 extends React.Component<LabelAndInput1Props> {
   render() {
     return (
-      <FlexDiv className={classnames('mt7 mb7', this.props.className)}>
+      <FlexDiv className={classnames('label-and-input', this.props.className)}>
         <Label inputType={this.props.inputType}>{this.props.label}</Label>
         <Part style={{width: '200px'}}>
           {this.props.children}

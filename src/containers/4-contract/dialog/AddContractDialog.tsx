@@ -9,11 +9,13 @@ import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
+import AddContractBasicInfo from './basic-info/AddContractBasicInfo'
+import BeforeSign from './before-sign/BeforeSign'
+import AfterSign from './after-sign/AfterSign'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import ContractBasicInfo from './basic-info/ContractBasicInfo'
-import BeforeSign from './basic-info/BeforeSign'
-import AfterSign from './basic-info/AfterSign'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import ContractAssociateInfo from './other/ContractAssociateInfo'
 
 interface AddContractDialogProps {
   fetchBD: () => void
@@ -73,8 +75,8 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
                 updateBdAndBdpc={this.updateBdAndBdpc}
               />
 
-              <CategoryTitle title="项目信息"/>
-              <ContractBasicInfo/>
+              <CategoryTitle title="合同信息"/>
+              <AddContractBasicInfo/>
 
               <CategoryTitle title="签署前"/>
               <BeforeSign/>
@@ -83,8 +85,13 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               <AfterSign/>
 
               <CategoryTitle title="收款"/>
+
               <CategoryTitle title="关联信息"/>
+              <ContractAssociateInfo relationInfo={{}}/>
+
               <CategoryTitle title="备注及附件"/>
+              <RemarkAndAttachment disabled={!this.state.contractId}/>
+
               <CategoryTitle title="操作记录"/>
             </Part>
             <div className="contract-nav">

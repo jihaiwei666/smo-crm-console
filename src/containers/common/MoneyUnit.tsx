@@ -9,6 +9,8 @@ import {MONEY_UNIT} from '../3-project/project.constant'
 interface MoneyUnitProps {
   value: string
   onChange: (v) => void
+  required?: boolean
+  name?: string
 }
 
 class MoneyUnit extends React.Component<MoneyUnitProps> {
@@ -20,6 +22,8 @@ class MoneyUnit extends React.Component<MoneyUnitProps> {
           className="small" options={MONEY_UNIT}
           value={this.props.value}
           onChange={this.props.onChange}
+          required={this.props.required}
+          name={this.props.name}
         />
       </div>
     )

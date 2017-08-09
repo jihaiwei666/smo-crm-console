@@ -17,6 +17,8 @@ export const APP = {
 export const TODO_REMIND = {
   FETCH_LIST: null,
   FETCH_USER_CATEGORY_INFO: null,
+  FETCH_RELEVANT_ITEM_LIST: null,
+  SEND_REMIND: null,
 
 }
 
@@ -77,9 +79,19 @@ export const PROJECT = {
 
 export const CONTRACT = {
   FETCH_LIST: null,
-  FETCH_DETAIL: null,
+  FETCH_CONTRACT_DETAIL: null,
   FETCH_PROJECT_LIST: null,
-  FETCH_CONTRACTCODE_PREFIX: null,
+  UPDATE_BD_AND_BDPC: null,
+  FETCH_CONTRACT_CODE_PREFIX: null,
+  ADD_CONTRACT: null,
+  UPDATE_CONTRACT: null,
+  ADD_BEFORE_SIGN: null,
+  UPDATE_BEFORE_SIGN: null,
+  FETCH_PART_AFTER_SIGN_INFO_FROM_PROJECT: null,
+  ADD_AFTER_SIGN: null,
+  UPDATE_AFTER_SIGN: null,
+  FETCH_COLLECTION_LIST: null,
+  UPDATE_COLLECTION: null,
 
 }
 
@@ -97,8 +109,9 @@ export const ACCOUNT_MANAGE = {
 }
 
 generatorValueFromKey('APP', APP)
+generatorValueFromKey('TODO_REMIND', TODO_REMIND)
 generatorValueFromKey('PROJECT', PROJECT)
 generatorValueFromKey('CLIENTS', CLIENTS)
 generatorValueFromKey('CONTRACT', CONTRACT)
-
+generatorValueFromKey('RECYCLE_BIN', RECYCLE_BIN)
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

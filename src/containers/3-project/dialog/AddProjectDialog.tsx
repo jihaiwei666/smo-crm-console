@@ -10,11 +10,14 @@ import {Row, Part, Line} from 'app-core/layout'
 import BD_BDPC from './base/BD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
-import BeforeQuotation from './base/BeforeQuotation'
-import AfterQuotation from './base/AfterQuotation'
+import BeforeQuotation from './before-quotation/BeforeQuotation'
+import AfterQuotation from './after-quotation/AfterQuotation'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateBdAndBdpc} from '../project.action'
+import OperationRecord from '../../common/OperationRecord'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import ProjectAssociateInfo from './base/ProjectAssociateInfo'
 
 interface AddProjectDialogProps {
 
@@ -86,11 +89,13 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
               <AfterQuotation/>
 
               <CategoryTitle title="关联信息"/>
+              <ProjectAssociateInfo relationInfo={{}}/>
 
               <CategoryTitle title="备注及附件"/>
+              <RemarkAndAttachment disabled={!this.state.projectId}/>
 
               <CategoryTitle title="操作记录"/>
-
+              <OperationRecord operationRecordList={[]}/>
 
             </Part>
             <div className="project-nav">

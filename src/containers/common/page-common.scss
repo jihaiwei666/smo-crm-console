@@ -1,10 +1,15 @@
+.label-and-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .input-unit {
     padding: 10px 0 5px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e6e6e6;
 }
 
 .tip, .input-unit-illustrate {
-    padding: 7px 0;
+    padding: 6px 0 10px;
     color: gray;
 }
 
@@ -14,11 +19,10 @@
 
 .input-group {
     padding: 5px 5px 5px 0;
-    border-bottom: 1px solid #ddd;
 }
 
 .row-line {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e6e6e6;
 }
 
 .category-title {
@@ -41,7 +45,10 @@
 }
 
 .serial-number {
-    width: 75px;
+    width: 40px;
+    text-align: center;
+    border-right: 1px solid #e6e6e6;
+    margin-right: 15px;
 }
 
 .item-index {
@@ -65,7 +72,7 @@
     li {
         cursor: pointer;
         padding: 7px 10px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #e6e6e6;
 
         &.active {
             &:before {
@@ -81,5 +88,16 @@
         span {
             text-align: center;
         }
+    }
+}
+
+.add-icon, .remove-icon {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    width: 18px;
+    margin: 0 6px;
+    img {
+        width: 100%;
     }
 }

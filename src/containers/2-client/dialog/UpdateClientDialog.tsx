@@ -11,7 +11,7 @@ import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import cache from '../../cache/cache'
 import ClientState from '../ClientState'
 import CategoryTitle from '../../common/CategoryTitle'
-import CustomerInfo from './part/CustomerInfo'
+import ClientBasicInfo from './part/ClientBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
@@ -22,8 +22,8 @@ import EditSupplier from './supplier/EditSupplier'
 
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
-import RemarkAndAttachment from './part/RemarkAndAttachment'
-import OperationRecord from './part/OperationRecord'
+import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import OperationRecord from '../../common/OperationRecord'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import * as actions from '../client.action'
@@ -127,7 +127,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
                   <CategoryTitle title="客户信息"/>
-                  <CustomerInfo
+                  <ClientBasicInfo
                     customerId={this.props.customerId}
                     customerBaseInfo={customerBaseInfo}
                     updateCustomer={this.props.updateCustomer}
@@ -166,7 +166,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <AssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment customerId={this.props.customerId}/>
+                  <RemarkAndAttachment disabled={!this.props.customerId}/>
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>

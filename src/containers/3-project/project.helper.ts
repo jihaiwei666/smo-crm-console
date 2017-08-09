@@ -1,3 +1,5 @@
+import {handleOperationList} from '../common/common.helper'
+
 export function handleProjectList(data) {
   return {
     total: data['totalCount'],
@@ -22,6 +24,10 @@ export function handleClientList(data) {
 export function handleProjectDetail(data) {
   const baseInfo = data['projectInfo']
   const bdAndBdpc = data['bdAndBdpc']
+  const beforeQuotation = data['projectBeforeOffer']
+  const beforeQuotationBase = beforeQuotation['projectBeforeOffer']
+  const relationInfo = data['projectRelationInfo'] || {}
+  const operationRecordList = data['operations']
   return {
     baseInfo: {
       projectName: baseInfo['project_info_name'] || '',
@@ -31,6 +37,36 @@ export function handleProjectDetail(data) {
     bdAndBdpc: {
       bd: bdAndBdpc['project_the_bd'],
       bdpc: ''
-    }
+    },
+    beforeQuotation: {
+      beforeQuotationId: beforeQuotationBase['before_offer_id'],
+      indication: beforeQuotationBase['indication'],
+      serviceType: beforeQuotationBase['service_type'].split(','),
+      centerNumber: beforeQuotationBase['center_number'],
+      enrollmentCount: beforeQuotationBase['group_number'],
+      enrollmentPeriod: beforeQuotationBase['group_stage'],
+      bidParty: beforeQuotationBase['bidders'],
+      cro: beforeQuotationBase['cro'],
+      projectCategory: beforeQuotationBase['project_type'],
+      testPeriod: beforeQuotationBase['test_stage'],
+      planCode: beforeQuotationBase['program_number'],
+      researchProduct: beforeQuotationBase['research_product'],
+      treatDomain: beforeQuotationBase['therapeutic_field'],
+      filterCount: beforeQuotationBase['screening_number'] || '',
+      possibility: beforeQuotationBase['possibility'],
+      isArrangeBid: beforeQuotationBase['is_bid'],
+      remark: beforeQuotationBase['remark'],
+    },
+    relationInfo: {
+      customers: relationInfo['relationCustomers'].map(item => ({
+        customerId: item['customer_info_id'],
+        customerName: item['customer_name']
+      })),
+      contracts: relationInfo['relationContracts'].map(item => ({
+        contractId: item['contract_info_id'],
+        contractName: item['contract_name']
+      }))
+    },
+    operationRecordList: handleOperationList(operationRecordList)
   }
 }

@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import Form from 'app-core/form/Form'
 
 import Data from '../../../common/interface/Data'
 import {NECESSARY} from '../../../common/Label'
@@ -25,6 +26,7 @@ interface ProjectBasicInfoProps {
 
 class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   state = {
+    valid: true,
     projectName: '',
     projectCode: '',
     relativeClient: ''
@@ -59,10 +61,12 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
   render() {
     return (
-      <div>
+      <Form onValidChange={valid => this.setState({valid})}>
         <div className="bb">
-          <LabelAndInput label="项目名称" inputType={NECESSARY}
-                         value={this.state.projectName} onChange={v => this.setState({projectName: v})}
+          <LabelAndInput
+            label="项目名称" inputType={NECESSARY}
+            required={true} name="projectName"
+            value={this.state.projectName} onChange={v => this.setState({projectName: v})}
           />
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、）</div>
         </div>
@@ -76,21 +80,23 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
         <LabelAndInput1 label="关联客户" inputType={NECESSARY}>
           <Select1
+            width="200px"
+            required={true} name="relativeClient"
             options={this.props.clientList.data || []}
             value={this.state.relativeClient} onChange={v => this.setState({relativeClient: v})}/>
         </LabelAndInput1>
 
         {
           this.props.projectId && (
-            <Update onClick={this.update}/>
+            <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
           !this.props.projectId && (
-            <Save onClick={this.add}/>
+            <Save disabled={!this.state.valid} onClick={this.add}/>
           )
         }
-      </div>
+      </Form>
     )
   }
 }

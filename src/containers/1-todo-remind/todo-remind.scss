@@ -27,17 +27,21 @@
 .search-box {
     display: flex;
     .choice-category {
-        width: 85px;
+        width: 100px;
         margin-right: 5px;
     }
     .relevant-item-category {
-        .selected-item {
+        /*.selected-item {
             border: none;
             .select-item-text {
                 padding: 5px;
             }
-        }
+        }*/
     }
 
 }
 
+.relevant-item-list {
+    overflow: auto;
+    max-height: 400px;
+}

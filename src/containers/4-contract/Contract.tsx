@@ -11,6 +11,7 @@ import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-l
 import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'
 import AddContractDialog from './dialog/AddContractDialog'
+import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import {fetchList} from './contract.action'
 
@@ -22,7 +23,8 @@ class Contract extends React.Component<ContractProps> {
   state = {
     index: -1,
     currentPage: 0,
-    showAddDialog: true,
+    showAddDialog: false,
+    showEditDialog: false
   }
 
   toPage = (newPage) => {
@@ -41,6 +43,7 @@ class Contract extends React.Component<ContractProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.contractList)
+    const item = list[this.state.index] || {}
 
     return (
       <div className="project">
@@ -48,6 +51,14 @@ class Contract extends React.Component<ContractProps> {
           this.state.showAddDialog && (
             <AddContractDialog
               onExited={() => this.setState({showAddDialog: false})}
+            />
+          )
+        }
+        {
+          this.state.showEditDialog && (
+            <UpdateContractDialog
+              contractId={item.contractId}
+              onExited={() => this.setState({showEditDialog: false})}
             />
           )
         }
@@ -69,17 +80,17 @@ class Contract extends React.Component<ContractProps> {
             {
               list.map((item, index) => {
                 return (
-                  <FixRow key={item.customerId}
+                  <FixRow key={item.contractId}
                           selected={this.state.index == index}
                           onClick={() => this.setState({index})}
                   >
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
-                    <FixRow.Item>{item['']}</FixRow.Item>
+                    <FixRow.Item>{item.contractName}</FixRow.Item>
+                    <FixRow.Item>{item.contractCode}</FixRow.Item>
+                    <FixRow.Item>{item.contractType}</FixRow.Item>
+                    <FixRow.Item>{item.bd}</FixRow.Item>
+                    <FixRow.Item>{item.bdpc}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditClientDialog: true, index})}>查看</Button>
+                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
                       <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>
