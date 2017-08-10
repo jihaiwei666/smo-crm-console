@@ -24,8 +24,8 @@ export function handleClientList(data) {
 export function handleProjectDetail(data) {
   const baseInfo = data['projectInfo']
   const bdAndBdpc = data['bdAndBdpc']
-  const beforeQuotation = data['projectBeforeOffer']
-  const beforeQuotationBase = beforeQuotation['projectBeforeOffer']
+  const beforeQuotation = data['projectBeforeOffer'] || {}
+  const beforeQuotationBase = beforeQuotation['projectBeforeOffer'] || {}
   const relationInfo = data['projectRelationInfo'] || {}
   const operationRecordList = data['operations']
   return {
@@ -41,7 +41,7 @@ export function handleProjectDetail(data) {
     beforeQuotation: {
       beforeQuotationId: beforeQuotationBase['before_offer_id'],
       indication: beforeQuotationBase['indication'],
-      serviceType: beforeQuotationBase['service_type'].split(','),
+      serviceType: beforeQuotationBase['service_type'] ? beforeQuotationBase['service_type'].split(',') : [],
       centerNumber: beforeQuotationBase['center_number'],
       enrollmentCount: beforeQuotationBase['group_number'],
       enrollmentPeriod: beforeQuotationBase['group_stage'],

@@ -14,6 +14,7 @@ import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import {fetchList} from './contract.action'
+import PageCountNav from '../../components/nav/PageCountNav'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
@@ -28,7 +29,8 @@ class Contract extends React.Component<ContractProps> {
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList({
@@ -46,7 +48,7 @@ class Contract extends React.Component<ContractProps> {
     const item = list[this.state.index] || {}
 
     return (
-      <div className="project">
+      <div className="app-function-page project">
         {
           this.state.showAddDialog && (
             <AddContractDialog
@@ -99,6 +101,7 @@ class Contract extends React.Component<ContractProps> {
             }
           </FixBody>
         </FixHeadList>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }

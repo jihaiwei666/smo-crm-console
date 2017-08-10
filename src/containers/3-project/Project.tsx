@@ -14,6 +14,7 @@ import AddProjectDialog from './dialog/AddProjectDialog'
 import {fetchList} from './project.action'
 import {handleListData} from '../../reducers/data.reducer'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
+import PageCountNav from '../../components/nav/PageCountNav'
 
 interface ProjectProps extends AppFunctionPage {
   projectList: any
@@ -28,7 +29,8 @@ class Project extends React.Component<ProjectProps> {
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList({
@@ -46,7 +48,7 @@ class Project extends React.Component<ProjectProps> {
     const item = list[this.state.index]
 
     return (
-      <div className="project">
+      <div className="app-function-page project">
         {
           this.state.showAddDialog && (
             <AddProjectDialog
@@ -97,6 +99,7 @@ class Project extends React.Component<ProjectProps> {
             }
           </FixBody>
         </FixHeadList>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }

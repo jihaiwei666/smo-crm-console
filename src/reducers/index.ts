@@ -13,7 +13,7 @@ import client from '../containers/2-client/client.reducer'
 import contract from '../containers/4-contract/contract.reducer'
 import accountManage from '../containers/7-account-manage/account-manage.reducer'
 
-import {APP, TODO_REMIND, CLIENTS, ACCOUNT_MANAGE, PROJECT, CONTRACT} from '../core/constants/types'
+import {APP, TODO_REMIND, CLIENTS, ACCOUNT_MANAGE, PROJECT, CONTRACT, RECYCLE_BIN} from '../core/constants/types'
 
 /**
  * 使用immutable，将reducer的state封装为iState，不可变数据
@@ -62,6 +62,10 @@ export default combineReducers({
   contractDetail: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_DETAIL)),
   contractList: wrapReducerState(data(CONTRACT.FETCH_LIST)),
   contractProjectList: wrapReducerState(data(CONTRACT.FETCH_PROJECT_LIST)),
+  institutionList: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_LIST)),
+  institutionInfo: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_INFO)),
+
+  recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
 
   accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),

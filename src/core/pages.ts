@@ -6,6 +6,7 @@ export default {
   client: 'client',
   project: 'project',
   contract: 'contract',
+  report: 'report',
   recycleBin: 'recycle-bin',
   accountManage: 'account-manage',
 }

@@ -23,7 +23,8 @@ interface RelevantItemDialogProps {
 class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
   state = {
     show: true,
-    category: '',
+    category: '1',
+    searchKey: '',
     relevantItem: ''
   }
 
@@ -33,13 +34,17 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
 
   onSelect = () => {
     let item = this.props.relevantItemList.data.find(d => d.id == this.state.relevantItem)
-    let text = item.name + item.hospital
+    let text = item.name
     this.props.onSelect(this.state.relevantItem, text)
     this.close()
   }
 
+  refreshList = () => {
+    this.props.fetchRelevantItemList(this.state.category, this.state.searchKey)
+  }
+
   componentDidMount() {
-    this.props.fetchRelevantItemList('1', '')
+    this.refreshList()
   }
 
   render() {
@@ -58,14 +63,14 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
                 placeholder="关联项分类"
                 options={category}
                 value={this.state.category}
-                onChange={v => this.setState({category: v})}
+                onChange={v => this.setState({category: v}, this.refreshList)}
               />
             </div>
             <div className="flex1">
-              <Input/>
+              <Input value={this.state.searchKey} onChange={v => this.setState({searchKey: v})}/>
             </div>
             <div className="pl5">
-              <Button className="">搜索</Button>
+              <Button className="small" onClick={this.refreshList}>搜索</Button>
             </div>
           </div>
           <div className="relevant-item-list">
@@ -81,7 +86,7 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
                     data.map(item => {
                       return (
                         <div key={item.id} className="m10">
-                          <Radio value={item.id}>{item.name} ( {item.hospital} ) </Radio>
+                          <Radio value={item.id}>{item.name}</Radio>
                         </div>
                       )
                     })

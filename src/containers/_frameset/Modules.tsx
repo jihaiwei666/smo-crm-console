@@ -25,6 +25,7 @@ class Modules extends React.Component<ModulesProps> {
     const client = getPath(pages.client)
     const project = getPath(pages.project)
     const contract = getPath(pages.contract)
+    const report = getPath(pages.report)
     const recycleBin = getPath(pages.recycleBin)
     const accountManage = getPath(pages.accountManage)
 
@@ -47,8 +48,8 @@ class Modules extends React.Component<ModulesProps> {
               <li className={classnames({'active': currentPath == getPath(pages.contract)})}>
                 <Link to={contract}>合同</Link>
               </li>
-              <li>
-                <Link to={todoRemind}>报表</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.report)})}>
+                <Link to={report}>报表</Link>
               </li>
               <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
                 <Link to={recycleBin}>回收站</Link>

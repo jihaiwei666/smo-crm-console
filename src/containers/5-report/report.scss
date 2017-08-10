@@ -1,0 +1,15 @@
+.report {
+    .report-list {
+        margin: 30px;
+        .report-item {
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+
+            &:not(:first-child) {
+                margin-top: 15px;
+            }
+        }
+    }
+}

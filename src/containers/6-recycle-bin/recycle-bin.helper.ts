@@ -4,6 +4,9 @@
 
 export function handleRecycleBinList(data) {
   return {
-
+    total: data['totalCount'],
+    list: data['list'].map(item => ({
+      name: item
+    }))
   }
 }

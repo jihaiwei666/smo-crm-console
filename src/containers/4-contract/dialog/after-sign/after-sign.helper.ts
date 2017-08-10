@@ -6,6 +6,9 @@ import {getDate} from '../../../../core/utils/dateUtils'
 export function handleAfterSign(afterSign) {
   const base = afterSign['contractAfterSignedVo'] || {}
   const nodeList = afterSign['paymentNodeList'] || []
+  const signatoryList = afterSign['contractSignedList'] || []
+  const pmList = afterSign['pmList'] || []
+  const bdList = afterSign['bdList'] || []
   return {
     afterSignId: base['after_signed_id'],
     indication: base['project_indication'] || '',
@@ -38,12 +41,18 @@ export function handleAfterSign(afterSign) {
 
     nodeDateList: getNodeDateList(base['payment_node'], nodeList),
     progressList: getProgressList(base['payment_node'], nodeList),
-    signatoryList: afterSign['contractSignedList'].map(item => ({
+    signatoryList: signatoryList.map(item => ({
       id: item['id'],
       signatory: item['value']
     })),
-    pmList: [],
-    bdList: []
+    pmList: pmList.map(item => ({
+      id: item['id'],
+      pm: item['value']
+    })),
+    bdList: bdList.map(item => ({
+      id: item['id'],
+      pm: item['value']
+    })),
   }
 }
 

@@ -16,6 +16,9 @@ import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
 import {CLIENTS} from '../../core/constants/types'
 import PageCountNav from '../../components/nav/PageCountNav'
+import FilterButton from '../common/FilterButton'
+import FilterItem from '../../components/query-filter/FilterItem'
+import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
 
 interface ClientsProps extends AppFunctionPage, ClientState {
   clientList: any[]
@@ -29,10 +32,14 @@ class Clients extends React.Component<ClientsProps> {
     showDeleteClientConfirm: false,
 
     currentPage: 0,
+    customerType: '',
+    customerOwner: '',
+    creator: '',
   }
 
   toPage = (newPage?: number) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList({
@@ -149,7 +156,7 @@ class Clients extends React.Component<ClientsProps> {
     }*/
 
     return (
-      <div className="clients">
+      <div className="app-function-page clients">
         {
           this.state.showAddClientDialog && (
             <AddClientDialog
@@ -165,8 +172,29 @@ class Clients extends React.Component<ClientsProps> {
         }
 
         <div className="m15">
-          <Button onClick={() => this.setState({showAddClientDialog: true})}>创建</Button>
+          <Button onClick={() => this.setState({showAddClientDialog: true})}>
+            <img className="btn-icon" src={require('./icon/create-cust.svg')}/>
+            创建
+          </Button>
           <Button>导入数据</Button>
+          <div className="pull-right">
+            <FilterButton show={true} onChange={() => null}/>
+          </div>
+        </div>
+
+        <div className="query-filter">
+          <FilterItem
+            label="客户类型" itemList={customerTypeOptions}
+            value={this.state.customerType} onChange={v => this.setState({customerType: v})}
+          />
+          <FilterItem
+            label="客户所有人" itemList={customerOwnerOptions}
+            value={this.state.customerOwner} onChange={v => this.setState({customerOwner: v})}
+          />
+          <FilterItem
+            label="创建人" itemList={createOptions}
+            value={this.state.creator} onChange={v => this.setState({creator: v})}
+          />
         </div>
 
         <FixHeadList>

@@ -11,6 +11,7 @@ import RemoveIcon from '../../../../components/RemoveIcon'
 import listCrud from '../../../../components/hoc/listCrud'
 
 interface PMProps {
+  parentId: string
   item: any
   index: number
   total: number
@@ -37,4 +38,27 @@ class PM extends React.Component<PMProps> {
   }
 }
 
-export default listCrud(PM, {pm: ''})
+function ifAdd(item, props) {
+  return {
+    "after_signed_id": props.parentId,
+    "value": item.pm,
+    "type": 3,
+  }
+}
+
+function ifUpdate(item, props) {
+  return {
+    "id": item.id,
+    "value": item.pm,
+    "type": 3,
+  }
+}
+
+function ifRemove(item, props) {
+  return {
+    "id": item.id,
+    "type": 3,
+  }
+}
+
+export default listCrud(PM, {pm: ''}, {ifAdd, ifUpdate, ifRemove})

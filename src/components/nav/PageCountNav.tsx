@@ -23,7 +23,7 @@ class PageCountNav extends React.Component<PageCountNavProps> {
     return (
       <div className="page-count-nav">
         <div className="page">
-          <a>上一页</a>
+          <a onClick={() => this.props.onPageChange(this.props.currentPage - 1)}>上一页</a>
           {
             pageList.map(p => {
               if (this.props.currentPage == p) {
@@ -36,7 +36,7 @@ class PageCountNav extends React.Component<PageCountNavProps> {
               )
             })
           }
-          <a className="">下一页</a>
+          <a onClick={() => this.props.onPageChange(this.props.currentPage + 1)}>下一页</a>
         </div>
       </div>
     )

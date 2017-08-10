@@ -43,7 +43,8 @@ class AccountManage extends React.Component<AccountManageProps> {
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList(newPage)
@@ -88,7 +89,7 @@ class AccountManage extends React.Component<AccountManageProps> {
     const item = list[this.state.index] || {}
 
     return (
-      <div className="account-manage">
+      <div className="app-function-page account-manage">
         {
           this.state.showAddDialog && (
             <AddAccountDialog

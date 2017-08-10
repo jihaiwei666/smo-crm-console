@@ -39,6 +39,11 @@ interface AfterSignProps {
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
+  _nodeData: any
+  _progress: any
+  _signatoryList: any
+  _pmList: any
+  _bdList: any
   state = {
     valid: true,
 
@@ -109,15 +114,9 @@ class AfterSign extends React.Component<AfterSignProps> {
         "crc_contract_working_hours": this.state.crcWorkingHours,
         "kpi": this.state.kpi,
       },
-      "contractSignedList": this.state.signatoryList.map(item => ({
-        "value": item.signatory,
-        "type": 1
-      })),
-      "pmList": this.state.pmList.map(item => ({
-        "value": item.pm,
-        "type": 3
-      })),
-      "bdList": [],
+      "contractSignedList": this._signatoryList.getData(),
+      "pmList": this._pmList.getData(),
+      "bdList": this._bdList.getData(),
       "fileList": [],
       "paymentNodeList": this._getPaymentNode()
     })
@@ -156,33 +155,9 @@ class AfterSign extends React.Component<AfterSignProps> {
         "crc_contract_working_hours": this.state.crcWorkingHours,
         "kpi": this.state.kpi,
       },
-      "contractSignedList": handleCrudList(this.state.signatoryList, {
-        ifAdd: item => ({
-          "value": item.signatory,
-          "type": 1,
-        }),
-        ifUpdate: item => ({
-          "id": item.id,
-          "value": item.signatory,
-          "type": 1,
-        }),
-        ifDelete: item => ({
-          "id": item.id,
-          "type": 1,
-        })
-      }),
-      "pmList": this.state.pmList.map(item => ({
-        "after_signed_id": this.props.afterSignId,
-        "value": item.pm,
-        "type": 3,
-        "sign": item.crud
-      })),
-      "bdList": this.state.bdList.map(item => ({
-        "after_signed_id": this.props.afterSignId,
-        "value": item.bd,
-        "type": 2,
-        "sign": item.crud
-      })),
+      "contractSignedList": this._signatoryList.getData(),
+      "pmList": this._pmList.getData(),
+      "bdList": this._bdList.getData(),
       "fileList": [],
       "paymentNodeList": this._getPaymentNode()
     })
@@ -190,37 +165,9 @@ class AfterSign extends React.Component<AfterSignProps> {
 
   _getPaymentNode() {
     if (this.state.paymentNode == '1') {
-      return handleCrudList(this.state.nodeDateList, {
-        ifAdd: item => ({
-          "after_signed_id": this.props.afterSignId,
-          "payment_node_date": item.nodeDate,
-        }),
-        ifUpdate: item => ({
-          "payment_node_id": item.id,
-          "payment_node_date": item.nodeDate,
-        }),
-        ifDelete: item => ({
-          "payment_node_id": item.id,
-        })
-      })
+      return this._nodeData.getData()
     } else {
-      return handleCrudList(this.state.progressList, {
-        ifAdd: item => ({
-          "after_signed_id": this.props.afterSignId,
-          "payment_node_key": item.node,
-          "payment_node_value": item.quota,
-          "payment_node_estimated_date": item.date,
-        }),
-        ifUpdate: item => ({
-          "payment_node_id": item.id,
-          "payment_node_key": item.node,
-          "payment_node_value": item.quota,
-          "payment_node_estimated_date": item.date,
-        }),
-        ifDelete: item => ({
-          "payment_node_id": item.id,
-        })
-      })
+      return this._progress.getData()
     }
   }
 
@@ -304,12 +251,19 @@ class AfterSign extends React.Component<AfterSignProps> {
             </Radio.Group>
             {
               this.state.paymentNode == '1' && (
-                <NodeDate list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}/>
+                <NodeDate
+                  ref={c => this._nodeData = c}
+                  parentId={this.props.afterSignId}
+                  list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}
+                />
               )
             }
             {
               this.state.paymentNode == '2' && (
-                <Progress showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
+                <Progress
+                  ref={c => this._progress = c}
+                  parentId={this.props.afterSignId}
+                  showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
               )
             }
           </InputGroup>
@@ -317,7 +271,10 @@ class AfterSign extends React.Component<AfterSignProps> {
         </div>
 
         <LabelAndInput1 className="bb" label="合同签署方" inputType={NECESSARY}>
-          <ContractSignatory list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
+          <ContractSignatory
+            ref={c => this._signatoryList = c}
+            parentId={this.props.afterSignId}
+            list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -365,7 +322,10 @@ class AfterSign extends React.Component<AfterSignProps> {
         </LabelAndInput1>
 
         <LabelAndInput1 className="bb" label="PM" inputType={IMPORTANT}>
-          <PM list={this.state.pmList} onChange={list => this.setState({pmList: list})}/>
+          <PM
+            ref={c => this._pmList = c}
+            parentId={this.props.afterSignId}
+            list={this.state.pmList} onChange={list => this.setState({pmList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -373,7 +333,10 @@ class AfterSign extends React.Component<AfterSignProps> {
           value={this.state.centerName} onChange={v => this.setState({centerName: v})}
         />
         <LabelAndInput1 className="bb" label="协同BD" inputType={IMPORTANT}>
-          <CoordinateBD list={this.state.bdList} onChange={list => this.setState({bdList: list})}/>
+          <CoordinateBD
+            ref={c => this._bdList = c}
+            parentId={this.props.afterSignId}
+            list={this.state.bdList} onChange={list => this.setState({bdList: list})}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -382,7 +345,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         />
         <LabelAndInput
           className="bb" label="试验分期"
-          value={this.state.trailPeriod} onChange={v => this.setState({centerName: v})}
+          value={this.state.trailPeriod} onChange={v => this.setState({trailPeriod: v})}
         />
         <LabelAndInput
           className="bb" label="合同期限"

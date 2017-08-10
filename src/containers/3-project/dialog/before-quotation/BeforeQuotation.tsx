@@ -77,7 +77,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         "is_bid": this.state.isArrangeBid,
         "remark": this.state.remark,
       },
-      "projectBeforeOfferPmList": []
+      "projectBeforeOfferPmList": [],
+      "planFiles": [],
+      "researchCenterFiles": []
     })
   }
 

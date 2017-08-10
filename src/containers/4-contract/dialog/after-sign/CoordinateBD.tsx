@@ -11,6 +11,7 @@ import RemoveIcon from '../../../../components/RemoveIcon'
 import listCrud from '../../../../components/hoc/listCrud'
 
 interface CoordinateBDProps {
+  parentId: string
   item: any
   index: number
   total: number
@@ -37,4 +38,27 @@ class CoordinateBD extends React.Component<CoordinateBDProps> {
   }
 }
 
-export default listCrud(CoordinateBD, {bd: ''})
+function ifAdd(item, props) {
+  return {
+    "after_signed_id": props.parentId,
+    "value": item.bd,
+    "type": 2,
+  }
+}
+
+function ifUpdate(item, props) {
+  return {
+    "id": item.id,
+    "value": item.bd,
+    "type": 2,
+  }
+}
+
+function ifRemove(item, props) {
+  return {
+    "id": item.id,
+    "type": 2,
+  }
+}
+
+export default listCrud(CoordinateBD, {bd: ''}, {ifAdd, ifUpdate, ifRemove})

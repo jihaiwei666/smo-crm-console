@@ -36,9 +36,7 @@ class SimoCrmApp extends Component<SimoCrmAppProps> {
         </aside>
         <main>
           <header></header>
-          <div className="app-function-page">
-            <PageContent match={this.props.match}/>
-          </div>
+          <PageContent match={this.props.match}/>
         </main>
       </div>
     )

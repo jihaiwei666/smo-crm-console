@@ -37,7 +37,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
     receiver: '',
     content: '',
-    remindType: [],
+    remindType: ['1'],
     relevantItem: ''
   }
   text = ''
@@ -50,7 +50,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     this.props.sendRemind({
       "recipient": this.state.receiver,
       "content": this.state.receiver,
-      "reminder_type": 1,
+      "reminder_type": this.state.remindType,
       "relation_id": this.state.relevantItem,
     })
   }

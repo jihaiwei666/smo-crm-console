@@ -2,15 +2,16 @@
  * 回收站
  * Created by jiangyukun on 2017/7/18.
  */
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-
 import React from 'react'
 import {connect} from 'react-redux'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
+import Data from '../common/interface/Data'
 import {fetchList} from './recycle-bin.action'
+import {handleListData} from '../../reducers/data.reducer'
 
 interface RecycleBinProps extends AppFunctionPage {
-
+  recycleBinList: Data<any>
 }
 
 class RecycleBin extends React.Component<RecycleBinProps> {
@@ -20,7 +21,8 @@ class RecycleBin extends React.Component<RecycleBinProps> {
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList(newPage)
@@ -31,12 +33,30 @@ class RecycleBin extends React.Component<RecycleBinProps> {
   }
 
   render() {
-    return null
+    const {total, list, loading, loaded} = handleListData(this.props.recycleBinList)
+    return (
+      <div className="app-function-page">
+        {
+          list.map((item, index) => {
+            return (
+              <div key={index} className="m10">
+                <span className="mr10">
+                  {item.name}
+                </span>
+                <a>下载</a>
+              </div>
+            )
+          })
+        }
+      </div>
+    )
   }
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    recycleBinList: state.recycleBinList
+  }
 }
 
 export default connect(mapStateToProps, {fetchList})(RecycleBin)

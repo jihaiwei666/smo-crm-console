@@ -5,22 +5,30 @@ import React from 'react'
 
 import AddIcon from '../AddIcon'
 
-import {ADD, UPDATE, DELETE} from '../../core/CRUD'
+import {ADD, UPDATE, DELETE, handleCrudList} from '../../core/CRUD'
 import {copyList} from '../../core/utils/common'
 
 export interface CrudProps {
+  parentId: string
   showAdd?: boolean
   list: any[]
   onChange: (list: any[]) => void
 }
 
+export type Config = {
+  ifAdd: (item, props) => any
+  ifUpdate: (item, props) => any
+  ifRemove: (item, props) => any
+}
+
 let uid = 1
 
-function listCrud(WrapperComponent, defaultItem) {
+function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
   class Crud extends React.Component<CrudProps> {
     static defaultProps = {
       showAdd: false
     }
+    _wrapper: any
 
     onAdd = () => {
       let list = copyList(this.props.list)
@@ -56,6 +64,10 @@ function listCrud(WrapperComponent, defaultItem) {
       this.props.onChange(list)
     }
 
+    getData() {
+      return handleCrudList(this.props.list, this._wrapper.props, serverHandleConfig)
+    }
+
     componentWillMount() {
       if (this.props.list.length == 0) {
         this.onAdd()
@@ -73,7 +85,9 @@ function listCrud(WrapperComponent, defaultItem) {
               }
               return (
                 <WrapperComponent
+                  ref={c => this._wrapper = c}
                   key={item.id}
+                  parentId={this.props.parentId}
                   item={item}
                   index={index}
                   total={list.length}
