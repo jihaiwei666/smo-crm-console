@@ -15,3 +15,7 @@ export function handleBDPCListData(BDPCListData) {
     text: d['account']
   }))
 }
+
+export function handleOperationHistoryList(data) {
+  return data.map()
+}

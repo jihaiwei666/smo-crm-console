@@ -14,6 +14,7 @@ import {handleListData} from '../../reducers/data.reducer'
 
 class TodoRemind extends React.Component<any> {
   state = {
+    listType: 'all',
     index: -1,
     currentPage: 0,
     showSendRemindDialog: false,
@@ -25,6 +26,10 @@ class TodoRemind extends React.Component<any> {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList(newPage)
+  }
+
+  showMyList = () => {
+
   }
 
   componentDidMount() {

@@ -21,11 +21,12 @@ import {routerMiddleware} from 'react-router-redux'
 import Root from './containers/Root'
 import allReducers from './reducers/'
 import request_3_phase from './middlewares/request_3_phase'
+import handle_error from './middlewares/handle_error'
 
 let history = createBrowserHistory()
 
 const middleware = routerMiddleware(history)
-const store = createStore(allReducers, {}, applyMiddleware(middleware, request_3_phase))
+const store = createStore(allReducers, {}, applyMiddleware(middleware, request_3_phase, handle_error))
 
 if (module.hot) {
   module.hot.accept('./reducers/', () => {
