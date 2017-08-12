@@ -40,9 +40,11 @@ const initValue: ClientState = {
   rfiInfo: null,
   updateRfiSuccess: false,
   removeRfiSuccess: false,
+
+  updateRemarkAttachmentSuccess: false
 }
 
-export default function clients(iState = fromJS(initValue), action) {
+export default function client(iState = fromJS(initValue), action) {
   let nextIState = iState
 
   switch (action.type) {
@@ -105,6 +107,7 @@ export default function clients(iState = fromJS(initValue), action) {
   nextIState = handleFlagState(nextIState, action, CLIENTS.ADD_RFI, 'addRfiSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_RFI, 'updateRfiSuccess')
   nextIState = handleFlagState(nextIState, action, CLIENTS.REMOVE_RFI, 'removeRfiSuccess')
+  nextIState = handleFlagState(nextIState, action, CLIENTS.UPDATE_REMARK_AND_ATTACHMENT, 'updateRemarkAttachmentSuccess')
 
   return nextIState
 }

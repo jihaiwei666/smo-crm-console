@@ -15,21 +15,21 @@ export default {
   ADD, REMOVE, DELETE, UPDATE
 }
 
-export function handleCrudList(list, props, option: Config) {
+export function handleCrudList(list, other, option: Config) {
   return list.filter(item => item.crud != null).map(item => {
     if (item.crud == DELETE) {
       return {
-        ...option.ifRemove(item, props),
+        ...option.ifRemove(item, other),
         "sign": DELETE
       }
     } else if (item.crud == UPDATE) {
       return {
-        ...option.ifUpdate(item, props),
+        ...option.ifUpdate(item, other),
         "sign": UPDATE
       }
     } else if (item.crud == ADD) {
       return {
-        ...option.ifAdd(item, props),
+        ...option.ifAdd(item, other),
         "sign": ADD
       }
     }

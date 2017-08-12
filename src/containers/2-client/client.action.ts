@@ -103,3 +103,12 @@ export function fetchContactList(customerId) {
     }
   }
 }
+
+export function updateRemarkAndAttachment(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CLIENTS.UPDATE_REMARK_AND_ATTACHMENT,
+      http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
+    }
+  }
+}

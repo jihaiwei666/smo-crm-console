@@ -42,7 +42,7 @@ class AccountManage extends React.Component<AccountManageProps> {
     showDisabledConfirm: false
   }
 
-  toPage = (newPage) => {
+  toPage = (newPage?: number) => {
     if (newPage == null) newPage = this.state.currentPage
     if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
@@ -68,14 +68,14 @@ class AccountManage extends React.Component<AccountManageProps> {
     if (this.props.updateAccountSuccess) {
       this.props.showSuccess('更新账号信息成功！')
       this.props.clearState(ACCOUNT_MANAGE.UPDATE_ACCOUNT)
-      this.toPage(0)
+      this.toPage()
     }
     if (this.props.disableAccountSuccess) {
       const item = this.props.accountList.data.list[this.state.index]
       const msg = item['account_status'] === accountStatus.disabled ? "禁用账号信息成功! " : "启用账号信息成功! "
       this.props.showSuccess(msg)
       this.props.clearState(ACCOUNT_MANAGE.DISABLE_ACCOUNT)
-      this.toPage(0)
+      this.toPage()
     }
     if (this.props.resetPasswordSuccess) {
       this.props.showSuccess('重置密码成功！')

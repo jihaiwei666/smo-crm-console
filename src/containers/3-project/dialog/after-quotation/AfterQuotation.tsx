@@ -12,21 +12,22 @@ import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Input from '../../../../components/form/Input'
-import Select1 from 'app-core/common/Select1'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
+import MoneyUnit from '../../../common/MoneyUnit'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
-import {MONEY_UNIT} from '../../project.constant'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import MoneyUnit from '../../../common/MoneyUnit'
+import ProjectState from '../../ProjectState'
 
-interface AfterQuotationProps {
+interface AfterQuotationProps extends ProjectState {
   projectId?: string
   afterQuotationId?: string
   addAfterQuotation: (options) => void
+
+  initAfterQuotation: any
   updateAfterQuotation: (options) => void
 }
 
@@ -51,7 +52,24 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
   save = () => {
     if (this.props.afterQuotationId) {
-      this.props.updateAfterQuotation({})
+      this.props.updateAfterQuotation({
+        "projectAfterOffer": {
+          "after_offer_id": this.props.afterQuotationId,
+          "project_info_id": this.props.projectId,
+          "service_charge_unit": this.state.serviceChargeUnit,
+          "service_charge_value": this.state.serviceChargeValue,
+          "contract_unit": this.state.contractMoneyUnit,
+          "contract_value": this.state.contractMoneyValue,
+          "is_success_order": this.state.is_A_Order,
+          "pm_working_hours": this.state.pmWorkingHours,
+          "crc_working_hours": this.state.crcWorkingHours,
+          "intervention_time": this.state.involveYearMonth,
+          "bidding_time": getDateStr(this.state.bidDate),
+          "bid_language": this.state.bookLanguage,
+          "ppt_language": this.state.pptLanguage,
+        },
+        "priceFiles": []
+      })
     } else {
       this.props.addAfterQuotation({
         "projectAfterOffer": {
@@ -70,6 +88,18 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
         },
         "priceFiles": []
       })
+    }
+  }
+
+  componentWillMount() {
+    if (this.props.initAfterQuotation) {
+      this.setState(this.props.initAfterQuotation)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: AfterQuotationProps) {
+    if (!this.props.addAfterQuotationSuccess && nextProps.addAfterQuotationSuccess) {
+      this.setState(nextProps.newAfterQuotation)
     }
   }
 
@@ -155,7 +185,10 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.project,
     projectId: props.projectId,
+    afterQuotationId: props.afterQuotationId,
+    initAfterQuotation: props.initAfterQuotation
   }
 }
 

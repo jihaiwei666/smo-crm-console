@@ -34,6 +34,8 @@ interface ClientState {
   rfiInfo: any
   updateRfiSuccess: boolean
   removeRfiSuccess: boolean
+
+  updateRemarkAttachmentSuccess: boolean
 }
 
 export default ClientState

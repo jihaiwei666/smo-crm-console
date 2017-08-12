@@ -97,7 +97,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
               <LimitInput
                 limit={50}
                 onExceed={() => null}
-                placeholder="请输入邮箱"
+                placeholder="请输入账号"
                 value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
             </Part>
           </FlexDiv>

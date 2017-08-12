@@ -2,7 +2,7 @@
  * Created by jiangyukun on 2016/12/23.
  */
 import React from 'react'
-import InputFile from './InputFile'
+import InputFile from '../file/InputFile'
 
 import {uploadFile} from './file-ajax'
 
@@ -30,23 +30,15 @@ class FileUpload extends React.Component<FileUpload1Props> {
       return
     }
     this.props.onStartUpload()
-    uploadFile(file).then((fileInfoList) => {
-      if (this.props.multiple) {
-        this.props.onFileUploadSuccess(fileInfoList)
-      } else {
-        this.props.onFileUploadSuccess(fileInfoList[0])
-      }
-    }, () => {
-      this.props.onFileUploadFailure()
-    })
+    uploadFile(file, this.props.multiple).then(this.props.onFileUploadSuccess, this.props.onFileUploadFailure)
   }
 
   render() {
     return (
       <InputFile
+        multiple={this.props.multiple}
         accept={this.props.accept}
         uploadFile={this.uploadFileToServer}
-        multiple={this.props.multiple}
         className={this.props.className}
       >
         {this.props.children}

@@ -15,6 +15,7 @@ import {fetchList} from './project.action'
 import {handleListData} from '../../reducers/data.reducer'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
+import tipAndClear from './tipAndClear'
 
 interface ProjectProps extends AppFunctionPage {
   projectList: any
@@ -41,6 +42,10 @@ class Project extends React.Component<ProjectProps> {
 
   componentDidMount() {
     this.toPage(0)
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => tipAndClear(this), 0)
   }
 
   render() {
@@ -107,6 +112,7 @@ class Project extends React.Component<ProjectProps> {
 
 function mapStateToProps(state) {
   return {
+    ...state.project,
     projectList: state.projectList
   }
 }

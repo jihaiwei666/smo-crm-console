@@ -14,7 +14,7 @@
         border-radius: 4px;
         background: #fff;
 
-        &:not(:last-child) {
+        &:not(:first-child) {
             margin-top: 10px;
         }
 

@@ -40,24 +40,21 @@ class PM extends React.Component<PMProps> {
 
 function ifAdd(item, props) {
   return {
-    "after_signed_id": props.parentId,
-    "value": item.pm,
-    "type": 3,
+    "before_offer_id": props.parentId,
+    "pm_name": item.pm,
   }
 }
 
 function ifUpdate(item, props) {
   return {
-    "id": item.id,
-    "value": item.pm,
-    "type": 3,
+    "before_offer_pm_id": item.id,
+    "pm_name": item.pm,
   }
 }
 
 function ifRemove(item, props) {
   return {
-    "id": item.id,
-    "type": 3,
+    "before_offer_pm_id": item.id,
   }
 }
 

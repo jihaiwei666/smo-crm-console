@@ -22,11 +22,11 @@ import EditSupplier from './supplier/EditSupplier'
 
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
-import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import * as actions from '../client.action'
+import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 
 interface UpdateClientDialogProps extends ClientState {
   customerId: string
@@ -96,12 +96,14 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     // const rfiInfo = data.rfiInfo
     const relationInfo = data.relationInfo
     const operationRecordList = data.operationRecordList
+    const remarkAttachment = data.remarkAttachment
 
     return (
       <Modal
         style={{width: '60%'}}
         contentComponent={FullDialogContent}
-        show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+        show={this.state.show} onHide={this.close} onExited={this.props.onExited}
+      >
 
         <Modal.Header closeButton={true}>
           <Modal.Title>编辑客户</Modal.Title>
@@ -166,7 +168,10 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <AssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment disabled={!this.props.customerId}/>
+                  <CustomerRemarkAttachment
+                    customerId={this.props.customerId}
+                    initRemarkAttachment={remarkAttachment}
+                  />
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>

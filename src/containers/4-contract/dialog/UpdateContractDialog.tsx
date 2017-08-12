@@ -13,7 +13,6 @@ import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 import UpdateContractBasicInfo from './basic-info/UpdateContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
-import MakeCollection from './make-collections/MakeCollection'
 
 import Data from '../../common/interface/Data'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'

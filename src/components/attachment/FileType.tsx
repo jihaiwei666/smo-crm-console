@@ -4,51 +4,57 @@
 import React from 'react'
 import Preview from '../Preview'
 
-class FileType extends React.Component<any, any> {
+interface FileTypeProps {
+  fileType: string
+  fileUrl: string
+}
+
+class FileType extends React.Component<FileTypeProps> {
   state = {
     showImg: false
   }
 
   render() {
-    const {fileInfo} = this.props
-    if (fileInfo.fileType == 'png' || fileInfo.fileType == 'jpg') {
+    const {fileType, fileUrl} = this.props
+
+    if (fileType == 'png' || fileType == 'jpg') {
       return (
         <span>
           {
             this.state.showImg && (
-              <Preview url={fileInfo.fileUrl} onOk={() => this.setState({showImg: false})}/>
+              <Preview url={fileUrl} onOk={() => this.setState({showImg: false})}/>
             )
           }
-          <img className="img-type" src={fileInfo.fileUrl} onClick={() => this.setState({showImg: true})}/>
+          <img className="img-type" src={fileUrl} onClick={() => this.setState({showImg: true})}/>
        </span>
       )
     }
 
-    if (fileInfo.fileType == 'xls' || fileInfo.fileType == 'xlsx') {
+    if (fileType == 'xls' || fileType == 'xlsx') {
       return (
         <i className="excel-svg"></i>
       )
     }
 
-    if (fileInfo.fileType == 'doc' || fileInfo.fileType == 'docx') {
+    if (fileType == 'doc' || fileType == 'docx') {
       return (
         <i className="word-svg"></i>
       )
     }
 
-    if (fileInfo.fileType == 'ppt' || fileInfo.fileType == 'pptx') {
+    if (fileType == 'ppt' || fileType == 'pptx') {
       return (
         <i className="ppt-svg"></i>
       )
     }
 
-    if (fileInfo.fileType == 'txt') {
+    if (fileType == 'txt') {
       return (
         <i className="txt-svg"></i>
       )
     }
 
-    if (fileInfo.fileType == 'pdf') {
+    if (fileType == 'pdf') {
       return (
         <i className="pdf-svg"></i>
       )

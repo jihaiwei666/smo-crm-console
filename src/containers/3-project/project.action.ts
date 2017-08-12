@@ -5,6 +5,8 @@ import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {PROJECT} from '../../core/constants/types'
 import {handleProjectList, handleClientList, handleProjectDetail} from './project.helper'
+import {handleBeforeQuotation} from './dialog/before-quotation/before-quotation.helper'
+import {handleAfterQuotation} from './dialog/after-quotation/after-quotation.helper'
 
 const urlPrefix = '/project'
 
@@ -60,7 +62,7 @@ export function addProjectBaseInfo(options) {
 export function updateProjectBaseInfo(options) {
   return {
     [THREE_PHASE]: {
-      type: PROJECT.UPDATE_PROJECT_BASE_INFO,
+      type: PROJECT.UPDATE_PROJECT_INFO,
       http: () => _post(urlPrefix + '/v1/info/edit', {body: options})
     }
   }
@@ -70,7 +72,8 @@ export function addBeforeQuotation(options) {
   return {
     [THREE_PHASE]: {
       type: PROJECT.ADD_BEFORE_QUOTATION,
-      http: () => _post(urlPrefix + '/v1/before/offer/add', {body: options})
+      http: () => _post(urlPrefix + '/v1/before/offer/add', {body: options}),
+      handleResponse: handleBeforeQuotation
     }
   }
 }
@@ -88,7 +91,8 @@ export function addAfterQuotation(options) {
   return {
     [THREE_PHASE]: {
       type: PROJECT.ADD_AFTER_QUOTATION,
-      http: () => _post(urlPrefix + '/v1/after/offer/add', {body: options})
+      http: () => _post(urlPrefix + '/v1/after/offer/add', {body: options}),
+      handleResponse: handleAfterQuotation
     }
   }
 }
@@ -98,6 +102,15 @@ export function updateAfterQuotation(options) {
     [THREE_PHASE]: {
       type: PROJECT.UPDATE_AFTER_QUOTATION,
       http: () => _post(urlPrefix + '/v1/after/offer/edit', {body: options})
+    }
+  }
+}
+
+export function updateRemarkAndAttachment(options) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.UPDATE_REMARK_ATTACHMENT,
+      http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
     }
   }
 }

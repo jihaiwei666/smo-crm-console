@@ -9,19 +9,19 @@ import {copyList} from '../../core/utils/common'
 import crud from '../../core/CRUD'
 
 export interface ServerFile {
+  id: string
   crud: string
-  fileType: string
   fileName: string
   fileUrl: string
 }
 
-interface AttachmentListProps {
+interface FileListProps {
   uploading?: boolean
   fileList: ServerFile[]
   onChange: (fileList: ServerFile[]) => void
 }
 
-class AttachmentList extends React.Component<AttachmentListProps> {
+class FileList extends React.Component<FileListProps> {
   removeFile = index => {
     const fileList = copyList(this.props.fileList)
     fileList[index].crud = crud.REMOVE
@@ -36,17 +36,18 @@ class AttachmentList extends React.Component<AttachmentListProps> {
             if (fileInfo.crud == crud.REMOVE) {
               return
             }
-
+            let fileName = fileInfo.fileName || ''
+            let fileType = fileName.substring(fileName.lastIndexOf('.') + 1)
             return (
-              <div key={index} className="flex1">
+              <div key={fileInfo.id} className="flex1">
                 <div className="uploaded-file">
                   <div className="remove-uploaded-file" onClick={() => this.removeFile(index)}>
                     <i className="minus-red-svg"></i>
                   </div>
                   <div className="uploaded-file-type-icon">
-                    <FileType fileInfo={fileInfo}/>
+                    <FileType fileType={fileType} fileUrl={fileInfo.fileUrl}/>
                   </div>
-                  <div className="uploaded-file-name">{fileInfo.fileName}</div>
+                  <div className="uploaded-file-name">{fileName}</div>
                 </div>
               </div>
             )
@@ -64,4 +65,4 @@ class AttachmentList extends React.Component<AttachmentListProps> {
   }
 }
 
-export default AttachmentList
+export default FileList

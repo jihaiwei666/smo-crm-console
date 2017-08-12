@@ -18,6 +18,7 @@ import Data from '../../common/interface/Data'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
 import {remindType} from '../todo-remind.constant'
+import Attachment from '../../../components/attachment/Attachment'
 
 interface SendRemindDialogProps {
   fetchUserCategoryInfo: () => void
@@ -30,6 +31,7 @@ interface SendRemindDialogProps {
 }
 
 class SendRemindDialog extends React.Component<SendRemindDialogProps> {
+  _attachment: any
   state = {
     show: true,
     showAddConfirm: false,
@@ -38,7 +40,8 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     receiver: '',
     content: '',
     remindType: ['1'],
-    relevantItem: ''
+    relevantItem: '',
+    attachment: []
   }
   text = ''
 
@@ -52,6 +55,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
       "content": this.state.receiver,
       "reminder_type": this.state.remindType,
       "relation_id": this.state.relevantItem,
+      "fileList": this._attachment.getData()
     })
   }
 
@@ -125,7 +129,6 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           <FlexDiv>
             <Part>关联项：</Part>
             <Part weight={2}>
-
               {
                 !this.state.relevantItem && (
                   <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
@@ -143,7 +146,9 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           </FlexDiv>
           <Line/>
           <div>
-            <span>附件：</span>
+            <div className="mb5">附件：</div>
+            <Attachment ref={c => this._attachment = c}
+                        fileList={this.state.attachment} onChange={v => this.setState({attachment: v})}/>
           </div>
         </Modal.Body>
         <Modal.Footer>

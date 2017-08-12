@@ -5,6 +5,11 @@ import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleRfiServerData} from './dialog/rfi/rfi.helper'
 import {getDateStr} from '../../core/utils/dateUtils'
 import {handleOperationList} from '../common/common.helper'
+import {customerTypeMapper} from './customer.constant'
+
+export function getCustomerType(type) {
+  return customerTypeMapper[type]
+}
 
 export function handleClientList(serverData) {
   return {
@@ -46,6 +51,7 @@ export function handleClientInfo(clientData) {
   const rfi = clientData['customerRfi'] || {}
   const relationInfo = clientData['customerRelationInfo'] || []
   const operationRecordList = clientData['operations'] || []
+  const remarkAttachment = clientData['remarkAndFile'] || {}
 
   return {
     customerBaseInfo: {
@@ -104,6 +110,14 @@ export function handleClientInfo(clientData) {
       projects: relationInfo['relationProjects'].map(item => ({
         projectId: item['project_info_id'],
         projectName: item['project_info_name']
+      }))
+    },
+    remarkAttachment: {
+      remark: remarkAttachment['remark'] || '',
+      attachment: remarkAttachment['files'].map(item => ({
+        id: item['file_id'],
+        fileUrl: item['file_url'],
+        fileName: item['file_name'],
       }))
     },
     operationRecordList: handleOperationList(operationRecordList)

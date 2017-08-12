@@ -63,6 +63,7 @@ class AddAccountDialog extends React.Component<AddAccountDialogProps> {
             </Part>
             <Part>
               <LimitInput
+                placeholder="请输入账号"
                 limit={20}
                 onExceed={() => null}
                 value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
@@ -77,6 +78,7 @@ class AddAccountDialog extends React.Component<AddAccountDialogProps> {
             </Part>
             <Part>
               <LimitInput
+                placeholder="请输入姓名"
                 limit={20}
                 onExceed={() => null}
                 value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
@@ -90,6 +92,7 @@ class AddAccountDialog extends React.Component<AddAccountDialogProps> {
             </Part>
             <Part>
               <LimitInput
+                placeholder="请输入简称"
                 limit={20}
                 onExceed={() => null}
                 value={this.state.shortName} onChange={e => this.setState({shortName: e.target.value})}/>
