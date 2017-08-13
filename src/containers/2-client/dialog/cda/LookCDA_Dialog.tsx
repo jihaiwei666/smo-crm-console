@@ -10,12 +10,13 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndText from '../../../common/LabelAndText'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import Data from '../../../common/interface/Data'
 
 interface LookCDA_DialogProps {
   customerId: string
   cdaId: string
   fetchCDA_Detail: (cdaId: string) => void
-  cdaDetail: any
+  cdaDetail: Data<any>
   fetchProjectList: (customerId) => void
   customerProjectData: any
   onExited: () => void
@@ -53,7 +54,7 @@ class LookCDA_Dialog extends React.Component<LookCDA_DialogProps> {
           {
             loaded && (
               <div>
-                <InputGroup label="有效期" inputType={NECESSARY}>
+                <InputGroup className="bb" label="有效期" inputType={NECESSARY}>
                   <LabelAndText label="起始日期" text={getDateStr(startDate)}/>
                   <LabelAndText label="结束日期" text={getDateStr(endDate)}/>
                   <div className="tip">CDA超过有效期的前一天，会自动向该客户所属BD发送提醒</div>
@@ -69,7 +70,7 @@ class LookCDA_Dialog extends React.Component<LookCDA_DialogProps> {
                   <div className="tip">单一项目时，填写项目名称</div>
                 </InputGroup>
 
-                <InputGroup label="CDA对接人" inputType={IMPORTANT}>
+                <InputGroup className="bb" label="CDA对接人" inputType={IMPORTANT}>
                   {
                     cdaList.map((item, index) => {
                       return (

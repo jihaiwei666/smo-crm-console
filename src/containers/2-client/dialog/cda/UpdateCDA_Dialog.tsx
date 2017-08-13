@@ -17,10 +17,13 @@ import AddButton from '../../../common/AddButton'
 
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import Data from '../../../common/interface/Data'
 
 interface UpdateCDA_DialogProps {
   customerId: string
   cdaId: string
+  fetchCDA_Detail: (cdaId: string) => void
+  cdaDetail: Data<any>
   fetchProjectList: (customerId) => void
   customerProjectData: any
   fetchContactList: (customerId) => void
@@ -101,9 +104,13 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
 
   componentDidMount() {
     this.props.fetchContactList(this.props.customerId)
+    this.props.fetchCDA_Detail(this.props.cdaId)
   }
 
   componentWillReceiveProps(nextProps: UpdateCDA_DialogProps) {
+    if (!this.props.cdaDetail.loaded && nextProps.cdaDetail.loaded) {
+      this.setState(nextProps.cdaDetail.data)
+    }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
       this.close()
     }
@@ -132,7 +139,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
           <Modal.Title>编辑CDA</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InputGroup label="有效期" inputType="1">
+          <InputGroup className="bb" label="有效期" inputType="1">
             <LabelAndInput1 label="起始日期">
               <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
             </LabelAndInput1>
@@ -141,7 +148,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
             </LabelAndInput1>
             <div className="tip">CDA超过有效期的前一天，会自动向该客户所属BD发送提醒</div>
           </InputGroup>
-          <InputGroup label="保密协议" inputType="1">
+          <InputGroup className="bb" label="保密协议" inputType="1">
             <LabelAndInput1 label="类型">
               <Radio.Group value={this.state.protocolType} onChange={this.handleProtocolTypeChange}>
                 <Radio value="1">整体合作</Radio>
@@ -156,14 +163,14 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
             <div className="tip">单一项目时，填写项目名称</div>
           </InputGroup>
 
-          <InputGroup label="CDA对接人" inputType="2">
+          <InputGroup className="bb" label="CDA对接人" inputType="2">
             {
               this.state.cdaList.map((item, index) => {
                 return (
                   <div key={item.id} className="bb">
                     <LabelAndInput1 label="姓名">
                       <Select1 options={contactOptions} placeholder="选择联系人"
-                               value={item.username} onChange={v => this.handleContactChange(index, v)}/>
+                               value={item.id} onChange={v => this.handleContactChange(index, v)}/>
                     </LabelAndInput1>
                     <LabelAndInput label="电话" placeholder="选择联系人后自动显示" disabled={true} value={item.telephone}/>
                     <LabelAndInput label="邮箱" placeholder="选择联系人后自动显示" disabled={true} value={item.email}/>

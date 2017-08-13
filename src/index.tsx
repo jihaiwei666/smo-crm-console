@@ -3,6 +3,7 @@
  */
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import createSagaMiddleware from 'redux-saga'
 
 import 'app-core/style/index.scss'
 import './style/antd/date-picker/style/'
@@ -22,11 +23,13 @@ import Root from './containers/Root'
 import allReducers from './reducers/'
 import request_3_phase from './middlewares/request_3_phase'
 import handle_error from './middlewares/handle_error'
+import rootSaga from './sagas/'
 
 let history = createBrowserHistory()
-
+let sagaMiddleware = createSagaMiddleware()
 const middleware = routerMiddleware(history)
-const store = createStore(allReducers, {}, applyMiddleware(middleware, request_3_phase, handle_error))
+const store = createStore(allReducers, {}, applyMiddleware(middleware, request_3_phase, handle_error, sagaMiddleware))
+sagaMiddleware.run(rootSaga)
 
 if (module.hot) {
   module.hot.accept('./reducers/', () => {

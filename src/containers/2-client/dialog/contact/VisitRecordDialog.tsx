@@ -134,10 +134,10 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
         <Modal.Footer>
           <Row>
             <Part className="p5">
-              <Button className="info block" onClick={() => this.setState({showAddDialog: true})}>添 加</Button>
+              <Button className="block" onClick={this.close}>取消</Button>
             </Part>
             <Part className="p5">
-              <Button className="block">保存修改</Button>
+              <Button className="info block" onClick={() => this.setState({showAddDialog: true})}>添 加</Button>
             </Part>
           </Row>
         </Modal.Footer>

@@ -12,7 +12,7 @@ process.env.NODE_ENV = 'production'
 
 module.exports = {
   entry: [
-    './src/main.tsx'
+    './src/index.tsx'
   ],
   output: {
     path: __dirname + '/build/prod/',

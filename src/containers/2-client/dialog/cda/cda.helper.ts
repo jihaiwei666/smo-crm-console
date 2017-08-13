@@ -21,7 +21,7 @@ export function handleCdaDetail(data) {
     projectId: cda['cda_agreement_project_id'],
     projectName: cda['cda_agreement_project_name'] || '',
     cdaList: data['customerCdaPersons'].map(item => ({
-      id: item['cda_id'],
+      id: item['contacts_info_id'],
       username: item['contacts_info_name'],
       telephone: item['contacts_info_telephone'],
       email: item['contacts_info_mail'],

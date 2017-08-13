@@ -12,6 +12,7 @@ function generatorValueFromKey(prefix: string, obj: object): void {
 export const APP = {
   FETCH_BD: null,
   FETCH_BDPC: null,
+  FETCH_RECENT_OPEN_LIST: null,
   FETCH_OPERATION_HISTORY_LIST: null,
 }
 

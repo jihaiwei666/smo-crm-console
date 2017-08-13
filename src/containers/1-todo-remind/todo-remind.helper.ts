@@ -3,7 +3,7 @@
  */
 import {getPositionName} from '../7-account-manage/account-manage.helper'
 
-export function handleAllTodoRemindList(data) {
+export function handleTodoRemindList(data) {
   return {
     total: data['totalCount'],
     list: data['list'].map(item => ({

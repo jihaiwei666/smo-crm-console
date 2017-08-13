@@ -7,6 +7,7 @@ import message from 'app-core/message/message.reducer'
 import {routerReducer} from 'react-router-redux'
 
 import data from './data.reducer'
+import pageList from './page-list.reducer'
 
 import app from './app.reducer'
 import client from '../containers/2-client/client.reducer'
@@ -37,8 +38,11 @@ export default combineReducers({
   router: routerReducer,
   app: wrapReducerState(app),
   message: wrapReducerState(message),
+  recentOpenList: wrapReducerState(pageList(APP.FETCH_RECENT_OPEN_LIST)),
 
-  todoRemindList: wrapReducerState(data(TODO_REMIND.FETCH_LIST)),
+  todoRemindAllList: wrapReducerState(pageList(TODO_REMIND.FETCH_LIST)),
+  todoRemindMyList: wrapReducerState(pageList(TODO_REMIND.FETCH_MY_LIST)),
+  todoRemindCompleteList: wrapReducerState(pageList(TODO_REMIND.FETCH_COMPLETE_LIST)),
   userCategory: wrapReducerState(data(TODO_REMIND.FETCH_USER_CATEGORY_INFO)),
   relevantItemList: wrapReducerState(data(TODO_REMIND.FETCH_RELEVANT_ITEM_LIST)),
 

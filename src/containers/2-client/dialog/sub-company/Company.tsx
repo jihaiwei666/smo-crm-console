@@ -88,7 +88,7 @@ class Company extends React.Component<CompanyProps> {
           )
         }
         <div className="serial-number">{this.props.index + 1}</div>
-        <Part className="bl">
+        <Part>
           <LabelAndInput label="名称" value={this.state.companyName} onChange={v => this.setState({companyName: v})}/>
           <div className="row-line"></div>
           <InputGroup label="联系人信息">

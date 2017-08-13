@@ -1,12 +1,12 @@
 .query-filter {
-
+    color: #777;
     padding: 10px;
     margin: 10px;
     border: 1px solid #ddd;
 
     .filter-item {
         display: inline-flex;
-
+        align-items: center;
         &.middle {
             width: 350px;
         }

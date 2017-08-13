@@ -13,7 +13,6 @@ import {fetchList} from './client.action'
 import AddClientDialog from './dialog/AddClientDialog'
 import UpdateClientDialog from './dialog/UpdateClientDialog'
 import {handleListData} from '../../reducers/data.reducer'
-import {CLIENTS} from '../../core/constants/types'
 import PageCountNav from '../../components/nav/PageCountNav'
 import FilterButton from '../common/FilterButton'
 import FilterItem from '../../components/query-filter/FilterItem'
@@ -69,7 +68,7 @@ class Clients extends React.Component<ClientsProps> {
 
     let customerId = item.customerId
     /*if (process.env.NODE_ENV != 'production') {
-      customerId = '170726050419799740'
+      customerId = '170813095012658230'
     }*/
 
     return (

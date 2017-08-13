@@ -155,13 +155,13 @@ class EditSupplier extends React.Component<EditSupplierProps> {
           )
         }
 
-        <InputGroup label="供应商类别" inputType={NECESSARY}>
+        <InputGroup className="bb" label="供应商类别" inputType={NECESSARY}>
           <Radio.Group value={this.state.supplierType} onChange={v => this.setState({supplierType: v})}>
             <Radio value="1">优选供应商</Radio>
             <Radio value="2">普通供应商</Radio>
           </Radio.Group>
         </InputGroup>
-        <div className="mt15 pb15 pl5 bb">供应商信息：</div>
+        <div className="mt15 pb15 bb">供应商信息：</div>
         <div className="bb">
           {
             this.state.supplierList.map((supplier, supplierIndex) => {
@@ -169,7 +169,7 @@ class EditSupplier extends React.Component<EditSupplierProps> {
                 <FlexDiv key={supplier.id}>
                   <div style={{width: '30px'}}></div>
                   <Part className="bl">
-                    <InputGroup label="有效期限（!）">
+                    <InputGroup className="bb" label="有效期限（!）">
                       <LabelAndInput1 label="起始日期">
                         <DatePicker value={supplier.startDate} onChange={v => this.handleSupplierChange(supplierIndex, 'startDate', v)}/>
                       </LabelAndInput1>
@@ -191,7 +191,7 @@ class EditSupplier extends React.Component<EditSupplierProps> {
                         onChange={v => this.handleSupplierChange(supplierIndex, 'unitPrice', v)}
                       />
                     </InputGroup>
-                    <InputGroup label="对接人信息" inputType={IMPORTANT}>
+                    <InputGroup className="bb" label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
                           let telephone = ''
@@ -251,27 +251,29 @@ class EditSupplier extends React.Component<EditSupplierProps> {
           </div>
         </div>
 
-        <InputGroup label="MSA">
-          <LabelAndInput1 label="是否签署（*）">
-            <Radio.Group value={this.state.isDeployment} onChange={v => this.setState({isDeployment: v})}>
-              <Radio value="1">是</Radio>
-              <Radio value="0">否</Radio>
-            </Radio.Group>
-          </LabelAndInput1>
-          <LabelAndInput1 label="起始日期">
-            <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
-          </LabelAndInput1>
-          <LabelAndInput1 label="结束日期">
-            <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
-          </LabelAndInput1>
-          <LabelAndInput1 label="MSA扫描件">
-            <Button className="small">上传</Button>
-          </LabelAndInput1>
-        </InputGroup>
+        <div className="bb">
+          <InputGroup label="MSA">
+            <LabelAndInput1 label="是否签署（*）">
+              <Radio.Group value={this.state.isDeployment} onChange={v => this.setState({isDeployment: v})}>
+                <Radio value="1">是</Radio>
+                <Radio value="0">否</Radio>
+              </Radio.Group>
+            </LabelAndInput1>
+            <LabelAndInput1 label="起始日期">
+              <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
+            </LabelAndInput1>
+            <LabelAndInput1 label="结束日期">
+              <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
+            </LabelAndInput1>
+            <LabelAndInput1 label="MSA扫描件">
+              <Button className="small">上传</Button>
+            </LabelAndInput1>
+          </InputGroup>
 
-        <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-          <Button className="small" onClick={() => this.setState({showMoreMSA: true})}>...查看更多</Button>
-        </TextAndButton>
+          <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
+            <Button className="small" onClick={() => this.setState({showMoreMSA: true})}>...查看更多</Button>
+          </TextAndButton>
+        </div>
 
         <Update disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.update}/>
       </div>

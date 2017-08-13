@@ -19,3 +19,14 @@ export function handleBDPCListData(BDPCListData) {
 export function handleOperationHistoryList(data) {
   return data.map()
 }
+
+export function handleRecentOpenList(data) {
+  return {
+    total: data['totalCount'],
+    list: data['list'].map(item => ({
+      id: item['target_id'],
+      module: item['type'],
+      name: item['target_title'],
+    }))
+  }
+}

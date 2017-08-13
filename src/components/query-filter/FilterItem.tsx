@@ -81,5 +81,4 @@ class FilterItem extends Component<FilterItemProps> {
   }
 }
 
-
 export default FilterItem

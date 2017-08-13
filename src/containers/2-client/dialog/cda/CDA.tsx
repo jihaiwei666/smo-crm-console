@@ -98,6 +98,8 @@ class CDA extends React.Component<CDAProps> {
             <UpdateCDA_Dialog
               customerId={this.props.customerId}
               cdaId={item.cdaId}
+              fetchCDA_Detail={this.props.fetchCDA_Detail}
+              cdaDetail={this.props.cdaDetail}
               fetchProjectList={this.props.fetchProjectList}
               customerProjectData={this.props.customerProjectData}
               fetchContactList={this.props.fetchContactList}

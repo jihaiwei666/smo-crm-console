@@ -158,7 +158,7 @@ class RFI extends React.Component<RFIProps> {
               label="填写人" inputType={NECESSARY}
               value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}
             />
-            <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt">
+            <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bb bt">
               {
                 this.state.brokerList.map((broker, index) => {
                   return (
