@@ -22,7 +22,7 @@ class Modules extends React.Component<ModulesProps> {
     const currentPath = this.props.currentPath
 
     const todoRemind = getPath(pages.todoRemind)
-    const client = getPath(pages.client)
+    const customer = getPath(pages.customer)
     const project = getPath(pages.project)
     const contract = getPath(pages.contract)
     const report = getPath(pages.report)
@@ -39,8 +39,8 @@ class Modules extends React.Component<ModulesProps> {
               <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})}>
                 <Link to={todoRemind}>待办提醒</Link>
               </li>
-              <li className={classnames({'active': currentPath == getPath(pages.client)})}>
-                <Link to={client}>客户</Link>
+              <li className={classnames({'active': currentPath == getPath(pages.customer)})}>
+                <Link to={customer}>客户</Link>
               </li>
               <li className={classnames({'active': currentPath == getPath(pages.project)})}>
                 <Link to={project}>项目</Link>

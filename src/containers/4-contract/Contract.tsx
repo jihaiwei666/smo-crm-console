@@ -15,6 +15,7 @@ import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import {fetchList} from './contract.action'
 import PageCountNav from '../../components/nav/PageCountNav'
+import {getContractType} from './contract.helper'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
@@ -88,7 +89,7 @@ class Contract extends React.Component<ContractProps> {
                   >
                     <FixRow.Item>{item.contractName}</FixRow.Item>
                     <FixRow.Item>{item.contractCode}</FixRow.Item>
-                    <FixRow.Item>{item.contractType}</FixRow.Item>
+                    <FixRow.Item>{getContractType(item.contractType)}</FixRow.Item>
                     <FixRow.Item>{item.bd}</FixRow.Item>
                     <FixRow.Item>{item.bdpc}</FixRow.Item>
                     <FixRow.Item>

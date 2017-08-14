@@ -19,6 +19,18 @@ export function getOperationType(type) {
   return '未知操作'
 }
 
+export function getRecentOpenTypeText(type) {
+  if (type == '1') {
+    return '客户'
+  }
+  if (type == '2') {
+    return '项目'
+  }
+  if (type == '3') {
+    return '合同'
+  }
+}
+
 export function handleOperationList(operationRecordList) {
   return operationRecordList.map(item => ({
     date: getDateStr(item['operation_time']),

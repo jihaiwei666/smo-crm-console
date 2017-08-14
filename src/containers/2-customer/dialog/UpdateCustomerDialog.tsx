@@ -9,7 +9,7 @@ import Spinner from 'app-core/common/Spinner'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import cache from '../../cache/cache'
-import ClientState from '../ClientState'
+import CustomerState from '../CustomerState'
 import CategoryTitle from '../../common/CategoryTitle'
 import ClientBasicInfo from './part/ClientBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
@@ -25,10 +25,10 @@ import AssociateInfo from './part/AssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import * as actions from '../client.action'
+import * as actions from '../customer.action'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 
-interface UpdateClientDialogProps extends ClientState {
+interface UpdateClientDialogProps extends CustomerState {
   customerId: string
   fetchCustomerInfo: any
   customerInfo: any
@@ -202,7 +202,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.client,
+    ...state.customer,
     customerInfo: state.customerInfo,
     BDList: state.BDList,
     BDPCList: state.BDPCList,

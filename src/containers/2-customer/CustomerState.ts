@@ -2,7 +2,7 @@
  * Created by jiangyukun on 2017/7/25.
  */
 
-interface ClientState {
+interface CustomerState {
   newCustomerId: string
   addCustomerSuccess: boolean
   updateCustomerSuccess: boolean
@@ -38,4 +38,4 @@ interface ClientState {
   updateRemarkAttachmentSuccess: boolean
 }
 
-export default ClientState
+export default CustomerState

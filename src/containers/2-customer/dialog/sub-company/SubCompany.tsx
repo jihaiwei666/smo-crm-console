@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import Button from '../../../../components/button/Button'
 import Company from './Company'
 
-import {addSubCompany, updateSubCompany, removeSubCompany} from '../../client.action'
+import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
 
 interface SubCompanyProps {
   customerId: string
@@ -113,7 +113,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.clients,
+    ...state.customer,
     customerId: props.customerId,
     subCompanyList: props.subCompanyList
   }

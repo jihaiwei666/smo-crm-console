@@ -5,7 +5,7 @@ import {APP} from '../core/constants/types'
 import phase from '../core/constants/phase'
 import {THREE_PHASE} from '../middlewares/request_3_phase'
 import {_get} from '../core/http'
-import {handleBDListData, handleBDPCListData, handleOperationHistoryList, handleRecentOpenList} from './app.helper'
+import {handleBDListData, handleBDPCListData} from './app.helper'
 
 export function clearState(type: string) {
   return {

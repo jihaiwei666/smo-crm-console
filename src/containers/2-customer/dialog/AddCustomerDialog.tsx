@@ -7,7 +7,7 @@ import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
-import ClientState from '../ClientState'
+import CustomerState from '../CustomerState'
 import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
@@ -20,12 +20,12 @@ import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 
-import {addCustomer, updateCustomer, updateBdAndBdpc} from '../client.action'
+import {addCustomer, updateCustomer, updateBdAndBdpc} from '../customer.action'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import EditSupplier from './supplier/EditSupplier'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 
-interface AddClientDialogProps extends ClientState {
+interface AddClientDialogProps extends CustomerState {
   newCustomerId: string
   addCustomer: (options) => void
   addCustomerSuccess: boolean
@@ -167,7 +167,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
 
 function mapStateToProps(state) {
   return {
-    ...state.client,
+    ...state.customer,
     BDList: state.BDList,
     BDPCList: state.BDPCList
   }

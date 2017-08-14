@@ -11,7 +11,7 @@ import AddCDA_Dialog from '../cda/AddCDA_Dialog'
 import LookCDA_Dialog from '../cda/LookCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
-import {fetchProjectList, fetchContactList} from '../../client.action'
+import {fetchProjectList, fetchContactList} from '../../customer.action'
 import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda.action'
 
 interface CDAProps {
@@ -150,7 +150,7 @@ class CDA extends React.Component<CDAProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.client,
+    ...state.customer,
     customerId: props.customerId,
     cdaList: state.cdaList,
     cdaDetail: state.cdaDetail,

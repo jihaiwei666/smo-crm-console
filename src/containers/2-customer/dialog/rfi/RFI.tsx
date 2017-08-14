@@ -20,18 +20,18 @@ import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import RFI_ListDialog from './RFI_ListDialog'
 import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
-import ClientState from '../../ClientState'
+import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import SelectContact from '../base/SelectContact'
 
 import {MODULES} from './rfi.constants'
 import {ADD, EDIT} from '../../../../core/CRUD'
-import {fetchContactList} from '../../client.action'
+import {fetchContactList} from '../../customer.action'
 import {fetchRfiList, addRfi, updateRfi, removeRfi} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 
-interface RFIProps extends ClientState {
+interface RFIProps extends CustomerState {
   customerId: string
   rfiId?: string
   fetchContactList: (customerId: string) => void
@@ -211,7 +211,7 @@ class RFI extends React.Component<RFIProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.client,
+    ...state.customer,
     customerId: props.customerId,
     rfiId: props.rfiId,
     rfiInfo: props.rfiInfo,

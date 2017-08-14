@@ -9,7 +9,7 @@ import pages from '../../core/pages'
 import Chunk from './Chunk'
 import AccountManage from './lazy-page/account__manage'
 import TodoRemind from './lazy-page/todo__remind'
-import Client from './lazy-page/client'
+import Customer from './lazy-page/customer'
 import Project from './lazy-page/project'
 import Contract from './lazy-page/contract'
 import RecycleBin from './lazy-page/recycle__bin'
@@ -19,11 +19,11 @@ class PageContent extends React.Component<any> {
   mapper: {}
 
   componentWillMount() {
-    const {todoRemind, client, accountManage, project, report, contract, recycleBin} = pages
+    const {todoRemind, customer, accountManage, project, report, contract, recycleBin} = pages
     this.mapper = {
       [accountManage]: () => <Chunk load={AccountManage}/>,
       [todoRemind]: () => <Chunk load={TodoRemind}/>,
-      [client]: () => <Chunk load={Client}/>,
+      [customer]: () => <Chunk load={Customer}/>,
       [project]: () => <Chunk load={Project}/>,
       [contract]: () => <Chunk load={Contract}/>,
       [report]: () => <Chunk load={Report}/>,
@@ -33,12 +33,12 @@ class PageContent extends React.Component<any> {
 
   render() {
     const {match} = this.props
-    const {todoRemind, client, accountManage, project, contract, report, recycleBin} = pages
+    const {todoRemind, customer, accountManage, project, contract, report, recycleBin} = pages
     return (
       <div className="page-content">
         <Route path={`${match.url}/${accountManage}`} component={this.mapper[accountManage]}/>
         <Route path={`${match.url}/${todoRemind}`} component={this.mapper[todoRemind]}/>
-        <Route path={`${match.url}/${client}`} component={this.mapper[client]}/>
+        <Route path={`${match.url}/${customer}`} component={this.mapper[customer]}/>
         <Route path={`${match.url}/${project}`} component={this.mapper[project]}/>
         <Route path={`${match.url}/${contract}`} component={this.mapper[contract]}/>
         <Route path={`${match.url}/${report}`} component={this.mapper[report]}/>

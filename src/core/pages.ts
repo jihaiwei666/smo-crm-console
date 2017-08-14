@@ -3,7 +3,7 @@
  */
 export default {
   todoRemind: 'todo-remind',
-  client: 'client',
+  customer: 'customer',
   project: 'project',
   contract: 'contract',
   report: 'report',

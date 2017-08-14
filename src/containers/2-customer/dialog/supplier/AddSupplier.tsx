@@ -1,5 +1,5 @@
 /**
- * Created by jiangyukun on 2017/7/24.
+ * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
 import {connect} from 'react-redux'
@@ -15,26 +15,20 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
-import Update from '../../../common/Update'
+import Save from '../../../common/Save'
 
-import {ADD, EDIT} from '../../../../core/CRUD'
 import {addListItem} from '../../../../core/utils/arrayUtils'
-import {fetchContactList} from '../../client.action'
-import {updateSupplier, fetchMSAList, addMsa, updateMsa} from './supplier.action'
-import LookMSADialog from './LookMSADialog'
+import {fetchContactList} from '../../customer.action'
+import {addSupplier} from './supplier.action'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
-interface EditSupplierProps {
+interface AddSupplierProps {
   customerId: string
-  supplierId: string
-  supplierInfo: any
+  supplierId?: string
   fetchContactList: (customerId: string) => void
   customerContactData: any
-  updateSupplier: (options) => void
-  fetchMSAList: (supplierId: string) => void
-  msaListInfo: any[]
+  addSupplier: (options) => void
 
-  addMsa: (options) => void
-  updateMsa: (options) => void
 }
 
 let id = 1
@@ -43,7 +37,6 @@ function getNextBroker() {
   return {
     id: id++,
     broker: '',
-    isLocal: true
   }
 }
 
@@ -55,14 +48,12 @@ function getNextSupplier() {
     chosenDate: '',
     isFixed: '',
     unitPrice: '',
-    brokerList: [],
-    isLocal: true
+    brokerList: []
   }
 }
 
-class EditSupplier extends React.Component<EditSupplierProps> {
+class AddSupplier extends React.Component<AddSupplierProps> {
   state = {
-    showMoreMSA: false,
     supplierType: '',
     isDeployment: '',
     supplierList: [],
@@ -70,34 +61,28 @@ class EditSupplier extends React.Component<EditSupplierProps> {
     endDate: null
   }
 
-  update = () => {
+  save = () => {
     let options = this.getOptions()
-    this.props.updateSupplier(options)
+    this.props.addSupplier(options)
   }
 
   getOptions() {
     const {supplierList} = this.state
     let list = supplierList.map(supplier => ({
       "customerProviderInfo": {
-        "provider_id": this.props.supplierId,
-        "provider_info_id": supplier.id,
-        "validity_begin_time": supplier.startDate,
-        "validity_end_time": supplier.endDate,
-        "validity_select_time": supplier.chosenDate,
+        "validity_begin_time": getDateStr(supplier.startDate),
+        "validity_end_time": getDateStr(supplier.endDate),
+        "validity_select_time": getDateStr(supplier.chosenDate),
         "is_fixed": supplier.isFixed,
         "price": supplier.unitPrice,
       },
       "customerProviderInfoDockers": supplier.brokerList.map(broker => ({
-        "provider_info_id": supplier.id,
-        "provider_info_docker_id": broker.isLocal ? '' : broker.id,
         "contacts_info_id": broker.broker,
-        "sign": broker.isLocal ? ADD : EDIT
-      })),
-      "sign": supplier.isLocal ? ADD : EDIT
+        "sign": 2
+      }))
     }))
     return {
       customerProvider: {
-        "provider_id": this.props.supplierId,
         "customer_info_id": this.props.customerId,
         "provider_type": this.state.supplierType,
         "is_signed_msa": this.state.isDeployment
@@ -126,35 +111,13 @@ class EditSupplier extends React.Component<EditSupplierProps> {
     this.forceUpdate()
   }
 
-  componentWillMount() {
-    this.setState(this.props.supplierInfo)
-  }
-
-  componentDidMount() {
-    this.props.fetchContactList(this.props.customerId)
-  }
-
   render() {
     const contactList = this.props.customerContactData.data || []
     const contactOptions = contactList.map(item => ({
       value: item.contactId, text: item.contactName
     }))
-
     return (
       <div>
-        {
-          this.state.showMoreMSA && (
-            <LookMSADialog
-              supplierId={this.props.supplierId}
-              fetchMSAList={this.props.fetchMSAList}
-              msaListInfo={this.props.msaListInfo}
-              addMsa={this.props.addMsa}
-              updateMsa={this.props.updateMsa}
-              onExited={() => this.setState({showMoreMSA: false})}
-            />
-          )
-        }
-
         <InputGroup className="bb" label="供应商类别" inputType={NECESSARY}>
           <Radio.Group value={this.state.supplierType} onChange={v => this.setState({supplierType: v})}>
             <Radio value="1">优选供应商</Radio>
@@ -194,11 +157,9 @@ class EditSupplier extends React.Component<EditSupplierProps> {
                     <InputGroup className="bb" label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
-                          let telephone = ''
-                          let email = ''
-                          let position = ''
+                          let telephone = '', email = '', position = ''
                           if (broker.broker) {
-                            let contact = contactList.find(d => d.contactId == broker.broker) || {}
+                            let contact = contactList.find(d => d.contactId == broker.broker)
                             telephone = contact.telephone
                             email = contact.email
                             position = contact.position
@@ -246,7 +207,7 @@ class EditSupplier extends React.Component<EditSupplierProps> {
           }
           <div>
             <TextAndButton text="点此添加按钮添加一条供应商信息">
-              <AddButton onClick={this.addSupplier}/>
+              <AddButton disabled={!this.props.customerId} onClick={this.addSupplier}/>
             </TextAndButton>
           </div>
         </div>
@@ -266,16 +227,15 @@ class EditSupplier extends React.Component<EditSupplierProps> {
               <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
             </LabelAndInput1>
             <LabelAndInput1 label="MSA扫描件">
-              <Button className="small">上传</Button>
+              <Button className="small" disabled={!this.props.customerId}>上传</Button>
             </LabelAndInput1>
           </InputGroup>
 
           <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-            <Button className="small" onClick={() => this.setState({showMoreMSA: true})}>...查看更多</Button>
+            <Button className="small" disabled={true}>...查看更多</Button>
           </TextAndButton>
         </div>
-
-        <Update disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.update}/>
+        <Save disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.save}/>
       </div>
     )
   }
@@ -284,13 +244,10 @@ class EditSupplier extends React.Component<EditSupplierProps> {
 function mapStateToProps(state, props) {
   return {
     customerId: props.customerId,
-    supplierId: props.supplierId,
-    supplierInfo: props.supplierInfo,
-    customerContactData: state.customerContactData,
-    msaListInfo: state.msaListInfo
+    customerContactData: state.customerContactData
   }
 }
 
 export default connect(mapStateToProps, {
-  updateSupplier, fetchContactList, fetchMSAList, addMsa, updateMsa
-})(EditSupplier)
+  addSupplier, fetchContactList
+})(AddSupplier)

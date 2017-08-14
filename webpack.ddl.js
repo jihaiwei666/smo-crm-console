@@ -21,6 +21,7 @@ const vendors = [
   'react-router-dom',
   'react-router-redux',
   'redux',
+  'redux-saga',
   'antd/lib/date-picker'
 ]
 

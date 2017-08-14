@@ -3,7 +3,7 @@
  */
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
 import {_post, _get} from '../../../../core/http'
-import {CLIENTS} from '../../../../core/constants/types'
+import {CUSTOMER} from '../../../../core/constants/types'
 import {handleRfiServerData, handleRfiListServerData} from './rfi.helper'
 
 const urlPrefix = '/customer'
@@ -11,7 +11,7 @@ const urlPrefix = '/customer'
 export function fetchRfiList(clientId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_RFI_LIST,
+      type: CUSTOMER.FETCH_RFI_LIST,
       http: () => _get(urlPrefix + `/v1/rfi/list/${clientId}`),
       handleResponse: handleRfiListServerData
     }
@@ -21,7 +21,7 @@ export function fetchRfiList(clientId) {
 export function addRfi(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_RFI,
+      type: CUSTOMER.ADD_RFI,
       http: () => _post(urlPrefix + '/v1/rfi/add', {body: options}),
       handleResponse: handleRfiServerData
     }
@@ -31,7 +31,7 @@ export function addRfi(options) {
 export function updateRfi(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_RFI,
+      type: CUSTOMER.UPDATE_RFI,
       http: () => _post(urlPrefix + '/v1/rfi/edit', {body: options})
     }
   }
@@ -40,7 +40,7 @@ export function updateRfi(options) {
 export function removeRfi(rfiId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.REMOVE_RFI,
+      type: CUSTOMER.REMOVE_RFI,
       http: () => _post(urlPrefix + `/v1/rfi/del/${rfiId}`)
     }
   }

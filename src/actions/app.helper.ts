@@ -22,10 +22,10 @@ export function handleOperationHistoryList(data) {
 
 export function handleRecentOpenList(data) {
   return {
-    total: data['totalCount'],
-    list: data['list'].map(item => ({
-      id: item['target_id'],
+    list: data.map(item => ({
+      id: item['last_visit_page_id'],
       module: item['type'],
+      moduleId: item['target_id'],
       name: item['target_title'],
     }))
   }

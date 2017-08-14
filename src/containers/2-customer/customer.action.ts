@@ -2,16 +2,16 @@
  * Created by jiangyukun on 2017/7/7.
  */
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
-import {CLIENTS} from '../../core/constants/types'
+import {CUSTOMER} from '../../core/constants/types'
 import {_get, _post} from '../../core/http'
-import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList} from './client.helper'
+import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList} from './customer.helper'
 
 const urlPrefix = '/customer'
 
 export function fetchList(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_LIST,
+      type: CUSTOMER.FETCH_LIST,
       http: () => _post(urlPrefix + '/v1/list', {body: options}),
       handleResponse: handleClientList
     }
@@ -21,7 +21,7 @@ export function fetchList(options) {
 export function addCustomer(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_CUSTOMER,
+      type: CUSTOMER.ADD_CUSTOMER,
       http: () => _post(urlPrefix + '/v1/info/add', {body: options}),
       handleResponse: data => data
     }
@@ -31,7 +31,7 @@ export function addCustomer(options) {
 export function updateCustomer(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_CUSTOMER,
+      type: CUSTOMER.UPDATE_CUSTOMER,
       http: () => _post(urlPrefix + '/v1/info/edit', {body: options}),
     }
   }
@@ -40,7 +40,7 @@ export function updateCustomer(options) {
 export function fetchCustomerInfo(customerId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_CUSTOMER_INFO,
+      type: CUSTOMER.FETCH_CUSTOMER_INFO,
       http: () => _get(urlPrefix + `/v1/list/detail/${customerId}`),
       handleResponse: handleClientInfo
     }
@@ -50,7 +50,7 @@ export function fetchCustomerInfo(customerId) {
 export function updateBdAndBdpc(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_BD_AND_BDPC,
+      type: CUSTOMER.UPDATE_BD_AND_BDPC,
       http: () => _post(urlPrefix + '/v1/info/edit/belong', {body: options})
     }
   }
@@ -59,7 +59,7 @@ export function updateBdAndBdpc(options) {
 export function addSubCompany(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_SUB_COMPANY,
+      type: CUSTOMER.ADD_SUB_COMPANY,
       http: () => _post(urlPrefix + '/v1/subsidiary/add', {body: options}),
       handleResponse: data => data
     }
@@ -69,7 +69,7 @@ export function addSubCompany(options) {
 export function updateSubCompany(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_SUB_COMPANY,
+      type: CUSTOMER.UPDATE_SUB_COMPANY,
       http: () => _post(urlPrefix + '/v1/subsidiary/edit', {body: options})
     }
   }
@@ -78,7 +78,7 @@ export function updateSubCompany(options) {
 export function removeSubCompany(subCompanyId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.REMOVE_SUB_COMPANY,
+      type: CUSTOMER.REMOVE_SUB_COMPANY,
       http: () => _post(urlPrefix + `/v1/subsidiary/del/${subCompanyId}`)
     }
   }
@@ -87,7 +87,7 @@ export function removeSubCompany(subCompanyId) {
 export function fetchProjectList(customerId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_PROJECT_LIST,
+      type: CUSTOMER.FETCH_PROJECT_LIST,
       http: () => _get(urlPrefix + `/v1/relation/project/list/${customerId}`),
       handleResponse: handleCustomerProjectList
     }
@@ -97,7 +97,7 @@ export function fetchProjectList(customerId) {
 export function fetchContactList(customerId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_CONTACT_LIST,
+      type: CUSTOMER.FETCH_CONTACT_LIST,
       http: () => _get(urlPrefix + `/v1/contacts/list/${customerId}`),
       handleResponse: handleCustomerContactList
     }
@@ -107,7 +107,7 @@ export function fetchContactList(customerId) {
 export function updateRemarkAndAttachment(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_REMARK_AND_ATTACHMENT,
+      type: CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT,
       http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
     }
   }

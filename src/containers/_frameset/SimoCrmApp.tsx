@@ -12,11 +12,11 @@ import PageContent from './PageContent'
 import Modules from './Modules'
 import RecentOpen from './RecentOpen'
 import {fetchRecentOpenList} from '../../actions/app.action'
-import List from '../common/interface/List'
+import Data from '../common/interface/Data'
 
 interface SimoCrmAppProps {
   fetchRecentOpenList: (start) => void
-  recentOpenList: List<any>
+  recentOpenList: Data<any>
   message: any
   changeMessageStatus: any
   match: any

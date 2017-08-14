@@ -4,14 +4,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import './client.scss'
-import ClientState from './ClientState'
+import './customer.scss'
+import CustomerState from './CustomerState'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 
-import {fetchList} from './client.action'
-import AddClientDialog from './dialog/AddClientDialog'
-import UpdateClientDialog from './dialog/UpdateClientDialog'
+import AddCustomerDialog from './dialog/AddCustomerDialog'
+import UpdateCustomerDialog from './dialog/UpdateCustomerDialog'
 import {handleListData} from '../../reducers/data.reducer'
 import PageCountNav from '../../components/nav/PageCountNav'
 import FilterButton from '../common/FilterButton'
@@ -19,14 +18,15 @@ import FilterItem from '../../components/query-filter/FilterItem'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
+import {fetchList} from './customer.action'
 import tipAndClear from './tipAndClear'
-import {getCustomerType} from './client.helper'
+import {getCustomerType} from './customer.helper'
 
-interface ClientsProps extends AppFunctionPage, ClientState {
+interface CustomerProps extends AppFunctionPage, CustomerState {
   clientList: any[]
 }
 
-class Clients extends React.Component<ClientsProps> {
+class Customer extends React.Component<CustomerProps> {
   state = {
     index: -1,
     showAddClientDialog: false,
@@ -75,13 +75,13 @@ class Clients extends React.Component<ClientsProps> {
       <div className="app-function-page clients">
         {
           this.state.showAddClientDialog && (
-            <AddClientDialog
+            <AddCustomerDialog
               onExited={() => this.setState({showAddClientDialog: false})}/>
           )
         }
         {
           this.state.showEditClientDialog && (
-            <UpdateClientDialog
+            <UpdateCustomerDialog
               customerId={customerId}
               onExited={() => this.setState({showEditClientDialog: false})}/>
           )
@@ -151,9 +151,9 @@ class Clients extends React.Component<ClientsProps> {
 
 function mapStateToProps(state) {
   return {
-    ...state.client,
+    ...state.customer,
     clientList: state.clientList
   }
 }
 
-export default connect(mapStateToProps, {fetchList})(Clients)
+export default connect(mapStateToProps, {fetchList})(Customer)

@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
-import {updateRemarkAndAttachment} from '../../client.action'
+import {updateRemarkAndAttachment} from '../../customer.action'
 
 interface CustomerRemarkAttachmentProps {
   customerId?: string

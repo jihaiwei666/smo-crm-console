@@ -43,7 +43,7 @@ class RecycleBin extends React.Component<RecycleBinProps> {
                 <span className="mr10">
                   {item.name}
                 </span>
-                <a>下载</a>
+                <a target="__blank" href={item.url}>下载</a>
               </div>
             )
           })

@@ -26,7 +26,7 @@ export const TODO_REMIND = {
 
 }
 
-export const CLIENTS = {
+export const CUSTOMER = {
   FETCH_LIST: null,
   FETCH_BD_LIST: null,
   ADD_CUSTOMER: null,
@@ -119,7 +119,7 @@ export const ACCOUNT_MANAGE = {
 generatorValueFromKey('APP', APP)
 generatorValueFromKey('TODO_REMIND', TODO_REMIND)
 generatorValueFromKey('PROJECT', PROJECT)
-generatorValueFromKey('CLIENTS', CLIENTS)
+generatorValueFromKey('CUSTOMER', CUSTOMER)
 generatorValueFromKey('CONTRACT', CONTRACT)
 generatorValueFromKey('RECYCLE_BIN', RECYCLE_BIN)
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

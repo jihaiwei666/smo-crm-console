@@ -2,7 +2,7 @@
  * Created by jiangyukun on 2017/7/24.
  */
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
-import {CLIENTS} from '../../../../core/constants/types'
+import {CUSTOMER} from '../../../../core/constants/types'
 import {_post, _get} from '../../../../core/http'
 import {handleSupplierServerData, handleMsaListData} from './supplier.helper'
 
@@ -11,7 +11,7 @@ const urlPrefix = '/customer'
 export function addSupplier(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_SUPPLIER,
+      type: CUSTOMER.ADD_SUPPLIER,
       http: () => _post(urlPrefix + `/v1/provider/add`, {body: options}),
       handleResponse: handleSupplierServerData
     }
@@ -21,7 +21,7 @@ export function addSupplier(options) {
 export function updateSupplier(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_SUPPLIER,
+      type: CUSTOMER.UPDATE_SUPPLIER,
       http: () => _post(urlPrefix + `/v1/provider/edit`, {body: options})
     }
   }
@@ -30,7 +30,7 @@ export function updateSupplier(options) {
 export function fetchMSAList(supplierId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_MSA_LIST,
+      type: CUSTOMER.FETCH_MSA_LIST,
       http: () => _get(urlPrefix + `/v1/provider/msa/list/${supplierId}`),
       handleResponse: handleMsaListData
     }
@@ -40,7 +40,7 @@ export function fetchMSAList(supplierId) {
 export function addMsa(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_MSA,
+      type: CUSTOMER.ADD_MSA,
       http: () => _post(urlPrefix + `/v1/provider/msa/add`, {body: options})
     }
   }
@@ -49,7 +49,7 @@ export function addMsa(options) {
 export function updateMsa(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_MSA,
+      type: CUSTOMER.UPDATE_MSA,
       http: () => _post(urlPrefix + `/v1/provider/msa/edit`, {body: options})
     }
   }

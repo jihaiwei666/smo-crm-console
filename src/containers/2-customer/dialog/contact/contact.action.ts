@@ -2,7 +2,7 @@
  * Created by jiangyukun on 2017/7/25.
  */
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
-import {CLIENTS} from '../../../../core/constants/types'
+import {CUSTOMER} from '../../../../core/constants/types'
 import {_post, _get} from '../../../../core/http'
 import {handleVisitRecordList} from './contact.helper'
 
@@ -11,7 +11,7 @@ const urlPrefix = '/customer'
 export function addContact(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_CONTACT,
+      type: CUSTOMER.ADD_CONTACT,
       http: () => _post(urlPrefix + '/v1/contacts/add', {body: options}),
       handleResponse: data => data
     }
@@ -21,7 +21,7 @@ export function addContact(options) {
 export function updateContact(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_CONTACT,
+      type: CUSTOMER.UPDATE_CONTACT,
       http: () => _post(urlPrefix + '/v1/contacts/edit', {body: options})
     }
   }
@@ -30,7 +30,7 @@ export function updateContact(options) {
 export function removeContact(contactId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.REMOVE_CONTACT,
+      type: CUSTOMER.REMOVE_CONTACT,
       http: () => _post(urlPrefix + `/v1/contacts/del/${contactId}`)
     }
   }
@@ -39,7 +39,7 @@ export function removeContact(contactId) {
 export function fetchVisitRecordList(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.FETCH_VISIT_RECORD_LIST,
+      type: CUSTOMER.FETCH_VISIT_RECORD_LIST,
       http: () => _post(urlPrefix + `/v1/contacts/visit/list/`, {body: options}),
       handleResponse: handleVisitRecordList
     }
@@ -49,7 +49,7 @@ export function fetchVisitRecordList(options) {
 export function addVisitRecord(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.ADD_VISIT_RECORD,
+      type: CUSTOMER.ADD_VISIT_RECORD,
       http: () => _post(urlPrefix + `/v1/contacts/visit/add`, {body: options})
     }
   }
@@ -58,7 +58,7 @@ export function addVisitRecord(options) {
 export function updateVisitRecord(options) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.UPDATE_VISIT_RECORD,
+      type: CUSTOMER.UPDATE_VISIT_RECORD,
       http: () => _post(urlPrefix + `/v1/contacts/visit/edit`, {body: options})
     }
   }
@@ -67,7 +67,7 @@ export function updateVisitRecord(options) {
 export function removeVisitRecord(recordId) {
   return {
     [THREE_PHASE]: {
-      type: CLIENTS.REMOVE_VISIT_RECORD,
+      type: CUSTOMER.REMOVE_VISIT_RECORD,
       http: () => _post(urlPrefix + `/v1/contacts/visit/del/${recordId}`)
     }
   }

@@ -12,9 +12,9 @@ import {
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
 } from './contact.action'
 import {getContactOptions} from './contact.helper'
-import ClientState from '../../ClientState'
+import CustomerState from '../../CustomerState'
 
-interface ContactProps extends ClientState {
+interface ContactProps extends CustomerState {
   customerId: string
   addContact: (options) => void
   contactInfo: any[]
@@ -154,7 +154,7 @@ class ContactInfo extends React.Component<ContactProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.client,
+    ...state.customer,
     customerId: props.customerId,
     contactInfo: props.contactInfo,
     customerContactData: state.customerContactData,
