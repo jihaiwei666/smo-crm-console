@@ -11,7 +11,7 @@ import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import cache from '../../cache/cache'
 import CustomerState from '../CustomerState'
 import CategoryTitle from '../../common/CategoryTitle'
-import ClientBasicInfo from './part/ClientBasicInfo'
+import CustomerBasicInfo from './part/CustomerBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
@@ -28,7 +28,7 @@ import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import * as actions from '../customer.action'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 
-interface UpdateClientDialogProps extends CustomerState {
+interface UpdateCustomerDialogProps extends CustomerState {
   customerId: string
   fetchCustomerInfo: any
   customerInfo: any
@@ -42,7 +42,7 @@ interface UpdateClientDialogProps extends CustomerState {
   onExited: () => void
 }
 
-class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
+class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   supplierInfo: any
   rfiInfo: any
   state = {
@@ -61,7 +61,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
     this.props.fetchContactList(this.props.customerId)
   }
 
-  componentWillReceiveProps(nextProps: UpdateClientDialogProps) {
+  componentWillReceiveProps(nextProps: UpdateCustomerDialogProps) {
     if (!this.props.customerInfo.loaded && nextProps.customerInfo.loaded) {
       const data = nextProps.customerInfo.data
       const {supplierInfo, rfiInfo} = data
@@ -129,7 +129,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                     updateBdAndBdpc={this.props.updateBdAndBdpc}
                   />
                   <CategoryTitle title="客户信息"/>
-                  <ClientBasicInfo
+                  <CustomerBasicInfo
                     customerId={this.props.customerId}
                     customerBaseInfo={customerBaseInfo}
                     updateCustomer={this.props.updateCustomer}
@@ -176,7 +176,7 @@ class UpdateClientDialog extends React.Component<UpdateClientDialogProps> {
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>
                 </Part>
-                <div className="client-nav">
+                <div className="customer-nav">
                   <ul className="nav-category-group">
                     <li className="active">
                       客户信息
@@ -213,4 +213,4 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   ...actions
-})(cache(UpdateClientDialog))
+})(cache(UpdateCustomerDialog))

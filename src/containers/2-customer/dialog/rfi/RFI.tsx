@@ -36,7 +36,7 @@ interface RFIProps extends CustomerState {
   rfiId?: string
   fetchContactList: (customerId: string) => void
   customerContactData: any
-  fetchRfiList: (clientId) => void
+  fetchRfiList: (customerId) => void
   rfiList: Data<any[]>
   addRfi: (options) => void
   updateRfi: (options) => void
@@ -132,7 +132,7 @@ class RFI extends React.Component<RFIProps> {
         {
           this.state.showRfiListDialog && (
             <RFI_ListDialog
-              clientId={this.props.customerId}
+              customerId={this.props.customerId}
               fetchContactList={this.props.fetchContactList}
               customerContactData={this.props.customerContactData}
               addRfi={this.props.addRfi}

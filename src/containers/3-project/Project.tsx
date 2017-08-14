@@ -1,16 +1,16 @@
 /**
  * Created by jiangyukun on 2017/7/18.
  */
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-
 import React from 'react'
 import {connect} from 'react-redux'
+import Confirm from 'app-core/common/Confirm'
 
 import './project.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import Button from '../../components/button/Button'
 import AddProjectDialog from './dialog/AddProjectDialog'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {fetchList} from './project.action'
 import {handleListData} from '../../reducers/data.reducer'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
@@ -27,6 +27,7 @@ class Project extends React.Component<ProjectProps> {
     currentPage: 0,
     showAddDialog: false,
     showEditDialog: false,
+    showDeleteConfirm: false
   }
 
   toPage = (newPage) => {
@@ -38,6 +39,10 @@ class Project extends React.Component<ProjectProps> {
       "start": newPage,
       "limit": 10,
     })
+  }
+
+  removeProject = () => {
+
   }
 
   componentDidMount() {
@@ -69,6 +74,16 @@ class Project extends React.Component<ProjectProps> {
             />
           )
         }
+        {
+          this.state.showDeleteConfirm && (
+            <Confirm
+              message="确定删除此项目吗？"
+              onExited={() => this.setState({showDeleteConfirm: false})}
+              onConfirm={this.removeProject}
+            />
+          )
+        }
+
         <div className="m15">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>

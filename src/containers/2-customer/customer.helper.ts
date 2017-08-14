@@ -41,17 +41,17 @@ export function handleCustomerContactList(data) {
   }))
 }
 
-export function handleClientInfo(clientData) {
-  const baseInfo = clientData['customerInfo'] || {}
-  const bdAndBdpc = clientData['bdAndBdpc'] || {}
-  const subCompany = clientData['customerSubsidiarys'] || []
-  const contactInfo = clientData['customerContactsInfos'] || []
-  const cdaList = clientData['customerCdas'] || []
-  const supplierInfo = clientData['customerProvider'] || {}
-  const rfi = clientData['customerRfi'] || {}
-  const relationInfo = clientData['customerRelationInfo'] || []
-  const operationRecordList = clientData['operations'] || []
-  const remarkAttachment = clientData['remarkAndFile'] || {}
+export function handleClientInfo(data) {
+  const baseInfo = data['customerInfo'] || {}
+  const bdAndBdpc = data['bdAndBdpc'] || {}
+  const subCompany = data['customerSubsidiarys'] || []
+  const contactInfo = data['customerContactsInfos'] || []
+  const cdaList = data['customerCdas'] || []
+  const supplierInfo = data['customerProvider'] || {}
+  const rfi = data['customerRfi'] || {}
+  const relationInfo = data['customerRelationInfo'] || []
+  const operationRecordList = data['operations'] || []
+  const remarkAttachment = data['remarkAndFile'] || {}
 
   return {
     customerBaseInfo: {

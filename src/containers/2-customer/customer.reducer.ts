@@ -44,7 +44,7 @@ const initValue: CustomerState = {
   updateRemarkAttachmentSuccess: false
 }
 
-export default function client(iState = fromJS(initValue), action) {
+export default function customer(iState = fromJS(initValue), action) {
   let nextIState = iState
 
   switch (action.type) {

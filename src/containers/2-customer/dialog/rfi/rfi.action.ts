@@ -8,11 +8,11 @@ import {handleRfiServerData, handleRfiListServerData} from './rfi.helper'
 
 const urlPrefix = '/customer'
 
-export function fetchRfiList(clientId) {
+export function fetchRfiList(customerId) {
   return {
     [THREE_PHASE]: {
       type: CUSTOMER.FETCH_RFI_LIST,
-      http: () => _get(urlPrefix + `/v1/rfi/list/${clientId}`),
+      http: () => _get(urlPrefix + `/v1/rfi/list/${customerId}`),
       handleResponse: handleRfiListServerData
     }
   }

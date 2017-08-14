@@ -11,10 +11,10 @@ import Data from '../../../common/interface/Data'
 import UpdateRFI_Item from './UpdateRFI_Item'
 
 interface RFI_ListDialogProps {
-  clientId: string
-  fetchContactList: (clientId) => void
+  customerId: string
+  fetchContactList: (customerId) => void
   customerContactData: Data<any>
-  fetchRfiList: (clientId) => void
+  fetchRfiList: (customerId) => void
   rfiList: Data<any[]>
   addRfi: (options) => void
   addRfiSuccess: boolean
@@ -37,12 +37,12 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   }
 
   componentDidMount() {
-    this.props.fetchRfiList(this.props.clientId)
+    this.props.fetchRfiList(this.props.customerId)
   }
 
   componentWillReceiveProps(nextProps: RFI_ListDialogProps) {
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
-      this.props.fetchRfiList(this.props.clientId)
+      this.props.fetchRfiList(this.props.customerId)
     }
   }
 
@@ -55,7 +55,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
         {
           this.state.showAddRfi && (
             <AddRfiDialog
-              clientId={this.props.clientId}
+              customerId={this.props.customerId}
               fetchContactList={this.props.fetchContactList}
               customerContactData={this.props.customerContactData}
               addRfi={this.props.addRfi}
@@ -76,7 +76,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
                   <div className="item-index">{index + 1}</div>
                   <Part>
                     <UpdateRFI_Item
-                      clientId={this.props.clientId}
+                      customerId={this.props.customerId}
                       fetchContactList={this.props.fetchContactList}
                       customerContactData={this.props.customerContactData}
                       rfiId={rfi.rfiId}

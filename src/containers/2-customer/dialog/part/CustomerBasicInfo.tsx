@@ -10,14 +10,14 @@ import Save from '../../../common/Save'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
-interface ClientBasicInfoProps {
+interface CustomerBasicInfoProps {
   customerId: string
   addCustomer?: (baseInfo) => void
   customerBaseInfo?: any
   updateCustomer?: (baseInfo) => void
 }
 
-class ClientBasicInfo extends React.Component<ClientBasicInfoProps> {
+class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   state = {
     valid: false,
 
@@ -167,4 +167,4 @@ class ClientBasicInfo extends React.Component<ClientBasicInfoProps> {
   }
 }
 
-export default ClientBasicInfo
+export default CustomerBasicInfo

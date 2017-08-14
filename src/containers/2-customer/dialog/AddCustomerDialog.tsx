@@ -11,7 +11,7 @@ import CustomerState from '../CustomerState'
 import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
-import ClientBasicInfo from '././part/ClientBasicInfo'
+import CustomerBasicInfo from './part/CustomerBasicInfo'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
@@ -25,7 +25,7 @@ import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import EditSupplier from './supplier/EditSupplier'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 
-interface AddClientDialogProps extends CustomerState {
+interface AddCustomerDialogProps extends CustomerState {
   newCustomerId: string
   addCustomer: (options) => void
   addCustomerSuccess: boolean
@@ -44,7 +44,7 @@ interface AddClientDialogProps extends CustomerState {
   onExited: () => void
 }
 
-class AddClientDialog extends React.Component<AddClientDialogProps> {
+class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
   supplierInfo: any
   rfiInfo: any
   state = {
@@ -64,7 +64,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
     this.props.fetchBDPC()
   }
 
-  componentWillReceiveProps(nextProps: AddClientDialogProps) {
+  componentWillReceiveProps(nextProps: AddCustomerDialogProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.setState({customerId: nextProps.newCustomerId})
     }
@@ -101,7 +101,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               />
 
               <CategoryTitle title="客户信息"/>
-              <ClientBasicInfo
+              <CustomerBasicInfo
                 customerId={this.state.customerId}
                 addCustomer={this.props.addCustomer}
                 updateCustomer={this.props.updateCustomer}
@@ -143,7 +143,7 @@ class AddClientDialog extends React.Component<AddClientDialogProps> {
               <CategoryTitle title="操作记录"/>
               <OperationRecord operationRecordList={[]}/>
             </Part>
-            <div className="client-nav">
+            <div className="customer-nav">
               <ul className="nav-category-group">
                 <li className="active">
                   客户信息
@@ -177,4 +177,4 @@ export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
   updateBdAndBdpc,
   addCustomer, updateCustomer
-})(cache(AddClientDialog))
+})(cache(AddCustomerDialog))

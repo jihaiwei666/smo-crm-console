@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import Confirm from 'app-core/common/Confirm'
 
 import './customer.scss'
 import CustomerState from './CustomerState'
@@ -23,15 +24,15 @@ import tipAndClear from './tipAndClear'
 import {getCustomerType} from './customer.helper'
 
 interface CustomerProps extends AppFunctionPage, CustomerState {
-  clientList: any[]
+  customerList: any[]
 }
 
 class Customer extends React.Component<CustomerProps> {
   state = {
     index: -1,
-    showAddClientDialog: false,
-    showEditClientDialog: false,
-    showDeleteClientConfirm: false,
+    showAddDialog: false,
+    showEditDialog: false,
+    showDeleteConfirm: false,
 
     currentPage: 0,
     customerType: '',
@@ -54,6 +55,10 @@ class Customer extends React.Component<CustomerProps> {
     this.toPage(this.state.currentPage)
   }
 
+  removeCustomer = () => {
+
+  }
+
   componentDidMount() {
     this.toPage(0)
   }
@@ -63,7 +68,7 @@ class Customer extends React.Component<CustomerProps> {
   }
 
   render() {
-    const {total, list, loading, loaded} = handleListData(this.props.clientList)
+    const {total, list, loading, loaded} = handleListData(this.props.customerList)
     const item = list[this.state.index] || {}
 
     let customerId = item.customerId
@@ -72,23 +77,32 @@ class Customer extends React.Component<CustomerProps> {
     }*/
 
     return (
-      <div className="app-function-page clients">
+      <div className="app-function-page customer">
         {
-          this.state.showAddClientDialog && (
+          this.state.showAddDialog && (
             <AddCustomerDialog
-              onExited={() => this.setState({showAddClientDialog: false})}/>
+              onExited={() => this.setState({showAddDialog: false})}/>
           )
         }
         {
-          this.state.showEditClientDialog && (
+          this.state.showEditDialog && (
             <UpdateCustomerDialog
               customerId={customerId}
-              onExited={() => this.setState({showEditClientDialog: false})}/>
+              onExited={() => this.setState({showEditDialog: false})}/>
+          )
+        }
+        {
+          this.state.showDeleteConfirm && (
+            <Confirm
+              message="确定删除此客户吗？"
+              onExited={() => this.setState({showDeleteConfirm: false})}
+              onConfirm={this.removeCustomer}
+            />
           )
         }
 
         <div className="m15">
-          <Button onClick={() => this.setState({showAddClientDialog: true})}>
+          <Button onClick={() => this.setState({showAddDialog: true})}>
             <img className="btn-icon" src={require('./icon/create-cust.svg')}/>
             创建
           </Button>
@@ -134,8 +148,8 @@ class Customer extends React.Component<CustomerProps> {
                     <FixRow.Item>{item['customerOwner']}</FixRow.Item>
                     <FixRow.Item>{item['customerCreator']}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditClientDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
+                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>
                 )
@@ -152,7 +166,7 @@ class Customer extends React.Component<CustomerProps> {
 function mapStateToProps(state) {
   return {
     ...state.customer,
-    clientList: state.clientList
+    customerList: state.customerList
   }
 }
 

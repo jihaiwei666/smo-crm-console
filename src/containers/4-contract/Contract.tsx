@@ -1,10 +1,9 @@
 /**
  * Created by jiangyukun on 2017/7/18.
  */
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-
 import React from 'react'
 import {connect} from 'react-redux'
+import Confirm from 'app-core/common/Confirm'
 
 import './contract.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
@@ -13,6 +12,7 @@ import Button from '../../components/button/Button'
 import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {fetchList} from './contract.action'
 import PageCountNav from '../../components/nav/PageCountNav'
 import {getContractType} from './contract.helper'
@@ -26,7 +26,8 @@ class Contract extends React.Component<ContractProps> {
     index: -1,
     currentPage: 0,
     showAddDialog: false,
-    showEditDialog: false
+    showEditDialog: false,
+    showDeleteConfirm: false
   }
 
   toPage = (newPage) => {
@@ -38,6 +39,10 @@ class Contract extends React.Component<ContractProps> {
       "start": newPage,
       "limit": 10,
     })
+  }
+
+  removeContract = () => {
+
   }
 
   componentDidMount() {
@@ -62,6 +67,15 @@ class Contract extends React.Component<ContractProps> {
             <UpdateContractDialog
               contractId={item.contractId}
               onExited={() => this.setState({showEditDialog: false})}
+            />
+          )
+        }
+        {
+          this.state.showDeleteConfirm && (
+            <Confirm
+              message="确定删除此合同吗？"
+              onExited={() => this.setState({showDeleteConfirm: false})}
+              onConfirm={this.removeContract}
             />
           )
         }
@@ -94,7 +108,7 @@ class Contract extends React.Component<ContractProps> {
                     <FixRow.Item>{item.bdpc}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>
                 )

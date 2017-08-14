@@ -25,8 +25,8 @@ import {EDIT, ADD} from '../../../../core/CRUD'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface UpdateRFI_ItemProps {
-  clientId: string
-  fetchContactList: (clientId) => void
+  customerId: string
+  fetchContactList: (customerId) => void
   customerContactData: Data<any>
   rfiId: string
   rfi: any
@@ -71,7 +71,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
     this.props.updateRfi({
       "customerRfi": {
         "customer_rfi_id": this.props.rfiId,
-        "customer_info_id": this.props.clientId,
+        "customer_info_id": this.props.customerId,
         "write_time": getDateStr(this.state.fillDate),
         "write_person": this.state.fillPerson,
         "review_person": this.state.auditPerson,
@@ -128,14 +128,14 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
               return (
                 <SelectContact key={broker.id} contactId={broker.contactId}
                                contactList={contactList}
-                               onOpen={() => this.props.fetchContactList(this.props.clientId)}
+                               onOpen={() => this.props.fetchContactList(this.props.customerId)}
                                onChange={v => this.handleBrokerChange(index, 'contactId', v)}
                 />
               )
             })
           }
           <TextAndButton text="请先完善联系人信息，之后才能选择该联系人">
-            <AddButton disabled={!this.props.clientId} onClick={this.addBroker}/>
+            <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
           </TextAndButton>
         </InputGroup>
         <LabelAndInput className="pb5 bb" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>

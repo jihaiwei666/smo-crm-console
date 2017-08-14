@@ -47,7 +47,7 @@ export default combineReducers({
   relevantItemList: wrapReducerState(data(TODO_REMIND.FETCH_RELEVANT_ITEM_LIST)),
 
   customer: wrapReducerState(customer),
-  clientList: wrapReducerState(data(CUSTOMER.FETCH_LIST)),
+  customerList: wrapReducerState(data(CUSTOMER.FETCH_LIST)),
   customerInfo: wrapReducerState(data(CUSTOMER.FETCH_CUSTOMER_INFO)),
   BDList: wrapReducerState(data(APP.FETCH_BD)),
   BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
