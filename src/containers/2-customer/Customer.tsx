@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import './customer.scss'
 import CustomerState from './CustomerState'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'

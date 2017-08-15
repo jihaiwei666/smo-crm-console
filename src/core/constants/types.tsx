@@ -31,8 +31,9 @@ export const CUSTOMER = {
   FETCH_BD_LIST: null,
   ADD_CUSTOMER: null,
   UPDATE_CUSTOMER: null,
-  FETCH_CUSTOMER_INFO: null,
+  FETCH_CUSTOMER_DETAIL: null,
   UPDATE_BD_AND_BDPC: null,
+  APPLY_BDPC_FOLLOW_UP: null,
 
   ADD_SUB_COMPANY: null,
   UPDATE_SUB_COMPANY: null,

@@ -14,6 +14,7 @@ const initValue: CustomerState = {
   updateCustomerSuccess: false,
 
   updateBdAndBdpcSuccess: false,
+  applyBdpcFollowUpSuccess: false,
 
   newSubCompanyId: '',
   addSubCompanySuccess: false,
@@ -85,6 +86,7 @@ export default function customer(iState = fromJS(initValue), action) {
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_CUSTOMER, 'updateCustomerSuccess')
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_BD_AND_BDPC, 'updateBdAndBdpcSuccess')
+  nextIState = handleFlagState(nextIState, action, CUSTOMER.APPLY_BDPC_FOLLOW_UP, 'applyBdpcFollowUpSuccess')
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.ADD_SUB_COMPANY, 'addSubCompanySuccess')
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_SUB_COMPANY, 'updateSubCompanySuccess')

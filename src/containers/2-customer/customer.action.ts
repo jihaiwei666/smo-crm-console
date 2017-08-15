@@ -37,10 +37,10 @@ export function updateCustomer(options) {
   }
 }
 
-export function fetchCustomerInfo(customerId) {
+export function fetchCustomerDetail(customerId) {
   return {
     [THREE_PHASE]: {
-      type: CUSTOMER.FETCH_CUSTOMER_INFO,
+      type: CUSTOMER.FETCH_CUSTOMER_DETAIL,
       http: () => _get(urlPrefix + `/v1/list/detail/${customerId}`),
       handleResponse: handleClientInfo
     }
@@ -109,6 +109,15 @@ export function updateRemarkAndAttachment(options) {
     [THREE_PHASE]: {
       type: CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT,
       http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
+    }
+  }
+}
+
+export function applyBdpcFollowUp(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.APPLY_BDPC_FOLLOW_UP,
+      http: () => _post('/todoReminder/v1/addTodoReminder', {body: options})
     }
   }
 }

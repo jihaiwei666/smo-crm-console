@@ -11,7 +11,6 @@ import RemoveIcon from '../../../../components/RemoveIcon'
 import listCrud from '../../../../components/hoc/listCrud'
 
 interface ContractSignatoryProps {
-  parentId: string
   item: any
   index: number
   total: number
@@ -42,15 +41,15 @@ class ContractSignatory extends React.Component<ContractSignatoryProps> {
   }
 }
 
-function ifAdd(item, props) {
+function ifAdd(item, parentId) {
   return {
-    "after_signed_id": props.parentId,
+    "after_signed_id": parentId,
     "value": item.signatory,
     "type": 1,
   }
 }
 
-function ifUpdate(item, props) {
+function ifUpdate(item) {
   return {
     "id": item.id,
     "value": item.signatory,
@@ -58,7 +57,7 @@ function ifUpdate(item, props) {
   }
 }
 
-function ifRemove(item, props) {
+function ifRemove(item) {
   return {
     "id": item.id,
     "type": 1,

@@ -13,7 +13,6 @@ import listCrud from '../../../../components/hoc/listCrud'
 import {nodeProgressOptions} from '../../contract.constant'
 
 interface ProgressProps {
-  parentId: string
   item: any
   index: number
   total: number
@@ -57,16 +56,16 @@ class Progress extends React.Component<ProgressProps> {
   }
 }
 
-function ifAdd(item, props) {
+function ifAdd(item, parentId) {
   return {
-    "after_signed_id": props.parentId,
+    "after_signed_id": parentId,
     "payment_node_key": item.node,
     "payment_node_value": item.quota,
     "payment_node_estimated_date": item.date,
   }
 }
 
-function ifUpdate(item, props) {
+function ifUpdate(item) {
   return {
     "payment_node_id": item.id,
     "payment_node_key": item.node,
@@ -75,7 +74,7 @@ function ifUpdate(item, props) {
   }
 }
 
-function ifRemove(item, props) {
+function ifRemove(item) {
   return {
     "payment_node_id": item.id
   }

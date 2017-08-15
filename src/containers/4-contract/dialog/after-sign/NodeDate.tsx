@@ -11,7 +11,6 @@ import AddIcon from '../../../../components/AddIcon'
 import RemoveIcon from '../../../../components/RemoveIcon'
 
 interface NodeDateProps {
-  parentId: string
   item: any
   index: number
   total: number
@@ -41,21 +40,21 @@ class NodeDate extends React.Component<NodeDateProps> {
   }
 }
 
-function ifAdd(item, props) {
+function ifAdd(item, parentId) {
   return {
-    "after_signed_id": props.parentId,
+    "after_signed_id": parentId,
     "payment_node_date": item.nodeDate,
   }
 }
 
-function ifUpdate(item, props) {
+function ifUpdate(item) {
   return {
     "payment_node_id": item.id,
     "payment_node_date": item.nodeDate,
   }
 }
 
-function ifRemove(item, props) {
+function ifRemove(item) {
   return {
     "payment_node_id": item.id,
   }

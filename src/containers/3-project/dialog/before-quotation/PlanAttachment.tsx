@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/8/12.
  */
 import React from 'react'
+
 import listCrud1 from '../../../../components/hoc/listCrud1'
 import RemoveIcon from '../../../../components/RemoveIcon'
 

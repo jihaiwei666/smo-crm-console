@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Row, Part} from 'app-core/layout/'
 
-import './todo-remind.scss'
 import Button from '../../components/button/Button'
 import SendRemindDialog from './dialog/SendRemindDialog'
 

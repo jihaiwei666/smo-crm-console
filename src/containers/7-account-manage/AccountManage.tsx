@@ -7,7 +7,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import './account-manage.scss'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import PageCountNav from '../../components/nav/PageCountNav'
@@ -136,8 +135,8 @@ class AccountManage extends React.Component<AccountManageProps> {
                           onClick={() => this.setState({index})}
                           selected={this.state.index == index}>
                     <FixRow.Item>{item['user_account']}</FixRow.Item>
-                    <FixRow.Item>{item['user_short_name']}</FixRow.Item>
                     <FixRow.Item>{item['user_name']}</FixRow.Item>
+                    <FixRow.Item>{item['user_short_name']}</FixRow.Item>
                     <FixRow.Item>{getPositionName(item['post_type'])}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>

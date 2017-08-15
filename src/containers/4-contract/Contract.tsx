@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import './contract.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'

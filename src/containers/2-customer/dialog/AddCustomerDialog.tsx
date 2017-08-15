@@ -7,8 +7,6 @@ import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
-import CustomerState from '../CustomerState'
-import cache from '../../cache/cache'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
 import CustomerBasicInfo from './part/CustomerBasicInfo'
@@ -16,31 +14,18 @@ import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
 import AddSupplier from './supplier/AddSupplier'
+import EditSupplier from './supplier/EditSupplier'
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
+import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
-import {addCustomer, updateCustomer, updateBdAndBdpc} from '../customer.action'
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import EditSupplier from './supplier/EditSupplier'
-import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
+import CustomerState from '../CustomerState'
+import {addCustomer, updateCustomer} from '../customer.action'
 
 interface AddCustomerDialogProps extends CustomerState {
-  newCustomerId: string
   addCustomer: (options) => void
-  addCustomerSuccess: boolean
   updateCustomer: (options) => void
-  updateCustomerSuccess: boolean
-
-  fetchBD: () => void
-  BDList: any
-
-  fetchBDPC: () => void
-  BDPCList: any
-
-  updateBdAndBdpc: (options) => void
-  updateBdAndBdpcSuccess: boolean
-
   onExited: () => void
 }
 
@@ -57,11 +42,6 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
 
   close = () => {
     this.setState({show: false})
-  }
-
-  componentDidMount() {
-    this.props.fetchBD()
-    this.props.fetchBDPC()
   }
 
   componentWillReceiveProps(nextProps: AddCustomerDialogProps) {
@@ -93,11 +73,6 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
             <Part className="form-container">
               <BD_BDPC
                 customerId={this.state.customerId}
-                fetchBD={this.props.fetchBD}
-                BDList={this.props.BDList}
-                fetchBDPC={this.props.fetchBDPC}
-                BDPCList={this.props.BDPCList}
-                updateBdAndBdpc={this.props.updateBdAndBdpc}
               />
 
               <CategoryTitle title="客户信息"/>
@@ -168,13 +143,9 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
 function mapStateToProps(state) {
   return {
     ...state.customer,
-    BDList: state.BDList,
-    BDPCList: state.BDPCList
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC,
-  updateBdAndBdpc,
   addCustomer, updateCustomer
-})(cache(AddCustomerDialog))
+})(AddCustomerDialog)

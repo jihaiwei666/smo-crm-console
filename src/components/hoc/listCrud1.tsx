@@ -13,9 +13,9 @@ export type Crud1Props = {
 }
 
 export type Config = {
-  ifAdd: (item, props) => any
-  ifUpdate: (item, props) => any
-  ifRemove: (item, props) => any
+  ifAdd: (item, parentId) => any
+  ifUpdate: (item) => any
+  ifRemove: (item) => any
 }
 
 let uid = 1
@@ -65,7 +65,7 @@ function listCrud1(WrapperComponent, serverHandleConfig?: Config) {
     }
 
     getData() {
-      return handleCrudList(this.props.list, {}, serverHandleConfig)
+      return handleCrudList(this.props.list, '', serverHandleConfig)
     }
 
     render() {

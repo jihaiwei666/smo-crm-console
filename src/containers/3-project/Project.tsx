@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import './project.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import Button from '../../components/button/Button'
 import AddProjectDialog from './dialog/AddProjectDialog'

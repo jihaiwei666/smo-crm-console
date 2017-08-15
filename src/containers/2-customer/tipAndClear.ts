@@ -4,25 +4,29 @@
 import {CUSTOMER} from '../../core/constants/types'
 
 export default function tipAndClear(customer) {
-  
-  if (customer.props.addCustomerSuccess) {
-    customer.props.showSuccess('添加客户信息成功！')
-    customer.props.clearState(CUSTOMER.ADD_CUSTOMER)
+  const props = customer.props
+  if (props.addCustomerSuccess) {
+    props.showSuccess('添加客户信息成功！')
+    props.clearState(CUSTOMER.ADD_CUSTOMER)
     customer.toPage(0)
   }
-  if (customer.props.updateCustomerSuccess) {
-    customer.props.showSuccess('更新客户信息成功！')
-    customer.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
+  if (props.updateCustomerSuccess) {
+    props.showSuccess('更新客户信息成功！')
+    props.clearState(CUSTOMER.UPDATE_CUSTOMER)
     customer.refreshCurrentPage()
   }
-  if (customer.props.updateBdAndBdpcSuccess) {
-    customer.props.showSuccess('更新 所有人、所属BDPC 成功！')
-    customer.props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
+  if (props.updateBdAndBdpcSuccess) {
+    props.showSuccess('更新 所有人、所属BDPC 成功！')
+    props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
     customer.refreshCurrentPage()
   }
-  if (customer.props.addSubCompanySuccess) {
-    customer.props.showSuccess('添加子公司成功！')
-    customer.props.clearState(CUSTOMER.ADD_SUB_COMPANY)
+  if (props.applyBdpcFollowUpSuccess) {
+    props.showSuccess('已申请BDPC跟进！')
+    props.clearState(CUSTOMER.APPLY_BDPC_FOLLOW_UP)
+  }
+  if (props.addSubCompanySuccess) {
+    props.showSuccess('添加子公司成功！')
+    props.clearState(CUSTOMER.ADD_SUB_COMPANY)
   }
   if (customer.props.updateSubCompanySuccess) {
     customer.props.showSuccess('更新子公司信息成功！')

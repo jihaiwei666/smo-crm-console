@@ -4,9 +4,12 @@
 import React from 'react'
 import {Row, Part} from 'app-core/layout'
 import Confirm from 'app-core/common/Confirm'
+import Form from 'app-core/form/Form'
+
 import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
+import {NECESSARY} from '../../../common/Label'
 
 interface CompanyProps {
   customerId: string
@@ -20,6 +23,7 @@ interface CompanyProps {
 
 class Company extends React.Component<CompanyProps> {
   state = {
+    valid: true,
     showRemoveConfirm: false,
 
     companyName: '',
@@ -89,36 +93,42 @@ class Company extends React.Component<CompanyProps> {
         }
         <div className="serial-number">{this.props.index + 1}</div>
         <Part>
-          <LabelAndInput label="名称" value={this.state.companyName} onChange={v => this.setState({companyName: v})}/>
-          <div className="row-line"></div>
-          <InputGroup label="联系人信息">
-            <LabelAndInput label="联系人" value={this.state.contactName} onChange={v => this.setState({contactName: v})}/>
-            <LabelAndInput label="电话" value={this.state.contactMobile} onChange={v => this.setState({contactMobile: v})}/>
-            <LabelAndInput label="邮箱" value={this.state.contactEmail} onChange={v => this.setState({contactEmail: v})}/>
-          </InputGroup>
+          <Form onValidChange={valid => this.setState({valid})}>
+            <LabelAndInput
+              className="bb"
+              label="名称" inputType={NECESSARY}
+              required={true} name="companyName"
+              value={this.state.companyName} onChange={v => this.setState({companyName: v})}
+            />
+            <InputGroup className="bb" label="联系人信息">
+              <LabelAndInput label="联系人" value={this.state.contactName} onChange={v => this.setState({contactName: v})}/>
+              <LabelAndInput label="电话" value={this.state.contactMobile} onChange={v => this.setState({contactMobile: v})}/>
+              <LabelAndInput label="邮箱" value={this.state.contactEmail} onChange={v => this.setState({contactEmail: v})}/>
+            </InputGroup>
 
-          <InputGroup label="开票信息">
-            <LabelAndInput label="纳税人识别号" value={this.state.taxpayerIdentifyNumber} onChange={v => this.setState({taxpayerIdentifyNumber: v})}/>
-            <LabelAndInput label="开户银行" value={this.state.bank} onChange={v => this.setState({bank: v})}/>
-            <LabelAndInput label="开户银行账号" value={this.state.bankAccount} onChange={v => this.setState({bankAccount: v})}/>
-            <LabelAndInput label="开票地址" value={this.state.billAddress} onChange={v => this.setState({billAddress: v})}/>
-            <LabelAndInput label="电话" value={this.state.billMobile} onChange={v => this.setState({billMobile: v})}/>
-            <LabelAndInput label="发票邮寄地址" value={this.state.billPostAddress} onChange={v => this.setState({billPostAddress: v})}/>
-            <LabelAndInput label="发票接收人" value={this.state.billReceiver} onChange={v => this.setState({billReceiver: v})}/>
-            <LabelAndInput label="接收人联系方式" value={this.state.receiverContactInfo} onChange={v => this.setState({receiverContactInfo: v})}/>
-          </InputGroup>
-          {
-            this.props.companyId && (
-              <div className="clearfix m10">
-                <div className="pull-right">
-                  <span className="input-unit-illustrate">点此删除按钮删除一条供应商信息</span>
-                  <Button className="small danger" onClick={() => this.setState({showRemoveConfirm: true})}>删除</Button>
+            <InputGroup label="开票信息">
+              <LabelAndInput label="纳税人识别号" value={this.state.taxpayerIdentifyNumber} onChange={v => this.setState({taxpayerIdentifyNumber: v})}/>
+              <LabelAndInput label="开户银行" value={this.state.bank} onChange={v => this.setState({bank: v})}/>
+              <LabelAndInput label="开户银行账号" value={this.state.bankAccount} onChange={v => this.setState({bankAccount: v})}/>
+              <LabelAndInput label="开票地址" value={this.state.billAddress} onChange={v => this.setState({billAddress: v})}/>
+              <LabelAndInput label="电话" value={this.state.billMobile} onChange={v => this.setState({billMobile: v})}/>
+              <LabelAndInput label="发票邮寄地址" value={this.state.billPostAddress} onChange={v => this.setState({billPostAddress: v})}/>
+              <LabelAndInput label="发票接收人" value={this.state.billReceiver} onChange={v => this.setState({billReceiver: v})}/>
+              <LabelAndInput label="接收人联系方式" value={this.state.receiverContactInfo} onChange={v => this.setState({receiverContactInfo: v})}/>
+            </InputGroup>
+            {
+              this.props.companyId && (
+                <div className="clearfix m10">
+                  <div className="pull-right">
+                    <span className="input-unit-illustrate">点此删除按钮删除一条供应商信息</span>
+                    <Button className="small danger" onClick={() => this.setState({showRemoveConfirm: true})}>删除</Button>
+                  </div>
                 </div>
-              </div>
-            )
-          }
+              )
+            }
+          </Form>
           <div className="m10">
-            <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId}>
+            <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId || !this.state.valid}>
               {this.props.companyId && <span>更新</span>}
               {!this.props.companyId && <span>添加</span>}
             </Button>

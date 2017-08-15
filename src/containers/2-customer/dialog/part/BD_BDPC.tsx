@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
@@ -10,16 +11,20 @@ import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
 import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
+import {applyBdpcFollowUp, updateBdAndBdpc} from '../../customer.action'
+import CustomerState from '../../CustomerState'
+import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 
-interface BD_BDPC_Props {
+interface BD_BDPC_Props extends CustomerState {
   customerId: string
   fetchBD: () => void
   BDList: any
   fetchBDPC: () => void
   BDPCList: any
   updateBdAndBdpc: any
+  applyBdpcFollowUp: (options) => void
 
-  bdAndBdpc?: any
+  initBdAndBdpc?: any
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
@@ -39,8 +44,8 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   }
 
   componentWillMount() {
-    if (this.props.bdAndBdpc) {
-      this.setState(this.props.bdAndBdpc)
+    if (this.props.initBdAndBdpc) {
+      this.setState(this.props.initBdAndBdpc)
     }
   }
 
@@ -62,8 +67,11 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
         {
           this.state.showApply && (
             <ApplyBdpcFollowUpDialog
+              customerId={this.props.customerId}
               fetchBDPC={this.props.fetchBDPC}
               BDPCList={this.props.BDPCList}
+              applyBdpcFollowUp={this.props.applyBdpcFollowUp}
+              applyBdpcFollowUpSuccess={this.props.applyBdpcFollowUpSuccess}
               onExited={() => this.setState({showApply: false})}
             />
           )
@@ -106,4 +114,16 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   }
 }
 
-export default BD_BDPC
+function mapStateToProps(state, props) {
+  return {
+    ...state.customer,
+    customerId: props.customerId,
+    initBdAndBdpc: props.initBdAndBdpc,
+    BDList: state.BDList,
+    BDPCList: state.BDPCList
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchBD, fetchBDPC, applyBdpcFollowUp, updateBdAndBdpc
+})(BD_BDPC)

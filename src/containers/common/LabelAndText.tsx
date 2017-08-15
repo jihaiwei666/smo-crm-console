@@ -17,7 +17,7 @@ class LabelAndText extends React.PureComponent<LabelAndTextProps> {
   render() {
     return (
       <FlexDiv className={classnames('mt5 mb5', this.props.className)}>
-        <Label>{this.props.label + '：'}</Label>
+        <Label>{this.props.label}</Label>
         <Part>
           <span>{this.props.text}</span>
         </Part>

@@ -8,8 +8,6 @@ import {Row, Part} from 'app-core/layout/'
 import Spinner from 'app-core/common/Spinner'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
-import cache from '../../cache/cache'
-import CustomerState from '../CustomerState'
 import CategoryTitle from '../../common/CategoryTitle'
 import CustomerBasicInfo from './part/CustomerBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
@@ -22,22 +20,19 @@ import EditSupplier from './supplier/EditSupplier'
 
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
+import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import * as actions from '../customer.action'
-import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
+import cache from '../../cache/cache'
+import CustomerState from '../CustomerState'
+import {fetchCustomerDetail, fetchContactList, updateCustomer} from '../customer.action'
 
 interface UpdateCustomerDialogProps extends CustomerState {
   customerId: string
-  fetchCustomerInfo: any
+  fetchCustomerDetail: (customerId) => void
   customerInfo: any
   updateCustomer: (options) => void
-  fetchBD: () => void
-  BDList: any
-  fetchBDPC: () => void
-  BDPCList: any
-  updateBdAndBdpc: (options) => void
+
   fetchContactList: (customerId: string) => void
   onExited: () => void
 }
@@ -57,7 +52,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   }
 
   componentDidMount() {
-    this.props.fetchCustomerInfo(this.props.customerId)
+    this.props.fetchCustomerDetail(this.props.customerId)
     this.props.fetchContactList(this.props.customerId)
   }
 
@@ -88,7 +83,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
     let {loaded, data} = this.props.customerInfo
     data = data || {}
     const customerBaseInfo = data.customerBaseInfo
-    const bdAndBdpc = data.bdAndBdpc
+    const initBdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
     const contactInfo = data.contactInfo
     // const cdaList = data.cdaList
@@ -121,12 +116,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
 
                   <BD_BDPC
                     customerId={this.props.customerId}
-                    bdAndBdpc={bdAndBdpc}
-                    fetchBD={this.props.fetchBD}
-                    BDList={this.props.BDList}
-                    fetchBDPC={this.props.fetchBDPC}
-                    BDPCList={this.props.BDPCList}
-                    updateBdAndBdpc={this.props.updateBdAndBdpc}
+                    initBdAndBdpc={initBdAndBdpc}
                   />
                   <CategoryTitle title="客户信息"/>
                   <CustomerBasicInfo
@@ -203,14 +193,11 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
 function mapStateToProps(state, props) {
   return {
     ...state.customer,
-    customerInfo: state.customerInfo,
-    BDList: state.BDList,
-    BDPCList: state.BDPCList,
     customerId: props.customerId,
+    customerInfo: state.customerInfo,
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC,
-  ...actions
+  fetchCustomerDetail, fetchContactList, updateCustomer
 })(cache(UpdateCustomerDialog))
