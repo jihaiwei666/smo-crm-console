@@ -83,6 +83,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
                 fetchBDPC={this.props.fetchBDPC}
                 BDPCList={this.props.BDPCList}
                 updateBdAndBdpc={this.updateBdAndBdpc}
+                updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
               />
 
               <CategoryTitle title="项目信息"/>

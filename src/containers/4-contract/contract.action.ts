@@ -65,7 +65,8 @@ export function addContract(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.ADD_CONTRACT,
-      http: () => _post(urlPrefix + '/v1/addContractInfo', {body: options})
+      http: () => _post(urlPrefix + '/v1/addContractInfo', {body: options}),
+      handleResponse: data => data['contract_info_id']
     }
   }
 }
@@ -165,6 +166,15 @@ export function fetchInstitutionInfo(institutionId) {
       type: CONTRACT.FETCH_INSTITUTION_INFO,
       http: () => _get(urlPrefix + `/v1/getOrganizationInfoById/${institutionId}`),
       handleResponse: handleInstitutionInfo
+    }
+  }
+}
+
+export function updateRemarkAndAttachment(options) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.UPDATE_REMARK_ATTACHMENT,
+      http: () => _post(urlPrefix + '/v1/updateContractRemark', {body: options})
     }
   }
 }

@@ -40,3 +40,10 @@ export function handleOperationList(operationRecordList) {
     content: item['operation_content'],
   }))
 }
+
+export function getNullValue(value) {
+  if (value == null) {
+    return null
+  }
+  return value
+}

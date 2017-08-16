@@ -13,8 +13,11 @@ import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
 import {fetchProjectList, fetchContactList} from '../../customer.action'
 import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda.action'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface CDAProps {
+interface CDAProps extends CommonFunction {
   customerId: string
   cdaList?: Data<any[]>
   fetchCdaList: (customerId) => void
@@ -48,12 +51,18 @@ class CDA extends React.Component<CDAProps> {
 
   componentWillReceiveProps(nextProps: CDAProps) {
     if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
+      this.props.showSuccess('添加CDA成功！')
+      this.props.clearState(CUSTOMER.ADD_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
+      this.props.showSuccess('更新CDA成功！')
+      this.props.clearState(CUSTOMER.UPDATE_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
+      this.props.showSuccess('删除CDA成功！')
+      this.props.clearState(CUSTOMER.REMOVE_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
   }
@@ -161,4 +170,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda, fetchProjectList, fetchContactList
-})(CDA)
+})(addCommonFunction(CDA))

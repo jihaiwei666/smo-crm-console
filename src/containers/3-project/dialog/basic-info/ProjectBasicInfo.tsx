@@ -14,14 +14,19 @@ import Save from '../../../common/Save'
 
 import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
 import Update from '../../../common/Update'
+import {PROJECT} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface ProjectBasicInfoProps {
+interface ProjectBasicInfoProps extends CommonFunction {
   projectId?: string
   baseInfo?: any
   fetchClientList: () => void
   clientList: Data<any[]>
   addProjectBaseInfo: (options) => void
+  addProjectInfoSuccess: boolean
   updateProjectBaseInfo: (options) => void
+  updateProjectInfoSuccess: boolean
 }
 
 class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
@@ -57,6 +62,17 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
   componentDidMount() {
     this.props.fetchClientList()
+  }
+
+  componentWillReceiveProps(nextProps: ProjectBasicInfoProps) {
+    if (!this.props.addProjectInfoSuccess && nextProps.addProjectInfoSuccess) {
+      this.props.showSuccess('添加项目信息成功！')
+      this.props.clearState(PROJECT.ADD_PROJECT_INFO)
+    }
+    if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
+      this.props.showSuccess('更新项目信息成功！')
+      this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
+    }
   }
 
   render() {
@@ -103,6 +119,8 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
 function mapStateToProps(state, props) {
   return {
+    addProjectInfoSuccess: state.project.addProjectInfoSuccess,
+    updateProjectInfoSuccess: state.project.updateProjectInfoSuccess,
     projectId: props.projectId,
     clientList: state.projectClientList,
   }
@@ -110,4 +128,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchClientList, addProjectBaseInfo, updateProjectBaseInfo
-})(ProjectBasicInfo)
+})(addCommonFunction(ProjectBasicInfo))

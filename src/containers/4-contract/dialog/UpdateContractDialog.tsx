@@ -4,24 +4,24 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import {Row, Part, Line} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import Spinner from 'app-core/common/Spinner'
 
 import CategoryTitle from '../../common/CategoryTitle'
-import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
-import UpdateContractBasicInfo from './basic-info/UpdateContractBasicInfo'
+import ContractBdBdpc from './other/ContractBdBdpc'
+import ContractBasicInfo from './basic-info/ContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
 
 import Data from '../../common/interface/Data'
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import CollectionList from './make-collections/CollectionList'
 
-import {fetchContractDetail, updateBdAndBdpc, fetchCollectionList} from '../contract.action'
+import {fetchContractDetail, fetchCollectionList} from '../contract.action'
+import ContractRemarkAttachment from './other/ContractRemarkAttachment'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -54,14 +54,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
   close = () => {
     this.setState({show: false})
-  }
-
-  updateBdAndBdpc = (bd, bdpc) => {
-    this.props.updateBdAndBdpc({
-      "contract_info_id": this.props.contractId,
-      "contract_the_bd": bd,
-      "contract_the_bdpc": bdpc
-    })
   }
 
   componentDidMount() {
@@ -118,18 +110,12 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
             loaded && (
               <Row className="body-box">
                 <Part className="form-container">
-                  <BD_BDPC
-                    disabled={this.props.contractId == ''}
-                    fetchBD={this.props.fetchBD}
-                    BDList={this.props.BDList}
-                    fetchBDPC={this.props.fetchBDPC}
-                    BDPCList={this.props.BDPCList}
-                    initBdAndBdpc={bdAnBdpc}
-                    updateBdAndBdpc={this.updateBdAndBdpc}
+                  <ContractBdBdpc
+                    contractId={this.props.contractId}
                   />
 
                   <CategoryTitle title="合同信息"/>
-                  <UpdateContractBasicInfo contractId={this.props.contractId} baseInfo={baseInfo}/>
+                  <ContractBasicInfo contractId={this.props.contractId} initBaseInfo={baseInfo}/>
 
                   <CategoryTitle title="签署前"/>
                   <BeforeSign
@@ -156,7 +142,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   <ContractAssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment disabled={!this.props.contractId}/>
+                  <ContractRemarkAttachment contractId={this.props.contractId}/>
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>
@@ -192,7 +178,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC, updateBdAndBdpc,
   fetchContractDetail,
   fetchCollectionList
 })(UpdateContractDialog)

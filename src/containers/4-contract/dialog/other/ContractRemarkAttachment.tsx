@@ -6,19 +6,19 @@ import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 
-import {updateRemarkAndAttachment} from '../../project.action'
-import {PROJECT} from '../../../../core/constants/types'
+import {updateRemarkAndAttachment} from '../../contract.action'
+import {CONTRACT} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface ProjectRemarkAttachmentProps extends CommonFunction {
-  projectId?: string
+interface ContractRemarkAttachmentProps extends CommonFunction {
+  contractId?: string
   initRemarkAttachment?: any
   updateRemarkAndAttachment: (options) => void
   updateRemarkAttachmentSuccess: boolean
 }
 
-class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentProps> {
+class ContractRemarkAttachment extends React.Component<ContractRemarkAttachmentProps> {
   _attachment: any
   state = {
     remark: '',
@@ -27,7 +27,7 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
 
   onUpdate = () => {
     this.props.updateRemarkAndAttachment({
-      "business_id": this.props.projectId,
+      "business_id": this.props.contractId,
       "remark": this.state.remark,
       "files": this._attachment.getData()
     })
@@ -39,10 +39,10 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
     }
   }
 
-  componentWillReceiveProps(nextProps: ProjectRemarkAttachmentProps) {
+  componentWillReceiveProps(nextProps: ContractRemarkAttachmentProps) {
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
-      this.props.clearState(PROJECT.UPDATE_REMARK_ATTACHMENT)
+      this.props.clearState(CONTRACT.UPDATE_REMARK_ATTACHMENT)
     }
   }
 
@@ -50,7 +50,7 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
     return (
       <RemarkAndAttachment
         attachmentRef={c => this._attachment = c}
-        disabled={!this.props.projectId}
+        disabled={!this.props.contractId}
         remark={this.state.remark}
         onRemarkChange={(e: any) => this.setState({remark: e.target.value})}
         attachment={this.state.attachment}
@@ -63,11 +63,11 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
 
 function mapStateToProps(state, props) {
   return {
-    updateRemarkAttachmentSuccess: state.project.updateRemarkAttachmentSuccess,
-    projectId: props.projectId
+    updateRemarkAttachmentSuccess: state.contract.updateRemarkAttachmentSuccess,
+    contractId: props.contractId
   }
 }
 
 export default connect(mapStateToProps, {
   updateRemarkAndAttachment
-})(addCommonFunction(ProjectRemarkAttachment))
+})(addCommonFunction(ContractRemarkAttachment))

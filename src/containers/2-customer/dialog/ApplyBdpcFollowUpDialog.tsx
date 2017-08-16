@@ -10,8 +10,11 @@ import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import Form from 'app-core/form/Form'
 
 import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
+import {CUSTOMER} from '../../../core/constants/types'
+import CommonFunction from '../../common/interface/CommonFunction'
+import addCommonFunction from '../../_frameset/addCommonFunction'
 
-interface ApplyBdpcFollowUpDialogProps {
+interface ApplyBdpcFollowUpDialogProps extends CommonFunction {
   customerId: string
   fetchBDPC: () => void
   BDPCList: any
@@ -47,6 +50,8 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
 
   componentWillReceiveProps(nextProps: ApplyBdpcFollowUpDialogProps) {
     if (!this.props.applyBdpcFollowUpSuccess && nextProps.applyBdpcFollowUpSuccess) {
+      this.props.showSuccess('已申请BDPC跟进！')
+      this.props.clearState(CUSTOMER.APPLY_BDPC_FOLLOW_UP)
       this.close()
     }
   }
@@ -116,4 +121,4 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
   }
 }
 
-export default ApplyBdpcFollowUpDialog
+export default addCommonFunction(ApplyBdpcFollowUpDialog)

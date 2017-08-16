@@ -15,8 +15,11 @@ import AddVisitRecordDialog from './AddVisitRecordDialog'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 
 import {VISIT_TYPE} from './contact.constant'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface VisitRecordDialogProps {
+interface VisitRecordDialogProps extends CommonFunction {
   customerId: string
   contactOptions: any[]
   fetchVisitRecordList: any
@@ -54,12 +57,18 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
 
   componentWillReceiveProps(nextProps: VisitRecordDialogProps) {
     if (!this.props.addVisitRecordSuccess && nextProps.addVisitRecordSuccess) {
+      this.props.showSuccess('添加随访记录成功！')
+      this.props.clearState(CUSTOMER.ADD_VISIT_RECORD)
       this.refreshList()
     }
     if (!this.props.updateVisitRecordSuccess && nextProps.updateVisitRecordSuccess) {
+      this.props.showSuccess('更新随访记录成功！')
+      this.props.clearState(CUSTOMER.UPDATE_VISIT_RECORD)
       this.close()
     }
     if (!this.props.removeVisitRecordSuccess && nextProps.removeVisitRecordSuccess) {
+      this.props.showSuccess('删除随访记录成功！')
+      this.props.clearState(CUSTOMER.REMOVE_VISIT_RECORD)
       this.refreshList()
     }
   }
@@ -146,4 +155,4 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
   }
 }
 
-export default VisitRecordDialog
+export default addCommonFunction(VisitRecordDialog)

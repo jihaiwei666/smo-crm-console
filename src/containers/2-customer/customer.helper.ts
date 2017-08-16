@@ -4,7 +4,7 @@
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleRfiServerData} from './dialog/rfi/rfi.helper'
 import {getDateStr} from '../../core/utils/dateUtils'
-import {handleOperationList} from '../common/common.helper'
+import {handleOperationList, getNullValue} from '../common/common.helper'
 import {customerTypeMapper} from './customer.constant'
 
 export function getCustomerType(type) {
@@ -56,9 +56,9 @@ export function handleClientInfo(data) {
   return {
     customerBaseInfo: {
       customerName: baseInfo['customer_name'] || '',
-      customerCategory: (baseInfo['customer_type'] + '') || null,
+      customerCategory: getNullValue(baseInfo['customer_type']),
       customerAddress: baseInfo['customer_address'] || '',
-      importantLevel: (baseInfo['customer_important_level'] + '') || null,
+      importantLevel: getNullValue(baseInfo['customer_important_level']),
       taxpayerIdentifyNumber: baseInfo['billing_taxpayer_number'] || '',
       bank: baseInfo['billing_open_bank'],
       bankAccount: baseInfo['billing_open_bank_account'],
@@ -94,7 +94,7 @@ export function handleClientInfo(data) {
       mobile: c['contacts_info_telephone'],
       email: c['contacts_info_mail'],
       position: c['contacts_info_position'],
-      sex: c['contacts_info_sex'] || null,
+      sex: getNullValue(c['contacts_info_sex']),
       address: c['contacts_info_address'],
       remark: c['contacts_info_remark'],
     })),

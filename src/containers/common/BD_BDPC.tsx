@@ -5,14 +5,13 @@ import React from 'react'
 import {FlexDiv, Part} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 
-import Label from '../../../common/Label'
-import InputUnit from '../../../common/InputUnit'
-import Update from '../../../common/Update'
-import {PROJECT} from '../../../../core/constants/types'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
+import Label from './Label'
+import InputUnit from './InputUnit'
+import Update from './Update'
+import {CONTRACT} from '../../core/constants/types'
 
-interface BD_BDPC_Props extends CommonFunction {
+
+interface BD_BDPC_Props {
   disabled: boolean
   fetchBD: () => void
   BDList: any
@@ -21,7 +20,7 @@ interface BD_BDPC_Props extends CommonFunction {
 
   initBdAndBdpc?: any
   updateBdAndBdpc: any
-  updateBd_BdpcSuccess: boolean
+  updateBdBdpcSuccess: boolean
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
@@ -43,13 +42,6 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   componentDidMount() {
     this.props.fetchBD()
     this.props.fetchBDPC()
-  }
-
-  componentWillReceiveProps(nextProps: BD_BDPC_Props) {
-    if (!this.props.updateBd_BdpcSuccess && nextProps.updateBd_BdpcSuccess) {
-      this.props.showSuccess('更新BD/BDPC成功！')
-      this.props.clearState(PROJECT.UPDATE_BD_AND_BDPC)
-    }
   }
 
   render() {
@@ -93,4 +85,4 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   }
 }
 
-export default addCommonFunction(BD_BDPC)
+export default BD_BDPC

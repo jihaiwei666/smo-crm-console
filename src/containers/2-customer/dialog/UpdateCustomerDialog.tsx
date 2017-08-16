@@ -14,31 +14,27 @@ import BD_BDPC from './part/BD_BDPC'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
-
 import AddSupplier from './supplier/AddSupplier'
 import EditSupplier from './supplier/EditSupplier'
-
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
-import cache from '../../cache/cache'
 import CustomerState from '../CustomerState'
-import {fetchCustomerDetail, fetchContactList, updateCustomer} from '../customer.action'
+import {fetchCustomerDetail, fetchContactList} from '../customer.action'
 
 interface UpdateCustomerDialogProps extends CustomerState {
   customerId: string
   fetchCustomerDetail: (customerId) => void
   customerInfo: any
-  updateCustomer: (options) => void
 
   fetchContactList: (customerId: string) => void
   onExited: () => void
 }
 
 class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
-  supplierInfo: any
+  initSupplierInfo: any
   rfiInfo: any
   state = {
     show: true,
@@ -61,7 +57,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
       const data = nextProps.customerInfo.data
       const {supplierInfo, rfiInfo} = data
       if (supplierInfo) {
-        this.supplierInfo = supplierInfo
+        this.initSupplierInfo = supplierInfo
         this.setState({supplierId: supplierInfo.supplierId})
       }
       if (rfiInfo) {
@@ -70,7 +66,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
       }
     }
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
-      this.supplierInfo = nextProps.supplierInfo
+      this.initSupplierInfo = nextProps.supplierInfo
       this.setState({supplierId: nextProps.supplierInfo.supplierId})
     }
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
@@ -82,7 +78,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   render() {
     let {loaded, data} = this.props.customerInfo
     data = data || {}
-    const customerBaseInfo = data.customerBaseInfo
+    const initCustomerBaseInfo = data.customerBaseInfo
     const initBdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
     const contactInfo = data.contactInfo
@@ -121,8 +117,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                   <CategoryTitle title="客户信息"/>
                   <CustomerBasicInfo
                     customerId={this.props.customerId}
-                    customerBaseInfo={customerBaseInfo}
-                    updateCustomer={this.props.updateCustomer}
+                    initCustomerBaseInfo={initCustomerBaseInfo}
                   />
 
                   <CategoryTitle title="分/子公司或下属院区"/>
@@ -147,7 +142,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                       <EditSupplier
                         customerId={this.props.customerId}
                         supplierId={this.state.supplierId}
-                        supplierInfo={this.supplierInfo}/>
+                        initSupplierInfo={this.initSupplierInfo}/>
                     )
                   }
 
@@ -199,5 +194,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  fetchCustomerDetail, fetchContactList, updateCustomer
-})(cache(UpdateCustomerDialog))
+  fetchCustomerDetail, fetchContactList
+})(UpdateCustomerDialog)

@@ -21,17 +21,20 @@ import Update from '../../../common/Update'
 import RFI_ListDialog from './RFI_ListDialog'
 import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 import CustomerState from '../../CustomerState'
-import Data from '../../../common/interface/Data'
 import SelectContact from '../base/SelectContact'
 
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import Data from '../../../common/interface/Data'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import {MODULES} from './rfi.constants'
 import {ADD, EDIT} from '../../../../core/CRUD'
 import {fetchContactList} from '../../customer.action'
 import {fetchRfiList, addRfi, updateRfi, removeRfi} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import {CUSTOMER} from '../../../../core/constants/types'
 
-interface RFIProps extends CustomerState {
+interface RFIProps extends CustomerState, CommonFunction {
   customerId: string
   rfiId?: string
   fetchContactList: (customerId: string) => void
@@ -122,11 +125,23 @@ class RFI extends React.Component<RFIProps> {
     }
   }
 
+  componentWillReceiveProps(nextProps: RFIProps) {
+    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.props.showSuccess('新增RFI信息成功！')
+      this.props.clearState(CUSTOMER.ADD_RFI)
+    }
+    if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
+      this.props.showSuccess('更新RFI信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_RFI)
+    }
+    if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
+      this.props.showSuccess('删除RFI成功！')
+      this.props.clearState(CUSTOMER.REMOVE_RFI)
+    }
+  }
+
   render() {
     const contactList = this.props.customerContactData.data || []
-    const contactOptions = contactList.map(item => ({
-      value: item.contactId, text: item.contactName
-    }))
     return (
       <Form onValidChange={valid => this.setState({valid})}>
         {
@@ -222,4 +237,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchRfiList, addRfi, updateRfi, removeRfi, fetchContactList
-})(RFI)
+})(addCommonFunction(RFI))

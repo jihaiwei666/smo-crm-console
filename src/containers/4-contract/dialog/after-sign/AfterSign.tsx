@@ -26,16 +26,20 @@ import Update from '../../../common/Update'
 
 import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
 import {fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
-import {handleCrudList} from '../../../../core/CRUD'
+import {CONTRACT} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface AfterSignProps {
+interface AfterSignProps extends CommonFunction {
   contractId?: string
   projectId?: string
   afterSignId?: string
   fetchPartAfterSignInfoFromProject: (projectId) => void
   addAfterSign: (options) => void
+  addAfterSignSuccess: boolean
   initAfterSign: any
   updateAfterSign: (options) => void
+  updateAfterSignSuccess: boolean
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
@@ -180,6 +184,17 @@ class AfterSign extends React.Component<AfterSignProps> {
   componentDidMount() {
     if (this.props.projectId && !this.props.afterSignId) {
       this.props.fetchPartAfterSignInfoFromProject(this.props.projectId)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: AfterSignProps) {
+    if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
+      this.props.showSuccess('添加签署后成功！')
+      this.props.clearState(CONTRACT.ADD_BEFORE_SIGN)
+    }
+    if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
+      this.props.showSuccess('更新签署后成功！')
+      this.props.clearState(CONTRACT.UPDATE_BEFORE_SIGN)
     }
   }
 
@@ -392,6 +407,8 @@ class AfterSign extends React.Component<AfterSignProps> {
 
 function mapStateToProps(state, props) {
   return {
+    addAfterSignSuccess: state.contract.addAfterSignSuccess,
+    updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
     contractId: props.contractId,
     projectId: props.projectId,
     afterSignId: props.afterSignId,
@@ -401,4 +418,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign
-})(AfterSign)
+})(addCommonFunction(AfterSign))

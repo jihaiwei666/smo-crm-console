@@ -4,33 +4,27 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import {Row, Part, Line} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import CategoryTitle from '../../common/CategoryTitle'
-import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
-import AddContractBasicInfo from './basic-info/AddContractBasicInfo'
+import ContractBdBdpc from './other/ContractBdBdpc'
+import ContractBasicInfo from './basic-info/ContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
-import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import CollectionList from './make-collections/CollectionList'
 
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateCollection} from '../contract.action'
+import ContractRemarkAttachment from './other/ContractRemarkAttachment'
+import {CONTRACT} from '../../../core/constants/types'
+import CommonFunction from '../../common/interface/CommonFunction'
+import addCommonFunction from '../../_frameset/addCommonFunction'
 
-interface AddContractDialogProps {
-  fetchBD: () => void
-  BDList: any
-
-  fetchBDPC: () => void
-  BDPCList: any
-
-  updateBdAndBdpc: (options) => void
-  updateBdAndBdpcSuccess: boolean
-
+interface AddContractDialogProps extends CommonFunction {
+  addContractSuccess: boolean
+  newContractId: string
   updateCollection: (options) => void
-
   onExited: () => void
 }
 
@@ -44,18 +38,12 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
     this.setState({show: false})
   }
 
-  updateBdAndBdpc = (bd, bdpc) => {
-    this.props.updateBdAndBdpc({
-      "contract_info_id": this.state.contractId,
-      "contract_the_bd": bd,
-      "contract_the_bdpc": bdpc
-    })
-  }
-
   componentWillReceiveProps(nextProps: AddContractDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-      this.close()
-    }*/
+    if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
+      this.props.showSuccess('添加合同信息成功！')
+      this.props.clearState(CONTRACT.ADD_CONTRACT)
+      this.setState({contractId: nextProps.newContractId})
+    }
   }
 
   render() {
@@ -70,34 +58,31 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
         <Modal.Body>
           <Row className="body-box">
             <Part className="form-container">
-              <BD_BDPC
-                disabled={this.state.contractId == ''}
-                fetchBD={this.props.fetchBD}
-                BDList={this.props.BDList}
-                fetchBDPC={this.props.fetchBDPC}
-                BDPCList={this.props.BDPCList}
-                updateBdAndBdpc={this.updateBdAndBdpc}
+              <ContractBdBdpc
+                contractId={this.state.contractId}
               />
 
               <CategoryTitle title="合同信息"/>
-              <AddContractBasicInfo/>
+              <ContractBasicInfo contractId={this.state.contractId}/>
 
               <CategoryTitle title="签署前"/>
-              <BeforeSign/>
+              <BeforeSign contractId={this.state.contractId}/>
 
               <CategoryTitle title="签署后"/>
-              <AfterSign/>
+              <AfterSign contractId={this.state.contractId}/>
 
               <CategoryTitle title="收款"/>
-              <CollectionList collectionList={[]}
-                              updateCollection={this.props.updateCollection}
+              <CollectionList
+                contractId={this.state.contractId}
+                collectionList={[]}
+                updateCollection={this.props.updateCollection}
               />
 
               <CategoryTitle title="关联信息"/>
               <ContractAssociateInfo relationInfo={{}}/>
 
               <CategoryTitle title="备注及附件"/>
-              <RemarkAndAttachment disabled={!this.state.contractId}/>
+              <ContractRemarkAttachment contractId={this.state.contractId}/>
 
               <CategoryTitle title="操作记录"/>
             </Part>
@@ -121,12 +106,11 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
 
 function mapStateToProps(state, props) {
   return {
-    BDList: state.BDList,
-    BDPCList: state.BDPCList
+    newContractId: state.contract.newContractId,
+    addContractSuccess: state.contract.addContractSuccess
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC,
   updateCollection
-})(AddContractDialog)
+})(addCommonFunction(AddContractDialog))

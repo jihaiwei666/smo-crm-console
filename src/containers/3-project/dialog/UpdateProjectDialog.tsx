@@ -118,6 +118,7 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
                     fetchBDPC={this.props.fetchBDPC}
                     BDPCList={this.props.BDPCList}
                     updateBdAndBdpc={this.updateBdAndBdpc}
+                    updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
                   />
 
                   <CategoryTitle title="项目信息"/>
@@ -170,6 +171,7 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 
 function mapStateToProps(state) {
   return {
+    ...state.project,
     BDList: state.BDList,
     BDPCList: state.BDPCList,
     projectDetail: state.projectDetail

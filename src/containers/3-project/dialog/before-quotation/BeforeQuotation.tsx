@@ -24,15 +24,19 @@ import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
 import PlanAttachment from './PlanAttachment'
 import AddAttachmentButton from './AddAttachmentButton'
 import ResearchCenter from './ResearchCenter'
+import {PROJECT} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface BeforeQuotationProps {
+interface BeforeQuotationProps extends CommonFunction {
   projectId: string
   beforeQuotationId?: string
-  addBeforeQuotation: (options) => void
-  addBeforeQuotationSuccess: boolean
   newBeforeQuotation: any
   initBeforeQuotation: any
+  addBeforeQuotation: (options) => void
+  addBeforeQuotationSuccess: boolean
   updateBeforeQuotation: (options) => void
+  updateBeforeQuotationSuccess: boolean
 }
 
 class BeforeQuotation extends React.Component<BeforeQuotationProps> {
@@ -128,6 +132,13 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
 
   componentWillReceiveProps(nextProps: BeforeQuotationProps) {
     if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
+      this.props.showSuccess('添加报价前信息成功！')
+      this.props.clearState(PROJECT.ADD_BEFORE_QUOTATION)
+      this.setState(nextProps.newBeforeQuotation)
+    }
+    if (!this.props.updateBeforeQuotationSuccess && nextProps.updateBeforeQuotationSuccess) {
+      this.props.showSuccess('更新报价前信息成功！')
+      this.props.clearState(PROJECT.UPDATE_BEFORE_QUOTATION)
       this.setState(nextProps.newBeforeQuotation)
     }
   }
@@ -265,7 +276,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.project,
+    newBeforeQuotation: state.project.newBeforeQuotation,
+    addBeforeQuotationSuccess: state.project.addBeforeQuotationSuccess,
+    updateBeforeQuotationSuccess: state.project.updateBeforeQuotationSuccess,
     projectId: props.projectId,
     beforeQuotationId: props.beforeQuotationId,
     initBeforeQuotation: props.initBeforeQuotation
@@ -274,4 +287,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addBeforeQuotation, updateBeforeQuotation
-})(BeforeQuotation)
+})(addCommonFunction(BeforeQuotation))

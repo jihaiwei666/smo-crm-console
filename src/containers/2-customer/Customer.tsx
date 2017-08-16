@@ -19,7 +19,6 @@ import FilterItem from '../../components/query-filter/FilterItem'
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
 import {fetchList} from './customer.action'
-import tipAndClear from './tipAndClear'
 import {getCustomerType} from './customer.helper'
 
 interface CustomerProps extends AppFunctionPage, CustomerState {
@@ -62,8 +61,16 @@ class Customer extends React.Component<CustomerProps> {
     this.toPage(0)
   }
 
-  componentDidUpdate() {
-    setTimeout(() => tipAndClear(this), 0)
+  componentWillReceiveProps(nextProps: CustomerProps) {
+    if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
+      this.toPage(0)
+    }
+    if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
+      this.refreshCurrentPage()
+    }
   }
 
   render() {

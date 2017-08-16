@@ -18,10 +18,11 @@ import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
-import {CONTRACT} from '../../../../core/constants/types'
+import {CONTRACT, PROJECT} from '../../../../core/constants/types'
 
-interface AddContractBasicInfoProps extends CommonFunction {
+interface ContractBasicInfoProps extends CommonFunction {
   contractId?: string
+  initBaseInfo?: any
   fetchProjectList: () => void
   projectList: Data<any[]>
   fetchContractCodePrefix: (projectId) => void
@@ -29,10 +30,12 @@ interface AddContractBasicInfoProps extends CommonFunction {
   newContractCodePrefix: string
   isFirstOperation: boolean
   addContract: (options) => void
+  addContractSuccess: boolean
   updateContract: (options) => void
+  updateContractSuccess: boolean
 }
 
-class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
+class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
   state = {
     valid: true,
     contractName: '',
@@ -69,15 +72,27 @@ class AddContractBasicInfo extends React.Component<AddContractBasicInfoProps> {
     })
   }
 
+  componentWillMount() {
+    this.setState(this.props.initBaseInfo)
+  }
+
   componentDidMount() {
     this.props.fetchProjectList()
   }
 
-  componentWillReceiveProps(nextProps: AddContractBasicInfoProps) {
+  componentWillReceiveProps(nextProps: ContractBasicInfoProps) {
     if (!this.props.fetchCodePrefixSuccess && nextProps.fetchCodePrefixSuccess) {
       this.setState({codePrefix: nextProps.newContractCodePrefix})
       this.setState({isFirstOperation: nextProps.isFirstOperation ? '是' : '否'})
       this.props.clearState(CONTRACT.FETCH_CONTRACT_CODE_PREFIX)
+    }
+    if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
+      this.props.showSuccess('添加合同信息成功！')
+      this.props.clearState(PROJECT.ADD_PROJECT_INFO)
+    }
+    if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
+      this.props.showSuccess('更新合同信息成功！')
+      this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
     }
   }
 
@@ -146,4 +161,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchProjectList, fetchContractCodePrefix, addContract, updateContract
-})(addCommonFunction(AddContractBasicInfo))
+})(addCommonFunction(ContractBasicInfo))

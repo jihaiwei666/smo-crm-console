@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Form from 'app-core/form/Form'
+
 import Input from '../../../../components/form/Input'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import {NECESSARY} from '../../../common/Label'
@@ -12,13 +13,18 @@ import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
 import {addBeforeSign, updateBeforeSign} from '../../contract.action'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CONTRACT} from '../../../../core/constants/types'
 
-interface BeforeSignProps {
+interface BeforeSignProps extends CommonFunction {
   contractId?: string
   beforeSignId?: string
   addBeforeSign: (options) => void
+  addBeforeSignSuccess: boolean
   initBeforeSign: any
   updateBeforeSign: (options) => void
+  updateBeforeSignSuccess: boolean
 }
 
 class BeforeSign extends React.Component<BeforeSignProps> {
@@ -51,6 +57,17 @@ class BeforeSign extends React.Component<BeforeSignProps> {
   componentWillMount() {
     if (this.props.initBeforeSign) {
       this.setState(this.props.initBeforeSign)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: BeforeSignProps) {
+    if (!this.props.addBeforeSignSuccess && nextProps.addBeforeSignSuccess) {
+      this.props.showSuccess('添加签署前成功！')
+      this.props.clearState(CONTRACT.ADD_BEFORE_SIGN)
+    }
+    if (!this.props.updateBeforeSignSuccess && nextProps.updateBeforeSignSuccess) {
+      this.props.showSuccess('更新签署前成功！')
+      this.props.clearState(CONTRACT.UPDATE_BEFORE_SIGN)
     }
   }
 
@@ -95,6 +112,8 @@ class BeforeSign extends React.Component<BeforeSignProps> {
 
 function mapStateToProps(state, props) {
   return {
+    addBeforeSignSuccess: state.contract.addBeforeSignSuccess,
+    updateBeforeSignSuccess: state.contract.updateBeforeSignSuccess,
     contractId: props.contractId,
     beforeSignId: props.beforeSignId,
     initBeforeSign: props.initBeforeSign
@@ -103,4 +122,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addBeforeSign, updateBeforeSign
-})(BeforeSign)
+})(addCommonFunction(BeforeSign))

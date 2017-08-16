@@ -5,12 +5,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
-import {updateRemarkAndAttachment} from '../../customer.action'
 
-interface CustomerRemarkAttachmentProps {
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {updateRemarkAndAttachment} from '../../customer.action'
+import {CUSTOMER} from '../../../../core/constants/types'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+
+interface CustomerRemarkAttachmentProps extends CommonFunction {
   customerId?: string
   initRemarkAttachment?: any
   updateRemarkAndAttachment: (options) => void
+  updateRemarkAttachmentSuccess: boolean
 }
 
 class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentProps> {
@@ -34,6 +39,13 @@ class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentP
     }
   }
 
+  componentWillReceiveProps(nextProps: CustomerRemarkAttachmentProps) {
+    if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
+      this.props.showSuccess('更新备注及附件成功！')
+      this.props.clearState(CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT)
+    }
+  }
+
   render() {
     return (
       <RemarkAndAttachment
@@ -51,10 +63,11 @@ class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentP
 
 function mapStateToProps(state, props) {
   return {
+    updateRemarkAttachmentSuccess: state.customer.updateRemarkAttachmentSuccess,
     customerId: props.customerId
   }
 }
 
 export default connect(mapStateToProps, {
   updateRemarkAndAttachment
-})(CustomerRemarkAttachment)
+})(addCommonFunction(CustomerRemarkAttachment))

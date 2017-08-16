@@ -8,8 +8,11 @@ import Button from '../../../../components/button/Button'
 import Company from './Company'
 
 import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
 
-interface SubCompanyProps {
+interface SubCompanyProps extends CommonFunction {
   customerId: string
   addSubCompany?: (options) => void
   addSubCompanySuccess?: boolean
@@ -57,15 +60,23 @@ class SubCompany extends React.Component<SubCompanyProps> {
 
   componentWillReceiveProps(nextProps: SubCompanyProps) {
     if (!this.props.addSubCompanySuccess && nextProps.addSubCompanySuccess) {
+      this.props.showSuccess('添加子公司成功！')
+      this.props.clearState(CUSTOMER.ADD_SUB_COMPANY)
       let companyList = this.state.companyList
       companyList.find(c => c.uid == this.companyUid).companyId = nextProps.newSubCompanyId
       this.setState({companyList})
     }
     if (!this.props.removeSubCompanySuccess && nextProps.removeSubCompanySuccess) {
+      this.props.showSuccess('更新子公司信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_SUB_COMPANY)
       let companyList = this.state.companyList
       let index = companyList.indexOf(companyList.find(c => c.companyId == this.lastCompanyId))
       companyList.splice(index, 1)
       this.setState({companyList})
+    }
+    if (!this.props.removeSubCompanySuccess && nextProps.removeSubCompanySuccess) {
+      this.props.showSuccess('删除子公司信息成功！')
+      this.props.clearState(CUSTOMER.REMOVE_SUB_COMPANY)
     }
   }
 
@@ -121,4 +132,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addSubCompany, updateSubCompany, removeSubCompany
-})(SubCompany)
+})(addCommonFunction(SubCompany))

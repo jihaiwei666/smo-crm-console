@@ -21,7 +21,7 @@ import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
 import CustomerState from '../CustomerState'
-import {addCustomer, updateCustomer} from '../customer.action'
+
 
 interface AddCustomerDialogProps extends CustomerState {
   addCustomer: (options) => void
@@ -30,7 +30,7 @@ interface AddCustomerDialogProps extends CustomerState {
 }
 
 class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
-  supplierInfo: any
+  initSupplierInfo: any
   rfiInfo: any
   state = {
     show: true,
@@ -49,7 +49,7 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
       this.setState({customerId: nextProps.newCustomerId})
     }
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
-      this.supplierInfo = nextProps.supplierInfo
+      this.initSupplierInfo = nextProps.supplierInfo
       this.setState({supplierId: nextProps.supplierInfo.supplierId})
     }
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
@@ -78,8 +78,6 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
               <CategoryTitle title="客户信息"/>
               <CustomerBasicInfo
                 customerId={this.state.customerId}
-                addCustomer={this.props.addCustomer}
-                updateCustomer={this.props.updateCustomer}
               />
 
               <CategoryTitle title="分/子公司或下属院区"/>
@@ -102,7 +100,7 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
                   <EditSupplier
                     customerId={this.state.customerId}
                     supplierId={this.state.supplierId}
-                    supplierInfo={this.supplierInfo}/>
+                    initSupplierInfo={this.initSupplierInfo}/>
                 )
               }
 
@@ -146,6 +144,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {
-  addCustomer, updateCustomer
-})(AddCustomerDialog)
+export default connect(mapStateToProps, {})(AddCustomerDialog)

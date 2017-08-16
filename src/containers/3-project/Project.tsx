@@ -10,13 +10,14 @@ import Button from '../../components/button/Button'
 import AddProjectDialog from './dialog/AddProjectDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
-import {fetchList} from './project.action'
-import {handleListData} from '../../reducers/data.reducer'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
-import tipAndClear from './tipAndClear'
 
-interface ProjectProps extends AppFunctionPage {
+import {fetchList} from './project.action'
+import {handleListData} from '../../reducers/data.reducer'
+import ProjectState from './ProjectState'
+
+interface ProjectProps extends AppFunctionPage, ProjectState {
   projectList: any
 }
 
@@ -48,8 +49,13 @@ class Project extends React.Component<ProjectProps> {
     this.toPage(0)
   }
 
-  componentDidUpdate() {
-    setTimeout(() => tipAndClear(this), 0)
+  componentWillReceiveProps(nextProps: ProjectProps) {
+    if (!this.props.addProjectInfoSuccess && nextProps.addProjectInfoSuccess) {
+      this.toPage(0)
+    }
+    if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
+      this.toPage(0)
+    }
   }
 
   render() {

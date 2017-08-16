@@ -20,15 +20,20 @@ import Update from '../../../common/Update'
 
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import ProjectState from '../../ProjectState'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {PROJECT} from '../../../../core/constants/types'
 
-interface AfterQuotationProps extends ProjectState {
+interface AfterQuotationProps extends CommonFunction {
   projectId?: string
   afterQuotationId?: string
-  addAfterQuotation: (options) => void
-
   initAfterQuotation: any
+  addAfterQuotation: (options) => void
+  addAfterQuotationSuccess: boolean
+  newAfterQuotation: any
+
   updateAfterQuotation: (options) => void
+  updateAfterQuotationSuccess: boolean
 }
 
 class AfterQuotation extends React.Component<AfterQuotationProps> {
@@ -99,7 +104,13 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
   componentWillReceiveProps(nextProps: AfterQuotationProps) {
     if (!this.props.addAfterQuotationSuccess && nextProps.addAfterQuotationSuccess) {
+      this.props.showSuccess('添加报价后信息成功！')
+      this.props.clearState(PROJECT.ADD_AFTER_QUOTATION)
       this.setState(nextProps.newAfterQuotation)
+    }
+    if (!this.props.updateAfterQuotationSuccess && nextProps.updateAfterQuotationSuccess) {
+      this.props.showSuccess('更新报价后信息成功！')
+      this.props.clearState(PROJECT.UPDATE_AFTER_QUOTATION)
     }
   }
 
@@ -185,7 +196,9 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.project,
+    newAfterQuotation: state.project.newAfterQuotation,
+    addAfterQuotationSuccess: state.project.addAfterQuotationSuccess,
+    updateAfterQuotationSuccess: state.project.updateAfterQuotationSuccess,
     projectId: props.projectId,
     afterQuotationId: props.afterQuotationId,
     initAfterQuotation: props.initAfterQuotation
@@ -194,4 +207,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addAfterQuotation, updateAfterQuotation
-})(AfterQuotation)
+})(addCommonFunction(AfterQuotation))

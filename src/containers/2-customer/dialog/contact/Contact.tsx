@@ -8,8 +8,9 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
+import {CUSTOMER} from '../../../../core/constants/types'
 
-interface _ContactProps {
+interface ContactProps {
   customerId: string
   contactId: string
   index: number
@@ -19,7 +20,7 @@ interface _ContactProps {
   removeContact: (contactId) => void
 }
 
-class _Contact extends React.Component<_ContactProps> {
+class Contact extends React.Component<ContactProps> {
   state = {
     showRemoveConfirm: false,
 
@@ -120,4 +121,4 @@ class _Contact extends React.Component<_ContactProps> {
   }
 }
 
-export default _Contact
+export default Contact

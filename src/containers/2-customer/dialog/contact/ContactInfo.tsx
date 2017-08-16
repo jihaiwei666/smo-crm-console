@@ -13,8 +13,11 @@ import {
 } from './contact.action'
 import {getContactOptions} from './contact.helper'
 import CustomerState from '../../CustomerState'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface ContactProps extends CustomerState {
+interface ContactProps extends CustomerState, CommonFunction {
   customerId: string
   addContact: (options) => void
   contactInfo: any[]
@@ -65,15 +68,23 @@ class ContactInfo extends React.Component<ContactProps> {
 
   componentWillReceiveProps(nextProps: ContactProps) {
     if (!this.props.addContactSuccess && nextProps.addContactSuccess) {
+      this.props.showSuccess('添加联系人信息成功！')
+      this.props.clearState(CUSTOMER.ADD_CONTACT)
       let list = this.state.list
       list.find(c => c.uid == this.localContactUid).contactId = nextProps.newContactId
       this.setState({list})
     }
     if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
+      this.props.showSuccess('更新联系人信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_CONTACT)
       let list = this.state.list
       let index = list.indexOf(list.find(c => c.contactId == this.lastContactId))
       list.splice(index, 1)
       this.setState({list})
+    }
+    if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
+      this.props.showSuccess('删除联系人成功！')
+      this.props.clearState(CUSTOMER.REMOVE_CONTACT)
     }
   }
 
@@ -166,4 +177,4 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   addContact, updateContact, removeContact,
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
-})(ContactInfo)
+})(addCommonFunction(ContactInfo))

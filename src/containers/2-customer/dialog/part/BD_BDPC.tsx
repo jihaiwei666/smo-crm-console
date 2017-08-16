@@ -11,11 +11,15 @@ import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
 import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
+
 import {applyBdpcFollowUp, updateBdAndBdpc} from '../../customer.action'
 import CustomerState from '../../CustomerState'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface BD_BDPC_Props extends CustomerState {
+interface BD_BDPC_Props extends CustomerState, CommonFunction {
   customerId: string
   fetchBD: () => void
   BDList: any
@@ -52,6 +56,13 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   componentDidMount() {
     this.props.fetchBD()
     this.props.fetchBDPC()
+  }
+
+  componentWillReceiveProps(nextProps: BD_BDPC_Props) {
+    if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
+      this.props.showSuccess('更新 所有人、所属BDPC 成功！')
+      this.props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
+    }
   }
 
   render() {
@@ -126,4 +137,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC, applyBdpcFollowUp, updateBdAndBdpc
-})(BD_BDPC)
+})(addCommonFunction(BD_BDPC))

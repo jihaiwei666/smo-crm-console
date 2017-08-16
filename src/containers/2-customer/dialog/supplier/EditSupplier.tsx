@@ -22,11 +22,15 @@ import {addListItem} from '../../../../core/utils/arrayUtils'
 import {fetchContactList} from '../../customer.action'
 import {updateSupplier, fetchMSAList, addMsa, updateMsa} from './supplier.action'
 import LookMSADialog from './LookMSADialog'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CustomerState from '../../CustomerState'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface EditSupplierProps {
+interface EditSupplierProps extends CustomerState, CommonFunction {
   customerId: string
   supplierId: string
-  supplierInfo: any
+  initSupplierInfo: any
   fetchContactList: (customerId: string) => void
   customerContactData: any
   updateSupplier: (options) => void
@@ -132,6 +136,13 @@ class EditSupplier extends React.Component<EditSupplierProps> {
 
   componentDidMount() {
     this.props.fetchContactList(this.props.customerId)
+  }
+
+  componentWillReceiveProps(nextProps: EditSupplierProps) {
+    if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
+      this.props.showSuccess('更新供应商信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_SUPPLIER)
+    }
   }
 
   render() {
@@ -283,6 +294,7 @@ class EditSupplier extends React.Component<EditSupplierProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.customer,
     customerId: props.customerId,
     supplierId: props.supplierId,
     supplierInfo: props.supplierInfo,
@@ -293,4 +305,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   updateSupplier, fetchContactList, fetchMSAList, addMsa, updateMsa
-})(EditSupplier)
+})(addCommonFunction(EditSupplier))

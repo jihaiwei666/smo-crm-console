@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import Form from 'app-core/form/Form'
 
 import Radio from '../../../../components/form/radio/Radio'
@@ -10,11 +11,17 @@ import Save from '../../../common/Save'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
-interface CustomerBasicInfoProps {
+import CustomerState from '../../CustomerState'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {addCustomer, updateCustomer} from '../../customer.action'
+
+interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
-  addCustomer?: (baseInfo) => void
-  customerBaseInfo?: any
-  updateCustomer?: (baseInfo) => void
+  addCustomer: (baseInfo) => void
+  initCustomerBaseInfo?: any
+  updateCustomer: (baseInfo) => void
 }
 
 class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
@@ -70,8 +77,19 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   }
 
   componentWillMount() {
-    if (this.props.customerBaseInfo) {
-      this.setState(this.props.customerBaseInfo)
+    if (this.props.initCustomerBaseInfo) {
+      this.setState(this.props.initCustomerBaseInfo)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: CustomerBasicInfoProps) {
+    if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
+      this.props.showSuccess('添加客户信息成功！')
+      this.props.clearState(CUSTOMER.ADD_CUSTOMER)
+    }
+    if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
+      this.props.showSuccess('更新客户信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
     }
   }
 
@@ -167,4 +185,14 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   }
 }
 
-export default CustomerBasicInfo
+function mapStateToProps(state, props) {
+  return {
+    ...state.customer,
+    customerId: props.customerId,
+    initCustomerBaseInfo: props.initCustomerBaseInfo
+  }
+}
+
+export default connect(mapStateToProps, {
+  addCustomer, updateCustomer
+})(addCommonFunction(CustomerBasicInfo))

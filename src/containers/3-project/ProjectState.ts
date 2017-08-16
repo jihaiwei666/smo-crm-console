@@ -3,7 +3,9 @@
  */
 type ProjectState = {
   newProjectId: string
+  updateBd_BdpcSuccess: boolean
   addProjectInfoSuccess: boolean
+  updateProjectInfoSuccess: boolean
   addBeforeQuotationSuccess: boolean
   newBeforeQuotation: any
   addAfterQuotationSuccess: boolean

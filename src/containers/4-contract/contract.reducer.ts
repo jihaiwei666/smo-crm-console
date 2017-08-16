@@ -7,10 +7,17 @@ import phase from '../../core/constants/phase'
 import {handleFlagState} from '../common/reduxUtils'
 
 const initValue = {
+  addContractSuccess: false,
+  newContractId: '',
+  updateContractSuccess: false,
+  updateBdBdpcSuccess: false,
   fetchCodePrefixSuccess: false,
   isFirstOperation: null,
+  addBeforeSignSuccess: false,
+  updateBeforeSignSuccess: false,
   addAfterSignSuccess: false,
   updateAfterSignSuccess: false,
+  updateRemarkAttachmentSuccess: false
 }
 
 export default function contract(iState = fromJS(initValue), action) {
@@ -21,13 +28,25 @@ export default function contract(iState = fromJS(initValue), action) {
       const {newContractCodePrefix, isFirstOperation} = action.data
       nextIState = nextIState.set('newContractCodePrefix', newContractCodePrefix).set('isFirstOperation', isFirstOperation)
       break
-
+    case CONTRACT.ADD_CONTRACT + phase.SUCCESS:
+      nextIState = nextIState.set('newContractId', action.data)
+      break
   }
+
+  nextIState = handleFlagState(nextIState, action, CONTRACT.ADD_CONTRACT, 'addContractSuccess')
+  nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_CONTRACT, 'updateContractSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_BD_AND_BDPC, 'updateBdBdpcSuccess')
 
   nextIState = handleFlagState(nextIState, action, CONTRACT.FETCH_CONTRACT_CODE_PREFIX, 'fetchCodePrefixSuccess')
 
+  nextIState = handleFlagState(nextIState, action, CONTRACT.ADD_BEFORE_SIGN, 'addBeforeSignSuccess')
+  nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_BEFORE_SIGN, 'updateBeforeSignSuccess')
+
   nextIState = handleFlagState(nextIState, action, CONTRACT.ADD_AFTER_SIGN, 'addAfterSignSuccess')
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_AFTER_SIGN, 'updateAfterSignSuccess')
+
+  nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_REMARK_ATTACHMENT, 'updateRemarkAttachmentSuccess')
 
   return nextIState
 }

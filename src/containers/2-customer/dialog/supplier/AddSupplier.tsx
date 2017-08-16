@@ -21,14 +21,18 @@ import {addListItem} from '../../../../core/utils/arrayUtils'
 import {fetchContactList} from '../../customer.action'
 import {addSupplier} from './supplier.action'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CustomerState from '../../CustomerState'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import Data from '../../../common/interface/Data'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface AddSupplierProps {
+interface AddSupplierProps extends CustomerState, CommonFunction {
   customerId: string
   supplierId?: string
   fetchContactList: (customerId: string) => void
-  customerContactData: any
+  customerContactData: Data<any>
   addSupplier: (options) => void
-
 }
 
 let id = 1
@@ -109,6 +113,13 @@ class AddSupplier extends React.Component<AddSupplierProps> {
   handleBrokerChange = (supplierIndex, brokerIndex, stateKey, value) => {
     this.state.supplierList[supplierIndex].brokerList[brokerIndex][stateKey] = value
     this.forceUpdate()
+  }
+
+  componentWillReceiveProps(nextProps: AddSupplierProps) {
+    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
+      this.props.showSuccess('添加供应商成功！')
+      this.props.clearState(CUSTOMER.ADD_SUPPLIER)
+    }
   }
 
   render() {
@@ -243,6 +254,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
 
 function mapStateToProps(state, props) {
   return {
+    ...state.customer,
     customerId: props.customerId,
     customerContactData: state.customerContactData
   }
@@ -250,4 +262,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   addSupplier, fetchContactList
-})(AddSupplier)
+})(addCommonFunction(AddSupplier))
