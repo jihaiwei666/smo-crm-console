@@ -4,7 +4,7 @@
 import {getDate} from '../../../../core/utils/dateUtils'
 
 export function handleCollection(collectionList) {
-  return collectionList.map(item => ({
+  return collectionList.filter(item => item != null).map(item => ({
     collectionId: item['collection_id'],
     nodeDate: getDate(item['payment_node_date']),
     collectionMoney: item['receivables_amount'],
@@ -21,4 +21,21 @@ export function handleCollection(collectionList) {
     makeCollectionsDate: getDate(item['payment_date']),
     makeCollectionsValue: item['payment_money'],
   }))
+}
+
+export function handleInstitutionList(data) {
+  return data.map(item => ({
+    value: item['subsidiary_id'],
+    text: item['subsidiary_name']
+  }))
+}
+
+export function handleInstitutionInfo(data) {
+  return {
+    address: data['billing_address'],
+    bank: data['billing_open_bank'],
+    bankAccount: data['billing_open_bank_account'],
+    taxpayerNumber: data['billing_taxpayer_number'],
+    telephone: data['billing_telephone'],
+  }
 }

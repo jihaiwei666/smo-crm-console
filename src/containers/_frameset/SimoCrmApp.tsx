@@ -4,7 +4,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
@@ -12,8 +11,12 @@ import PageContent from './PageContent'
 
 import Modules from './Modules'
 import RecentOpen from './RecentOpen'
+import {fetchRecentOpenList} from '../../actions/app.action'
+import Data from '../common/interface/Data'
 
 interface SimoCrmAppProps {
+  fetchRecentOpenList: (start) => void
+  recentOpenList: Data<any>
   message: any
   changeMessageStatus: any
   match: any
@@ -21,6 +24,10 @@ interface SimoCrmAppProps {
 }
 
 class SimoCrmApp extends Component<SimoCrmAppProps> {
+  componentDidMount() {
+    this.props.fetchRecentOpenList(0)
+  }
+
   render() {
     return (
       <div className="app">
@@ -31,14 +38,12 @@ class SimoCrmApp extends Component<SimoCrmAppProps> {
           </header>
           <nav className="nav-container">
             <Modules currentPath={this.props.currentPath}/>
-            <RecentOpen/>
+            <RecentOpen recentOpenList={this.props.recentOpenList}/>
           </nav>
         </aside>
         <main>
           <header></header>
-          <div className="app-function-page">
-            <PageContent match={this.props.match}/>
-          </div>
+          <PageContent match={this.props.match}/>
         </main>
       </div>
     )
@@ -50,8 +55,11 @@ function mapStateToProps(state) {
   return {
     ...state['app'],
     message: state.message,
+    recentOpenList: state.recentOpenList,
     currentPath
   }
 }
 
-export default connect(mapStateToProps, {changeMessageStatus})(SimoCrmApp)
+export default connect(mapStateToProps, {
+  changeMessageStatus, fetchRecentOpenList
+})(SimoCrmApp)

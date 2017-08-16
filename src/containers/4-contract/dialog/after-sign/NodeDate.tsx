@@ -40,4 +40,24 @@ class NodeDate extends React.Component<NodeDateProps> {
   }
 }
 
-export default listCrud(NodeDate, {nodeDate: null})
+function ifAdd(item, parentId) {
+  return {
+    "after_signed_id": parentId,
+    "payment_node_date": item.nodeDate,
+  }
+}
+
+function ifUpdate(item) {
+  return {
+    "payment_node_id": item.id,
+    "payment_node_date": item.nodeDate,
+  }
+}
+
+function ifRemove(item) {
+  return {
+    "payment_node_id": item.id,
+  }
+}
+
+export default listCrud(NodeDate, {nodeDate: null}, {ifAdd, ifUpdate, ifRemove})

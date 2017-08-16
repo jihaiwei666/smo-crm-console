@@ -1,19 +1,20 @@
 /**
  * Created by jiangyukun on 2017/7/18.
  */
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-
 import React from 'react'
 import {connect} from 'react-redux'
+import Confirm from 'app-core/common/Confirm'
 
-import './contract.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'
 import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {fetchList} from './contract.action'
+import PageCountNav from '../../components/nav/PageCountNav'
+import {getContractType} from './contract.helper'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
@@ -24,17 +25,23 @@ class Contract extends React.Component<ContractProps> {
     index: -1,
     currentPage: 0,
     showAddDialog: false,
-    showEditDialog: false
+    showEditDialog: false,
+    showDeleteConfirm: false
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList({
       "start": newPage,
       "limit": 10,
     })
+  }
+
+  removeContract = () => {
+
   }
 
   componentDidMount() {
@@ -46,7 +53,7 @@ class Contract extends React.Component<ContractProps> {
     const item = list[this.state.index] || {}
 
     return (
-      <div className="project">
+      <div className="app-function-page project">
         {
           this.state.showAddDialog && (
             <AddContractDialog
@@ -59,6 +66,15 @@ class Contract extends React.Component<ContractProps> {
             <UpdateContractDialog
               contractId={item.contractId}
               onExited={() => this.setState({showEditDialog: false})}
+            />
+          )
+        }
+        {
+          this.state.showDeleteConfirm && (
+            <Confirm
+              message="确定删除此合同吗？"
+              onExited={() => this.setState({showDeleteConfirm: false})}
+              onConfirm={this.removeContract}
             />
           )
         }
@@ -86,12 +102,12 @@ class Contract extends React.Component<ContractProps> {
                   >
                     <FixRow.Item>{item.contractName}</FixRow.Item>
                     <FixRow.Item>{item.contractCode}</FixRow.Item>
-                    <FixRow.Item>{item.contractType}</FixRow.Item>
+                    <FixRow.Item>{getContractType(item.contractType)}</FixRow.Item>
                     <FixRow.Item>{item.bd}</FixRow.Item>
                     <FixRow.Item>{item.bdpc}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteClientConfirm: true, index})}>删除</Button>
+                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
                     </FixRow.Item>
                   </FixRow>
                 )
@@ -99,6 +115,7 @@ class Contract extends React.Component<ContractProps> {
             }
           </FixBody>
         </FixHeadList>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }

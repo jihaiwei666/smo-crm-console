@@ -1,6 +1,15 @@
+import {contractTypeMapper} from './contract.constant'
+
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 import {handleOperationList} from '../common/common.helper'
 import {handleCollection} from './dialog/make-collections/make-collection.helper'
+
+export function getContractType(type) {
+  if (contractTypeMapper[type]) {
+    return contractTypeMapper[type]
+  }
+  return ''
+}
 
 export function handleContractList(data) {
   return {

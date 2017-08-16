@@ -56,4 +56,28 @@ class Progress extends React.Component<ProgressProps> {
   }
 }
 
-export default listCrud(Progress, {node: '', quota: '', date: null})
+function ifAdd(item, parentId) {
+  return {
+    "after_signed_id": parentId,
+    "payment_node_key": item.node,
+    "payment_node_value": item.quota,
+    "payment_node_estimated_date": item.date,
+  }
+}
+
+function ifUpdate(item) {
+  return {
+    "payment_node_id": item.id,
+    "payment_node_key": item.node,
+    "payment_node_value": item.quota,
+    "payment_node_estimated_date": item.date,
+  }
+}
+
+function ifRemove(item) {
+  return {
+    "payment_node_id": item.id
+  }
+}
+
+export default listCrud(Progress, {node: '', quota: '', date: null}, {ifAdd, ifUpdate, ifRemove})

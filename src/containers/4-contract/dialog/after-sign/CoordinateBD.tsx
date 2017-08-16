@@ -37,4 +37,27 @@ class CoordinateBD extends React.Component<CoordinateBDProps> {
   }
 }
 
-export default listCrud(CoordinateBD, {bd: ''})
+function ifAdd(item, parentId) {
+  return {
+    "after_signed_id": parentId,
+    "value": item.bd,
+    "type": 2,
+  }
+}
+
+function ifUpdate(item) {
+  return {
+    "id": item.id,
+    "value": item.bd,
+    "type": 2,
+  }
+}
+
+function ifRemove(item) {
+  return {
+    "id": item.id,
+    "type": 2,
+  }
+}
+
+export default listCrud(CoordinateBD, {bd: ''}, {ifAdd, ifUpdate, ifRemove})

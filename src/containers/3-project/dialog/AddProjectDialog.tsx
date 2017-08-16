@@ -5,21 +5,22 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
-import {Row, Part, Line} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 
 import BD_BDPC from './base/BD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
 import BeforeQuotation from './before-quotation/BeforeQuotation'
 import AfterQuotation from './after-quotation/AfterQuotation'
+import OperationRecord from '../../common/OperationRecord'
+import ProjectAssociateInfo from './base/ProjectAssociateInfo'
+import ProjectState from '../ProjectState'
+import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateBdAndBdpc} from '../project.action'
-import OperationRecord from '../../common/OperationRecord'
-import RemarkAndAttachment from '../../common/RemarkAndAttachment'
-import ProjectAssociateInfo from './base/ProjectAssociateInfo'
 
-interface AddProjectDialogProps {
+interface AddProjectDialogProps extends ProjectState {
 
   fetchBD: () => void
   BDList: any
@@ -38,6 +39,8 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
     show: true,
     showAddConfirm: false,
     projectId: '',
+    beforeQuotationId: '',
+    afterQuotationId: '',
   }
 
   close = () => {
@@ -53,9 +56,12 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: AddProjectDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-      this.close()
-    }*/
+    if (!this.props.addProjectInfoSuccess && nextProps.addProjectInfoSuccess) {
+      this.setState({projectId: nextProps.newProjectId})
+    }
+    if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
+      this.setState({beforeQuotationId: nextProps.newBeforeQuotation.beforeQuotationId})
+    }
   }
 
   render() {
@@ -80,19 +86,29 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
               />
 
               <CategoryTitle title="项目信息"/>
-              <ProjectBasicInfo/>
+              <ProjectBasicInfo
+                projectId={this.state.projectId}
+              />
 
               <CategoryTitle title="报价前"/>
-              <BeforeQuotation/>
+              <BeforeQuotation
+                projectId={this.state.projectId}
+                beforeQuotationId={this.state.beforeQuotationId}
+              />
 
               <CategoryTitle title="报价后"/>
-              <AfterQuotation/>
+              <AfterQuotation
+                projectId={this.state.projectId}
+                afterQuotationId={this.state.afterQuotationId}
+              />
 
               <CategoryTitle title="关联信息"/>
               <ProjectAssociateInfo relationInfo={{}}/>
 
               <CategoryTitle title="备注及附件"/>
-              <RemarkAndAttachment disabled={!this.state.projectId}/>
+              <ProjectRemarkAttachment
+                projectId={this.state.projectId}
+              />
 
               <CategoryTitle title="操作记录"/>
               <OperationRecord operationRecordList={[]}/>
@@ -117,6 +133,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
 
 function mapStateToProps(state) {
   return {
+    ...state.project,
     BDList: state.BDList,
     BDPCList: state.BDPCList
   }

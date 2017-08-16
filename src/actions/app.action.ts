@@ -5,7 +5,7 @@ import {APP} from '../core/constants/types'
 import phase from '../core/constants/phase'
 import {THREE_PHASE} from '../middlewares/request_3_phase'
 import {_get} from '../core/http'
-import {handleBDListData, handleBDPCListData} from './app.adapter'
+import {handleBDListData, handleBDPCListData} from './app.helper'
 
 export function clearState(type: string) {
   return {
@@ -30,5 +30,11 @@ export function fetchBDPC() {
       http: () => _get('/user/v1/getUserInfoByBDPC'),
       handleResponse: handleBDPCListData
     }
+  }
+}
+
+export function fetchRecentOpenList(start) {
+  return {
+    type: APP.FETCH_RECENT_OPEN_LIST, start
   }
 }

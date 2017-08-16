@@ -13,15 +13,15 @@ import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 import UpdateContractBasicInfo from './basic-info/UpdateContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
-import MakeCollection from './make-collections/MakeCollection'
 
 import Data from '../../common/interface/Data'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import {fetchContractDetail, updateBdAndBdpc, fetchCollectionList, updateCollection} from '../contract.action'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import CollectionList from './make-collections/CollectionList'
+
+import {fetchContractDetail, updateBdAndBdpc, fetchCollectionList} from '../contract.action'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -40,6 +40,7 @@ interface UpdateContractDialogProps {
   updateAfterSignSuccess: boolean
 
   fetchCollectionList: (contractId) => void
+
   updateCollection: (options) => void
 
   onExited: () => void
@@ -147,8 +148,9 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
                   <CategoryTitle title="收款"/>
                   <CollectionList
+                    contractId={this.props.contractId}
                     collectionList={collectionList}
-                    updateCollection={this.props.updateCollection}/>
+                  />
 
                   <CategoryTitle title="关联信息"/>
                   <ContractAssociateInfo relationInfo={relationInfo}/>
@@ -192,5 +194,5 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC, updateBdAndBdpc,
   fetchContractDetail,
-  fetchCollectionList, updateCollection
+  fetchCollectionList
 })(UpdateContractDialog)

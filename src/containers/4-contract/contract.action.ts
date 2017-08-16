@@ -5,6 +5,7 @@ import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CONTRACT} from '../../core/constants/types'
 import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo} from './contract.helper'
+import {handleInstitutionList, handleInstitutionInfo} from './dialog/make-collections/make-collection.helper'
 
 const urlPrefix = '/contract'
 
@@ -143,6 +144,27 @@ export function updateCollection(options) {
       type: CONTRACT.UPDATE_COLLECTION,
       http: () => _post(urlPrefix + '/v1/updateCollection', {body: options}),
       handleResponse: handlePartAfterSignInfo
+    }
+  }
+}
+
+//合同关联的客户下的子公司
+export function fetchInstitutionList(contractId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_INSTITUTION_LIST,
+      http: () => _get(urlPrefix + `/v1/getOrganizationList/${contractId}`),
+      handleResponse: handleInstitutionList
+    }
+  }
+}
+
+export function fetchInstitutionInfo(institutionId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_INSTITUTION_INFO,
+      http: () => _get(urlPrefix + `/v1/getOrganizationInfoById/${institutionId}`),
+      handleResponse: handleInstitutionInfo
     }
   }
 }

@@ -12,23 +12,28 @@ function generatorValueFromKey(prefix: string, obj: object): void {
 export const APP = {
   FETCH_BD: null,
   FETCH_BDPC: null,
+  FETCH_RECENT_OPEN_LIST: null,
+  FETCH_OPERATION_HISTORY_LIST: null,
 }
 
 export const TODO_REMIND = {
   FETCH_LIST: null,
+  FETCH_MY_LIST: null,
+  FETCH_COMPLETE_LIST: null,
   FETCH_USER_CATEGORY_INFO: null,
   FETCH_RELEVANT_ITEM_LIST: null,
   SEND_REMIND: null,
 
 }
 
-export const CLIENTS = {
+export const CUSTOMER = {
   FETCH_LIST: null,
   FETCH_BD_LIST: null,
   ADD_CUSTOMER: null,
   UPDATE_CUSTOMER: null,
-  FETCH_CUSTOMER_INFO: null,
+  FETCH_CUSTOMER_DETAIL: null,
   UPDATE_BD_AND_BDPC: null,
+  APPLY_BDPC_FOLLOW_UP: null,
 
   ADD_SUB_COMPANY: null,
   UPDATE_SUB_COMPANY: null,
@@ -61,6 +66,7 @@ export const CLIENTS = {
   ADD_VISIT_RECORD: null,
   UPDATE_VISIT_RECORD: null,
   REMOVE_VISIT_RECORD: null,
+  UPDATE_REMARK_AND_ATTACHMENT: null,
 }
 
 export const PROJECT = {
@@ -69,11 +75,12 @@ export const PROJECT = {
   UPDATE_BD_AND_BDPC: null,
   FETCH_CLIENT_LIST: null,
   ADD_PROJECT_INFO: null,
-  UPDATE_PROJECT_BASE_INFO: null,
+  UPDATE_PROJECT_INFO: null,
   ADD_BEFORE_QUOTATION: null,
   UPDATE_BEFORE_QUOTATION: null,
   ADD_AFTER_QUOTATION: null,
   UPDATE_AFTER_QUOTATION: null,
+  UPDATE_REMARK_ATTACHMENT: null,
 
 }
 
@@ -92,6 +99,8 @@ export const CONTRACT = {
   UPDATE_AFTER_SIGN: null,
   FETCH_COLLECTION_LIST: null,
   UPDATE_COLLECTION: null,
+  FETCH_INSTITUTION_LIST: null,
+  FETCH_INSTITUTION_INFO: null,
 
 }
 
@@ -111,7 +120,7 @@ export const ACCOUNT_MANAGE = {
 generatorValueFromKey('APP', APP)
 generatorValueFromKey('TODO_REMIND', TODO_REMIND)
 generatorValueFromKey('PROJECT', PROJECT)
-generatorValueFromKey('CLIENTS', CLIENTS)
+generatorValueFromKey('CUSTOMER', CUSTOMER)
 generatorValueFromKey('CONTRACT', CONTRACT)
 generatorValueFromKey('RECYCLE_BIN', RECYCLE_BIN)
 generatorValueFromKey('ACCOUNT_MANAGE', ACCOUNT_MANAGE)

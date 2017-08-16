@@ -15,21 +15,30 @@ import Select1 from 'app-core/common/Select1'
 import Radio from '../../../../components/form/radio/Radio'
 import TextArea from 'app-core/form/TextArea'
 import Button from '../../../../components/button/Button'
+import PM from '../../../4-contract/dialog/after-sign/PM'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
 import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
 import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
+import PlanAttachment from './PlanAttachment'
+import AddAttachmentButton from './AddAttachmentButton'
+import ResearchCenter from './ResearchCenter'
 
 interface BeforeQuotationProps {
   projectId: string
   beforeQuotationId?: string
   addBeforeQuotation: (options) => void
+  addBeforeQuotationSuccess: boolean
+  newBeforeQuotation: any
   initBeforeQuotation: any
   updateBeforeQuotation: (options) => void
 }
 
 class BeforeQuotation extends React.Component<BeforeQuotationProps> {
+  _pm: any
+  _planAttachment: any
+  _center: any
   state = {
     valid: true,
 
@@ -49,10 +58,10 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     filterCount: '',
     possibility: '',
     isArrangeBid: null,
-    bidSupportPM: '',
+    pmList: [],
     remark: '',
-    attachment: '',
-    roster: '',
+    planList: [],
+    centerList: [],
 
   }
 
@@ -77,7 +86,9 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         "is_bid": this.state.isArrangeBid,
         "remark": this.state.remark,
       },
-      "projectBeforeOfferPmList": []
+      "projectBeforeOfferPmList": [],
+      "planFiles": [],
+      "researchCenterFiles": []
     })
   }
 
@@ -103,13 +114,21 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         "is_bid": this.state.isArrangeBid,
         "remark": this.state.remark,
       },
-      "projectBeforeOfferPmList": []
+      "projectBeforeOfferPmList": this._pm.getData(),
+      "planFiles": this._planAttachment.getData(),
+      "researchCenterFiles": this._center.getData(),
     })
   }
 
   componentWillMount() {
     if (this.props.initBeforeQuotation) {
       this.setState(this.props.initBeforeQuotation)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: BeforeQuotationProps) {
+    if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
+      this.setState(nextProps.newBeforeQuotation)
     }
   }
 
@@ -186,32 +205,46 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         <LabelAndInput name="filterCount" label="筛选例数" inputType={IMPORTANT}
                        value={this.state.filterCount} onChange={v => this.setState({filterCount: v})}
         />
-        <LabelAndInput1 label="成单可能性">
+        <LabelAndInput1 className="bb" label="成单可能性">
           <Select1 width="200px" options={POSSIBILITY} value={this.state.possibility} onChange={v => this.setState({possibility: v})}/>
         </LabelAndInput1>
-        <LabelAndInput1 label="是否安排竞标">
+        <LabelAndInput1 className="bb" label="是否安排竞标">
           <Radio.Group value={this.state.isArrangeBid} onChange={v => this.setState({isArrangeBid: v})}>
             <Radio value="1">是</Radio>
             <Radio value="2">否</Radio>
           </Radio.Group>
         </LabelAndInput1>
 
-        <LabelAndInput label="竞标支持PM"
-                       value={this.state.bidSupportPM} onChange={v => this.setState({bidSupportPM: v})}
-        />
-        <LabelAndInput1 label="备注">
+        <LabelAndInput1 className="bb" label="竞标支持PM">
+          <PM
+            ref={c => this._pm = c}
+            parentId={this.props.beforeQuotationId}
+            list={this.state.pmList} onChange={list => this.setState({pmList: list})}
+          />
+        </LabelAndInput1>
+        <LabelAndInput1 className="bb" label="备注">
           <TextArea
-            value={this.state.remark} onChange={v => this.setState({remark: v})}
+            value={this.state.remark} onChange={(e: any) => this.setState({remark: e.target.value})}
           />
         </LabelAndInput1>
 
-        <LabelAndInput1 label="方案附件">
-          <Button>上传</Button>
+        <LabelAndInput1 className="bb" label="方案附件">
+          <PlanAttachment
+            ref={c => this._planAttachment = c}
+            list={this.state.planList} onChange={list => this.setState({planList: list})}
+          >
+            <AddAttachmentButton/>
+          </PlanAttachment>
         </LabelAndInput1>
 
         <div className="bb">
           <LabelAndInput1 label="研究中心名单">
-            <Button>上传</Button>
+            <ResearchCenter
+              ref={c => this._center = c}
+              list={this.state.centerList} onChange={list => this.setState({centerList: list})}
+            >
+              <AddAttachmentButton/>
+            </ResearchCenter>
           </LabelAndInput1>
           <div className="tip">研究中心名单或整个含附件的往来邮件记录</div>
         </div>

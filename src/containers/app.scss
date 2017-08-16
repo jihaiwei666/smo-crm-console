@@ -110,11 +110,17 @@ body {
         header {
             height: 60px;
         }
-
-        .app-function-page {
+        .page-content {
             flex: 1;
             background: #f0f3f4;
             color: #3c3c3c;
+            overflow: auto;
+        }
+        .app-function-page {
+            height: 100%;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
         }
     }
 }

@@ -15,15 +15,19 @@ interface PageCountNavProps {
 class PageCountNav extends React.Component<PageCountNavProps> {
 
   render() {
-    let totalPage = (this.props.total - 1) / 10
+    let totalPage = Math.floor(this.props.total / 10)
     let pageList = []
     for (let i = 0; i <= totalPage; i++) {
       pageList.push(i)
     }
+
     return (
       <div className="page-count-nav">
         <div className="page">
-          <a>上一页</a>
+          <a disabled={this.props.currentPage == 0}
+             onClick={() => this.props.onPageChange(this.props.currentPage - 1)}
+          >上一页
+          </a>
           {
             pageList.map(p => {
               if (this.props.currentPage == p) {
@@ -36,7 +40,10 @@ class PageCountNav extends React.Component<PageCountNavProps> {
               )
             })
           }
-          <a className="">下一页</a>
+          <a disabled={this.props.currentPage == totalPage}
+             onClick={() => this.props.onPageChange(this.props.currentPage + 1)}
+          >下一页
+          </a>
         </div>
       </div>
     )

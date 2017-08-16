@@ -1,6 +1,13 @@
 /**
  * Created by jiangyukun on 2017/8/3.
  */
+export const contractTypeMapper = {
+  '1': '大项目主合同',
+  '2': 'CRC三方协议',
+  '3': '思默和Site两方协议',
+  '4': '其它',
+}
+
 export const serviceTypeOptions = [
   {value: '1', text: 'CRC'},
   {value: '2', text: '招募'},

@@ -1,0 +1,35 @@
+.query-filter {
+    color: #777;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+
+    .filter-item {
+        display: inline-flex;
+        align-items: center;
+        &.middle {
+            width: 350px;
+        }
+    }
+    .filter-item-label label {
+        min-width: 70px;
+        display: block;
+    }
+
+    .filter-item-main {
+        float: left;
+    }
+
+    .filter-item-single {
+        cursor: pointer;
+        padding: 2px 3px;
+        float: left;
+        margin-right: 12px;
+        &.selected {
+            background: #2b77e5;
+            color: #fff;
+            border-radius: 2px;
+        }
+    }
+
+}

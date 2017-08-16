@@ -1,19 +1,20 @@
 /**
  * Created by jiangyukun on 2017/7/18.
  */
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-
 import React from 'react'
 import {connect} from 'react-redux'
+import Confirm from 'app-core/common/Confirm'
 
-import './project.scss'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import Button from '../../components/button/Button'
 import AddProjectDialog from './dialog/AddProjectDialog'
 
+import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {fetchList} from './project.action'
 import {handleListData} from '../../reducers/data.reducer'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
+import PageCountNav from '../../components/nav/PageCountNav'
+import tipAndClear from './tipAndClear'
 
 interface ProjectProps extends AppFunctionPage {
   projectList: any
@@ -25,10 +26,12 @@ class Project extends React.Component<ProjectProps> {
     currentPage: 0,
     showAddDialog: false,
     showEditDialog: false,
+    showDeleteConfirm: false
   }
 
   toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList({
@@ -37,8 +40,16 @@ class Project extends React.Component<ProjectProps> {
     })
   }
 
+  removeProject = () => {
+
+  }
+
   componentDidMount() {
     this.toPage(0)
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => tipAndClear(this), 0)
   }
 
   render() {
@@ -46,7 +57,7 @@ class Project extends React.Component<ProjectProps> {
     const item = list[this.state.index]
 
     return (
-      <div className="project">
+      <div className="app-function-page project">
         {
           this.state.showAddDialog && (
             <AddProjectDialog
@@ -62,6 +73,16 @@ class Project extends React.Component<ProjectProps> {
             />
           )
         }
+        {
+          this.state.showDeleteConfirm && (
+            <Confirm
+              message="确定删除此项目吗？"
+              onExited={() => this.setState({showDeleteConfirm: false})}
+              onConfirm={this.removeProject}
+            />
+          )
+        }
+
         <div className="m15">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
@@ -97,6 +118,7 @@ class Project extends React.Component<ProjectProps> {
             }
           </FixBody>
         </FixHeadList>
+        <PageCountNav currentPage={this.state.currentPage} total={total} onPageChange={this.toPage}/>
       </div>
     )
   }
@@ -104,6 +126,7 @@ class Project extends React.Component<ProjectProps> {
 
 function mapStateToProps(state) {
   return {
+    ...state.project,
     projectList: state.projectList
   }
 }

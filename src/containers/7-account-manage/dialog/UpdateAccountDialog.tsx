@@ -6,10 +6,11 @@ import Modal from 'app-core/modal'
 import {FlexDiv, Part, Line} from 'app-core/layout'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
-import {LimitInput} from 'app-core/form'
+import Form from 'app-core/form/Form'
 
 import {positionList} from '../account-manage.constant'
 import Button from '../../../components/button/Button'
+import Input from '../../../components/form/Input'
 
 interface UpdateAccountDialogProps {
   accountInfo: any
@@ -23,6 +24,7 @@ interface UpdateAccountDialogProps {
 class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
   state = {
     show: true,
+    valid: true,
     showUpdateConfirm: false,
     showResetPasswordConfirm: false,
 
@@ -89,69 +91,72 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
           <Modal.Title>修改账号</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FlexDiv>
-            <Part>
-              账号（邮箱）：
-            </Part>
-            <Part>
-              <LimitInput
-                limit={50}
-                onExceed={() => null}
-                placeholder="请输入邮箱"
-                value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
-            </Part>
-          </FlexDiv>
+          <Form onValidChange={valid => this.setState({valid})}>
+            <FlexDiv>
+              <Part>
+                账号（邮箱）：
+              </Part>
+              <Part>
+                <Input
+                  placeholder="请输入账号"
+                  required={true} name="email"
+                  value={this.state.email} onChange={v => this.setState({email: v})}
+                />
+              </Part>
+            </FlexDiv>
 
-          <Line/>
+            <Line/>
 
-          <FlexDiv>
-            <Part>
-              姓名：
-            </Part>
-            <Part>
-              <LimitInput
-                limit={20}
-                onExceed={() => null}
-                placeholder="请输入姓名"
-                value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
-            </Part>
-          </FlexDiv>
+            <FlexDiv>
+              <Part>
+                姓名：
+              </Part>
+              <Part>
+                <Input
+                  placeholder="请输入姓名"
+                  required={true} name="username"
+                  value={this.state.username} onChange={v => this.setState({username: v})}
+                />
+              </Part>
+            </FlexDiv>
 
-          <Line/>
+            <Line/>
 
-          <FlexDiv>
-            <Part>
-              简称（用于生成编号）：
-            </Part>
-            <Part>
-              <LimitInput
-                limit={20}
-                onExceed={() => null}
-                placeholder="请输入简称"
-                value={this.state.shortName} onChange={e => this.setState({shortName: e.target.value})}/>
-            </Part>
-          </FlexDiv>
+            <FlexDiv>
+              <Part>
+                简称（用于生成编号）：
+              </Part>
+              <Part>
+                <Input
+                  placeholder="请输入简称"
+                  required={true} name="shortName"
+                  value={this.state.shortName} onChange={v => this.setState({shortName: v})}
+                />
+              </Part>
+            </FlexDiv>
 
-          <Line/>
+            <Line/>
 
-          <FlexDiv>
-            <Part>
-              岗位类别：
-            </Part>
-            <Part>
-              <Select1
-                placeholder="请选择岗位类别"
-                value={this.state.position} options={positionList} onChange={value => this.setState({position: value})}/>
-            </Part>
-          </FlexDiv>
+            <FlexDiv>
+              <Part>
+                岗位类别：
+              </Part>
+              <Part>
+                <Select1
+                  required={true} name="position"
+                  value={this.state.position} options={positionList} onChange={value => this.setState({position: value})}
+                />
+              </Part>
+            </FlexDiv>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <FlexDiv>
             <Part className="m5">
-              <Button className="block" onClick={() => this.setState({showResetPasswordConfirm: true})}>重置密码</Button>
+              <Button className="block default" onClick={() => this.setState({showResetPasswordConfirm: true})}>重置密码</Button>
             </Part>
             <Part className="m5">
-              <Button className="block" onClick={() => this.setState({showUpdateConfirm: true})}>保存</Button>
+              <Button className="block" disabled={!this.state.valid} onClick={() => this.setState({showUpdateConfirm: true})}>保存</Button>
             </Part>
           </FlexDiv>
         </Modal.Footer>

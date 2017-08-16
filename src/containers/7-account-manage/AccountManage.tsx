@@ -7,7 +7,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import './account-manage.scss'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import PageCountNav from '../../components/nav/PageCountNav'
@@ -42,8 +41,9 @@ class AccountManage extends React.Component<AccountManageProps> {
     showDisabledConfirm: false
   }
 
-  toPage = (newPage) => {
-    if (newPage && newPage != this.state.currentPage) {
+  toPage = (newPage?: number) => {
+    if (newPage == null) newPage = this.state.currentPage
+    if (newPage != this.state.currentPage) {
       this.setState({currentPage: newPage})
     }
     this.props.fetchList(newPage)
@@ -67,14 +67,14 @@ class AccountManage extends React.Component<AccountManageProps> {
     if (this.props.updateAccountSuccess) {
       this.props.showSuccess('更新账号信息成功！')
       this.props.clearState(ACCOUNT_MANAGE.UPDATE_ACCOUNT)
-      this.toPage(0)
+      this.toPage()
     }
     if (this.props.disableAccountSuccess) {
       const item = this.props.accountList.data.list[this.state.index]
       const msg = item['account_status'] === accountStatus.disabled ? "禁用账号信息成功! " : "启用账号信息成功! "
       this.props.showSuccess(msg)
       this.props.clearState(ACCOUNT_MANAGE.DISABLE_ACCOUNT)
-      this.toPage(0)
+      this.toPage()
     }
     if (this.props.resetPasswordSuccess) {
       this.props.showSuccess('重置密码成功！')
@@ -88,7 +88,7 @@ class AccountManage extends React.Component<AccountManageProps> {
     const item = list[this.state.index] || {}
 
     return (
-      <div className="account-manage">
+      <div className="app-function-page account-manage">
         {
           this.state.showAddDialog && (
             <AddAccountDialog
@@ -135,8 +135,8 @@ class AccountManage extends React.Component<AccountManageProps> {
                           onClick={() => this.setState({index})}
                           selected={this.state.index == index}>
                     <FixRow.Item>{item['user_account']}</FixRow.Item>
-                    <FixRow.Item>{item['user_short_name']}</FixRow.Item>
                     <FixRow.Item>{item['user_name']}</FixRow.Item>
+                    <FixRow.Item>{item['user_short_name']}</FixRow.Item>
                     <FixRow.Item>{getPositionName(item['post_type'])}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>

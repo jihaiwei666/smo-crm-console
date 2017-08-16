@@ -7,7 +7,7 @@ const port = 3021
 
 module.exports = {
   entry: [
-    './src/main.tsx'
+    './src/index.tsx'
   ],
   devServer: {
     hot: true,
@@ -30,18 +30,19 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"inline"'
-    })
+    }),
+    new webpack.NamedModulesPlugin()
   ],
   module: {
     loaders: [
       {
-        test: /\.js$/, loaders: ['react-hot-loader', 'babel-loader?cacheDirectory'],
+        test: /\.js$/, loaders: ['babel-loader?cacheDirectory'],
         exclude: handleModulePath.exclude,
         include: handleModulePath.include
       },
       {
         test: /\.(ts|tsx)$/,
-        loader: ['react-hot-loader', 'babel-loader?cacheDirectory', 'awesome-typescript-loader?useCache']
+        loader: ['babel-loader?cacheDirectory', 'awesome-typescript-loader?useCache']
       },
       {test: /\.less$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'less-loader']},
       {test: /\.scss$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'sass-loader']},

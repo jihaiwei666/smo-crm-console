@@ -56,7 +56,8 @@ class InputFile extends React.Component<InputFileProps> {
             accept={this.props.accept}
             multiple={this.props.multiple}
             style={{display: 'none'}}
-            onChange={this.onChange}/>
+            onChange={this.onChange}
+          />
           {this.props.children}
         </div>
       </span>

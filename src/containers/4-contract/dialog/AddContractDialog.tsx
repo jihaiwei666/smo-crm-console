@@ -12,10 +12,12 @@ import BD_BDPC from '../../3-project/dialog/base/BD_BDPC'
 import AddContractBasicInfo from './basic-info/AddContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
-
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
+import CollectionList from './make-collections/CollectionList'
+
+import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import {updateCollection} from '../contract.action'
 
 interface AddContractDialogProps {
   fetchBD: () => void
@@ -26,6 +28,8 @@ interface AddContractDialogProps {
 
   updateBdAndBdpc: (options) => void
   updateBdAndBdpcSuccess: boolean
+
+  updateCollection: (options) => void
 
   onExited: () => void
 }
@@ -85,6 +89,9 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               <AfterSign/>
 
               <CategoryTitle title="收款"/>
+              <CollectionList collectionList={[]}
+                              updateCollection={this.props.updateCollection}
+              />
 
               <CategoryTitle title="关联信息"/>
               <ContractAssociateInfo relationInfo={{}}/>
@@ -121,4 +128,5 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC,
+  updateCollection
 })(AddContractDialog)

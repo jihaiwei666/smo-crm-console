@@ -8,9 +8,8 @@ import {FlexDiv, Part, Line} from 'app-core/layout'
 import CategorySelect from 'app-core/category-select/CategorySelect'
 import Confirm from 'app-core/common/Confirm'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
-import {LimitInput, LimitTextArea} from 'app-core/form/'
+import Form from 'app-core/form/Form'
 
-import CheckBox from '../../../components/form/checkbox/CheckBox'
 import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
 
@@ -18,6 +17,8 @@ import Data from '../../common/interface/Data'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
 import {remindType} from '../todo-remind.constant'
+import Attachment from '../../../components/attachment/Attachment'
+import LimitTextArea from '../../../components/form/LimitTextArea'
 
 interface SendRemindDialogProps {
   fetchUserCategoryInfo: () => void
@@ -30,15 +31,18 @@ interface SendRemindDialogProps {
 }
 
 class SendRemindDialog extends React.Component<SendRemindDialogProps> {
+  _attachment: any
   state = {
     show: true,
+    valid: true,
     showAddConfirm: false,
     showRelevantItemDialog: false,
 
     receiver: '',
     content: '',
-    remindType: [],
-    relevantItem: ''
+    remindType: ['1'],
+    relevantItem: '',
+    attachment: []
   }
   text = ''
 
@@ -50,8 +54,9 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     this.props.sendRemind({
       "recipient": this.state.receiver,
       "content": this.state.receiver,
-      "reminder_type": 1,
+      "reminder_type": this.state.remindType,
       "relation_id": this.state.relevantItem,
+      "fileList": this._attachment.getData()
     })
   }
 
@@ -94,60 +99,70 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
           <Modal.Title>发出提醒</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FlexDiv>
-            <Part>接收人：</Part>
-            <Part weight={2}>
-              <CategorySelect categoryOptions={this.props.userCategory.data || []} value={this.state.receiver} onChange={value => this.setState({receiver: value})}/>
-            </Part>
-          </FlexDiv>
+          <Form onValidChange={valid => this.setState({valid})}>
+            <FlexDiv>
+              <Part>接收人：</Part>
+              <Part weight={2}>
+                <CategorySelect
+                  required={true} name="receiver"
+                  categoryOptions={this.props.userCategory.data || []}
+                  value={this.state.receiver} onChange={value => this.setState({receiver: value})}
+                />
+              </Part>
+            </FlexDiv>
 
-          <Line/>
+            <Line/>
 
-          <FlexDiv>
-            <Part>待办内容：</Part>
-            <Part weight={2}>
-              <LimitTextArea
-                rows={5}
-                limit={500}
-                onExceed={() => null}
-                value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
-            </Part>
-          </FlexDiv>
-          <Line/>
-          <FlexDiv>
-            <Part>提醒方式：</Part>
-            <Part weight={2}>
-              <CheckGroup options={remindType} value={this.state.remindType} onChange={v => this.setState({remindType: v})}>
-              </CheckGroup>
-            </Part>
-          </FlexDiv>
-          <Line/>
-          <FlexDiv>
-            <Part>关联项：</Part>
-            <Part weight={2}>
-
-              {
-                !this.state.relevantItem && (
-                  <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
-                )
-              }
-              {
-                this.state.relevantItem && (
-                  <div>
-                    <span className="mr10">{this.text}</span>
-                    <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>修改</Button>
-                  </div>
-                )
-              }
-            </Part>
-          </FlexDiv>
-          <Line/>
-          <div>
-            <span>附件：</span>
-          </div>
+            <FlexDiv>
+              <Part>待办内容：</Part>
+              <Part weight={2}>
+                <LimitTextArea
+                  rows={5}
+                  limit={500}
+                  tip="待办内容不能超过500字！"
+                  value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
+              </Part>
+            </FlexDiv>
+            <Line/>
+            <FlexDiv>
+              <Part>提醒方式：</Part>
+              <Part weight={2}>
+                <CheckGroup options={remindType} value={this.state.remindType} onChange={v => this.setState({remindType: v})}>
+                </CheckGroup>
+              </Part>
+            </FlexDiv>
+            <Line/>
+            <FlexDiv>
+              <Part>关联项：</Part>
+              <Part weight={2}>
+                {
+                  !this.state.relevantItem && (
+                    <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>插入关联项</Button>
+                  )
+                }
+                {
+                  this.state.relevantItem && (
+                    <div>
+                      <span className="mr10">{this.text}</span>
+                      <Button className="md" onClick={() => this.setState({showRelevantItemDialog: true})}>修改</Button>
+                    </div>
+                  )
+                }
+              </Part>
+            </FlexDiv>
+            <Line/>
+            <div>
+              <div className="mb5">附件：</div>
+              <Attachment ref={c => this._attachment = c}
+                          fileList={this.state.attachment} onChange={v => this.setState({attachment: v})}/>
+            </div>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose onCancel={this.close} onConfirm={() => this.setState({showAddConfirm: true})}/>
+          <ConfirmOrClose
+            onCancel={this.close}
+            disabled={!this.state.valid}
+            onConfirm={() => this.setState({showAddConfirm: true})}/>
         </Modal.Footer>
       </Modal>
     )

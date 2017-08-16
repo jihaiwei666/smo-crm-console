@@ -37,4 +37,24 @@ class PM extends React.Component<PMProps> {
   }
 }
 
-export default listCrud(PM, {pm: ''})
+function ifAdd(item, parentId) {
+  return {
+    "before_offer_id": parentId,
+    "pm_name": item.pm,
+  }
+}
+
+function ifUpdate(item) {
+  return {
+    "before_offer_pm_id": item.id,
+    "pm_name": item.pm,
+  }
+}
+
+function ifRemove(item) {
+  return {
+    "before_offer_pm_id": item.id,
+  }
+}
+
+export default listCrud(PM, {pm: ''}, {ifAdd, ifUpdate, ifRemove})

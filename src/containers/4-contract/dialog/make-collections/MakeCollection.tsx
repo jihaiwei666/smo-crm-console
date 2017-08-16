@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/8/7.
  */
 import React from 'react'
+
 import DatePicker from 'antd/lib/date-picker'
 import {Row} from 'app-core/layout/'
 import Select1 from 'app-core/common/Select1'
@@ -10,12 +11,19 @@ import Form from 'app-core/form/Form'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
-import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import Update from '../../../common/Update'
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
+
+import Data from '../../../common/interface/Data'
 
 interface MakeCollectionProps {
+  contractId: string
   collectionId: string
   initCollection: any
+  fetchInstitutionList: (contractId) => void
+  institutionList: Data<any[]>
+  fetchInstitutionInfo: (institutionId) => void
+  institutionInfo: Data<any[]>
   updateCollection: (options) => void
 }
 
@@ -32,6 +40,7 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     invoiceReceiver: '',
     receiverContactInfo: '',
     institution: '',
+    applyInvoiceDate: null,
     invoiceDate: null,
     pressForMoneyDate: null,
     makeCollectionsDate: null,
@@ -58,6 +67,16 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     })
   }
 
+  fetchInstitutionList = () => {
+    if (!this.props.institutionList.loaded) {
+      this.props.fetchInstitutionList(this.props.contractId)
+    }
+  }
+
+  fetchInstitutionInfo = () => {
+    this.props.fetchInstitutionInfo(this.state.institution)
+  }
+
   componentWillMount() {
     if (this.props.initCollection) {
       this.setState(this.props.initCollection)
@@ -65,15 +84,23 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
   }
 
   render() {
+    let institutionInfo: any = {}
+    if (this.props.institutionInfo.loaded) {
+      institutionInfo = this.props.institutionInfo.data
+    }
+
     return (
       <div>
         <Row>
           <div className="serial-number">1</div>
           <Form onValidChange={valid => this.setState({valid})}>
             <LabelAndInput1 label="节点日期">
-              <DatePicker value={this.state.nodeDate} onChange={v => this.setState({nodeDate: v})}/>
+              <DatePicker disabled={true} value={this.state.nodeDate} onChange={v => this.setState({nodeDate: v})}/>
             </LabelAndInput1>
-            <LabelAndInput label="应收款金额"/>
+            <LabelAndInput
+              label="应收款金额"
+              value={this.state.collectionMoney} onChange={v => this.setState({collectionMoney: v})}
+            />
             <InputGroup className="bb" label="发票内容">
               <LabelAndInput
                 label="PO"
@@ -109,18 +136,42 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
             <div className="bb">
               <InputGroup label="开票信息">
                 <LabelAndInput1 label="机构" inputType={NECESSARY}>
-                  <Select1 options={[]}/>
+                  <Select1
+                    options={this.props.institutionList.data || []}
+                    onFirstOpen={this.fetchInstitutionList}
+                    lazyLoad={true} loadSuccess={this.props.institutionList.loaded}
+                    value={this.state.institution} onChange={v => this.setState({institution: v}, this.fetchInstitutionInfo)}
+                  />
                 </LabelAndInput1>
-                <LabelAndInput label="纳税人识别号" placeholder="选择机构后自动匹配" disabled={true}/>
-                <LabelAndInput label="开户银行" placeholder="选择机构后自动匹配" disabled={true}/>
-                <LabelAndInput label="开户银行账号" placeholder="选择机构后自动匹配" disabled={true}/>
-                <LabelAndInput label="开票地址" placeholder="选择机构后自动匹配" disabled={true}/>
-                <LabelAndInput label="电话" placeholder="选择机构后自动匹配" disabled={true}/>
+                <LabelAndInput
+                  label="纳税人识别号" placeholder="选择机构后自动匹配" disabled={true}
+                  value={institutionInfo.taxpayerNumber || ''}
+                />
+                <LabelAndInput
+                  label="开户银行" placeholder="选择机构后自动匹配" disabled={true}
+                  value={institutionInfo.bank || ''}
+                />
+                <LabelAndInput
+                  label="开户银行账号" placeholder="选择机构后自动匹配" disabled={true}
+                  value={institutionInfo.bankAccount || ''}
+                />
+                <LabelAndInput
+                  label="开票地址" placeholder="选择机构后自动匹配" disabled={true}
+                  value={institutionInfo.address || ''}
+                />
+                <LabelAndInput
+                  label="电话" placeholder="选择机构后自动匹配" disabled={true}
+                  value={institutionInfo.telephone || ''}
+                />
               </InputGroup>
               <div className="tip">选择机构后，自动匹配相应开票信息</div>
             </div>
             <div className="bb">
-              <LabelAndInput label="申请开票日期" inputType={NECESSARY} placeholder="提交申请后自动生成" disabled={true}/>
+              <LabelAndInput
+                label="申请开票日期" inputType={NECESSARY}
+                required={true} name="applyInvoiceDate"
+                value={this.state.applyInvoiceDate}
+                placeholder="提交申请后自动生成" disabled={true}/>
               <div>
                 <div className="tip">点击右侧“提交开票申请”后，将自动生成</div>
               </div>

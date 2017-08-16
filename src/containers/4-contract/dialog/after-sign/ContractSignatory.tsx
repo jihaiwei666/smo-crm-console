@@ -41,4 +41,27 @@ class ContractSignatory extends React.Component<ContractSignatoryProps> {
   }
 }
 
-export default listCrud(ContractSignatory, {signatory: ''})
+function ifAdd(item, parentId) {
+  return {
+    "after_signed_id": parentId,
+    "value": item.signatory,
+    "type": 1,
+  }
+}
+
+function ifUpdate(item) {
+  return {
+    "id": item.id,
+    "value": item.signatory,
+    "type": 1,
+  }
+}
+
+function ifRemove(item) {
+  return {
+    "id": item.id,
+    "type": 1,
+  }
+}
+
+export default listCrud(ContractSignatory, {signatory: ''}, {ifAdd, ifUpdate, ifRemove})

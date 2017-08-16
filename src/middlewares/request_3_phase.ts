@@ -2,8 +2,6 @@
  * http请求3个阶段的封装
  * Created by jiangyukun on 2017/1/25.
  */
-import {showMessage} from 'app-core/message/message.action'
-import {MESSAGE_TYPE} from 'app-core/message/message.constants'
 
 import phase from '../core/constants/phase'
 
@@ -27,18 +25,10 @@ export default ({dispatch, getState}) => next => action => {
   }
 
   function handleResponseData(response) {
-    return next({type: type + phase.SUCCESS, data: getDataReducerNeed(response)})
+    next({type: type + phase.SUCCESS, data: getDataReducerNeed(response)})
   }
 
   function handleError(err) {
-    next(showMessage({
-      msgType: MESSAGE_TYPE.FAILURE,
-      content: err
-    }))
-    // return next({type: type + phase.FAILURE, err})
-  }
-
-  function logError(err) {
-    console.error(err)
+    next({type: type + phase.FAILURE, err})
   }
 }

@@ -5,7 +5,7 @@ const handleModulePath = require('./tools/handleModulePath')
 module.exports = {
   entry: [
     'webpack-hot-middleware/client',
-    './src/login.tsx'
+    './src/index.tsx'
   ],
   devServer: {
     hot: true,

@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
-import {Row, Part, Line} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 import Spinner from 'app-core/common/Spinner'
 
 import BD_BDPC from './base/BD_BDPC'
@@ -18,12 +18,14 @@ import AfterQuotation from './after-quotation/AfterQuotation'
 import {fetchProjectDetail, updateBdAndBdpc} from '../project.action'
 import OperationRecord from '../../common/OperationRecord'
 import ProjectAssociateInfo from './base/ProjectAssociateInfo'
-import RemarkAndAttachment from '../../common/RemarkAndAttachment'
+import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
+import ProjectState from '../ProjectState'
+import Data from '../../common/interface/Data'
 
-interface UpdateProjectDialogProps {
+interface UpdateProjectDialogProps extends ProjectState {
   projectId: string
   fetchProjectDetail: (projectId) => void
-  projectDetail: any
+  projectDetail: Data<any>
   fetchBD: () => void
   BDList: any
 
@@ -40,6 +42,8 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
   state = {
     show: true,
     showAddConfirm: false,
+    beforeQuotationId: '',
+    afterQuotationId: '',
   }
 
   close = () => {
@@ -59,24 +63,33 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: UpdateProjectDialogProps) {
-    /*if (!this.props.Success && nextProps.Success) {
-      this.close()
-    }*/
+    if (!this.props.projectDetail.loaded && nextProps.projectDetail.loaded) {
+      let {data} = nextProps.projectDetail
+      let {beforeQuotation, afterQuotation} = data
+      this.setState({beforeQuotationId: beforeQuotation.beforeQuotationId})
+      this.setState({afterQuotationId: afterQuotation.afterQuotationId})
+    }
+    if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
+      this.setState({beforeQuotationId: nextProps.newBeforeQuotation.beforeQuotationId})
+    }
+    if (!this.props.addAfterQuotationSuccess && nextProps.addAfterQuotationSuccess) {
+      this.setState({afterQuotationId: nextProps.newAfterQuotation.afterQuotationId})
+    }
   }
 
   render() {
     const {loaded, data} = this.props.projectDetail
-    let baseInfo = null, initBdAndBdpc = null, initBeforeQuotation = null, relationInfo = null, operationRecordList = []
-    let beforeQuotationId = ''
+    let baseInfo = null, initBdAndBdpc = null, relationInfo = null, operationRecordList = []
+    let initBeforeQuotation = null, initAfterQuotation = null
+    let initRemarkAttachment = null
     if (loaded) {
       baseInfo = data.baseInfo
       initBdAndBdpc = data.bdAndBdpc
       initBeforeQuotation = data.beforeQuotation
+      initAfterQuotation = data.afterQuotation
       relationInfo = data.relationInfo
+      initRemarkAttachment = data.remarkAttachment
       operationRecordList = data.operationRecordList
-      if (initBeforeQuotation) {
-        beforeQuotationId = initBeforeQuotation.beforeQuotationId
-      }
     }
 
     return (
@@ -112,18 +125,25 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 
                   <CategoryTitle title="报价前"/>
                   <BeforeQuotation projectId={this.props.projectId}
-                                   beforeQuotationId={beforeQuotationId}
+                                   beforeQuotationId={this.state.beforeQuotationId}
                                    initBeforeQuotation={initBeforeQuotation}
                   />
 
                   <CategoryTitle title="报价后"/>
-                  <AfterQuotation projectId={this.props.projectId}/>
+                  <AfterQuotation
+                    projectId={this.props.projectId}
+                    afterQuotationId={this.state.afterQuotationId}
+                    initAfterQuotation={initAfterQuotation}
+                  />
 
                   <CategoryTitle title="关联信息"/>
                   <ProjectAssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <RemarkAndAttachment disabled={!this.props.projectId}/>
+                  <ProjectRemarkAttachment
+                    projectId={this.props.projectId}
+                    initRemarkAttachment={initRemarkAttachment}
+                  />
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>

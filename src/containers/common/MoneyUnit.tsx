@@ -16,7 +16,7 @@ interface MoneyUnitProps {
 class MoneyUnit extends React.Component<MoneyUnitProps> {
   render() {
     return (
-      <div style={{width: '90px', marginRight: '15px'}}>
+      <div style={{width: '100px', marginRight: '15px'}}>
         <Select1
           placeholder="请选择单位"
           className="small" options={MONEY_UNIT}
