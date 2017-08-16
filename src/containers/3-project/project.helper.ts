@@ -39,7 +39,7 @@ export function handleProjectDetail(data) {
     },
     bdAndBdpc: {
       bd: bdAndBdpc['project_the_bd'],
-      bdpc: ''
+      bdpc: bdAndBdpc['project_the_bdpc']
     },
     beforeQuotation: handleBeforeQuotation(beforeQuotation),
     afterQuotation: handleAfterQuotation(afterQuotation),
