@@ -17,6 +17,7 @@ import allReducers from './reducers/'
 import request_3_phase from './middlewares/request_3_phase'
 import handle_error from './middlewares/handle_error'
 import rootSaga from './sagas/'
+import {_get} from './core/http'
 
 let history = createBrowserHistory()
 let sagaMiddleware = createSagaMiddleware()
@@ -30,6 +31,10 @@ if (module.hot) {
     store.replaceReducer(nextRootReducer)
   })
 }
+
+/*_get('/user/v1/getUserStatus').then(data=> {
+  console.log(data)
+})*/
 
 render(
   <Root store={store} history={history}/>,

@@ -145,8 +145,11 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
             </LabelAndInput1>
             <LabelAndInput1 label="项目名称">
               <Select1
-                lazyLoad={true} onFirstOpen={() => this.props.fetchProjectList(this.props.customerId)} loadSuccess={loaded} options={data || []}
-                value={this.state.projectId} onChange={v => this.setState({projectId: v}, this.checkValid)} disabled={this.state.protocolType == '1'}/>
+                width="200px"
+                lazyLoad={true} onFirstOpen={() => this.props.fetchProjectList(this.props.customerId)}
+                loadSuccess={loaded} options={data || []}
+                value={this.state.projectId} onChange={v => this.setState({projectId: v}, this.checkValid)}
+                disabled={this.state.protocolType != '2'}/>
             </LabelAndInput1>
             <div className="tip">单一项目时，填写项目名称</div>
           </InputGroup>
@@ -157,8 +160,10 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
                 return (
                   <div key={item.id} className="bb">
                     <LabelAndInput1 label="姓名">
-                      <Select1 options={contactOptions} placeholder="选择联系人"
-                               value={item.username} onChange={v => this.handleContactChange(index, v)}/>
+                      <Select1
+                        width="200px" placeholder="选择联系人"
+                        options={contactOptions}
+                        value={item.username} onChange={v => this.handleContactChange(index, v)}/>
                     </LabelAndInput1>
                     <LabelAndInput label="电话" placeholder="选择联系人后自动显示" disabled={true} value={item.telephone}/>
                     <LabelAndInput label="邮箱" placeholder="选择联系人后自动显示" disabled={true} value={item.email}/>

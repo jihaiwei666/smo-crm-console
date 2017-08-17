@@ -11,9 +11,13 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 
 import {VISIT_TYPE} from './contact.constant'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import Data from '../../../common/interface/Data'
+import {getContactOptions} from './contact.helper'
 
 interface AddVisitRecordDialogProps {
-  contactOptions: any[]
+  customerId: string
+  fetchContactList: (customerId) => void
+  customerContactData: Data<any[]>
   addVisitRecord: any
   addVisitRecordSuccess: boolean
   onExited: () => void
@@ -50,6 +54,7 @@ class AddVisitRecordDialog extends React.Component<AddVisitRecordDialogProps> {
   }
 
   render() {
+    const contactOptions = getContactOptions(this.props.customerContactData)
     return (
       <Modal show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         <Modal.Header closeButton={true}>
@@ -57,8 +62,11 @@ class AddVisitRecordDialog extends React.Component<AddVisitRecordDialogProps> {
         </Modal.Header>
         <Modal.Body>
           <LabelAndInput1 label="联系人">
-            <Select1 options={this.props.contactOptions}
-                     value={this.state.contactId} onChange={(v) => this.setState({contactId: v})}
+            <Select1
+              lazyLoad={true} onFirstOpen={() => this.props.fetchContactList(this.props.customerId)}
+              loadSuccess={this.props.customerContactData.loaded}
+              options={contactOptions}
+              value={this.state.contactId} onChange={(v) => this.setState({contactId: v})}
             />
           </LabelAndInput1>
           <LabelAndInput1 label="拜访方式">
@@ -73,7 +81,10 @@ class AddVisitRecordDialog extends React.Component<AddVisitRecordDialogProps> {
             <DatePicker value={this.state.nextVisitDate} onChange={(v) => this.setState({nextVisitDate: v})}/>
           </LabelAndInput1>
           <LabelAndInput1 label="拜访内容">
-            <TextArea value={this.state.visitContent} onChange={e => this.setState({visitContent: e.target.value})}/>
+            <TextArea
+              placeholder="请输入拜访内容" rows={5}
+              value={this.state.visitContent} onChange={e => this.setState({visitContent: e.target.value})}
+            />
           </LabelAndInput1>
         </Modal.Body>
         <Modal.Footer>

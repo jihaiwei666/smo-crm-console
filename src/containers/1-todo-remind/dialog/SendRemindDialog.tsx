@@ -12,15 +12,18 @@ import Form from 'app-core/form/Form'
 
 import Button from '../../../components/button/Button'
 import RelevantItemDialog from './RelevantItemDialog'
-
-import Data from '../../common/interface/Data'
-import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
-import {remindType} from '../todo-remind.constant'
 import Attachment from '../../../components/attachment/Attachment'
 import LimitTextArea from '../../../components/form/LimitTextArea'
 
-interface SendRemindDialogProps {
+import Data from '../../common/interface/Data'
+import CommonFunction from '../../common/interface/CommonFunction'
+import {remindType} from '../todo-remind.constant'
+import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
+import addCommonFunction from '../../_frameset/addCommonFunction'
+import {TODO_REMIND} from '../../../core/constants/types'
+
+interface SendRemindDialogProps extends CommonFunction {
   fetchUserCategoryInfo: () => void
   fetchRelevantItemList: (category: string, searchKey: string) => void
   relevantItemList: Data<any>
@@ -71,6 +74,8 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
   componentWillReceiveProps(nextProps: SendRemindDialogProps) {
     if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {
+      this.props.showSuccess('发送提醒成功！')
+      this.props.clearState(TODO_REMIND.SEND_REMIND)
       this.close()
     }
   }
@@ -171,6 +176,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
 
 function mapStateToProps(state) {
   return {
+    sendRemindSuccess: state.todoRemind.sendRemindSuccess,
     userCategory: state.userCategory,
     relevantItemList: state.relevantItemList
   }
@@ -178,4 +184,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchUserCategoryInfo, fetchRelevantItemList, sendRemind
-})(SendRemindDialog)
+})(addCommonFunction(SendRemindDialog))

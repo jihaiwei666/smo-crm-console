@@ -23,13 +23,14 @@ export const TODO_REMIND = {
   FETCH_USER_CATEGORY_INFO: null,
   FETCH_RELEVANT_ITEM_LIST: null,
   SEND_REMIND: null,
-
+  UPDATE_REMIND_STATUS: null,
 }
 
 export const CUSTOMER = {
   FETCH_LIST: null,
   FETCH_BD_LIST: null,
   ADD_CUSTOMER: null,
+  REMOVE_CUSTOMER: null,
   UPDATE_CUSTOMER: null,
   FETCH_CUSTOMER_DETAIL: null,
   UPDATE_BD_AND_BDPC: null,

@@ -12,6 +12,7 @@ const initValue: CustomerState = {
   newCustomerId: '',
   addCustomerSuccess: false,
   updateCustomerSuccess: false,
+  removeCustomerSuccess: false,
 
   updateBdAndBdpcSuccess: false,
   applyBdpcFollowUpSuccess: false,
@@ -84,6 +85,7 @@ export default function customer(iState = fromJS(initValue), action) {
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.ADD_CUSTOMER, 'addCustomerSuccess')
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_CUSTOMER, 'updateCustomerSuccess')
+  nextIState = handleFlagState(nextIState, action, CUSTOMER.REMOVE_CUSTOMER, 'removeCustomerSuccess')
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_BD_AND_BDPC, 'updateBdAndBdpcSuccess')
   nextIState = handleFlagState(nextIState, action, CUSTOMER.APPLY_BDPC_FOLLOW_UP, 'applyBdpcFollowUpSuccess')

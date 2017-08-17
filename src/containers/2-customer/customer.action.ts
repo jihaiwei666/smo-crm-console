@@ -121,3 +121,12 @@ export function applyBdpcFollowUp(options) {
     }
   }
 }
+
+export function removeCustomer(customerId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.REMOVE_CUSTOMER,
+      http: () => _post(urlPrefix + `/v1/info/del/${customerId}`)
+    }
+  }
+}

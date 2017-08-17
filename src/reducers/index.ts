@@ -10,6 +10,7 @@ import data from './data.reducer'
 import pageList from './page-list.reducer'
 
 import app from './app.reducer'
+import todoRemind from '../containers/1-todo-remind/todo-remind.reducer'
 import customer from '../containers/2-customer/customer.reducer'
 import project from '../containers/3-project/project.reducer'
 import contract from '../containers/4-contract/contract.reducer'
@@ -40,6 +41,7 @@ export default combineReducers({
   message: wrapReducerState(message),
   recentOpenList: wrapReducerState(data(APP.FETCH_RECENT_OPEN_LIST)),
 
+  todoRemind: wrapReducerState(todoRemind),
   todoRemindAllList: wrapReducerState(pageList(TODO_REMIND.FETCH_LIST)),
   todoRemindMyList: wrapReducerState(pageList(TODO_REMIND.FETCH_MY_LIST)),
   todoRemindCompleteList: wrapReducerState(pageList(TODO_REMIND.FETCH_COMPLETE_LIST)),

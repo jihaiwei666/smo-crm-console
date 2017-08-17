@@ -81,7 +81,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
     const initCustomerBaseInfo = data.customerBaseInfo
     const initBdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
-    const contactInfo = data.contactInfo
+    const initContactInfo = data.contactInfo
     // const cdaList = data.cdaList
     // const supplierInfo = data.supplierInfo
     // const rfiInfo = data.rfiInfo
@@ -126,7 +126,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                     subCompanyList={subCompanyList}
                   />
                   <CategoryTitle title="联系人"/>
-                  <ContactInfo customerId={this.props.customerId} contactInfo={contactInfo}/>
+                  <ContactInfo customerId={this.props.customerId} initContactInfo={initContactInfo}/>
 
                   <CategoryTitle title="CDA"/>
                   <CDA customerId={this.props.customerId}/>

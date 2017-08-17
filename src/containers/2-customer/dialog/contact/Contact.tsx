@@ -8,7 +8,6 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
-import {CUSTOMER} from '../../../../core/constants/types'
 
 interface ContactProps {
   customerId: string

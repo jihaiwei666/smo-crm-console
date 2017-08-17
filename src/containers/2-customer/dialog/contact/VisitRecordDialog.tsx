@@ -14,14 +14,17 @@ import Button from '../../../../components/button/Button'
 import AddVisitRecordDialog from './AddVisitRecordDialog'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 
-import {VISIT_TYPE} from './contact.constant'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {VISIT_TYPE} from './contact.constant'
+import {CUSTOMER} from '../../../../core/constants/types'
+import Data from '../../../common/interface/Data'
+import {getContactOptions} from './contact.helper'
 
 interface VisitRecordDialogProps extends CommonFunction {
   customerId: string
-  contactOptions: any[]
+  fetchContactList: (customerId) => void
+  customerContactData: Data<any[]>
   fetchVisitRecordList: any
   visitRecordListInfo: any
   addVisitRecord: any
@@ -74,6 +77,7 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
   }
 
   render() {
+    const contactOptions = getContactOptions(this.props.customerContactData)
     const {loaded, data} = this.props.visitRecordListInfo
 
     return (
@@ -90,7 +94,9 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
         {
           this.state.showAddDialog && (
             <AddVisitRecordDialog
-              contactOptions={this.props.contactOptions}
+              customerId={this.props.customerId}
+              fetchContactList={this.props.fetchContactList}
+              customerContactData={this.props.customerContactData}
               addVisitRecord={this.props.addVisitRecord}
               addVisitRecordSuccess={this.props.addVisitRecordSuccess}
               onExited={() => this.setState({showAddDialog: false})}
@@ -112,7 +118,7 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
               return (
                 <div key={record.visitId} className="visit-record-item">
                   <LabelAndInput1 label="联系人">
-                    <Select1 options={this.props.contactOptions}
+                    <Select1 options={contactOptions}
                              value={record.contactId} onChange={(v) => this.setState({contactId: v})}
                     />
                   </LabelAndInput1>
@@ -143,7 +149,7 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
         <Modal.Footer>
           <Row>
             <Part className="p5">
-              <Button className="block" onClick={this.close}>取消</Button>
+              <Button className="default block" onClick={this.close}>取消</Button>
             </Part>
             <Part className="p5">
               <Button className="info block" onClick={() => this.setState({showAddDialog: true})}>添 加</Button>

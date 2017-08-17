@@ -27,6 +27,7 @@
   "homepage": "",
   "dependencies": {
     "antd": "2.12.2",
+    "app-core": "1.0.1",
     "babel-polyfill": "6.23.0",
     "classnames": "2.2.5",
     "dom-helpers": "3.2.1",

@@ -51,10 +51,9 @@ export function resetPassword(id) {
   }
 }
 
-export function updateAccount(id, email, username, shortName, position) {
+export function updateAccount(id, username, shortName, position) {
   const options = {
     "user_id": id,
-    "user_account": email,
     "user_name": username,
     "user_short_name": shortName,
     "user_post_type": position,

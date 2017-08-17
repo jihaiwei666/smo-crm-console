@@ -14,6 +14,8 @@ export function handleTodoRemindList(data) {
       name: item['name'],
       relevantType: item['relation_type'],
       relevantId: item['relation_id'],
+      remindType: item['reminder_from'],
+      remindStatus: item['reminder_status']
     }))
   }
 }
@@ -32,4 +34,11 @@ export function handleRelevantItemList(data) {
     id: relevantItem['relation_id'],
     name: relevantItem['relation_name']
   }))
+}
+
+export function getRelevantTypeText(type) {
+  if (type == '1') return '客户'
+  if (type == '2') return '项目'
+  if (type == '3') return '合同'
+  return '暂无'
 }

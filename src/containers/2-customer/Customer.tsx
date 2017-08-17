@@ -9,20 +9,25 @@ import CustomerState from './CustomerState'
 import Button from '../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 
-import AddCustomerDialog from './dialog/AddCustomerDialog'
-import UpdateCustomerDialog from './dialog/UpdateCustomerDialog'
+import Input from '../../components/form/Input'
+import FilterOptions from '../../components/query-filter/FilterOptions'
 import {handleListData} from '../../reducers/data.reducer'
 import PageCountNav from '../../components/nav/PageCountNav'
 import FilterButton from '../common/FilterButton'
 import FilterItem from '../../components/query-filter/FilterItem'
+import AddCustomerDialog from './dialog/AddCustomerDialog'
+import UpdateCustomerDialog from './dialog/UpdateCustomerDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
+import Data from '../common/interface/Data'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
-import {fetchList} from './customer.action'
+import {fetchList, removeCustomer} from './customer.action'
 import {getCustomerType} from './customer.helper'
+import {CUSTOMER} from '../../core/constants/types'
 
 interface CustomerProps extends AppFunctionPage, CustomerState {
-  customerList: any[]
+  customerList: Data<any>
+  removeCustomer: (customerId) => void
 }
 
 class Customer extends React.Component<CustomerProps> {
@@ -33,6 +38,8 @@ class Customer extends React.Component<CustomerProps> {
     showDeleteConfirm: false,
 
     currentPage: 0,
+    showFilter: false,
+    customerName: '',
     customerType: '',
     customerOwner: '',
     creator: '',
@@ -46,6 +53,10 @@ class Customer extends React.Component<CustomerProps> {
     this.props.fetchList({
       "start": newPage,
       "limit": 10,
+      "customer_name": this.state.customerName,
+      "customer_type": this.state.customerType,
+      "customer_owner": this.state.customerOwner,
+      "create_person": this.state.creator,
     })
   }
 
@@ -54,7 +65,8 @@ class Customer extends React.Component<CustomerProps> {
   }
 
   removeCustomer = () => {
-
+    let item = this.props.customerList.data.list[this.state.index]
+    this.props.removeCustomer(item.customerId)
   }
 
   componentDidMount() {
@@ -66,6 +78,11 @@ class Customer extends React.Component<CustomerProps> {
       this.toPage(0)
     }
     if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.removeCustomerSuccess && nextProps.removeCustomerSuccess) {
+      this.props.showSuccess('删除客户成功！')
+      this.props.clearState(CUSTOMER.REMOVE_CUSTOMER)
       this.refreshCurrentPage()
     }
     if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
@@ -114,24 +131,41 @@ class Customer extends React.Component<CustomerProps> {
           </Button>
           <Button>导入数据</Button>
           <div className="pull-right">
-            <FilterButton show={true} onChange={() => null}/>
+            <FilterButton onClick={() => this.setState({showFilter: !this.state.showFilter})}/>
           </div>
         </div>
 
-        <div className="query-filter">
-          <FilterItem
-            label="客户类型" itemList={customerTypeOptions}
-            value={this.state.customerType} onChange={v => this.setState({customerType: v})}
-          />
-          <FilterItem
-            label="客户所有人" itemList={customerOwnerOptions}
-            value={this.state.customerOwner} onChange={v => this.setState({customerOwner: v})}
-          />
-          <FilterItem
-            label="创建人" itemList={createOptions}
-            value={this.state.creator} onChange={v => this.setState({creator: v})}
-          />
-        </div>
+        {
+          this.state.showFilter && (
+            <div className="query-filter">
+              <FilterItem label="客户名称">
+                <Input
+                  className="small"
+                  placeholder="请输入客户名称"
+                  value={this.state.customerName} onChange={v => this.setState({customerName: v})}
+                />
+              </FilterItem>
+              <FilterItem label="客户类型">
+                <FilterOptions options={customerTypeOptions} value={this.state.customerType} onChange={v => this.setState({customerType: v})}/>
+              </FilterItem>
+              <FilterItem label="客户所有人">
+                <FilterOptions options={customerOwnerOptions} value={this.state.customerOwner} onChange={v => this.setState({customerOwner: v})}/>
+              </FilterItem>
+              <FilterItem label="创建人">
+                <FilterOptions options={createOptions} value={this.state.creator} onChange={v => this.setState({creator: v})}/>
+              </FilterItem>
+              <div className="bt clearfix">
+                <div className="pull-right mt7">
+                  <Button
+                    className="default"
+                    onClick={() => this.setState({customerName: '', customerType: '', customerOwner: '', creator: ''})}
+                  >清除</Button>
+                  <Button onClick={this.refreshCurrentPage}>确定</Button>
+                </div>
+              </div>
+            </div>
+          )
+        }
 
         <FixHeadList>
           <FixHead>
@@ -176,4 +210,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchList})(Customer)
+export default connect(mapStateToProps, {fetchList, removeCustomer})(Customer)

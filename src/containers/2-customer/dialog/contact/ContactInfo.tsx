@@ -11,6 +11,7 @@ import {
   addContact, updateContact, removeContact,
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
 } from './contact.action'
+import {fetchContactList} from '../../customer.action'
 import {getContactOptions} from './contact.helper'
 import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
@@ -19,8 +20,9 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 
 interface ContactProps extends CustomerState, CommonFunction {
   customerId: string
+  fetchContactList: (customerId) => void
   addContact: (options) => void
-  contactInfo: any[]
+  initContactInfo: any[]
   updateContact: (options) => void
   removeContact: (contactId: string) => void
   customerContactData: any
@@ -59,9 +61,9 @@ class ContactInfo extends React.Component<ContactProps> {
   }
 
   componentWillMount() {
-    let contactInfo = this.props.contactInfo
-    if (contactInfo && contactInfo.length != 0) {
-      let list = contactInfo.map(c => ({uid: c.contactId, contactId: c.contactId}))
+    let initContactInfo = this.props.initContactInfo
+    if (initContactInfo && initContactInfo.length != 0) {
+      let list = initContactInfo.map(c => ({uid: c.contactId, contactId: c.contactId}))
       this.setState({list})
     }
   }
@@ -74,23 +76,23 @@ class ContactInfo extends React.Component<ContactProps> {
       list.find(c => c.uid == this.localContactUid).contactId = nextProps.newContactId
       this.setState({list})
     }
-    if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
+    if (!this.props.updateContactSuccess && nextProps.updateContactSuccess) {
       this.props.showSuccess('更新联系人信息成功！')
       this.props.clearState(CUSTOMER.UPDATE_CONTACT)
+    }
+    if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
+      this.props.showSuccess('删除联系人成功！')
+      this.props.clearState(CUSTOMER.REMOVE_CONTACT)
       let list = this.state.list
       let index = list.indexOf(list.find(c => c.contactId == this.lastContactId))
       list.splice(index, 1)
       this.setState({list})
     }
-    if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
-      this.props.showSuccess('删除联系人成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CONTACT)
-    }
   }
 
   _getCompanyInfo = (contactId) => {
     let contactInfo = null
-    let list = this.props.contactInfo
+    let list = this.props.initContactInfo
     if (list) {
       let match = list.find(c => c.contactId == contactId)
       if (match) {
@@ -102,7 +104,7 @@ class ContactInfo extends React.Component<ContactProps> {
   }
 
   render() {
-    const contactOptions = getContactOptions(this.props.customerContactData)
+
 
     return (
       <div>
@@ -110,7 +112,8 @@ class ContactInfo extends React.Component<ContactProps> {
           this.state.showVisitRecordDialog && (
             <VisitRecordDialog
               customerId={this.props.customerId}
-              contactOptions={contactOptions}
+              fetchContactList={this.props.fetchContactList}
+              customerContactData={this.props.customerContactData}
               fetchVisitRecordList={this.props.fetchVisitRecordList}
               visitRecordListInfo={this.props.visitRecordListInfo}
               addVisitRecord={this.props.addVisitRecord}
@@ -167,14 +170,14 @@ function mapStateToProps(state, props) {
   return {
     ...state.customer,
     customerId: props.customerId,
-    contactInfo: props.contactInfo,
+    contactInfo: state.contactInfo,
     customerContactData: state.customerContactData,
     visitRecordListInfo: state.visitRecordListInfo,
-
   }
 }
 
 export default connect(mapStateToProps, {
+  fetchContactList,
   addContact, updateContact, removeContact,
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
 })(addCommonFunction(ContactInfo))

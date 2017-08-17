@@ -6,6 +6,7 @@ interface CustomerState {
   newCustomerId: string
   addCustomerSuccess: boolean
   updateCustomerSuccess: boolean
+  removeCustomerSuccess: boolean
 
   updateBdAndBdpcSuccess: boolean
   applyBdpcFollowUpSuccess: boolean

@@ -14,7 +14,7 @@ import Input from '../../../components/form/Input'
 
 interface UpdateAccountDialogProps {
   accountInfo: any
-  updateAccount: (accountId: string, email: string, username: string, shortName: string, position: string) => void
+  updateAccount: (accountId: string, username: string, shortName: string, position: string) => void
   updateAccountSuccess: boolean
   resetPassword: (accountId: string) => void
   resetPasswordSuccess: boolean
@@ -40,7 +40,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
 
   updateAccount = () => {
     const accountId = this.props.accountInfo['user_id']
-    this.props.updateAccount(accountId, this.state.email, this.state.username, this.state.shortName, this.state.position)
+    this.props.updateAccount(accountId, this.state.username, this.state.shortName, this.state.position)
   }
 
   resetPassword = () => {
@@ -98,6 +98,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
               </Part>
               <Part>
                 <Input
+                  disabled={true}
                   placeholder="请输入账号"
                   required={true} name="email"
                   value={this.state.email} onChange={v => this.setState({email: v})}

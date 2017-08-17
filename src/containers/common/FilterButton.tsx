@@ -5,14 +5,13 @@ import React from 'react'
 import Button from '../../components/button/Button'
 
 interface FilterButtonProps {
-  show: boolean
-  onChange: (show: boolean) => void
+  onClick: () => void
 }
 
 class FilterButton extends React.Component<FilterButtonProps> {
   render() {
     return (
-      <Button className="info" onClick={() => this.props.onChange(!this.props.show)}>
+      <Button className="info" onClick={this.props.onClick}>
         <img className="btn-icon" src={require('./icon/filter.svg')}/>
         筛选
       </Button>

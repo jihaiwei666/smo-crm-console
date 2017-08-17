@@ -1,7 +1,7 @@
 /**
  * Created by jiangyukun on 2017/7/6.
  */
-import {_get, _post} from '../../core/http'
+import {_get, _post, _patch} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {TODO_REMIND} from '../../core/constants/types'
 import {handleUserCategoryInfo, handleRelevantItemList} from './todo-remind.helper'
@@ -55,6 +55,15 @@ export function sendRemind(options) {
     [THREE_PHASE]: {
       type: TODO_REMIND.SEND_REMIND,
       http: () => _post(urlPrefix + '/v1/addTodoReminder', {body: options})
+    }
+  }
+}
+
+export function updateRemindStatus(remindId, status) {
+  return {
+    [THREE_PHASE]: {
+      type: TODO_REMIND.UPDATE_REMIND_STATUS,
+      http: () => _patch(urlPrefix + `/v1/updateFinishReminderStatus/${remindId}/${status}`)
     }
   }
 }
