@@ -14,6 +14,7 @@ import {getPathPrefix} from '../core/env'
 interface RootProps {
   store: any,
   history: any,
+  roleCode: number
 }
 
 class Root extends React.PureComponent<RootProps, any> {
@@ -21,7 +22,7 @@ class Root extends React.PureComponent<RootProps, any> {
     return (
       <Provider store={this.props.store}>
         <ConnectedRouter history={this.props.history}>
-          <Route path={getPathPrefix()} component={({match}) => <SimoCrmApp match={match}/>}/>
+          <Route path={getPathPrefix()} component={({match}) => <SimoCrmApp roleCode={this.props.roleCode} match={match}/>}/>
         </ConnectedRouter>
       </Provider>
     )

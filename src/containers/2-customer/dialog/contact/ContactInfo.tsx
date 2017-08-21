@@ -12,7 +12,6 @@ import {
   fetchVisitRecordList, addVisitRecord, updateVisitRecord, removeVisitRecord
 } from './contact.action'
 import {fetchContactList} from '../../customer.action'
-import {getContactOptions} from './contact.helper'
 import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'

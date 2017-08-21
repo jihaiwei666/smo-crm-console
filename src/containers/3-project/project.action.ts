@@ -114,3 +114,12 @@ export function updateRemarkAndAttachment(options) {
     }
   }
 }
+
+export function removeProject(projectId) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.REMOVE_PROJECT,
+      http: () => _post(urlPrefix + `/v1/info/del/${projectId}`)
+    }
+  }
+}

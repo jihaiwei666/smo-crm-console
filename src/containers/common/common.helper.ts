@@ -1,7 +1,8 @@
 /**
  * Created by jiangyukun on 2017/8/7.
  */
-import {getDateStr} from '../../core/utils/dateUtils'
+import {getDateStr, getDateTimeStr} from '../../core/utils/dateUtils'
+import Data from './interface/Data'
 
 export function getOperationType(type) {
   switch (type) {
@@ -33,7 +34,7 @@ export function getRecentOpenTypeText(type) {
 
 export function handleOperationList(operationRecordList) {
   return operationRecordList.map(item => ({
-    date: getDateStr(item['operation_time']),
+    date: getDateTimeStr(item['operation_time']),
     type: item['operation_type'],
     module: item['operation_model'],
     email: item['operation_person'],
@@ -46,4 +47,21 @@ export function getNullValue(value) {
     return null
   }
   return value
+}
+
+export function handleListData(responseData) {
+  const {data, loading, loaded} = responseData
+  let total = 0, list = []
+  if (data) {
+    total = data.total
+    list = data.list
+  }
+  return {total, list, loading, loaded}
+}
+
+export function getOperation(data: Data<any>) {
+  if (!data.loaded) {
+    return {}
+  }
+  return data.data.operation
 }

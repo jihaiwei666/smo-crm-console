@@ -1,6 +1,17 @@
 /**
  * Created by jiangyukun on 2017/7/4.
  */
+export const roleCategory = {
+  bd: 1,
+  bdLeader: 2,
+  bdpc: 3,
+  bdpcContractManage: 4,
+  bdpcRfi: 5,
+  bdpcLeader: 6,
+  finance: 7,
+  systemManage: 8
+}
+
 export const positionList = [
   {
     value: '1', text: 'BD'

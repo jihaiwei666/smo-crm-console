@@ -15,6 +15,7 @@ import {fetchRecentOpenList} from '../../actions/app.action'
 import Data from '../common/interface/Data'
 
 interface SimoCrmAppProps {
+  roleCode: number
   fetchRecentOpenList: (start) => void
   recentOpenList: Data<any>
   message: any
@@ -37,13 +38,13 @@ class SimoCrmApp extends Component<SimoCrmAppProps> {
             <img src={require('../images/simo.png')}/>
           </header>
           <nav className="nav-container">
-            <Modules currentPath={this.props.currentPath}/>
+            <Modules roleCode={this.props.roleCode} currentPath={this.props.currentPath}/>
             <RecentOpen recentOpenList={this.props.recentOpenList}/>
           </nav>
         </aside>
         <main>
           <header></header>
-          <PageContent match={this.props.match}/>
+          <PageContent roleCode={this.props.roleCode} match={this.props.match}/>
         </main>
       </div>
     )

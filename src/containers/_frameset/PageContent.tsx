@@ -14,8 +14,14 @@ import Project from './lazy-page/project'
 import Contract from './lazy-page/contract'
 import RecycleBin from './lazy-page/recycle__bin'
 import Report from './lazy-page/report'
+import {roleCategory} from '../7-account-manage/account-manage.constant'
 
-class PageContent extends React.Component<any> {
+interface PageContentProps {
+  roleCode: number
+  match: any
+}
+
+class PageContent extends React.Component<PageContentProps> {
   mapper: {}
 
   componentWillMount() {
@@ -36,13 +42,21 @@ class PageContent extends React.Component<any> {
     const {todoRemind, customer, accountManage, project, contract, report, recycleBin} = pages
     return (
       <div className="page-content">
-        <Route path={`${match.url}/${accountManage}`} component={this.mapper[accountManage]}/>
         <Route path={`${match.url}/${todoRemind}`} component={this.mapper[todoRemind]}/>
         <Route path={`${match.url}/${customer}`} component={this.mapper[customer]}/>
         <Route path={`${match.url}/${project}`} component={this.mapper[project]}/>
         <Route path={`${match.url}/${contract}`} component={this.mapper[contract]}/>
         <Route path={`${match.url}/${report}`} component={this.mapper[report]}/>
-        <Route path={`${match.url}/${recycleBin}`} component={this.mapper[recycleBin]}/>
+        {
+          this.props.roleCode == roleCategory.systemManage && (
+            <Route path={`${match.url}/${recycleBin}`} component={this.mapper[recycleBin]}/>
+          )
+        }
+        {
+          this.props.roleCode == roleCategory.systemManage && (
+            <Route path={`${match.url}/${accountManage}`} component={this.mapper[accountManage]}/>
+          )
+        }
       </div>
     )
   }

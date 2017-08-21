@@ -17,21 +17,15 @@ import AfterSign from './after-sign/AfterSign'
 import Data from '../../common/interface/Data'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
-import RemarkAndAttachment from '../../common/RemarkAndAttachment'
 import CollectionList from './make-collections/CollectionList'
+import ContractRemarkAttachment from './other/ContractRemarkAttachment'
 
 import {fetchContractDetail, fetchCollectionList} from '../contract.action'
-import ContractRemarkAttachment from './other/ContractRemarkAttachment'
 
 interface UpdateContractDialogProps {
   contractId: string
   fetchContractDetail: (contractId) => void
   contractDetail: Data<any>
-  fetchBD: () => void
-  BDList: any
-
-  fetchBDPC: () => void
-  BDPCList: any
 
   updateBdAndBdpc: (options) => void
   updateBdAndBdpcSuccess: boolean
@@ -112,6 +106,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                 <Part className="form-container">
                   <ContractBdBdpc
                     contractId={this.props.contractId}
+                    initBdAndBdpc={bdAnBdpc}
                   />
 
                   <CategoryTitle title="合同信息"/>
@@ -172,8 +167,6 @@ function mapStateToProps(state, props) {
     ...state.contract,
     contractId: props.contractId,
     contractDetail: state.contractDetail,
-    BDList: state.BDList,
-    BDPCList: state.BDPCList
   }
 }
 

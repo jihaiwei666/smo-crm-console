@@ -11,16 +11,25 @@ export function getCustomerType(type) {
   return customerTypeMapper[type]
 }
 
-export function handleClientList(serverData) {
+export function handleClientList(data) {
+  let permission = data['buttonPermission']
   return {
-    total: serverData['totalCount'],
-    list: serverData['customerList'].map(item => ({
+    total: data['totalCount'],
+    list: data['customerList'].map(item => ({
       customerId: item['customer_info_id'],
       customerName: item['customer_name'],
       customerCategory: item['customer_type'],
       customerOwner: item['customer_owner'],
-      customerCreator: item['create_person']
-    }))
+      customerCreator: item['create_person'],
+      operation: {
+        canEdit: item['permissionOperation']['is_can_read'],
+        canDelete: item['permissionOperation']['is_can_delete']
+      }
+    })),
+    operation: {
+      canCreate: permission['is_Can_Create'],
+      canImport: permission['is_Can_Import'],
+    }
   }
 }
 

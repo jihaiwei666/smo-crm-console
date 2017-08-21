@@ -6,18 +6,24 @@ import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
-import {handleListData} from '../../reducers/data.reducer'
 import Button from '../../components/button/Button'
+import PageCountNav from '../../components/nav/PageCountNav'
 import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
-import {fetchList} from './contract.action'
-import PageCountNav from '../../components/nav/PageCountNav'
+import {handleListData} from '../common/common.helper'
 import {getContractType} from './contract.helper'
+import {fetchList, removeContract} from './contract.action'
+import {CONTRACT} from '../../core/constants/types'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
+  updateContractSuccess: boolean
+  addContractSuccess: boolean
+  updateBdBdpcSuccess: boolean
+  removeContract: (contractId) => void
+  removeContractSuccess: boolean
 }
 
 class Contract extends React.Component<ContractProps> {
@@ -40,12 +46,34 @@ class Contract extends React.Component<ContractProps> {
     })
   }
 
-  removeContract = () => {
+  refreshCurrentPage = () => {
+    this.toPage(this.state.currentPage)
+  }
 
+  removeContract = () => {
+    let item = this.props.contractList.data.list[this.state.index]
+    this.props.removeContract(item.contractId)
   }
 
   componentDidMount() {
     this.toPage(0)
+  }
+
+  componentWillReceiveProps(nextProps: ContractProps) {
+    if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
+      this.toPage(0)
+    }
+    if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
+      this.toPage(0)
+    }
+    if (!this.props.updateBdBdpcSuccess && nextProps.updateBdBdpcSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.removeContractSuccess && nextProps.removeContractSuccess) {
+      this.props.showSuccess('删除合同成功！')
+      this.props.clearState(CONTRACT.REMOVE_CONTRACT)
+      this.refreshCurrentPage()
+    }
   }
 
   render() {
@@ -123,8 +151,9 @@ class Contract extends React.Component<ContractProps> {
 
 function mapStateToProps(state) {
   return {
+    ...state.contract,
     contractList: state.contractList
   }
 }
 
-export default connect(mapStateToProps, {fetchList})(Contract)
+export default connect(mapStateToProps, {fetchList, removeContract})(Contract)

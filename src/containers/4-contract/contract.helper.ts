@@ -12,9 +12,10 @@ export function getContractType(type) {
 }
 
 export function handleContractList(data) {
+  let list = data['contractList'] || []
   return {
     total: data['totalCount'] || 0,
-    list: data['contractList'].map(item => ({
+    list: list.map(item => ({
       contractId: item['contract_info_id'],
       contractName: item['contract_name'],
       contractCode: item['contract_code'],

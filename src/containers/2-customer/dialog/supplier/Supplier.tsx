@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import DatePicker from 'antd/lib/date-picker'
 import {FlexDiv, Part} from 'app-core/layout'
-import Select1 from 'app-core/common/Select1'
 
 import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
@@ -14,25 +13,34 @@ import InputGroup from '../../../common/InputGroup'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import TextAndButton from '../../../common/TextAndButton'
+import SelectContact from '../base/SelectContact'
 import AddButton from '../../../common/AddButton'
 import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 
-import {addListItem} from '../../../../core/utils/arrayUtils'
-import {fetchContactList} from '../../customer.action'
-import {addSupplier} from './supplier.action'
-import {getDateStr} from '../../../../core/utils/dateUtils'
-import {CUSTOMER} from '../../../../core/constants/types'
 import CustomerState from '../../CustomerState'
-import CommonFunction from '../../../common/interface/CommonFunction'
 import Data from '../../../common/interface/Data'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
+import {addListItem} from '../../../../core/utils/arrayUtils'
+import {getDateStr} from '../../../../core/utils/dateUtils'
+import {fetchContactList} from '../../customer.action'
+import {addSupplier, updateSupplier, fetchMSAList, addMsa, updateMsa} from './supplier.action'
+import {EDIT, ADD} from '../../../../core/CRUD'
 
-interface AddSupplierProps extends CustomerState, CommonFunction {
+interface SupplierProps extends CustomerState, CommonFunction {
   customerId: string
   supplierId?: string
+  initSupplierInfo?: any
   fetchContactList: (customerId: string) => void
   customerContactData: Data<any>
   addSupplier: (options) => void
+  updateSupplier: (options) => void
+  fetchMSAList: (supplierId: string) => void
+  msaListInfo: any[]
+  addMsa: (options) => void
+  updateMsa: (options) => void
 }
 
 let id = 1
@@ -56,7 +64,7 @@ function getNextSupplier() {
   }
 }
 
-class AddSupplier extends React.Component<AddSupplierProps> {
+class Supplier extends React.Component<SupplierProps> {
   state = {
     supplierType: '',
     isDeployment: '',
@@ -65,12 +73,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
     endDate: null
   }
 
-  save = () => {
-    let options = this.getOptions()
-    this.props.addSupplier(options)
-  }
-
-  getOptions() {
+  add = () => {
     const {supplierList} = this.state
     let list = supplierList.map(supplier => ({
       "customerProviderInfo": {
@@ -85,7 +88,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
         "sign": 2
       }))
     }))
-    return {
+    let options = {
       customerProvider: {
         "customer_info_id": this.props.customerId,
         "provider_type": this.state.supplierType,
@@ -94,6 +97,40 @@ class AddSupplier extends React.Component<AddSupplierProps> {
       customerProviderInfos: list,
       latestCustomerProviderMsa: null
     }
+    this.props.addSupplier(options)
+  }
+
+  update = () => {
+    const {supplierList} = this.state
+    let list = supplierList.map(supplier => ({
+      "customerProviderInfo": {
+        "provider_id": this.props.supplierId,
+        "provider_info_id": supplier.id,
+        "validity_begin_time": supplier.startDate,
+        "validity_end_time": supplier.endDate,
+        "validity_select_time": supplier.chosenDate,
+        "is_fixed": supplier.isFixed,
+        "price": supplier.unitPrice,
+      },
+      "customerProviderInfoDockers": supplier.brokerList.map(broker => ({
+        "provider_info_id": supplier.id,
+        "provider_info_docker_id": broker.isLocal ? '' : broker.id,
+        "contacts_info_id": broker.broker,
+        "sign": broker.isLocal ? ADD : EDIT
+      })),
+      "sign": supplier.isLocal ? ADD : EDIT
+    }))
+    let options = {
+      customerProvider: {
+        "provider_id": this.props.supplierId,
+        "customer_info_id": this.props.customerId,
+        "provider_type": this.state.supplierType,
+        "is_signed_msa": this.state.isDeployment
+      },
+      customerProviderInfos: list,
+      latestCustomerProviderMsa: null
+    }
+    this.props.updateSupplier(options)
   }
 
   addSupplier = () => {
@@ -115,18 +152,25 @@ class AddSupplier extends React.Component<AddSupplierProps> {
     this.forceUpdate()
   }
 
-  componentWillReceiveProps(nextProps: AddSupplierProps) {
+  componentWillMount() {
+    if (this.props.initSupplierInfo) {
+      this.setState(this.props.initSupplierInfo)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: SupplierProps) {
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
       this.props.showSuccess('添加供应商成功！')
       this.props.clearState(CUSTOMER.ADD_SUPPLIER)
+    }
+    if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
+      this.props.showSuccess('更新供应商信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_SUPPLIER)
     }
   }
 
   render() {
     const contactList = this.props.customerContactData.data || []
-    const contactOptions = contactList.map(item => ({
-      value: item.contactId, text: item.contactName
-    }))
     return (
       <div>
         <InputGroup className="bb" label="供应商类别" inputType={NECESSARY}>
@@ -161,6 +205,7 @@ class AddSupplier extends React.Component<AddSupplierProps> {
                       </LabelAndInput1>
                       <LabelAndInput
                         label="具体单价"
+                        disabled={supplier.isFixed != '1'}
                         value={supplier.unitPrice}
                         onChange={v => this.handleSupplierChange(supplierIndex, 'unitPrice', v)}
                       />
@@ -168,40 +213,13 @@ class AddSupplier extends React.Component<AddSupplierProps> {
                     <InputGroup className="bb" label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
-                          let telephone = '', email = '', position = ''
-                          if (broker.broker) {
-                            let contact = contactList.find(d => d.contactId == broker.broker)
-                            telephone = contact.telephone
-                            email = contact.email
-                            position = contact.position
-                          }
-
                           return (
                             <div key={broker.id} className="bb p5">
-                              <LabelAndInput1 label="对接人">
-                                <Select1 options={contactOptions}
-                                         onOpen={() => this.props.fetchContactList(this.props.customerId)}
-                                         value={broker.broker}
-                                         onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
-                                />
-                              </LabelAndInput1>
-                              <LabelAndInput
-                                label="电话"
-                                disabled={true}
-                                value={telephone}
-                                onChange={() => null}
-                              />
-                              <LabelAndInput
-                                label="邮箱"
-                                disabled={true}
-                                value={email}
-                                onChange={() => null}
-                              />
-                              <LabelAndInput
-                                label="职位"
-                                disabled={true}
-                                value={position}
-                                onChange={() => null}
+                              <SelectContact
+                                contactId={broker.broker}
+                                contactList={contactList}
+                                onOpen={() => this.props.fetchContactList(this.props.customerId)}
+                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
                               />
                             </div>
                           )
@@ -243,10 +261,21 @@ class AddSupplier extends React.Component<AddSupplierProps> {
           </InputGroup>
 
           <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-            <Button className="small" disabled={true}>...查看更多</Button>
+            <Button className="small" disabled={!this.props.supplierId} onClick={() => this.setState({showMoreMSA: true})}>
+              ...查看更多
+            </Button>
           </TextAndButton>
         </div>
-        <Save disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.save}/>
+        {
+          !this.props.supplierId && (
+            <Save disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.add}/>
+          )
+        }
+        {
+          this.props.supplierId && (
+            <Update disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.update}/>
+          )
+        }
       </div>
     )
   }
@@ -256,10 +285,13 @@ function mapStateToProps(state, props) {
   return {
     ...state.customer,
     customerId: props.customerId,
-    customerContactData: state.customerContactData
+    supplierId: props.supplierId,
+    initSupplierInfo: props.initSupplierInfo,
+    customerContactData: state.customerContactData,
+    msaListInfo: state.msaListInfo
   }
 }
 
 export default connect(mapStateToProps, {
-  addSupplier, fetchContactList
-})(addCommonFunction(AddSupplier))
+  addSupplier, fetchContactList, updateSupplier, fetchMSAList, addMsa, updateMsa
+})(addCommonFunction(Supplier))

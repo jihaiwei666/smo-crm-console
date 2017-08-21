@@ -8,7 +8,7 @@ import UpdateProjectDialog from '../3-project/dialog/UpdateProjectDialog'
 import UpdateContractDialog from '../4-contract/dialog/UpdateContractDialog'
 
 import List from '../common/interface/List'
-import {handleListData} from '../../reducers/data.reducer'
+import {handleListData} from '../common/common.helper'
 import {getRecentOpenTypeText} from '../common/common.helper'
 
 interface RecentOpenProps {

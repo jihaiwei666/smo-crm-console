@@ -17,7 +17,8 @@ const initValue = {
   updateBeforeSignSuccess: false,
   addAfterSignSuccess: false,
   updateAfterSignSuccess: false,
-  updateRemarkAttachmentSuccess: false
+  updateRemarkAttachmentSuccess: false,
+  removeContractSuccess: false
 }
 
 export default function contract(iState = fromJS(initValue), action) {
@@ -47,6 +48,7 @@ export default function contract(iState = fromJS(initValue), action) {
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_AFTER_SIGN, 'updateAfterSignSuccess')
 
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_REMARK_ATTACHMENT, 'updateRemarkAttachmentSuccess')
+  nextIState = handleFlagState(nextIState, action, CONTRACT.REMOVE_CONTRACT, 'removeContractSuccess')
 
   return nextIState
 }

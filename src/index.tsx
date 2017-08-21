@@ -32,11 +32,12 @@ if (module.hot) {
   })
 }
 
-/*_get('/user/v1/getUserStatus').then(data=> {
-  console.log(data)
-})*/
-
-render(
-  <Root store={store} history={history}/>,
-  document.getElementById('root')
-)
+_get('/user/v1/getUserStatus').then(data => {
+  let userName = data['account']
+  let roleCode = data['post_type']
+  store.dispatch({type: ''})
+  render(
+    <Root store={store} history={history} roleCode={8}/>,
+    document.getElementById('root')
+  )
+})

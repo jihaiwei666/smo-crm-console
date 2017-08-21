@@ -16,6 +16,7 @@ import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {addCustomer, updateCustomer} from '../../customer.action'
+import Update from '../../../common/Update'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
@@ -179,7 +180,16 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
           </LabelAndInput1>
         </div>
 
-        <Save disabled={!this.state.valid} onClick={this.save}/>
+        {
+          !this.props.customerId && (
+            <Save disabled={!this.state.valid} onClick={this.save}/>
+          )
+        }
+        {
+          this.props.customerId && (
+            <Update disabled={!this.state.valid} onClick={this.save}/>
+          )
+        }
       </Form>
     )
   }

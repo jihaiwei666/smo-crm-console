@@ -13,12 +13,14 @@ import AppFunctionPage from '../common/interface/AppFunctionPage'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
 
-import {fetchList} from './project.action'
-import {handleListData} from '../../reducers/data.reducer'
+import {fetchList, removeProject} from './project.action'
+import {handleListData} from '../common/common.helper'
 import ProjectState from './ProjectState'
+import {PROJECT} from '../../core/constants/types'
 
 interface ProjectProps extends AppFunctionPage, ProjectState {
   projectList: any
+  removeProject: (projectId) => void
 }
 
 class Project extends React.Component<ProjectProps> {
@@ -41,8 +43,13 @@ class Project extends React.Component<ProjectProps> {
     })
   }
 
-  removeProject = () => {
+  refreshCurrentPage = () => {
+    this.toPage(this.state.currentPage)
+  }
 
+  removeProject = () => {
+    let item = this.props.projectList.data.list[this.state.index]
+    this.props.removeProject(item.projectId)
   }
 
   componentDidMount() {
@@ -55,6 +62,14 @@ class Project extends React.Component<ProjectProps> {
     }
     if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
       this.toPage(0)
+    }
+    if (!this.props.updateBd_BdpcSuccess && nextProps.updateBd_BdpcSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.removeProjectSuccess && nextProps.removeProjectSuccess) {
+      this.props.showSuccess('删除项目成功！')
+      this.props.clearState(PROJECT.REMOVE_PROJECT)
+      this.refreshCurrentPage()
     }
   }
 
@@ -137,4 +152,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchList})(Project)
+export default connect(mapStateToProps, {fetchList, removeProject})(Project)

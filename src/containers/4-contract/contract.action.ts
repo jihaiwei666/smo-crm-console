@@ -178,3 +178,12 @@ export function updateRemarkAndAttachment(options) {
     }
   }
 }
+
+export function removeContract(contractId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.REMOVE_CONTRACT,
+      http: () => _get(urlPrefix + `/v1/deleteContractInfo/${contractId}`)
+    }
+  }
+}

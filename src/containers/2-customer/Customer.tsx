@@ -11,7 +11,6 @@ import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-l
 
 import Input from '../../components/form/Input'
 import FilterOptions from '../../components/query-filter/FilterOptions'
-import {handleListData} from '../../reducers/data.reducer'
 import PageCountNav from '../../components/nav/PageCountNav'
 import FilterButton from '../common/FilterButton'
 import FilterItem from '../../components/query-filter/FilterItem'
@@ -21,9 +20,10 @@ import UpdateCustomerDialog from './dialog/UpdateCustomerDialog'
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import Data from '../common/interface/Data'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
-import {fetchList, removeCustomer} from './customer.action'
-import {getCustomerType} from './customer.helper'
 import {CUSTOMER} from '../../core/constants/types'
+import {handleListData, getOperation} from '../common/common.helper'
+import {getCustomerType} from './customer.helper'
+import {fetchList, removeCustomer} from './customer.action'
 
 interface CustomerProps extends AppFunctionPage, CustomerState {
   customerList: Data<any>
@@ -92,6 +92,7 @@ class Customer extends React.Component<CustomerProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.customerList)
+    const operation = getOperation(this.props.customerList)
     const item = list[this.state.index] || {}
 
     let customerId = item.customerId
@@ -125,11 +126,18 @@ class Customer extends React.Component<CustomerProps> {
         }
 
         <div className="m15">
-          <Button onClick={() => this.setState({showAddDialog: true})}>
-            <img className="btn-icon" src={require('./icon/create-cust.svg')}/>
-            创建
-          </Button>
-          <Button>导入数据</Button>
+          {
+            operation.canCreate && (
+              <Button onClick={() => this.setState({showAddDialog: true})}>
+                <img className="btn-icon" src={require('./icon/create-cust.svg')}/>创建
+              </Button>
+            )
+          }
+          {
+            operation.canImport && (
+              <Button>导入数据</Button>
+            )
+          }
           <div className="pull-right">
             <FilterButton onClick={() => this.setState({showFilter: !this.state.showFilter})}/>
           </div>
@@ -167,7 +175,7 @@ class Customer extends React.Component<CustomerProps> {
           )
         }
 
-        <FixHeadList>
+        <FixHeadList total={total}>
           <FixHead>
             <FixHead.Item>客户名称</FixHead.Item>
             <FixHead.Item>客户类型</FixHead.Item>
@@ -188,8 +196,16 @@ class Customer extends React.Component<CustomerProps> {
                     <FixRow.Item>{item['customerOwner']}</FixRow.Item>
                     <FixRow.Item>{item['customerCreator']}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                      {
+                        item.operation.canEdit && (
+                          <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
+                        )
+                      }
+                      {
+                        item.operation.canDelete && (
+                          <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                        )
+                      }
                     </FixRow.Item>
                   </FixRow>
                 )

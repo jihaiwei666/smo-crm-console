@@ -24,6 +24,8 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
 
+const {MonthPicker} = DatePicker
+
 interface AfterQuotationProps extends CommonFunction {
   projectId?: string
   afterQuotationId?: string
@@ -48,7 +50,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
     is_A_Order: null,
     pmWorkingHours: '',
     crcWorkingHours: '',
-    involveYearMonth: '',
+    involveYearMonth: null,
     bidDate: null,
     bookLanguage: '',
     pptLanguage: '',
@@ -150,9 +152,12 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
         <LabelAndInput label="预估CRC工时" inputType={IMPORTANT}
                        value={this.state.crcWorkingHours} onChange={v => this.setState({crcWorkingHours: v})}
         />
-        <LabelAndInput label="预计介入时间" inputType={IMPORTANT}
-                       value={this.state.involveYearMonth} onChange={v => this.setState({involveYearMonth: v})}
-        />
+        <LabelAndInput1 label="预计介入时间" inputType={IMPORTANT}>
+          <MonthPicker
+            placeholder="请输入年月"
+            value={this.state.involveYearMonth} onChange={v => this.setState({involveYearMonth: v})}
+          />
+        </LabelAndInput1>
         <LabelAndInput1 className="bb" label="现场竞标时间">
           <DatePicker
             value={this.state.bidDate} onChange={v => this.setState({bidDate: v})}

@@ -13,11 +13,11 @@ import PageCountNav from '../../components/nav/PageCountNav'
 import AddAccountDialog from './dialog/AddAccountDialog'
 import UpdateAccountDialog from './dialog/UpdateAccountDialog'
 
-import * as actions from './account-manage.action'
-import {ACCOUNT_MANAGE} from '../../core/constants/types'
-import {handleListData} from '../../reducers/data.reducer'
 import {accountStatus} from './account-manage.constant'
+import {ACCOUNT_MANAGE} from '../../core/constants/types'
+import {handleListData} from '../common/common.helper'
 import {getPositionName} from './account-manage.helper'
+import * as actions from './account-manage.action'
 
 interface AccountManageProps extends AppFunctionPage {
   accountList: any

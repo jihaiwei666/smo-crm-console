@@ -8,8 +8,10 @@ import {Link} from 'react-router-dom'
 import pages from '../../core/pages'
 import {getPath} from '../../core/env'
 import CssTransition from '../../components/CssTransition'
+import {roleCategory} from '../7-account-manage/account-manage.constant'
 
 interface ModulesProps {
+  roleCode: number
   currentPath: string
 }
 
@@ -51,14 +53,22 @@ class Modules extends React.Component<ModulesProps> {
               <li className={classnames({'active': currentPath == getPath(pages.report)})}>
                 <Link to={report}>报表</Link>
               </li>
-              <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
-                <Link to={recycleBin}>回收站</Link>
-              </li>
-              <li className={classnames({'active': currentPath == getPath(pages.accountManage)})}>
-                <Link to={accountManage}>
-                  账号管理
-                </Link>
-              </li>
+              {
+                this.props.roleCode == roleCategory.systemManage && (
+                  <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
+                    <Link to={recycleBin}>回收站</Link>
+                  </li>
+                )
+              }
+              {
+                this.props.roleCode == roleCategory.systemManage && (
+                  <li className={classnames({'active': currentPath == getPath(pages.accountManage)})}>
+                    <Link to={accountManage}>
+                      账号管理
+                    </Link>
+                  </li>
+                )
+              }
             </ul>
           </main>
         </CssTransition>

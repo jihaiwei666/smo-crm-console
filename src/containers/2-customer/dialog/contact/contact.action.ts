@@ -13,7 +13,7 @@ export function addContact(options) {
     [THREE_PHASE]: {
       type: CUSTOMER.ADD_CONTACT,
       http: () => _post(urlPrefix + '/v1/contacts/add', {body: options}),
-      handleResponse: data => data
+      handleResponse: data => data['contacts_info_id']
     }
   }
 }

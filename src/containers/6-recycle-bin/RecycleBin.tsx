@@ -7,8 +7,8 @@ import {connect} from 'react-redux'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import Data from '../common/interface/Data'
+import {handleListData} from '../common/common.helper'
 import {fetchList} from './recycle-bin.action'
-import {handleListData} from '../../reducers/data.reducer'
 
 interface RecycleBinProps extends AppFunctionPage {
   recycleBinList: Data<any>

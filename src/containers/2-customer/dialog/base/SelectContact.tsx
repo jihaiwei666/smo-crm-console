@@ -30,7 +30,7 @@ class SelectContact extends React.Component<SelectContactProps> {
     }))
     return (
       <div>
-        <LabelAndInput1 className="bb" label="对接人">
+        <LabelAndInput1 label="对接人">
           <Select1 width="200px" options={contactOptions}
                    onOpen={this.props.onOpen}
                    value={this.props.contactId}

@@ -4,9 +4,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './fix-head-list.scss'
-
 interface FixHeadListProps {
+  total?: number
   weights?: (number | string)[]
 }
 
@@ -15,7 +14,8 @@ class FixHeadList extends React.Component<FixHeadListProps> {
     weights: []
   }
   static childContextTypes = {
-    weights: PropTypes.array
+    weights: PropTypes.array,
+    total: PropTypes.number
   }
 
   render() {
@@ -28,7 +28,8 @@ class FixHeadList extends React.Component<FixHeadListProps> {
 
   getChildContext() {
     return {
-      weights: this.props.weights
+      weights: this.props.weights,
+      total: this.props.total
     }
   }
 }

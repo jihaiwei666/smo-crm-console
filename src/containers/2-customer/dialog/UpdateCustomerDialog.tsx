@@ -14,8 +14,7 @@ import BD_BDPC from './part/BD_BDPC'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
-import AddSupplier from './supplier/AddSupplier'
-import EditSupplier from './supplier/EditSupplier'
+import Supplier from './supplier/Supplier'
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
@@ -132,19 +131,11 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                   <CDA customerId={this.props.customerId}/>
 
                   <CategoryTitle title="供应商"/>
-                  {
-                    !this.state.supplierId && (
-                      <AddSupplier customerId={this.props.customerId}/>
-                    )
-                  }
-                  {
-                    this.state.supplierId && (
-                      <EditSupplier
-                        customerId={this.props.customerId}
-                        supplierId={this.state.supplierId}
-                        initSupplierInfo={this.initSupplierInfo}/>
-                    )
-                  }
+                  <Supplier
+                    customerId={this.props.customerId}
+                    supplierId={this.state.supplierId}
+                    initSupplierInfo={this.initSupplierInfo}
+                  />
 
                   <CategoryTitle title="RFI"/>
                   <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>

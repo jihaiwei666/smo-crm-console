@@ -82,7 +82,7 @@ export const PROJECT = {
   ADD_AFTER_QUOTATION: null,
   UPDATE_AFTER_QUOTATION: null,
   UPDATE_REMARK_ATTACHMENT: null,
-
+  REMOVE_PROJECT: null
 }
 
 export const CONTRACT = {
@@ -103,7 +103,7 @@ export const CONTRACT = {
   FETCH_INSTITUTION_LIST: null,
   FETCH_INSTITUTION_INFO: null,
   UPDATE_REMARK_ATTACHMENT: null,
-
+  REMOVE_CONTRACT: null
 }
 
 export const RECYCLE_BIN = {

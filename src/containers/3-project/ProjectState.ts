@@ -10,6 +10,7 @@ type ProjectState = {
   newBeforeQuotation: any
   addAfterQuotationSuccess: boolean
   newAfterQuotation: any
+  removeProjectSuccess: boolean
 }
 
 export default ProjectState

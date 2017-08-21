@@ -20,6 +20,7 @@ const initValue = {
   newAfterQuotation: null,
   updateAfterQuotationSuccess: false,
   updateRemarkAttachmentSuccess: false,
+  removeProjectSuccess: false
 }
 
 export default function project(iState = fromJS(initValue), action) {
@@ -48,6 +49,7 @@ export default function project(iState = fromJS(initValue), action) {
   nextIState = handleFlagState(nextIState, action, PROJECT.UPDATE_AFTER_QUOTATION, 'updateAfterQuotationSuccess')
 
   nextIState = handleFlagState(nextIState, action, PROJECT.UPDATE_REMARK_ATTACHMENT, 'updateRemarkAttachmentSuccess')
+  nextIState = handleFlagState(nextIState, action, PROJECT.REMOVE_PROJECT, 'removeProjectSuccess')
 
   return nextIState
 }

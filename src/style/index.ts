@@ -3,6 +3,7 @@ import './antd/date-picker/style/'
 import './common.scss'
 
 import '../components/form/input.scss'
+import '../components/fix-head-list/fix-head-list.scss'
 import '../components/query-filter/query-filter.scss'
 import './file-upload.scss'
 import '../containers/common/page-common.scss'

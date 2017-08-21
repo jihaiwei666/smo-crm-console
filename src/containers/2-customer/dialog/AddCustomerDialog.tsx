@@ -13,15 +13,13 @@ import CustomerBasicInfo from './part/CustomerBasicInfo'
 import SubCompany from './sub-company/SubCompany'
 import ContactInfo from './contact/ContactInfo'
 import CDA from './cda/CDA'
-import AddSupplier from './supplier/AddSupplier'
-import EditSupplier from './supplier/EditSupplier'
+import Supplier from './supplier/Supplier'
 import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
 import CustomerState from '../CustomerState'
-
 
 interface AddCustomerDialogProps extends CustomerState {
   addCustomer: (options) => void
@@ -90,19 +88,11 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
               <CDA customerId={this.state.customerId}/>
 
               <CategoryTitle title="供应商"/>
-              {
-                !this.state.supplierId && (
-                  <AddSupplier customerId={this.state.customerId}/>
-                )
-              }
-              {
-                this.state.supplierId && (
-                  <EditSupplier
-                    customerId={this.state.customerId}
-                    supplierId={this.state.supplierId}
-                    initSupplierInfo={this.initSupplierInfo}/>
-                )
-              }
+
+              <Supplier
+                customerId={this.state.customerId}
+                supplierId={this.state.supplierId}
+              />
 
               <CategoryTitle title="RFI"/>
               <RFI customerId={this.state.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>

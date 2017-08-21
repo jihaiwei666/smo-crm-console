@@ -26,6 +26,7 @@ import {CUSTOMER} from '../../../../core/constants/types'
 import CustomerState from '../../CustomerState'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import SelectContact from '../base/SelectContact'
 
 interface EditSupplierProps extends CustomerState, CommonFunction {
   customerId: string
@@ -205,42 +206,13 @@ class EditSupplier extends React.Component<EditSupplierProps> {
                     <InputGroup className="bb" label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
-                          let telephone = ''
-                          let email = ''
-                          let position = ''
-                          if (broker.broker) {
-                            let contact = contactList.find(d => d.contactId == broker.broker) || {}
-                            telephone = contact.telephone
-                            email = contact.email
-                            position = contact.position
-                          }
-
                           return (
                             <div key={broker.id} className="bb p5">
-                              <LabelAndInput1 label="对接人">
-                                <Select1 options={contactOptions}
-                                         onOpen={() => this.props.fetchContactList(this.props.customerId)}
-                                         value={broker.broker}
-                                         onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
-                                />
-                              </LabelAndInput1>
-                              <LabelAndInput
-                                label="电话"
-                                disabled={true}
-                                value={telephone}
-                                onChange={() => null}
-                              />
-                              <LabelAndInput
-                                label="邮箱"
-                                disabled={true}
-                                value={email}
-                                onChange={() => null}
-                              />
-                              <LabelAndInput
-                                label="职位"
-                                disabled={true}
-                                value={position}
-                                onChange={() => null}
+                              <SelectContact
+                                contactId={broker.broker}
+                                contactList={contactList}
+                                onOpen={() => this.props.fetchContactList(this.props.customerId)}
+                                onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
                               />
                             </div>
                           )
