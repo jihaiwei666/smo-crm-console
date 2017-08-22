@@ -3,15 +3,19 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import AddFileButton from '../../../../components/button/AddFileButton'
+
+import AddFileButton from '../../../components/button/AddFileButton'
 
 interface AddAttachmentButtonProps {
-
+  multiple?: boolean
 }
 
 class AddAttachmentButton extends React.Component<AddAttachmentButtonProps> {
   static contextTypes = {
     onAdd: PropTypes.func
+  }
+  static defaultProps = {
+    multiple: true
   }
 
   handleUploaded = (data) => {
@@ -22,7 +26,7 @@ class AddAttachmentButton extends React.Component<AddAttachmentButtonProps> {
 
   render() {
     return (
-      <AddFileButton multiple={true} onUploadSuccess={this.handleUploaded}/>
+      <AddFileButton multiple={this.props.multiple} onUploadSuccess={this.handleUploaded}/>
     )
   }
 }

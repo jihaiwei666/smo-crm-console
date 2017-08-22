@@ -28,7 +28,7 @@ class Progress extends React.Component<ProgressProps> {
     return (
       <div className="progress-item">
         <LabelAndInput1 label="节点">
-          <Select1 width="200px" value={item.node} options={nodeProgressOptions}
+          <Select1 width="250px" value={item.node} options={nodeProgressOptions}
                    onChange={(v) => this.props.onUpdate({node: v})}
           />
         </LabelAndInput1>

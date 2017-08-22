@@ -5,7 +5,7 @@ import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CONTRACT} from '../../core/constants/types'
 import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo} from './contract.helper'
-import {handleInstitutionList, handleInstitutionInfo} from './dialog/make-collections/make-collection.helper'
+import {handleInstitutionList, handleInstitutionInfo, handleCollectionList} from './dialog/make-collections/make-collection.helper'
 
 const urlPrefix = '/contract'
 
@@ -113,8 +113,7 @@ export function addAfterSign(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.ADD_AFTER_SIGN,
-      http: () => _post(urlPrefix + '/v1/addContractAfterSigned', {body: options}),
-      handleResponse: handlePartAfterSignInfo
+      http: () => _post(urlPrefix + '/v1/addContractAfterSigned', {body: options})
     }
   }
 }
@@ -123,8 +122,7 @@ export function updateAfterSign(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.UPDATE_AFTER_SIGN,
-      http: () => _post(urlPrefix + '/v1/updateContractAfterSigned', {body: options}),
-      handleResponse: handlePartAfterSignInfo
+      http: () => _post(urlPrefix + '/v1/updateContractAfterSigned', {body: options})
     }
   }
 }
@@ -134,7 +132,7 @@ export function fetchCollectionList(contractId) {
     [THREE_PHASE]: {
       type: CONTRACT.FETCH_COLLECTION_LIST,
       http: () => _get(urlPrefix + `/v1/getCollectionList/${contractId}`),
-      handleResponse: handlePartAfterSignInfo
+      handleResponse: handleCollectionList
     }
   }
 }
@@ -143,8 +141,7 @@ export function updateCollection(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.UPDATE_COLLECTION,
-      http: () => _post(urlPrefix + '/v1/updateCollection', {body: options}),
-      handleResponse: handlePartAfterSignInfo
+      http: () => _post(urlPrefix + '/v1/updateCollection', {body: options})
     }
   }
 }

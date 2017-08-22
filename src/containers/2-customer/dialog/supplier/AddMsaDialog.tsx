@@ -3,13 +3,13 @@
  */
 import React from 'react'
 import Modal from 'app-core/modal'
-import {Row, Part, Line} from 'app-core/layout'
-import Select1 from 'app-core/common/Select1'
-import Confirm from 'app-core/common/Confirm'
+import Form from 'app-core/form/Form'
 import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
-import {LimitInput} from 'app-core/form'
-import LabelAndInput from '../../../common/LabelAndInput'
+
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import DatePicker from '../../../../components/form/DatePicker'
+import SingleFile from '../../../common/file/SingleFile'
+import {NECESSARY} from '../../../common/Label'
 
 interface AddMsaDialogProps {
   supplierId: string
@@ -20,9 +20,11 @@ interface AddMsaDialogProps {
 
 class AddMsaDialog extends React.Component<AddMsaDialogProps> {
   state = {
+    valid: true,
     show: true,
     startDate: '',
-    endDate: ''
+    endDate: '',
+    scanFile: null
   }
 
   close = () => {
@@ -31,10 +33,21 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
 
   add = () => {
     this.props.addMsa({
-      "provider_id": this.props.supplierId,
-      "msa_begin_time": this.state.startDate,
-      "msa_end_time": this.state.endDate,
+      "customerProviderMsaVo": {
+        "provider_id": this.props.supplierId,
+        "msa_begin_time": this.state.startDate,
+        "msa_end_time": this.state.endDate,
+      },
+      "customerProviderMsaFile": this._getFile()
     })
+  }
+
+  _getFile() {
+    if (!this.state.scanFile) return null
+    return {
+      "file_url": this.state.scanFile.fileUrl,
+      "file_name": this.state.scanFile.fileName,
+    }
   }
 
   componentWillReceiveProps(nextProps: AddMsaDialogProps) {
@@ -51,14 +64,32 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
           <Modal.Title>添加MSA</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <LabelAndInput label="起始日期" value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
-          <LabelAndInput label="结束日期" value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
-          <LabelAndInput1 label="MSA扫描件">
-
-          </LabelAndInput1>
+          <Form onValidChange={valid => this.setState({valid})}>
+            <LabelAndInput1 label="起始日期" inputType={NECESSARY}>
+              <DatePicker
+                required={true} name="startDate"
+                value={this.state.startDate} onChange={v => this.setState({startDate: v})}
+              />
+            </LabelAndInput1>
+            <LabelAndInput1 label="结束日期" inputType={NECESSARY}>
+              <DatePicker
+                required={true} name="endDate"
+                value={this.state.endDate} onChange={v => this.setState({endDate: v})}
+              />
+            </LabelAndInput1>
+            <LabelAndInput1 label="MSA扫描件">
+              <SingleFile
+                file={this.state.scanFile}
+                onAdd={file => this.setState({scanFile: file})}
+                onClear={() => this.setState({scanFile: null})}
+              />
+            </LabelAndInput1>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose onCancel={this.close} onConfirm={this.add}/>
+          <ConfirmOrClose onCancel={this.close} onConfirm={this.add}
+                          disabled={!this.state.valid}
+          />
         </Modal.Footer>
       </Modal>
     )

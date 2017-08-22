@@ -18,7 +18,7 @@ class LabelAndInput1 extends React.Component<LabelAndInput1Props> {
     return (
       <FlexDiv className={classnames('label-and-input', this.props.className)}>
         <Label inputType={this.props.inputType}>{this.props.label}</Label>
-        <Part style={{width: '200px'}}>
+        <Part style={{width: '250px'}}>
           {this.props.children}
         </Part>
       </FlexDiv>

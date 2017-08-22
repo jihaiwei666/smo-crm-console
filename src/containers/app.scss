@@ -26,14 +26,20 @@ body {
         flex-direction: column;
 
         .brand-name {
+            height: 90px;
             color: #F3F6F5;
             background-color: #555C78;
             font-size: 20px;
+            img {
+                margin-top: -20px;
+            }
         }
 
         .nav-container {
             flex: 1;
             background-color: #4F556D;
+            overflow-x: hidden;
+            overflow-y: auto;
 
             .modules, .recent-open {
                 header {
@@ -55,6 +61,16 @@ body {
 
             .recent-open {
                 margin-top: 5px;
+            }
+        }
+
+        .recent-open {
+            .nav-items {
+                li {
+                    a {
+                        padding: 8px 12px;
+                    }
+                }
             }
         }
 

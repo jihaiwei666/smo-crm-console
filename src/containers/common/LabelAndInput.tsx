@@ -15,7 +15,7 @@ interface LabelAndInputProps extends LabelProps, InputProps {
 class LabelAndInput extends React.Component<LabelAndInputProps> {
   static defaultProps = {
     placeholder: '请输入',
-    width: '200px'
+    width: '250px'
   }
 
   render() {

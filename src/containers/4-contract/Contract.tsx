@@ -24,6 +24,8 @@ interface ContractProps extends AppFunctionPage {
   updateBdBdpcSuccess: boolean
   removeContract: (contractId) => void
   removeContractSuccess: boolean
+  addBeforeSignSuccess: boolean
+  updateBeforeSignSuccess: boolean
 }
 
 class Contract extends React.Component<ContractProps> {
@@ -64,15 +66,26 @@ class Contract extends React.Component<ContractProps> {
       this.toPage(0)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
-      this.toPage(0)
+      this.refreshCurrentPage()
     }
     if (!this.props.updateBdBdpcSuccess && nextProps.updateBdBdpcSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.addBeforeSignSuccess && nextProps.addBeforeSignSuccess) {
+      this.refreshCurrentPage()
+    }
+    if (!this.props.updateBeforeSignSuccess && nextProps.updateBeforeSignSuccess) {
       this.refreshCurrentPage()
     }
     if (!this.props.removeContractSuccess && nextProps.removeContractSuccess) {
       this.props.showSuccess('删除合同成功！')
       this.props.clearState(CONTRACT.REMOVE_CONTRACT)
-      this.refreshCurrentPage()
+      const {total} = handleListData(this.props.contractList)
+      if (total % 10 == 1) {
+        this.toPage(0)
+      } else {
+        this.refreshCurrentPage()
+      }
     }
   }
 
@@ -111,7 +124,7 @@ class Contract extends React.Component<ContractProps> {
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
 
-        <FixHeadList>
+        <FixHeadList total={total}>
           <FixHead>
             <FixHead.Item>合同名称</FixHead.Item>
             <FixHead.Item>合同编号</FixHead.Item>

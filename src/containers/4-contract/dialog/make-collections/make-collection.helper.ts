@@ -3,7 +3,7 @@
  */
 import {getDate} from '../../../../core/utils/dateUtils'
 
-export function handleCollection(collectionList) {
+export function handleCollectionList(collectionList) {
   return collectionList.filter(item => item != null).map(item => ({
     collectionId: item['collection_id'],
     nodeDate: getDate(item['payment_node_date']),

@@ -11,11 +11,15 @@ import ContactBaseInfo from './ContactBaseInfo'
 interface SelectContactProps {
   contactId: string
   contactList: ContactBaseInfo[]
-  onOpen: () => void
+  onOpen?: () => void
   onChange: (contactId) => void
 }
 
 class SelectContact extends React.Component<SelectContactProps> {
+  static defaultProps = {
+    onOpen: () => null
+  }
+
   render() {
     const {contactList, contactId} = this.props
     let telephone = '', email = '', position = ''
@@ -31,7 +35,7 @@ class SelectContact extends React.Component<SelectContactProps> {
     return (
       <div>
         <LabelAndInput1 label="对接人">
-          <Select1 width="200px" options={contactOptions}
+          <Select1 width="250px" options={contactOptions}
                    onOpen={this.props.onOpen}
                    value={this.props.contactId}
                    onChange={v => this.props.onChange(v)}

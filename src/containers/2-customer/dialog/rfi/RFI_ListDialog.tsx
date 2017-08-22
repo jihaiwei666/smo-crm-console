@@ -50,7 +50,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
     const rfiList = this.props.rfiList.data || []
     return (
       <Modal
-        contentComponent={FullDialogContent} style={{width: '50%'}}
+        contentComponent={FullDialogContent} style={{width: '600px'}}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
           this.state.showAddRfi && (

@@ -63,7 +63,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
       BDPCList = this.props.BDPCList.data
     }
     return (
-      <Modal style={{marginTop: '150px'}} show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+      <Modal style={{marginTop: '150px', width: '480px'}} show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
           this.state.showSendConfirm && (
             <Confirm message="确定发出吗？"
@@ -81,7 +81,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
               <Part>
                 接收人：
               </Part>
-              <Part>
+              <Part weight={2}>
                 <Select1 options={BDPCList}
                          required={true} name="bdpc"
                          value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
@@ -96,7 +96,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
               <Part>
                 提醒方式：
               </Part>
-              <Part>
+              <Part weight={2}>
                 <CheckGroup
                   required={true} name="remindType"
                   options={[{value: '1', text: '系统消息'}, {value: '2', text: '邮件'}]}

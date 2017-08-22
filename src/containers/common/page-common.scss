@@ -117,3 +117,24 @@
     margin-right: 7px;
     padding: 1px 4px;
 }
+
+.account-info-header {
+    text-align: center;
+    font-size: 13px;
+}
+
+.account-info {
+    font-size: 13px;
+
+    .account-info-item {
+        padding: 7px 0 10px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .account-info-title {
+            margin-bottom: 3px;
+        }
+    }
+}

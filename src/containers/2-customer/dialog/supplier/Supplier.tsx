@@ -17,17 +17,19 @@ import SelectContact from '../base/SelectContact'
 import AddButton from '../../../common/AddButton'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
+import LookMSADialog from './LookMSADialog'
+import SingleFile from '../../../common/file/SingleFile'
 
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {EDIT, ADD} from '../../../../core/CRUD'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {fetchContactList} from '../../customer.action'
 import {addSupplier, updateSupplier, fetchMSAList, addMsa, updateMsa} from './supplier.action'
-import {EDIT, ADD} from '../../../../core/CRUD'
 
 interface SupplierProps extends CustomerState, CommonFunction {
   customerId: string
@@ -66,11 +68,14 @@ function getNextSupplier() {
 
 class Supplier extends React.Component<SupplierProps> {
   state = {
+    showMoreMSA: false,
+
     supplierType: '',
     isDeployment: '',
     supplierList: [],
     startDate: null,
-    endDate: null
+    endDate: null,
+    scanFile: null
   }
 
   add = () => {
@@ -95,7 +100,7 @@ class Supplier extends React.Component<SupplierProps> {
         "is_signed_msa": this.state.isDeployment
       },
       customerProviderInfos: list,
-      latestCustomerProviderMsa: null
+      latestCustomerProviderMsa: this.getMsa()
     }
     this.props.addSupplier(options)
   }
@@ -128,9 +133,25 @@ class Supplier extends React.Component<SupplierProps> {
         "is_signed_msa": this.state.isDeployment
       },
       customerProviderInfos: list,
-      latestCustomerProviderMsa: null
+      latestCustomerProviderMsa: this.getMsa()
     }
     this.props.updateSupplier(options)
+  }
+
+  getMsa() {
+    if (!this.state.startDate && !this.state.endDate && !this.state.scanFile) {
+      return null
+    }
+    return {
+      "customerProviderMsaVo": {
+        "msa_begin_time": this.state.startDate,
+        "msa_end_time": this.state.endDate,
+      },
+      "customerProviderMsaFile": {
+        "file_url": this.state.scanFile.fileUrl,
+        "file_name": this.state.scanFile.fileName
+      }
+    }
   }
 
   addSupplier = () => {
@@ -150,6 +171,10 @@ class Supplier extends React.Component<SupplierProps> {
   handleBrokerChange = (supplierIndex, brokerIndex, stateKey, value) => {
     this.state.supplierList[supplierIndex].brokerList[brokerIndex][stateKey] = value
     this.forceUpdate()
+  }
+
+  handleUploaded = (item) => {
+    this.setState({scanFile: item[0]})
   }
 
   componentWillMount() {
@@ -173,6 +198,18 @@ class Supplier extends React.Component<SupplierProps> {
     const contactList = this.props.customerContactData.data || []
     return (
       <div>
+        {
+          this.state.showMoreMSA && (
+            <LookMSADialog
+              supplierId={this.props.supplierId}
+              fetchMSAList={this.props.fetchMSAList}
+              msaListInfo={this.props.msaListInfo}
+              addMsa={this.props.addMsa}
+              updateMsa={this.props.updateMsa}
+              onExited={() => this.setState({showMoreMSA: false})}
+            />
+          )
+        }
         <InputGroup className="bb" label="供应商类别" inputType={NECESSARY}>
           <Radio.Group value={this.state.supplierType} onChange={v => this.setState({supplierType: v})}>
             <Radio value="1">优选供应商</Radio>
@@ -256,7 +293,11 @@ class Supplier extends React.Component<SupplierProps> {
               <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
             </LabelAndInput1>
             <LabelAndInput1 label="MSA扫描件">
-              <Button className="small" disabled={!this.props.customerId}>上传</Button>
+              <SingleFile
+                file={this.state.scanFile}
+                onAdd={file => this.setState({scanFile: file})}
+                onClear={() => this.setState({scanFile: null})}
+              />
             </LabelAndInput1>
           </InputGroup>
 

@@ -40,6 +40,7 @@ export default combineReducers({
   app: wrapReducerState(app),
   message: wrapReducerState(message),
   recentOpenList: wrapReducerState(data(APP.FETCH_RECENT_OPEN_LIST)),
+  accountInfo: wrapReducerState(data(APP.FETCH_ACCOUNT_INFO)),
 
   todoRemind: wrapReducerState(todoRemind),
   todoRemindAllList: wrapReducerState(pageList(TODO_REMIND.FETCH_LIST)),
@@ -72,6 +73,7 @@ export default combineReducers({
   contractProjectList: wrapReducerState(data(CONTRACT.FETCH_PROJECT_LIST)),
   institutionList: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_LIST)),
   institutionInfo: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_INFO)),
+  collectionList: wrapReducerState(data(CONTRACT.FETCH_COLLECTION_LIST)),
 
   recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
 

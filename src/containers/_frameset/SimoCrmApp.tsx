@@ -1,18 +1,21 @@
 /**
  * Created by jiangyukun on 2017/4/11.
  */
-import React, {Component} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
 import PageContent from './PageContent'
-
 import Modules from './Modules'
 import RecentOpen from './RecentOpen'
-import {fetchRecentOpenList} from '../../actions/app.action'
+
 import Data from '../common/interface/Data'
+import {fetchRecentOpenList} from '../../actions/app.action'
+import {getPath} from '../../core/env'
+import pages from '../../core/pages'
 
 interface SimoCrmAppProps {
   roleCode: number
@@ -22,11 +25,19 @@ interface SimoCrmAppProps {
   changeMessageStatus: any
   match: any
   currentPath: string
+  router: any
 }
 
-class SimoCrmApp extends Component<SimoCrmAppProps> {
+class SimoCrmApp extends React.Component<SimoCrmAppProps> {
+  static contextTypes = {
+    router: PropTypes.any
+  }
+
   componentDidMount() {
     this.props.fetchRecentOpenList(0)
+    if (this.props.router.location.pathname == getPath('index')) {
+      this.context.router.history.replace(getPath(pages.todoRemind))
+    }
   }
 
   render() {
@@ -57,7 +68,8 @@ function mapStateToProps(state) {
     ...state['app'],
     message: state.message,
     recentOpenList: state.recentOpenList,
-    currentPath
+    currentPath,
+    router: state.router
   }
 }
 

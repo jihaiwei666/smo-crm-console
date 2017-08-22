@@ -22,7 +22,7 @@ import Update from '../../../common/Update'
 import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
 import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
 import PlanAttachment from './PlanAttachment'
-import AddAttachmentButton from './AddAttachmentButton'
+import AddAttachmentButton from '../../../common/file/AddAttachmentButton'
 import ResearchCenter from './ResearchCenter'
 import {PROJECT} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
@@ -195,7 +195,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
             <div className="pt5 mt5 bt">
               <Radio value="5">其它，请备注：</Radio>
               <Input
-                width="200px" disabled={this.state.projectCategory != '5'}
+                width="250px" disabled={this.state.projectCategory != '5'}
                 value={this.state.categoryRemark} onChange={v => this.setState({categoryRemark: v})}/>
             </div>
           </Radio.Group>
@@ -217,7 +217,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
                        value={this.state.filterCount} onChange={v => this.setState({filterCount: v})}
         />
         <LabelAndInput1 className="bb" label="成单可能性">
-          <Select1 width="200px" options={POSSIBILITY} value={this.state.possibility} onChange={v => this.setState({possibility: v})}/>
+          <Select1 width="250px" options={POSSIBILITY} value={this.state.possibility} onChange={v => this.setState({possibility: v})}/>
         </LabelAndInput1>
         <LabelAndInput1 className="bb" label="是否安排竞标">
           <Radio.Group value={this.state.isArrangeBid} onChange={v => this.setState({isArrangeBid: v})}>

@@ -1,5 +1,7 @@
 import 'app-core/style/index.scss'
 import './antd/date-picker/style/'
+import './antd/tooltip/style/'
+import './antd/popover/style/'
 import './common.scss'
 
 import '../components/form/input.scss'

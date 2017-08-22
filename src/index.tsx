@@ -37,7 +37,7 @@ _get('/user/v1/getUserStatus').then(data => {
   let roleCode = data['post_type']
   store.dispatch({type: ''})
   render(
-    <Root store={store} history={history} roleCode={8}/>,
+    <Root store={store} history={history} roleCode={roleCode}/>,
     document.getElementById('root')
   )
 })

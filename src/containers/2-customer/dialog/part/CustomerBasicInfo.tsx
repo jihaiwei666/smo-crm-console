@@ -102,7 +102,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
             label="客户名称" inputType={NECESSARY}
             required={true} name="customerName"
             value={this.state.customerName} onChange={v => this.setState({customerName: v})}/>
-          <div className="input-unit-illustrate">客户名称只能输入汉字、英文、数字、-、（、）， “-”作为母公司名与子公司名的连接符号</div>
+          <div className="tip">客户名称只能输入汉字、英文、数字、-、（、）， “-”作为母公司名与子公司名的连接符号</div>
         </div>
 
         <LabelAndInput1 label="客户性质" inputType={NECESSARY}>
@@ -130,7 +130,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
 
         <div className="bb">
           <LabelAndInput placeholder="" label="客户编码" disabled={true} value={this.state.customerNumber}/>
-          <div className="input-unit-illustrate">进入项目合作或进入供应商，则系统自动生成客户编码（流水号），无法修改</div>
+          <div className="tip">进入项目合作或进入供应商，则系统自动生成客户编码（流水号），无法修改</div>
         </div>
 
         <div className="bb">
@@ -179,7 +179,6 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
             </div>
           </LabelAndInput1>
         </div>
-
         {
           !this.props.customerId && (
             <Save disabled={!this.state.valid} onClick={this.save}/>

@@ -29,6 +29,7 @@ import {fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign} from '
 import {CONTRACT} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import Attachment from '../../../../components/attachment/Attachment'
 
 interface AfterSignProps extends CommonFunction {
   contractId?: string
@@ -48,6 +49,7 @@ class AfterSign extends React.Component<AfterSignProps> {
   _signatoryList: any
   _pmList: any
   _bdList: any
+  _attachment: any
   state = {
     valid: true,
 
@@ -83,7 +85,8 @@ class AfterSign extends React.Component<AfterSignProps> {
     progressList: [],
     signatoryList: [],
     pmList: [],
-    bdList: []
+    bdList: [],
+    attachmentList: []
   }
 
   add = () => {
@@ -387,8 +390,14 @@ class AfterSign extends React.Component<AfterSignProps> {
             <Radio value="0">否</Radio>
           </Radio.Group>
         </LabelAndInput1>
-        <LabelAndInput1 className="bb" label="合同扫描件">
-        </LabelAndInput1>
+        <div className="bb">
+          <div className="mt5 mb5">合同扫描件</div>
+          <div>
+            <Attachment
+              ref={c => this._attachment = c} title="添加扫描件"
+              fileList={this.state.attachmentList} onChange={v => this.setState({attachmentList: v})}/>
+          </div>
+        </div>
 
         {
           this.props.afterSignId && (

@@ -5,7 +5,7 @@ import {APP} from '../core/constants/types'
 import phase from '../core/constants/phase'
 import {THREE_PHASE} from '../middlewares/request_3_phase'
 import {_get} from '../core/http'
-import {handleBDListData, handleBDPCListData} from './app.helper'
+import {handleBDListData, handleBDPCListData, handleAccountInfo} from './app.helper'
 
 export function clearState(type: string) {
   return {
@@ -36,5 +36,15 @@ export function fetchBDPC() {
 export function fetchRecentOpenList(start) {
   return {
     type: APP.FETCH_RECENT_OPEN_LIST, start
+  }
+}
+
+export function fetchAccountInfo(email) {
+  return {
+    [THREE_PHASE]: {
+      type: APP.FETCH_ACCOUNT_INFO,
+      http: () => _get(`/operation/v1/getUserAccountInfo/${email}/`),
+      handleResponse: handleAccountInfo
+    }
   }
 }

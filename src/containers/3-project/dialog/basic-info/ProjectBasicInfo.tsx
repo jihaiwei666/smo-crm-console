@@ -96,7 +96,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
         <LabelAndInput1 label="关联客户" inputType={NECESSARY}>
           <Select1
-            width="200px"
+            width="250px"
             required={true} name="relativeClient"
             options={this.props.clientList.data || []}
             value={this.state.relativeClient} onChange={v => this.setState({relativeClient: v})}/>

@@ -83,7 +83,12 @@ class Customer extends React.Component<CustomerProps> {
     if (!this.props.removeCustomerSuccess && nextProps.removeCustomerSuccess) {
       this.props.showSuccess('删除客户成功！')
       this.props.clearState(CUSTOMER.REMOVE_CUSTOMER)
-      this.refreshCurrentPage()
+      const {total} = handleListData(this.props.customerList)
+      if (total % 10 == 1) {
+        this.toPage(0)
+      } else {
+        this.refreshCurrentPage()
+      }
     }
     if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
       this.refreshCurrentPage()
@@ -97,7 +102,7 @@ class Customer extends React.Component<CustomerProps> {
 
     let customerId = item.customerId
     /*if (process.env.NODE_ENV != 'production') {
-      customerId = '170813095012658230'
+      customerId = '170822045706639373'
     }*/
 
     return (
@@ -133,11 +138,6 @@ class Customer extends React.Component<CustomerProps> {
               </Button>
             )
           }
-          {
-            operation.canImport && (
-              <Button>导入数据</Button>
-            )
-          }
           <div className="pull-right">
             <FilterButton onClick={() => this.setState({showFilter: !this.state.showFilter})}/>
           </div>
@@ -168,7 +168,7 @@ class Customer extends React.Component<CustomerProps> {
                     className="default"
                     onClick={() => this.setState({customerName: '', customerType: '', customerOwner: '', creator: ''})}
                   >清除</Button>
-                  <Button onClick={this.refreshCurrentPage}>确定</Button>
+                  <Button onClick={() => this.toPage(0)}>确定</Button>
                 </div>
               </div>
             </div>

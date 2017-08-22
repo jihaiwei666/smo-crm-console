@@ -2,7 +2,7 @@ import {contractTypeMapper} from './contract.constant'
 
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 import {handleOperationList} from '../common/common.helper'
-import {handleCollection} from './dialog/make-collections/make-collection.helper'
+import {handleCollectionList} from './dialog/make-collections/make-collection.helper'
 
 export function getContractType(type) {
   if (contractTypeMapper[type]) {
@@ -54,7 +54,7 @@ export function handleContractDetail(data) {
       templateType: beforeSign['contract_template'],
     },
     afterSign: handleAfterSign(data['contract_after_signed_info']),
-    collectionList: handleCollection(collectionList),
+    collectionList: handleCollectionList(collectionList),
     relationInfo: {
       projects: relationInfo['relationProjects'].map(item => ({
         projectId: item['project_info_id'],

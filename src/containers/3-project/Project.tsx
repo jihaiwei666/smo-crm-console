@@ -69,7 +69,12 @@ class Project extends React.Component<ProjectProps> {
     if (!this.props.removeProjectSuccess && nextProps.removeProjectSuccess) {
       this.props.showSuccess('删除项目成功！')
       this.props.clearState(PROJECT.REMOVE_PROJECT)
-      this.refreshCurrentPage()
+      const {total} = handleListData(this.props.projectList)
+      if (total % 10 == 1) {
+        this.toPage(0)
+      } else {
+        this.refreshCurrentPage()
+      }
     }
   }
 
@@ -107,10 +112,10 @@ class Project extends React.Component<ProjectProps> {
         <div className="m15">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
-        <FixHeadList>
+        <FixHeadList total={total}>
           <FixHead>
-            <FixHead.Item>客户名称</FixHead.Item>
             <FixHead.Item>项目名称</FixHead.Item>
+            <FixHead.Item>客户名称</FixHead.Item>
             <FixHead.Item>项目编码</FixHead.Item>
             <FixHead.Item>BD</FixHead.Item>
             <FixHead.Item>BDPC</FixHead.Item>
@@ -124,8 +129,8 @@ class Project extends React.Component<ProjectProps> {
                           selected={this.state.index == index}
                           onClick={() => this.setState({index})}
                   >
-                    <FixRow.Item>{item['customerName']}</FixRow.Item>
                     <FixRow.Item>{item['projectName']}</FixRow.Item>
+                    <FixRow.Item>{item['customerName']}</FixRow.Item>
                     <FixRow.Item>{item['projectCode']}</FixRow.Item>
                     <FixRow.Item>{item['bd']}</FixRow.Item>
                     <FixRow.Item>{item['bdpc']}</FixRow.Item>

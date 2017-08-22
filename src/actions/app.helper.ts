@@ -16,10 +16,6 @@ export function handleBDPCListData(BDPCListData) {
   }))
 }
 
-export function handleOperationHistoryList(data) {
-  return data.map()
-}
-
 export function handleRecentOpenList(data) {
   return {
     list: data.map(item => ({
@@ -28,5 +24,13 @@ export function handleRecentOpenList(data) {
       moduleId: item['target_id'],
       name: item['target_title'],
     }))
+  }
+}
+
+export function handleAccountInfo(data) {
+  return {
+    email: data['account'],
+    name: data['name'],
+    position: data['post_type'],
   }
 }

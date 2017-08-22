@@ -14,6 +14,7 @@ export const APP = {
   FETCH_BDPC: null,
   FETCH_RECENT_OPEN_LIST: null,
   FETCH_OPERATION_HISTORY_LIST: null,
+  FETCH_ACCOUNT_INFO: null
 }
 
 export const TODO_REMIND = {
