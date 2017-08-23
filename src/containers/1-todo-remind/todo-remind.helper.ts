@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/6.
  */
 import {getPositionName} from '../7-account-manage/account-manage.helper'
+import {getDateTimeStr} from '../../core/utils/dateUtils'
 
 export function handleTodoRemindList(data) {
   return {
@@ -9,7 +10,7 @@ export function handleTodoRemindList(data) {
     list: data['list'].map(item => ({
       id: item['todo_reminder_id'],
       email: item['sender'],
-      sendDateTime: item['send_time'],
+      sendTime: getDateTimeStr(item['send_time']),
       content: item['content'],
       name: item['name'],
       relevantType: item['relation_type'],

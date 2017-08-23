@@ -39,7 +39,8 @@ class TodoRemind extends React.Component<TodoRemindProps> {
     start2: 0,
     start3: 0,
     showSendRemindDialog: false,
-    updateStatusId: ''
+    updateStatusId: '',
+    status: ''
   }
 
   loadMoreList = () => {
@@ -59,7 +60,19 @@ class TodoRemind extends React.Component<TodoRemindProps> {
   }
 
   updateRemindStatus = () => {
-    this.props.updateRemindStatus(this.state.updateStatusId, '1')
+    this.props.updateRemindStatus(this.state.updateStatusId, this.state.status == 'reject' ? 2 : 1)
+  }
+
+  getStatusMessage = () => {
+    if (this.state.status == 'complete') {
+      return '确定更新为已完成吗？'
+    }
+    if (this.state.status == 'accept') {
+      return '确定接受此申请吗？'
+    }
+    if (this.state.status == 'reject') {
+      return '确定拒绝此申请吗？'
+    }
   }
 
   componentDidMount() {
@@ -98,7 +111,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
         {
           this.state.updateStatusId && (
             <Confirm
-              message="确定更新为已完成吗？"
+              message={this.getStatusMessage()}
               onExited={() => this.setState({updateStatusId: ''})}
               onConfirm={this.updateRemindStatus}
             />
@@ -137,6 +150,9 @@ class TodoRemind extends React.Component<TodoRemindProps> {
                     <div>
                       {item['email']}
                       <span className="send-text">发来：</span>
+                      <div className="pull-right">
+                        {item.sendTime}
+                      </div>
                     </div>
                     <div className="content">
                       {item['content']}
@@ -153,7 +169,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
                     <Row className="h-100 h-middle v-middle">
                       <RemindStatus
                         remind={item}
-                        updateToComplete={(remindId) => this.setState({updateStatusId: remindId})}
+                        updateStatus={(remindId, status) => this.setState({updateStatusId: remindId, status})}
                       />
                     </Row>
                   </div>

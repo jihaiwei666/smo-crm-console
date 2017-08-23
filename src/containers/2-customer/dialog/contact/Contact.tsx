@@ -111,7 +111,7 @@ class Contact extends React.Component<ContactProps> {
           <div className="m10">
             <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId || !this.state.name.trim()}>
               {this.props.contactId && <span>更新</span>}
-              {!this.props.contactId && <span>添加</span>}
+              {!this.props.contactId && <span>保存</span>}
             </Button>
           </div>
         </Part>

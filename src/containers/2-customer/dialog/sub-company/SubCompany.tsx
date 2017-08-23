@@ -7,10 +7,10 @@ import {connect} from 'react-redux'
 import Button from '../../../../components/button/Button'
 import Company from './Company'
 
-import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
-import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
+import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
 
 interface SubCompanyProps extends CommonFunction {
   customerId: string
@@ -36,7 +36,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
 
   addCompany = () => {
     let companyList = this.state.companyList
-    companyList.push({uid: id++, companyId: null, addFlag: true})
+    companyList.push({uid: id++, companyId: null, isLocal: true})
     this.setState({companyList})
   }
 
@@ -99,7 +99,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
         {
           this.state.companyList.map((c, index) => {
             return (
-              <Company key={c.addFlag ? c.uid : c.companyId}
+              <Company key={c.isLocal ? c.uid : c.companyId}
                        customerId={this.props.customerId}
                        companyId={c.companyId}
                        addCompany={(options) => this.saveSubCompany(c.uid, options)}

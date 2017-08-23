@@ -18,9 +18,9 @@ export function getDateTimeStr(d) {
     return null
   }
   if (typeof d == 'number') {
-    return moment(d).format('YYYY-MM-DD HH:ss')
+    return moment(d).format('YYYY-MM-DD HH:mm')
   }
-  return d.format('YYYY-MM-DD HH:ss')
+  return d.format('YYYY-MM-DD HH:mm')
 }
 
 export function getDate(d) {

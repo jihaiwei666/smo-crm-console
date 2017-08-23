@@ -44,7 +44,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
       "content": '申请BDPC支持此项目',
       "reminder_type": this.state.remindTypeList,
       "relation_id": this.props.customerId,
-      "relation_type": 1,
+      "reminder_from": 2,
     })
   }
 

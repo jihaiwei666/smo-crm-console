@@ -48,6 +48,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     attachment: []
   }
   text = ''
+  relevantType = ''
 
   close = () => {
     this.setState({show: false})
@@ -56,15 +57,18 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
   sendRemind = () => {
     this.props.sendRemind({
       "recipient": this.state.receiver,
-      "content": this.state.receiver,
+      "content": this.state.content,
       "reminder_type": this.state.remindType,
       "relation_id": this.state.relevantItem,
+      "relation_type": this.relevantType,
+      "reminder_from": 1,
       "fileList": this._attachment.getData()
     })
   }
 
-  handleRelevantItemChange = (value, text) => {
+  handleRelevantItemChange = (value, text, relevantType) => {
     this.setState({relevantItem: value})
+    this.relevantType = relevantType
     this.text = text
   }
 

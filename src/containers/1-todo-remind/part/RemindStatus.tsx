@@ -8,7 +8,7 @@ import Button from '../../../components/button/Button'
 
 interface RemindStatusProps {
   remind: any
-  updateToComplete: (remindId) => void
+  updateStatus: (remindId, status) => void
 }
 
 class RemindStatus extends React.Component<RemindStatusProps> {
@@ -17,7 +17,7 @@ class RemindStatus extends React.Component<RemindStatusProps> {
     if (remind.remindType == '1') {
       if (!remind.remindStatus) {
         return (
-          <div onClick={() => this.props.updateToComplete(remind.id)}>
+          <div onClick={() => this.props.updateStatus(remind.id, 'complete')}>
             <CheckBox checked={false} onChange={() => null}>
               已完成
             </CheckBox>
@@ -32,17 +32,17 @@ class RemindStatus extends React.Component<RemindStatusProps> {
       if (!remind.remindStatus) {
         return (
           <div>
-            <Button className="small">接受</Button>
-            <Button className="small danger">拒绝</Button>
+            <Button className="small" onClick={() => this.props.updateStatus(remind.id, 'accept')}>接受</Button>
+            <Button className="small danger" onClick={() => this.props.updateStatus(remind.id, 'reject')}>拒绝</Button>
           </div>
         )
       } else if (remind.remindStatus == '1') {
         return (
-          <Button className="small">接受</Button>
+          <span>已接受</span>
         )
       } else if (remind.remindStatus == '2') {
         return (
-          <Button className="small danger">拒绝</Button>
+          <span>已拒绝</span>
         )
       }
     }

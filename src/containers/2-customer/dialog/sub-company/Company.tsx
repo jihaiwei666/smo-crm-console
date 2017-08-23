@@ -130,7 +130,7 @@ class Company extends React.Component<CompanyProps> {
           <div className="m10">
             <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId || !this.state.valid}>
               {this.props.companyId && <span>更新</span>}
-              {!this.props.companyId && <span>添加</span>}
+              {!this.props.companyId && <span>保存</span>}
             </Button>
           </div>
         </Part>

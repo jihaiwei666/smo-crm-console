@@ -15,7 +15,7 @@ import Radio from '../../../components/form/radio/Radio'
 interface RelevantItemDialogProps {
   fetchRelevantItemList: (category: string, searchKey: string) => void
   relevantItemList: Data<any[]>
-  onSelect: (value, text) => void
+  onSelect: (value, text, relevantType) => void
   onExited: () => void
 }
 
@@ -34,7 +34,7 @@ class RelevantItemDialog extends React.Component<RelevantItemDialogProps> {
   onSelect = () => {
     let item = this.props.relevantItemList.data.find(d => d.id == this.state.relevantItem)
     let text = item.name
-    this.props.onSelect(this.state.relevantItem, text)
+    this.props.onSelect(this.state.relevantItem, text, this.state.category)
     this.close()
   }
 
