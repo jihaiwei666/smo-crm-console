@@ -108,7 +108,7 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
     const contactList = this.props.customerContactData.data || []
 
     return (
-      <Modal style={{marginTop: '30px'}} show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
+      <Modal show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
         {
           this.state.showAddConfirm && (
             <Confirm message="确定添加吗？"

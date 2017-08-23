@@ -22,8 +22,11 @@ import Input from '../../../../components/form/Input'
 import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {ADD} from '../../../../core/CRUD'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
 
-interface AddRfiDialogProps {
+interface AddRfiDialogProps extends CommonFunction {
   customerId: string
   fetchContactList: (customerId) => void
   customerContactData: Data<any>
@@ -89,6 +92,8 @@ class AddRfiDialog extends React.Component<AddRfiDialogProps> {
 
   componentWillReceiveProps(nextProps: AddRfiDialogProps) {
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.props.showSuccess('新增RFI信息成功！')
+      this.props.clearState(CUSTOMER.ADD_RFI)
       this.close()
     }
   }
@@ -145,4 +150,4 @@ class AddRfiDialog extends React.Component<AddRfiDialogProps> {
   }
 }
 
-export default AddRfiDialog
+export default addCommonFunction(AddRfiDialog)

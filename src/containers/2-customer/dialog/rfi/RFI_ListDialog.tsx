@@ -9,8 +9,11 @@ import Button from '../../../../components/button/Button'
 import AddRfiDialog from './AddRfiDialog'
 import Data from '../../../common/interface/Data'
 import UpdateRFI_Item from './UpdateRFI_Item'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface RFI_ListDialogProps {
+interface RFI_ListDialogProps extends CommonFunction {
   customerId: string
   fetchContactList: (customerId) => void
   customerContactData: Data<any>
@@ -29,7 +32,6 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   state = {
     show: true,
     showAddRfi: false,
-
   }
 
   close = () => {
@@ -41,8 +43,17 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: RFI_ListDialogProps) {
+    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.props.fetchRfiList(this.props.customerId)
+    }
+    if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
+      this.props.showSuccess('更新RFI信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_RFI)
+    }
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
       this.props.fetchRfiList(this.props.customerId)
+      this.props.showSuccess('删除RFI成功！')
+      this.props.clearState(CUSTOMER.REMOVE_RFI)
     }
   }
 
@@ -105,4 +116,4 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   }
 }
 
-export default RFI_ListDialog
+export default addCommonFunction(RFI_ListDialog)
