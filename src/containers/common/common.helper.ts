@@ -65,3 +65,14 @@ export function getOperation(data: Data<any>) {
   }
   return data.data.operation
 }
+
+export function getSingleFile(file) {
+  if (!file) {
+    return null
+  }
+  return {
+    id: file['file_id'],
+    fileUrl: file['file_url'],
+    fileName: file['file_name'],
+  }
+}

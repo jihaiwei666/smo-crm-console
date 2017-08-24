@@ -15,8 +15,10 @@ import Update from '../../../common/Update'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
 import Data from '../../../common/interface/Data'
+import Index from '../../../common/Index'
 
 interface MakeCollectionProps {
+  index: number
   contractId: string
   collectionId: string
   initCollection: any
@@ -90,9 +92,9 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     }
 
     return (
-      <div>
+      <div className="make-collection-item">
         <Row>
-          <div className="serial-number">1</div>
+          <Index index={this.props.index}/>
           <Form onValidChange={valid => this.setState({valid})}>
             <LabelAndInput1 label="节点日期">
               <DatePicker disabled={true} value={this.state.nodeDate} onChange={v => this.setState({nodeDate: v})}/>

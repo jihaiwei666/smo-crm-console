@@ -22,34 +22,40 @@ function fetchComplete(start) {
 }
 
 export function* fetchList() {
-  let {start} = yield take(TODO_REMIND.FETCH_LIST)
-  yield put({type: TODO_REMIND.FETCH_LIST + phase.START, start})
-  try {
-    let data = yield call(fetchAll, start)
-    yield put({type: TODO_REMIND.FETCH_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
-  } catch (err) {
-    yield put({type: TODO_REMIND.FETCH_LIST + phase.FAILURE, err})
+  while (true) {
+    let {start} = yield take(TODO_REMIND.FETCH_LIST)
+    yield put({type: TODO_REMIND.FETCH_LIST + phase.START, start})
+    try {
+      let data = yield call(fetchAll, start)
+      yield put({type: TODO_REMIND.FETCH_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
+    } catch (err) {
+      yield put({type: TODO_REMIND.FETCH_LIST + phase.FAILURE, err})
+    }
   }
 }
 
 export function* fetchMyList() {
-  let {start} = yield take(TODO_REMIND.FETCH_MY_LIST)
-  yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.START, start})
-  try {
-    let data = yield call(fetchMy, start)
-    yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
-  } catch (err) {
-    yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.FAILURE, err})
+  while (true) {
+    let {start} = yield take(TODO_REMIND.FETCH_MY_LIST)
+    yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.START, start})
+    try {
+      let data = yield call(fetchMy, start)
+      yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
+    } catch (err) {
+      yield put({type: TODO_REMIND.FETCH_MY_LIST + phase.FAILURE, err})
+    }
   }
 }
 
 export function* fetchCompleteList() {
-  let {start} = yield take(TODO_REMIND.FETCH_COMPLETE_LIST)
-  yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.START, start})
-  try {
-    let data = yield call(fetchComplete, start)
-    yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
-  } catch (err) {
-    yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.FAILURE, err})
+  while (true) {
+    let {start} = yield take(TODO_REMIND.FETCH_COMPLETE_LIST)
+    yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.START, start})
+    try {
+      let data = yield call(fetchComplete, start)
+      yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.SUCCESS, data: handleTodoRemindList(data)})
+    } catch (err) {
+      yield put({type: TODO_REMIND.FETCH_COMPLETE_LIST + phase.FAILURE, err})
+    }
   }
 }

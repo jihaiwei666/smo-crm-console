@@ -4,7 +4,7 @@
 import {THREE_PHASE} from '../../../../middlewares/request_3_phase'
 import {_post, _get} from '../../../../core/http'
 import {CUSTOMER} from '../../../../core/constants/types'
-import {handleRfiServerData, handleRfiListServerData} from './rfi.helper'
+import {handleLastRfiDetail, handleRfiListServerData} from './rfi.helper'
 
 const urlPrefix = '/customer'
 
@@ -23,7 +23,7 @@ export function addRfi(options) {
     [THREE_PHASE]: {
       type: CUSTOMER.ADD_RFI,
       http: () => _post(urlPrefix + '/v1/rfi/add', {body: options}),
-      handleResponse: handleRfiServerData
+      handleResponse: handleLastRfiDetail
     }
   }
 }
@@ -42,6 +42,17 @@ export function removeRfi(rfiId) {
     [THREE_PHASE]: {
       type: CUSTOMER.REMOVE_RFI,
       http: () => _post(urlPrefix + `/v1/rfi/del/${rfiId}`)
+    }
+  }
+}
+
+export function fetchLastRfiDetail(customerId) {
+
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.FETCH_LAST_RFI_DETAIL,
+      http: () => _get(urlPrefix + `/v1/rfi/latest/${customerId}`),
+      handleResponse: handleLastRfiDetail
     }
   }
 }

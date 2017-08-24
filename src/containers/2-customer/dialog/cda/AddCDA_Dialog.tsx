@@ -20,6 +20,7 @@ import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {ADD} from '../../../../core/CRUD'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
+import Index from '../../../common/Index'
 
 interface CDA_DialogProps {
   customerId: string
@@ -35,6 +36,7 @@ interface CDA_DialogProps {
 let cdaBrokerId = 1
 
 class CDA_Dialog extends React.Component<CDA_DialogProps> {
+  _scanFile: any
   state = {
     show: true,
     showAddConfirm: false,
@@ -62,17 +64,13 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
 
   handleContactChange = (index, value) => {
     let cdaList = updateItemAtIndex(this.state.cdaList, index, cda => {
-      let contact = this.props.customerContactData.data.find(d => d.contactId == value)
       cda.username = value
-      cda.telephone = contact.telephone
-      cda.email = contact.email
-      cda.position = contact.position
     })
     this.setState({cdaList})
   }
 
   addBroker = () => {
-    this.setState({cdaList: addListItem(this.state.cdaList, {id: cdaBrokerId++, username: '', telephone: '', email: '', position: ''})})
+    this.setState({cdaList: addListItem(this.state.cdaList, {id: cdaBrokerId++, username: ''})})
   }
 
   add = () => {
@@ -89,7 +87,7 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
         "cda_remark": this.state.remark,
       },
       customerCdaPersons: cdaList,
-      customerCdaFile: null
+      customerCdaFile: this._scanFile.getData()
     })
   }
 
@@ -179,8 +177,9 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
 
             <LabelAndInput1 label="CDA扫描件" className="bb pb5">
               <SingleFile
+                ref={c => this._scanFile = c}
                 file={this.state.scanFile}
-                onAdd={file => this.setState({scanFile: file})}
+                onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}
               />
             </LabelAndInput1>

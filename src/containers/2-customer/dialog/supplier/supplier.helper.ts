@@ -2,11 +2,15 @@
  * Created by jiangyukun on 2017/7/24.
  */
 import {getDate} from '../../../../core/utils/dateUtils'
+import {getSingleFile} from '../../../common/common.helper'
 
 export function handleSupplierServerData(data) {
   data = data || {}
   let base = data['customerProvider'] || {}
   let supplierList = data['customerProviderInfos'] || []
+  let lastMas = data['latestCustomerProviderMsa'] || {}
+  let msa = lastMas['customerProviderMsaVo'] || {}
+
   return {
     supplierId: base['provider_id'],
     supplierType: base['provider_type'],
@@ -26,14 +30,23 @@ export function handleSupplierServerData(data) {
           broker: broker['contacts_info_id']
         }))
       }
-    })
+    }),
+    startDate: getDate(msa['msa_begin_time']),
+    endDate: getDate(msa['msa_end_time']),
+    msaId: msa['provider_msa_id'],
+    scanFile: getSingleFile(lastMas['customerProviderMsaFile'])
   }
 }
 
 export function handleMsaListData(data) {
-  return data.map(item => ({
-    msaId: item['provider_msa_id'],
-    startDate: item['msa_begin_time'],
-    endDate: item['msa_end_time']
-  }))
+  data = data || []
+  return data.map(item => {
+    let base = item['customerProviderMsaVo']
+    return {
+      msaId: base['provider_msa_id'],
+      startDate: getDate(base['msa_begin_time']),
+      endDate: getDate(base['msa_end_time']),
+      scanFile: getSingleFile(item['customerProviderMsaFile'])
+    }
+  })
 }

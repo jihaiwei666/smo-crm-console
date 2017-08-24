@@ -29,11 +29,14 @@ interface CustomerState {
   removeCdaSuccess: boolean
 
   addSupplierSuccess: boolean
-  supplierInfo: any
+  newSupplierInfo: any
   updateSupplierSuccess: boolean
+  addMsaSuccess: boolean
+  updateMsaSuccess: boolean
+  removeMsaSuccess: boolean
 
   addRfiSuccess: boolean
-  rfiInfo: any
+  newRfiInfo: any
   updateRfiSuccess: boolean
   removeRfiSuccess: boolean
 

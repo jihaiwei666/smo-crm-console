@@ -27,17 +27,22 @@ import Data from '../../../common/interface/Data'
 import {MODULES} from './rfi.constants'
 import {ADD, EDIT} from '../../../../core/CRUD'
 import {fetchContactList} from '../../customer.action'
-import {fetchRfiList, addRfi, updateRfi, removeRfi} from './rfi.action'
+import {fetchRfiList, addRfi, updateRfi, removeRfi, fetchLastRfiDetail} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import {CUSTOMER} from '../../../../core/constants/types'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface RFIProps extends CustomerState {
+interface RFIProps extends CustomerState, CommonFunction {
   customerId: string
-  rfiId?: string
+  initRfiInfo: any
   fetchContactList: (customerId: string) => void
   customerContactData: any
   fetchRfiList: (customerId) => void
+  fetchLastRfiDetail: (customerId) => void
   rfiList: Data<any[]>
+  lastRfiDetail: Data<any>
   addRfi: (options) => void
   updateRfi: (options) => void
   removeRfi: (rifId) => void
@@ -54,6 +59,7 @@ function getNextBroker() {
 }
 
 class RFI extends React.Component<RFIProps> {
+  rfiId = ''
   state = {
     valid: true,
     showRfiListDialog: false,
@@ -89,7 +95,7 @@ class RFI extends React.Component<RFIProps> {
     this.props.updateRfi({
       "customerRfi": {
         "customer_info_id": this.props.customerId,
-        "customer_rfi_id": this.props.rfiId,
+        "customer_rfi_id": this.rfiId,
         "write_time": this.state.fillDate,
         "write_person": this.state.fillPerson,
         "review_person": this.state.auditPerson,
@@ -100,7 +106,7 @@ class RFI extends React.Component<RFIProps> {
       "customerRfiDockerList": this.state.brokerList.map(broker => ({
         "customer_rfi_docker_id": broker.isLocal ? '' : broker.id,
         "contacts_info_id": broker.contactId,
-        "customer_rfi_id": this.props.rfiId,
+        "customer_rfi_id": this.rfiId,
         "sign": broker.isLocal ? ADD : EDIT
       }))
     })
@@ -117,8 +123,31 @@ class RFI extends React.Component<RFIProps> {
   }
 
   componentWillMount() {
-    if (this.props.rfiInfo) {
-      this.setState(this.props.rfiInfo)
+    if (this.props.initRfiInfo) {
+      this.rfiId = this.props.initRfiInfo.rfiId
+      this.setState(this.props.initRfiInfo)
+    }
+  }
+
+  componentWillReceiveProps(nextProps: RFIProps) {
+    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
+      this.props.showSuccess('保存RFI信息成功！')
+      this.props.clearState(CUSTOMER.ADD_RFI)
+      this.rfiId = nextProps.newRfiInfo.rfiId
+    }
+    if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
+      this.props.showSuccess('更新RFI信息成功！')
+      this.props.clearState(CUSTOMER.UPDATE_RFI)
+      this.props.fetchLastRfiDetail(this.props.customerId)
+    }
+    if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
+      this.props.fetchLastRfiDetail(this.props.customerId)
+    }
+    if (!this.props.lastRfiDetail.loaded && nextProps.lastRfiDetail.loaded) {
+      this.setState(nextProps.lastRfiDetail.data)
+      if (nextProps.lastRfiDetail.data) {
+        this.rfiId = nextProps.lastRfiDetail.data.rfiId
+      }
     }
   }
 
@@ -189,15 +218,15 @@ class RFI extends React.Component<RFIProps> {
           </Part>
         </FlexDiv>
         <TextAndButton text="只显示最近一条RFI信息，更多请点击查看更多按钮查看">
-          <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showRfiListDialog: true})}>...查看更多</Button>
+          <Button className="small" disabled={!this.props.customerId || !this.rfiId} onClick={() => this.setState({showRfiListDialog: true})}>...查看更多</Button>
         </TextAndButton>
         {
-          !this.props.rfiId && (
+          !this.rfiId && (
             <Save disabled={!this.props.customerId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
-          this.props.rfiId && (
+          this.rfiId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
@@ -210,13 +239,13 @@ function mapStateToProps(state, props) {
   return {
     ...state.customer,
     customerId: props.customerId,
-    rfiId: props.rfiId,
-    rfiInfo: props.rfiInfo,
+    initRfiInfo: props.initRfiInfo,
     customerContactData: state.customerContactData,
-    rfiList: state.rfiList
+    rfiList: state.rfiList,
+    lastRfiDetail: state.lastRfiDetail
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchRfiList, addRfi, updateRfi, removeRfi, fetchContactList
-})(RFI)
+  fetchRfiList, addRfi, updateRfi, removeRfi, fetchContactList, fetchLastRfiDetail
+})(addCommonFunction(RFI))

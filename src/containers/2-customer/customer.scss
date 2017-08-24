@@ -27,3 +27,11 @@
     border-radius: 5px;
     margin: 5px;
 }
+
+.msa-list-item {
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px;
+    &:not(:first-child) {
+        margin-top: 15px;
+    }
+}

@@ -34,6 +34,7 @@ class CollectionList extends React.Component<CollectionListProps> {
             return (
               <MakeCollection
                 key={collection.collectionId}
+                index={index}
                 contractId={this.props.contractId}
                 collectionId={collection.collectionId}
                 initCollection={collection}

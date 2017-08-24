@@ -2,23 +2,35 @@
  * Created by jiangyukun on 2017/7/24.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout'
 import Spinner from 'app-core/common/Spinner'
-import FlexDiv from 'app-core/layout/FlexDiv'
+import Confirm from 'app-core/common/Confirm'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import Button from '../../../../components/button/Button'
 import AddMsaDialog from './AddMsaDialog'
-import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import Index from '../../../common/Index'
+import SingleFile from '../../../common/file/SingleFile'
+import DatePicker from '../../../../components/form/DatePicker'
 
-interface LookMSADialogProps {
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
+import {fetchMSAList, addMsa, updateMsa, removeMsa} from './supplier.action'
+
+interface LookMSADialogProps extends CommonFunction {
   supplierId: string
   fetchMSAList: (supplierId: string) => void
   msaListInfo: any
   addMsa: (options) => void
+  addMsaSuccess: boolean
   updateMsa: (options) => void
+  updateMsaSuccess: boolean
+  removeMsa: (msaId) => void
+  removeMsaSuccess: boolean
   onExited: () => void
 }
 
@@ -26,6 +38,7 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
   state = {
     show: true,
     showAddMsaDialog: false,
+    toRemoveMsaId: ''
   }
 
   close = () => {
@@ -37,9 +50,14 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
   }
 
   componentWillReceiveProps(nextProps: LookMSADialogProps) {
-    /* if (!this.props.Success && nextProps.Success) {
-       this.close()
-     }*/
+    if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
+      this.props.fetchMSAList(this.props.supplierId)
+    }
+    if (!this.props.removeMsaSuccess && nextProps.removeMsaSuccess) {
+      this.props.showSuccess('删除MSA成功！')
+      this.props.clearState(CUSTOMER.REMOVE_MSA)
+      this.props.fetchMSAList(this.props.supplierId)
+    }
   }
 
   render() {
@@ -55,14 +73,22 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
             <AddMsaDialog
               supplierId={this.props.supplierId}
               addMsa={this.props.addMsa}
-              addMsaSuccess={false}
+              addMsaSuccess={this.props.addMsaSuccess}
               onExited={() => this.setState({showAddMsaDialog: false})}
             />
           )
         }
-
+        {
+          this.state.toRemoveMsaId && (
+            <Confirm
+              message="确定删除此MSA吗？"
+              onExited={() => this.setState({toRemoveMsaId: ''})}
+              onConfirm={() => this.props.removeMsa(this.state.toRemoveMsaId)}
+            />
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>查看MSA</Modal.Title>
+          <Modal.Title>MSA列表</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {
@@ -74,16 +100,34 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
             loaded && (
               data.map((item, index) => {
                 return (
-                  <FlexDiv key={item.msaId} className="">
-                    <div style={{width: '75px'}}>{index + 1}</div>
-                    <Part className="bb bl">
-                      <LabelAndInput label="起始日期" value={item.startDate} onChange={v => this.setState({startDate: v})}/>
-                      <LabelAndInput label="结束日期" value={item.endDate} onChange={v => this.setState({endDate: v})}/>
-                      <LabelAndInput1 label="MSA扫描件">
-
+                  <Row key={item.msaId} className="msa-list-item">
+                    <Index index={index}/>
+                    <Part>
+                      <LabelAndInput1 label="起始日期">
+                        <DatePicker
+                          value={item.startDate} onChange={v => null}
+                        />
                       </LabelAndInput1>
+                      <LabelAndInput1 label="结束日期">
+                        <DatePicker
+                          value={item.endDate} onChange={v => null}
+                        />
+                      </LabelAndInput1>
+                      <LabelAndInput1 label="MSA扫描件">
+                        <SingleFile
+                          file={item.scanFile}
+                          onChange={file => null}
+                          onClear={() => null}
+                        />
+                      </LabelAndInput1>
+                      <div className="clearfix">
+                        <div className="pull-right tip">
+                          <span className="mr5">点此删除按钮删除一条MSA信息</span>
+                          <Button className="small danger" onClick={() => this.setState({toRemoveMsaId: item.msaId})}>删除</Button>
+                        </div>
+                      </div>
                     </Part>
-                  </FlexDiv>
+                  </Row>
                 )
               })
             )
@@ -104,4 +148,16 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
   }
 }
 
-export default LookMSADialog
+function mapStateToProps(state, props) {
+  return {
+    addMsaSuccess: state.customer.addMsaSuccess,
+    updateMsaSuccess: state.customer.updateMsaSuccess,
+    removeMsaSuccess: state.customer.removeMsaSuccess,
+    supplierId: props.supplierId,
+    msaListInfo: state.msaListInfo
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchMSAList, addMsa, updateMsa, removeMsa
+})(addCommonFunction(LookMSADialog))

@@ -35,11 +35,14 @@ const initValue: CustomerState = {
   removeCdaSuccess: false,
 
   addSupplierSuccess: false,
-  supplierInfo: null,
+  newSupplierInfo: null,
   updateSupplierSuccess: false,
+  addMsaSuccess: false,
+  updateMsaSuccess: false,
+  removeMsaSuccess: false,
 
   addRfiSuccess: false,
-  rfiInfo: null,
+  newRfiInfo: null,
   updateRfiSuccess: false,
   removeRfiSuccess: false,
 
@@ -76,10 +79,10 @@ export default function customer(iState = fromJS(initValue), action) {
       break
 
     case CUSTOMER.ADD_SUPPLIER + phase.SUCCESS:
-      nextIState = nextIState.set('supplierInfo', action.data)
+      nextIState = nextIState.set('newSupplierInfo', action.data)
       break
     case CUSTOMER.ADD_RFI + phase.SUCCESS:
-      nextIState = nextIState.set('rfiInfo', action.data)
+      nextIState = nextIState.set('newRfiInfo', action.data)
       break
   }
 
@@ -107,6 +110,9 @@ export default function customer(iState = fromJS(initValue), action) {
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.ADD_SUPPLIER, 'addSupplierSuccess')
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_SUPPLIER, 'updateSupplierSuccess')
+  nextIState = handleFlagState(nextIState, action, CUSTOMER.ADD_MSA, 'addMsaSuccess')
+  nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_MSA, 'updateMsaSuccess')
+  nextIState = handleFlagState(nextIState, action, CUSTOMER.REMOVE_MSA, 'removeMsaSuccess')
 
   nextIState = handleFlagState(nextIState, action, CUSTOMER.ADD_RFI, 'addRfiSuccess')
   nextIState = handleFlagState(nextIState, action, CUSTOMER.UPDATE_RFI, 'updateRfiSuccess')

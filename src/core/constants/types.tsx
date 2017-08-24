@@ -55,11 +55,14 @@ export const CUSTOMER = {
 
   ADD_SUPPLIER: null,
   UPDATE_SUPPLIER: null,
+  FETCH_LAST_SUPPLIER_DETAIL: null,
   FETCH_MSA_LIST: null,
   ADD_MSA: null,
   UPDATE_MSA: null,
+  REMOVE_MSA: null,
 
   FETCH_RFI_LIST: null,
+  FETCH_LAST_RFI_DETAIL: null,
   ADD_RFI: null,
   UPDATE_RFI: null,
   REMOVE_RFI: null,

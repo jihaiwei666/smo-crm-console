@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import DatePicker from 'antd/lib/date-picker'
-import {FlexDiv, Part} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 
 import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
@@ -24,25 +24,28 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
-import {EDIT, ADD} from '../../../../core/CRUD'
+import {EDIT, ADD, UPDATE} from '../../../../core/CRUD'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {fetchContactList} from '../../customer.action'
-import {addSupplier, updateSupplier, fetchMSAList, addMsa, updateMsa} from './supplier.action'
+import {addSupplier, updateSupplier, fetchLastSupplierDetail} from './supplier.action'
+import Index from '../../../common/Index'
 
 interface SupplierProps extends CustomerState, CommonFunction {
   customerId: string
-  supplierId?: string
   initSupplierInfo?: any
   fetchContactList: (customerId: string) => void
   customerContactData: Data<any>
+  fetchLastSupplierDetail: (customerId) => void
+  lastSupplierDetail: Data<any>
   addSupplier: (options) => void
   updateSupplier: (options) => void
   fetchMSAList: (supplierId: string) => void
   msaListInfo: any[]
   addMsa: (options) => void
   updateMsa: (options) => void
+  removeMsa: (msaId) => void
 }
 
 let id = 1
@@ -51,6 +54,7 @@ function getNextBroker() {
   return {
     id: id++,
     broker: '',
+    isLocal: true
   }
 }
 
@@ -62,11 +66,15 @@ function getNextSupplier() {
     chosenDate: '',
     isFixed: '',
     unitPrice: '',
-    brokerList: []
+    brokerList: [],
+    isLocal: true
   }
 }
 
 class Supplier extends React.Component<SupplierProps> {
+  supplierId: ''
+  msaId: ''
+  _scanFile: any
   state = {
     showMoreMSA: false,
 
@@ -109,7 +117,7 @@ class Supplier extends React.Component<SupplierProps> {
     const {supplierList} = this.state
     let list = supplierList.map(supplier => ({
       "customerProviderInfo": {
-        "provider_id": this.props.supplierId,
+        "provider_id": this.supplierId,
         "provider_info_id": supplier.id,
         "validity_begin_time": supplier.startDate,
         "validity_end_time": supplier.endDate,
@@ -127,7 +135,7 @@ class Supplier extends React.Component<SupplierProps> {
     }))
     let options = {
       customerProvider: {
-        "provider_id": this.props.supplierId,
+        "provider_id": this.supplierId,
         "customer_info_id": this.props.customerId,
         "provider_type": this.state.supplierType,
         "is_signed_msa": this.state.isDeployment
@@ -142,15 +150,25 @@ class Supplier extends React.Component<SupplierProps> {
     if (!this.state.startDate && !this.state.endDate && !this.state.scanFile) {
       return null
     }
+    if (this.msaId) {
+      return {
+        "customerProviderMsaVo": {
+          "provider_id": this.supplierId,
+          "provider_msa_id": this.msaId,
+          "msa_begin_time": this.state.startDate,
+          "msa_end_time": this.state.endDate,
+          "sign": UPDATE
+        },
+        "customerProviderMsaFile": this._scanFile.getData()
+      }
+    }
     return {
       "customerProviderMsaVo": {
         "msa_begin_time": this.state.startDate,
         "msa_end_time": this.state.endDate,
+        "sign": ADD
       },
-      "customerProviderMsaFile": {
-        "file_url": this.state.scanFile.fileUrl,
-        "file_name": this.state.scanFile.fileName
-      }
+      "customerProviderMsaFile": this._scanFile.getData()
     }
   }
 
@@ -165,6 +183,9 @@ class Supplier extends React.Component<SupplierProps> {
 
   handleSupplierChange = (supplierIndex, stateKey, value) => {
     this.state.supplierList[supplierIndex][stateKey] = value
+    if (stateKey == 'isFixed' && value == '2') {
+      this.state.supplierList[supplierIndex]['unitPrice'] = ''
+    }
     this.forceUpdate()
   }
 
@@ -173,12 +194,10 @@ class Supplier extends React.Component<SupplierProps> {
     this.forceUpdate()
   }
 
-  handleUploaded = (item) => {
-    this.setState({scanFile: item[0]})
-  }
-
   componentWillMount() {
     if (this.props.initSupplierInfo) {
+      this.supplierId = this.props.initSupplierInfo.supplierId
+      this.msaId = this.props.initSupplierInfo.msaId
       this.setState(this.props.initSupplierInfo)
     }
   }
@@ -187,10 +206,23 @@ class Supplier extends React.Component<SupplierProps> {
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
       this.props.showSuccess('添加供应商成功！')
       this.props.clearState(CUSTOMER.ADD_SUPPLIER)
+      this.supplierId = nextProps.newSupplierInfo.supplierId
+      this.msaId = nextProps.newSupplierInfo.msaId
     }
     if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
       this.props.showSuccess('更新供应商信息成功！')
       this.props.clearState(CUSTOMER.UPDATE_SUPPLIER)
+    }
+    if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
+      this.props.fetchLastSupplierDetail(this.props.customerId)
+    }
+    if (!this.props.removeMsaSuccess && nextProps.removeMsaSuccess) {
+      this.props.fetchLastSupplierDetail(this.props.customerId)
+    }
+    if (!this.props.lastSupplierDetail.loaded && nextProps.lastSupplierDetail.loaded) {
+      this.setState(nextProps.lastSupplierDetail.data)
+      this.supplierId = nextProps.lastSupplierDetail.data.supplierId
+      this.msaId = nextProps.lastSupplierDetail.data.msaId
     }
   }
 
@@ -201,11 +233,9 @@ class Supplier extends React.Component<SupplierProps> {
         {
           this.state.showMoreMSA && (
             <LookMSADialog
-              supplierId={this.props.supplierId}
+              supplierId={this.supplierId}
               fetchMSAList={this.props.fetchMSAList}
               msaListInfo={this.props.msaListInfo}
-              addMsa={this.props.addMsa}
-              updateMsa={this.props.updateMsa}
               onExited={() => this.setState({showMoreMSA: false})}
             />
           )
@@ -221,9 +251,9 @@ class Supplier extends React.Component<SupplierProps> {
           {
             this.state.supplierList.map((supplier, supplierIndex) => {
               return (
-                <FlexDiv key={supplier.id}>
-                  <div style={{width: '30px'}}></div>
-                  <Part className="bl">
+                <Row key={supplier.id} className="bb">
+                  <Index index={supplierIndex}/>
+                  <Part>
                     <InputGroup className="bb" label="有效期限（!）">
                       <LabelAndInput1 label="起始日期">
                         <DatePicker value={supplier.startDate} onChange={v => this.handleSupplierChange(supplierIndex, 'startDate', v)}/>
@@ -247,7 +277,7 @@ class Supplier extends React.Component<SupplierProps> {
                         onChange={v => this.handleSupplierChange(supplierIndex, 'unitPrice', v)}
                       />
                     </InputGroup>
-                    <InputGroup className="bb" label="对接人信息" inputType={IMPORTANT}>
+                    <InputGroup label="对接人信息" inputType={IMPORTANT}>
                       {
                         supplier.brokerList.map((broker, brokerIndex) => {
                           return (
@@ -267,7 +297,7 @@ class Supplier extends React.Component<SupplierProps> {
                       </TextAndButton>
                     </InputGroup>
                   </Part>
-                </FlexDiv>
+                </Row>
               )
             })
           }
@@ -294,26 +324,27 @@ class Supplier extends React.Component<SupplierProps> {
             </LabelAndInput1>
             <LabelAndInput1 label="MSA扫描件">
               <SingleFile
+                ref={c => this._scanFile = c}
                 file={this.state.scanFile}
-                onAdd={file => this.setState({scanFile: file})}
+                onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}
               />
             </LabelAndInput1>
           </InputGroup>
 
           <TextAndButton text="只显示最近一条MSA信息，更多请点击查看更多按钮查看">
-            <Button className="small" disabled={!this.props.supplierId} onClick={() => this.setState({showMoreMSA: true})}>
+            <Button className="small" disabled={!this.supplierId} onClick={() => this.setState({showMoreMSA: true})}>
               ...查看更多
             </Button>
           </TextAndButton>
         </div>
         {
-          !this.props.supplierId && (
+          !this.supplierId && (
             <Save disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.add}/>
           )
         }
         {
-          this.props.supplierId && (
+          this.supplierId && (
             <Update disabled={!this.state.supplierType || !this.state.isDeployment} onClick={this.update}/>
           )
         }
@@ -326,13 +357,13 @@ function mapStateToProps(state, props) {
   return {
     ...state.customer,
     customerId: props.customerId,
-    supplierId: props.supplierId,
     initSupplierInfo: props.initSupplierInfo,
     customerContactData: state.customerContactData,
-    msaListInfo: state.msaListInfo
+    msaListInfo: state.msaListInfo,
+    lastSupplierDetail: state.lastSupplierDetail
   }
 }
 
 export default connect(mapStateToProps, {
-  addSupplier, fetchContactList, updateSupplier, fetchMSAList, addMsa, updateMsa
+  addSupplier, fetchContactList, updateSupplier, fetchLastSupplierDetail
 })(addCommonFunction(Supplier))

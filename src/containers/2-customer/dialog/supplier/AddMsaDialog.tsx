@@ -11,7 +11,12 @@ import DatePicker from '../../../../components/form/DatePicker'
 import SingleFile from '../../../common/file/SingleFile'
 import {NECESSARY} from '../../../common/Label'
 
-interface AddMsaDialogProps {
+import {getDateStr} from '../../../../core/utils/dateUtils'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
+
+interface AddMsaDialogProps extends CommonFunction {
   supplierId: string
   addMsa: any
   addMsaSuccess: boolean
@@ -19,11 +24,12 @@ interface AddMsaDialogProps {
 }
 
 class AddMsaDialog extends React.Component<AddMsaDialogProps> {
+  _scanFile: any
   state = {
     valid: true,
     show: true,
-    startDate: '',
-    endDate: '',
+    startDate: null,
+    endDate: null,
     scanFile: null
   }
 
@@ -35,23 +41,17 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
     this.props.addMsa({
       "customerProviderMsaVo": {
         "provider_id": this.props.supplierId,
-        "msa_begin_time": this.state.startDate,
-        "msa_end_time": this.state.endDate,
+        "msa_begin_time": getDateStr(this.state.startDate),
+        "msa_end_time": getDateStr(this.state.endDate),
       },
-      "customerProviderMsaFile": this._getFile()
+      "customerProviderMsaFile": this._scanFile.getData()
     })
-  }
-
-  _getFile() {
-    if (!this.state.scanFile) return null
-    return {
-      "file_url": this.state.scanFile.fileUrl,
-      "file_name": this.state.scanFile.fileName,
-    }
   }
 
   componentWillReceiveProps(nextProps: AddMsaDialogProps) {
     if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
+      this.props.showSuccess('添加MSA成功！')
+      this.props.clearState(CUSTOMER.ADD_MSA)
       this.close()
     }
   }
@@ -79,8 +79,9 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
             </LabelAndInput1>
             <LabelAndInput1 label="MSA扫描件">
               <SingleFile
+                ref={c => this._scanFile = c}
                 file={this.state.scanFile}
-                onAdd={file => this.setState({scanFile: file})}
+                onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}
               />
             </LabelAndInput1>
@@ -96,4 +97,4 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
   }
 }
 
-export default AddMsaDialog
+export default addCommonFunction(AddMsaDialog)

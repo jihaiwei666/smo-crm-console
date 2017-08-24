@@ -2,7 +2,7 @@
  * Created by jiangyukun on 2017/7/11.
  */
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
-import {handleRfiServerData} from './dialog/rfi/rfi.helper'
+import {handleLastRfiDetail} from './dialog/rfi/rfi.helper'
 import {getDateStr} from '../../core/utils/dateUtils'
 import {handleOperationList, getNullValue} from '../common/common.helper'
 import {customerTypeMapper} from './customer.constant'
@@ -114,7 +114,7 @@ export function handleClientInfo(data) {
       remark: item['cda_remark'],
     })),
     supplierInfo: handleSupplierServerData(supplierInfo),
-    rfiInfo: handleRfiServerData(rfi),
+    rfiInfo: handleLastRfiDetail(rfi),
     relationInfo: {
       projects: relationInfo['relationProjects'].map(item => ({
         projectId: item['project_info_id'],

@@ -33,13 +33,9 @@ interface UpdateCustomerDialogProps extends CustomerState {
 }
 
 class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
-  initSupplierInfo: any
-  rfiInfo: any
   state = {
     show: true,
     showAddConfirm: false,
-    supplierId: '',
-    rfiId: '',
   }
 
   close = () => {
@@ -52,26 +48,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: UpdateCustomerDialogProps) {
-    if (!this.props.customerInfo.loaded && nextProps.customerInfo.loaded) {
-      const data = nextProps.customerInfo.data
-      const {supplierInfo, rfiInfo} = data
-      if (supplierInfo) {
-        this.initSupplierInfo = supplierInfo
-        this.setState({supplierId: supplierInfo.supplierId})
-      }
-      if (rfiInfo) {
-        this.rfiInfo = rfiInfo
-        this.setState({rfiId: rfiInfo.rfiId})
-      }
-    }
-    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
-      this.initSupplierInfo = nextProps.supplierInfo
-      this.setState({supplierId: nextProps.supplierInfo.supplierId})
-    }
-    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
-      this.rfiInfo = nextProps.rfiInfo
-      this.setState({rfiId: nextProps.rfiInfo.rfiId})
-    }
+
   }
 
   render() {
@@ -82,8 +59,8 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
     const subCompanyList = data.subCompanyList
     const initContactInfo = data.contactInfo
     // const cdaList = data.cdaList
-    // const supplierInfo = data.supplierInfo
-    // const rfiInfo = data.rfiInfo
+    const supplierInfo = data.supplierInfo
+    const rfiInfo = data.rfiInfo
     const relationInfo = data.relationInfo
     const operationRecordList = data.operationRecordList
     const remarkAttachment = data.remarkAttachment
@@ -133,12 +110,11 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                   <CategoryTitle title="供应商"/>
                   <Supplier
                     customerId={this.props.customerId}
-                    supplierId={this.state.supplierId}
-                    initSupplierInfo={this.initSupplierInfo}
+                    initSupplierInfo={supplierInfo}
                   />
 
                   <CategoryTitle title="RFI"/>
-                  <RFI customerId={this.props.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>
+                  <RFI customerId={this.props.customerId} initRfiInfo={rfiInfo}/>
 
                   <CategoryTitle title="关联信息"/>
                   <AssociateInfo relationInfo={relationInfo}/>

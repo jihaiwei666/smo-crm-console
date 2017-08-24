@@ -28,3 +28,9 @@
     text-align: center;
     margin: 10px 0;
 }
+
+.make-collection-item {
+    &:not(:last-child) {
+        border-bottom: 1px solid #e6e6e6;
+    }
+}

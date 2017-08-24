@@ -12,6 +12,7 @@ import UpdateRFI_Item from './UpdateRFI_Item'
 import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import Index from '../../../common/Index'
 
 interface RFI_ListDialogProps extends CommonFunction {
   customerId: string
@@ -45,10 +46,6 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
   componentWillReceiveProps(nextProps: RFI_ListDialogProps) {
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
       this.props.fetchRfiList(this.props.customerId)
-    }
-    if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
-      this.props.showSuccess('更新RFI信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_RFI)
     }
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
       this.props.fetchRfiList(this.props.customerId)
@@ -84,7 +81,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
             rfiList.map((rfi, index) => {
               return (
                 <Row key={rfi.rfiId} className="bb">
-                  <div className="item-index">{index + 1}</div>
+                  <Index index={index}/>
                   <Part>
                     <UpdateRFI_Item
                       customerId={this.props.customerId}

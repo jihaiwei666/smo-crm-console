@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {Row, Part} from 'app-core/layout/'
+
+
 import Confirm from 'app-core/common/Confirm'
 
 import Button from '../../components/button/Button'
-import CheckBox from '../../components/form/checkbox/CheckBox'
 import SendRemindDialog from './dialog/SendRemindDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
@@ -15,8 +15,7 @@ import List from '../common/interface/List'
 import {TODO_REMIND} from '../../core/constants/types'
 import {fetchAllList, fetchMyList, fetchCompleteList, updateRemindStatus} from './todo-remind.action'
 import {handlePageListData} from '../../reducers/page-list.reducer'
-import {getRelevantTypeText} from './todo-remind.helper'
-import RemindStatus from './part/RemindStatus'
+import Remind from './part/Remind'
 
 interface TodoRemindProps extends AppFunctionPage {
   fetchAllList: (start) => void
@@ -32,31 +31,32 @@ interface TodoRemindProps extends AppFunctionPage {
 }
 
 class TodoRemind extends React.Component<TodoRemindProps> {
+  start1 = 0
+  start2 = 0
+  start3 = 0
   state = {
     listType: 'all',
     index: -1,
-    start1: 0,
-    start2: 0,
-    start3: 0,
+
     showSendRemindDialog: false,
     updateStatusId: '',
-    status: ''
+    status: '',
+
   }
 
-  loadMoreList = () => {
-    if (this.state.listType == 'all') {
-      this.props.fetchAllList(this.state.start1)
-    }
-    if (this.state.listType == 'my') {
-      this.props.fetchMyList(this.state.start2)
-    }
-    if (this.state.listType == 'complete') {
-      this.props.fetchCompleteList(this.state.start3)
-    }
+  loadMoreUnCompleteRemind = () => {
+    this.start1++
+    this.props.fetchAllList(this.start1)
   }
 
-  reloadList = () => {
-    this.setState({start1: 0, start2: 0, start3: 0}, this.loadMoreList)
+  loadMoreMyRemind = () => {
+    this.start2++
+    this.props.fetchMyList(this.start2)
+  }
+
+  loadMoreCompleteRemind = () => {
+    this.start3++
+    this.props.fetchCompleteList(this.start3)
   }
 
   updateRemindStatus = () => {
@@ -75,15 +75,27 @@ class TodoRemind extends React.Component<TodoRemindProps> {
     }
   }
 
+  refreshList = () => {
+    this.start1 = 0
+    this.start2 = 0
+    this.start3 = 0
+    this.props.fetchAllList(0)
+    this.props.fetchMyList(0)
+    this.props.fetchCompleteList(0)
+  }
+
   componentDidMount() {
-    this.loadMoreList()
+    this.refreshList()
   }
 
   componentWillReceiveProps(nextProps: TodoRemindProps) {
     if (!this.props.updateRemindStatusSuccess && nextProps.updateRemindStatusSuccess) {
       this.props.showSuccess('修改状态成功！')
       this.props.clearState(TODO_REMIND.UPDATE_REMIND_STATUS)
-      this.reloadList()
+      this.refreshList()
+    }
+    if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {
+      this.refreshList()
     }
   }
 
@@ -118,16 +130,16 @@ class TodoRemind extends React.Component<TodoRemindProps> {
           )
         }
         <div className="m15">
-          <Button onClick={() => this.setState({showSendRemindDialog: true}, this.loadMoreList)}>
+          <Button onClick={() => this.setState({showSendRemindDialog: true})}>
             <img className="btn-icon" src={require('./icon/send.svg')}/>
             发提醒
           </Button>
           <div className="pull-right">
-            <Button onClick={() => this.setState({listType: 'my'}, this.loadMoreList)}>
+            <Button onClick={() => this.setState({listType: 'my'})}>
               <img className="btn-icon" src={require('./icon/my.svg')}/>
               我发出的
             </Button>
-            <Button onClick={() => this.setState({listType: 'complete'}, this.loadMoreList)}>
+            <Button onClick={() => this.setState({listType: 'complete'})}>
               <img className="btn-icon" src={require('./icon/complete.svg')}/>
               已完成
             </Button>
@@ -141,50 +153,41 @@ class TodoRemind extends React.Component<TodoRemindProps> {
             </div>
           )
         }
-        <div className="todo-remind-list">
-          {
-            list.map((item, index) => {
-              return (
-                <Row key={item.id} className="todo-remind-item">
-                  <Part className="m10">
-                    <div>
-                      {item['email']}
-                      <span className="send-text">发来：</span>
-                      <div className="pull-right">
-                        {item.sendTime}
-                      </div>
-                    </div>
-                    <div className="content">
-                      {item['content']}
-                    </div>
-                    <div>
-                      <span className="relevant-item">关联项：</span>
-                      <span className="relevant-type">
-                        {getRelevantTypeText(item.relevantType)}
-                      </span>
-                      <span className="relevant-type-name">{item['name']}</span>
-                    </div>
-                  </Part>
-                  <div className="todo-remind-status">
-                    <Row className="h-100 h-middle v-middle">
-                      <RemindStatus
-                        remind={item}
-                        updateStatus={(remindId, status) => this.setState({updateStatusId: remindId, status})}
-                      />
-                    </Row>
-                  </div>
-                </Row>
-              )
-            })
-          }
-        </div>
+        {
+          this.state.listType == 'all' && (
+            <Remind
+              remindList={list}
+              loadMore={this.loadMoreUnCompleteRemind}
+              updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}
+            />
+          )
+        }
+        {
+          this.state.listType == 'my' && (
+            <Remind
+              remindList={list}
+              loadMore={this.loadMoreMyRemind}
+              updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}
+            />
+          )
+        }
+        {
+          this.state.listType == 'complete' && (
+            <Remind
+              remindList={list}
+              loadMore={this.loadMoreCompleteRemind}
+              updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}
+            />
+          )
+        }
       </div>
     )
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
+    sendRemindSuccess: state.todoRemind.sendRemindSuccess,
     updateRemindStatusSuccess: state.todoRemind.updateRemindStatusSuccess,
     todoRemindAllList: state.todoRemindAllList,
     todoRemindMyList: state.todoRemindMyList,

@@ -61,6 +61,8 @@ export default combineReducers({
   msaListInfo: wrapReducerState(data(CUSTOMER.FETCH_MSA_LIST)),
   visitRecordListInfo: wrapReducerState(data(CUSTOMER.FETCH_VISIT_RECORD_LIST)),
   rfiList: wrapReducerState(data(CUSTOMER.FETCH_RFI_LIST)),
+  lastRfiDetail: wrapReducerState(data(CUSTOMER.FETCH_LAST_RFI_DETAIL)),
+  lastSupplierDetail: wrapReducerState(data(CUSTOMER.FETCH_LAST_SUPPLIER_DETAIL)),
 
   project: wrapReducerState(project),
   projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),

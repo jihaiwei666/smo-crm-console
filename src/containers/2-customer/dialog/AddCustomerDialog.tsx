@@ -28,14 +28,10 @@ interface AddCustomerDialogProps extends CustomerState {
 }
 
 class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
-  initSupplierInfo: any
-  rfiInfo: any
   state = {
     show: true,
     showAddConfirm: false,
     customerId: null,
-    supplierId: '',
-    rfiId: ''
   }
 
   close = () => {
@@ -45,14 +41,6 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
   componentWillReceiveProps(nextProps: AddCustomerDialogProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.setState({customerId: nextProps.newCustomerId})
-    }
-    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
-      this.initSupplierInfo = nextProps.supplierInfo
-      this.setState({supplierId: nextProps.supplierInfo.supplierId})
-    }
-    if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
-      this.rfiInfo = nextProps.rfiInfo
-      this.setState({rfiId: nextProps.rfiInfo.rfiId})
     }
   }
 
@@ -89,13 +77,10 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
 
               <CategoryTitle title="供应商"/>
 
-              <Supplier
-                customerId={this.state.customerId}
-                supplierId={this.state.supplierId}
-              />
+              <Supplier customerId={this.state.customerId}/>
 
               <CategoryTitle title="RFI"/>
-              <RFI customerId={this.state.customerId} rfiId={this.state.rfiId} rfiInfo={this.rfiInfo}/>
+              <RFI customerId={this.state.customerId}/>
 
               <CategoryTitle title="关联信息"/>
               <AssociateInfo/>

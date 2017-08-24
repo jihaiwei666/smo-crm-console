@@ -13,8 +13,8 @@ interface LabelAndButtonProps {
 class TextAndButton extends React.Component<LabelAndButtonProps> {
   render() {
     return (
-      <FlexDiv className="m5">
-        <div className="input-unit-illustrate">{this.props.text}</div>
+      <FlexDiv className="text-and-button">
+        <div className="tip">{this.props.text}</div>
         <Part textAlign="right">
           {this.props.children}
         </Part>

@@ -30,11 +30,13 @@ interface CustomerProps extends AppFunctionPage, CustomerState {
   removeCustomer: (customerId) => void
 }
 
+const showEdit = process.env.NODE_ENV != 'production'
+
 class Customer extends React.Component<CustomerProps> {
   state = {
     index: -1,
     showAddDialog: false,
-    showEditDialog: false,
+    showEditDialog: showEdit,
     showDeleteConfirm: false,
 
     currentPage: 0,
@@ -101,9 +103,9 @@ class Customer extends React.Component<CustomerProps> {
     const item = list[this.state.index] || {}
 
     let customerId = item.customerId
-    /*if (process.env.NODE_ENV != 'production') {
-      customerId = '170822045706639373'
-    }*/
+    if (!customerId && process.env.NODE_ENV != 'production') {
+      customerId = '170824000310391664'
+    }
 
     return (
       <div className="app-function-page customer">

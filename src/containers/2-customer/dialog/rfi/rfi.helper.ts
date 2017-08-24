@@ -3,7 +3,7 @@
  */
 import {getDate} from '../../../../core/utils/dateUtils'
 
-export function handleRfiServerData(data) {
+export function handleLastRfiDetail(data) {
   const rfiBase = data['customerRfi'] || {}
   const list = data['customerRfiDockerList'] || []
   return {
@@ -23,5 +23,5 @@ export function handleRfiServerData(data) {
 
 export function handleRfiListServerData(data) {
   data = data || []
-  return data.map(handleRfiServerData)
+  return data.map(handleLastRfiDetail)
 }

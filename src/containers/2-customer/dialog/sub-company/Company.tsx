@@ -10,6 +10,7 @@ import Button from '../../../../components/button/Button'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
 import {NECESSARY} from '../../../common/Label'
+import Index from '../../../common/Index'
 
 interface CompanyProps {
   customerId: string
@@ -91,7 +92,7 @@ class Company extends React.Component<CompanyProps> {
             />
           )
         }
-        <div className="serial-number">{this.props.index + 1}</div>
+        <Index index={this.props.index}/>
         <Part>
           <Form onValidChange={valid => this.setState({valid})}>
             <LabelAndInput

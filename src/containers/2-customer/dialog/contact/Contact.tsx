@@ -8,6 +8,7 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
+import Index from '../../../common/Index'
 
 interface ContactProps {
   customerId: string
@@ -77,10 +78,8 @@ class Contact extends React.Component<ContactProps> {
           )
         }
 
-        <div className="contact-info">
-          联系人信息：
-        </div>
-        <Part className="bl pl5">
+        <Index index={this.props.index}/>
+        <Part>
           <LabelAndInput label="姓名（*）" value={this.state.name} onChange={v => this.setState({name: v})}/>
           <LabelAndInput label="电话（!）" value={this.state.mobile} onChange={v => this.setState({mobile: v})}/>
           <LabelAndInput label="邮箱（!）" value={this.state.email} onChange={v => this.setState({email: v})}/>
@@ -102,7 +101,7 @@ class Contact extends React.Component<ContactProps> {
             this.props.contactId && (
               <div className="clearfix m10">
                 <div className="pull-right">
-                  <span className="input-unit-illustrate">点此删除按钮删除一条联系人信息</span>
+                  <span className="tip">点此删除按钮删除一条联系人信息</span>
                   <Button className="small danger" onClick={() => this.setState({showRemoveConfirm: true})}>删除</Button>
                 </div>
               </div>

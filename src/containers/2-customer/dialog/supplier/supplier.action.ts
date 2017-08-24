@@ -54,3 +54,22 @@ export function updateMsa(options) {
     }
   }
 }
+
+export function removeMsa(msaId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.REMOVE_MSA,
+      http: () => _post(urlPrefix + `/v1/provider/msa/del/${msaId}`)
+    }
+  }
+}
+
+export function fetchLastSupplierDetail(customerId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.FETCH_LAST_SUPPLIER_DETAIL,
+      http: () => _get(urlPrefix + `/v1/provider/${customerId}`),
+      handleResponse: handleSupplierServerData
+    }
+  }
+}
