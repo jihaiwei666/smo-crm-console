@@ -23,6 +23,19 @@
 
 .input-group {
     padding: 5px 5px 5px 0;
+    .label-and-input {
+        .input-label {
+            width: 120px;
+        }
+    }
+}
+
+.select-contact-and-show-info {
+    .label-and-input {
+        .input-label {
+            width: 80px;
+        }
+    }
 }
 
 .row-line {

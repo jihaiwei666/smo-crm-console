@@ -11,9 +11,13 @@ interface SingleFileProps {
   file: any
   onChange: (file) => void
   onClear: () => void
+  showRemove?: boolean
 }
 
 class SingleFile extends React.Component<SingleFileProps> {
+  static defaultProps = {
+    showRemove: true
+  }
   removeFlag = false
 
   getData() {
@@ -70,7 +74,11 @@ class SingleFile extends React.Component<SingleFileProps> {
           !empty && (
             <div className="m5">
               <span className="mr10">{this.props.file.fileName}</span>
-              <RemoveIcon onClick={this.handleClear}/>
+              {
+                this.props.showRemove && (
+                  <RemoveIcon onClick={this.handleClear}/>
+                )
+              }
             </div>
           )
         }

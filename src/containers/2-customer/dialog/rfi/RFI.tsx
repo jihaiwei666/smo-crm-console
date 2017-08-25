@@ -37,7 +37,7 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 interface RFIProps extends CustomerState, CommonFunction {
   customerId: string
   initRfiInfo: any
-  fetchContactList: (customerId: string) => void
+  fetchContactList: (customerId) => void
   customerContactData: any
   fetchRfiList: (customerId) => void
   fetchLastRfiDetail: (customerId) => void
@@ -131,9 +131,9 @@ class RFI extends React.Component<RFIProps> {
 
   componentWillReceiveProps(nextProps: RFIProps) {
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
-      this.props.showSuccess('保存RFI信息成功！')
+      this.props.showSuccess('新增RFI信息成功！')
       this.props.clearState(CUSTOMER.ADD_RFI)
-      this.rfiId = nextProps.newRfiInfo.rfiId
+      this.props.fetchLastRfiDetail(this.props.customerId)
     }
     if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
       this.props.showSuccess('更新RFI信息成功！')

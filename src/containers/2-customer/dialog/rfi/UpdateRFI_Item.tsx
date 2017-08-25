@@ -29,7 +29,7 @@ interface UpdateRFI_ItemProps {
   fetchContactList: (customerId) => void
   customerContactData: Data<any>
   rfiId: string
-  rfi: any
+  initRfi: any
   updateRfi: (options) => void
   removeRfi: (rfiId) => void
 }
@@ -83,6 +83,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
         if (broker.isLocal) {
           return {
             "contacts_info_id": broker.contactId,
+            "customer_rfi_id": this.props.rfiId,
             "sign": ADD
           }
         }
@@ -101,7 +102,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
   }
 
   componentWillMount() {
-    this.setState(this.props.rfi)
+    this.setState(this.props.initRfi)
   }
 
   render() {
@@ -122,7 +123,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
           <DatePicker value={this.state.fillDate} onChange={v => this.setState({fillDate: v})}/>
         </LabelAndInput1>
         <LabelAndInput label="填写人" inputType={NECESSARY} value={this.state.fillPerson} onChange={v => this.setState({fillPerson: v})}/>
-        <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt">
+        <InputGroup label="RFI对接人" inputType={IMPORTANT} className="bt bb">
           {
             this.state.brokerList.map((broker, index) => {
               return (

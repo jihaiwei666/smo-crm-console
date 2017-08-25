@@ -5,6 +5,8 @@ import React from 'react'
 import Modal from 'app-core/modal'
 import {Row, Part} from 'app-core/layout'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
+import Spinner from 'app-core/common/Spinner'
+
 import Button from '../../../../components/button/Button'
 import AddRfiDialog from './AddRfiDialog'
 import Data from '../../../common/interface/Data'
@@ -48,14 +50,14 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
       this.props.fetchRfiList(this.props.customerId)
     }
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
-      this.props.fetchRfiList(this.props.customerId)
       this.props.showSuccess('删除RFI成功！')
       this.props.clearState(CUSTOMER.REMOVE_RFI)
+      this.props.fetchRfiList(this.props.customerId)
     }
   }
 
   render() {
-    const rfiList = this.props.rfiList.data || []
+    const {data, loaded} = this.props.rfiList
     return (
       <Modal
         contentComponent={FullDialogContent} style={{width: '600px'}}
@@ -74,11 +76,16 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
         }
 
         <Modal.Header closeButton={true}>
-          <Modal.Title>查看RFI</Modal.Title>
+          <Modal.Title>RFI列表</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {
-            rfiList.map((rfi, index) => {
+            !loaded && (
+              <Spinner/>
+            )
+          }
+          {
+            loaded && data.map((rfi, index) => {
               return (
                 <Row key={rfi.rfiId} className="bb">
                   <Index index={index}/>
@@ -88,7 +95,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
                       fetchContactList={this.props.fetchContactList}
                       customerContactData={this.props.customerContactData}
                       rfiId={rfi.rfiId}
-                      rfi={rfi}
+                      initRfi={rfi}
                       updateRfi={this.props.updateRfi}
                       removeRfi={this.props.removeRfi}
                     />

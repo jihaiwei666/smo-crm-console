@@ -92,8 +92,6 @@ class AddRfiDialog extends React.Component<AddRfiDialogProps> {
 
   componentWillReceiveProps(nextProps: AddRfiDialogProps) {
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
-      this.props.showSuccess('新增RFI信息成功！')
-      this.props.clearState(CUSTOMER.ADD_RFI)
       this.close()
     }
   }

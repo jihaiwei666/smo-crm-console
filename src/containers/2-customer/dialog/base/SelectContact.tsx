@@ -33,17 +33,17 @@ class SelectContact extends React.Component<SelectContactProps> {
       value: item.contactId, text: item.contactName
     }))
     return (
-      <div>
+      <div className="select-contact-and-show-info">
         <LabelAndInput1 label="对接人">
-          <Select1 width="250px" options={contactOptions}
+          <Select1 width="200px" options={contactOptions}
                    onOpen={this.props.onOpen}
                    value={this.props.contactId}
                    onChange={v => this.props.onChange(v)}
           />
         </LabelAndInput1>
-        <LabelAndInput placeholder="选择对接人后自动显示" label="电话" disabled={true} value={telephone} onChange={v => null}/>
-        <LabelAndInput placeholder="选择对接人后自动显示" label="邮箱" disabled={true} value={email} onChange={v => null}/>
-        <LabelAndInput placeholder="选择对接人后自动显示" label="职位" disabled={true} value={position} onChange={v => null}/>
+        <LabelAndInput width="200px" placeholder="选择对接人后自动显示" label="电话" disabled={true} value={telephone} onChange={v => null}/>
+        <LabelAndInput width="200px" placeholder="选择对接人后自动显示" label="邮箱" disabled={true} value={email} onChange={v => null}/>
+        <LabelAndInput width="200px" placeholder="选择对接人后自动显示" label="职位" disabled={true} value={position} onChange={v => null}/>
       </div>
     )
   }

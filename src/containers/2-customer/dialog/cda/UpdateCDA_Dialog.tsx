@@ -216,6 +216,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
             <LabelAndInput1 label="CDA扫描件" className="bb pb5">
               <SingleFile
                 ref={c => this._scanFile = c}
+                showRemove={this.props.canEdit}
                 file={this.state.scanFile}
                 onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}

@@ -42,10 +42,10 @@
         .fix-body-wrap {
             .row-container {
                 &:nth-of-type(odd) {
-                    background-color: rgba(255, 0, 0, 0.07);
+                    background-color: rgba(0, 255, 0, 0.1);
                 }
                 &:nth-of-type(even) {
-                    background-color: rgba(0, 255, 0, 0.07);
+                    background-color: rgba(0, 255, 0, 0.05);
                 }
                 &:hover {
                     background-color: rgba(0, 0, 255, 0.1);
