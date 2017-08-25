@@ -5,7 +5,7 @@ import React from 'react'
 
 import RemoveIcon from '../../../components/RemoveIcon'
 import AddFileButton from '../../../components/button/AddFileButton'
-import crud from '../../../core/CRUD'
+import crud from '../../../core/crud'
 
 interface SingleFileProps {
   file: any

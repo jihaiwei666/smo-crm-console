@@ -6,7 +6,7 @@ import React from 'react'
 import FileType from './FileType'
 import Spinner from 'app-core/common/Spinner'
 import {copyList} from '../../core/utils/common'
-import crud from '../../core/CRUD'
+import crud from '../../core/crud'
 
 export interface ServerFile {
   id: string

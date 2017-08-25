@@ -4,7 +4,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import crud, {ADD, UPDATE, DELETE, handleCrudList} from '../../core/CRUD'
+import crud, {ADD, UPDATE, DELETE, handleCrudList} from '../../core/crud'
 import {copyList} from '../../core/utils/common'
 
 export type Crud1Props = {

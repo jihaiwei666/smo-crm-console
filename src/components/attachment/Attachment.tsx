@@ -5,7 +5,7 @@ import React from 'react'
 
 import AddFile from '../upload/AddFile'
 import FileList from './FileList'
-import crud from '../../core/CRUD'
+import crud from '../../core/crud'
 import {copyList} from '../../core/utils/common'
 
 interface AttachmentProps {

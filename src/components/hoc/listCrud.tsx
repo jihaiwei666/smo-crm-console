@@ -5,7 +5,7 @@ import React from 'react'
 
 import AddIcon from '../AddIcon'
 
-import {ADD, UPDATE, DELETE, handleCrudList} from '../../core/CRUD'
+import {ADD, UPDATE, DELETE, handleCrudList} from '../../core/crud'
 import {copyList} from '../../core/utils/common'
 
 export interface CrudProps {
@@ -16,9 +16,9 @@ export interface CrudProps {
 }
 
 export type Config = {
-  ifAdd: (item, parentId) => any
-  ifUpdate: (item) => any
-  ifRemove: (item) => any
+  ifAdd?: (item, parentId) => any
+  ifUpdate?: (item) => any
+  ifRemove?: (item) => any
 }
 
 let uid = 1

@@ -35,3 +35,9 @@ export function handleCrudList(list, parentId, option: Config) {
     }
   })
 }
+
+export function handleItemUpdate(item) {
+  if (item.crud != ADD) {
+    item.crud = UPDATE
+  }
+}

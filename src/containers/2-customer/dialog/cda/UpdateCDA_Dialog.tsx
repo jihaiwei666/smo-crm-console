@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/14.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
@@ -19,18 +20,25 @@ import SingleFile from '../../../common/file/SingleFile'
 import {NECESSARY} from '../../../common/Label'
 
 import Data from '../../../common/interface/Data'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {fetchProjectList, fetchContactList} from '../../customer.action'
+import {fetchCDA_Detail, updateCda, removeCda} from './cda.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import {CUSTOMER} from '../../../../core/constants/types'
+import crud, {handleItemUpdate, handleCrudList} from '../../../../core/crud'
 
-interface UpdateCDA_DialogProps {
+interface UpdateCDA_DialogProps extends CommonFunction {
+  canEdit?: boolean
   customerId: string
   cdaId: string
   fetchCDA_Detail: (cdaId: string) => void
   cdaDetail: Data<any>
   fetchProjectList: (customerId) => void
-  customerProjectData: any
+  customerProjectData: Data<any>
   fetchContactList: (customerId) => void
-  customerContactData: any
+  customerContactData: Data<any>
   updateCda: (options) => void
   updateCdaSuccess: boolean
   removeCda: (cdaId: string) => void
@@ -41,6 +49,9 @@ interface UpdateCDA_DialogProps {
 let cdaBrokerId = 1
 
 class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
+  static defaultProps = {
+    canEdit: true
+  }
   _scanFile: any
   state = {
     show: true,
@@ -70,16 +81,26 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
   handleContactChange = (index, value) => {
     let cdaList = updateItemAtIndex(this.state.cdaList, index, cda => {
       cda.username = value
+      handleItemUpdate(cda)
     })
     this.setState({cdaList})
   }
 
   addBroker = () => {
-    this.setState({cdaList: addListItem(this.state.cdaList, {id: cdaBrokerId++, username: ''})})
+    this.setState({cdaList: addListItem(this.state.cdaList, {id: cdaBrokerId++, username: '', crud: crud.ADD})})
   }
 
   update = () => {
-    let cdaList = []
+    let cdaList = handleCrudList(this.state.cdaList, '', {
+      ifAdd: (item) => ({
+        "contacts_info_id": item.username
+      }),
+      ifUpdate: (item) => ({
+        "cda_person_id": item.id,
+        "cda_id": this.props.cdaId,
+        "contacts_info_id": item.username,
+      })
+    })
     this.props.updateCda({
       customerCda: {
         "cda_id": this.props.cdaId,
@@ -105,9 +126,13 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
       this.setState(nextProps.cdaDetail.data)
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
+      this.props.showSuccess('更新CDA成功！')
+      this.props.clearState(CUSTOMER.UPDATE_CDA)
       this.close()
     }
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
+      this.props.showSuccess('删除CDA成功！')
+      this.props.clearState(CUSTOMER.REMOVE_CDA)
       this.close()
     }
   }
@@ -127,7 +152,9 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
         }
 
         <Modal.Header closeButton={true}>
-          <Modal.Title>编辑CDA</Modal.Title>
+          <Modal.Title>
+            {this.props.canEdit ? '编辑CDA' : '查看CDA'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onValidChange={valid => this.setState({valid})}>
@@ -201,19 +228,38 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
             </LabelAndInput1>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <FlexDiv>
-            <Part className="pl5 pr5">
-              <Button className="block danger" onClick={() => this.props.removeCda(this.props.cdaId)}>删除</Button>
-            </Part>
-            <Part className="pl5 pr5">
-              <Button className="block" disabled={!this.state.valid} onClick={this.update}>更新</Button>
-            </Part>
-          </FlexDiv>
-        </Modal.Footer>
+        {
+          this.props.canEdit && (
+            <Modal.Footer>
+              <FlexDiv>
+                <Part className="pl5 pr5">
+                  <Button className="block danger" onClick={() => this.props.removeCda(this.props.cdaId)}>删除</Button>
+                </Part>
+                <Part className="pl5 pr5">
+                  <Button className="block" disabled={!this.state.valid} onClick={this.update}>更新</Button>
+                </Part>
+              </FlexDiv>
+            </Modal.Footer>
+          )
+        }
+
       </Modal>
     )
   }
 }
 
-export default UpdateCDA_Dialog
+function mapStateToProps(state, props) {
+  return {
+    customerId: props.customerId,
+    cdaId: props.cdaId,
+    cdaDetail: state.cdaDetail,
+    customerProjectData: state.customerProjectData,
+    customerContactData: state.customerContactData,
+    updateCdaSuccess: state.customer.updateCdaSuccess,
+    removeCdaSuccess: state.customer.removeCdaSuccess,
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchCDA_Detail, fetchProjectList, fetchContactList, updateCda, removeCda
+})(addCommonFunction(UpdateCDA_Dialog))

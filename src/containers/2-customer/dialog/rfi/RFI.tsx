@@ -25,7 +25,7 @@ import SelectContact from '../base/SelectContact'
 
 import Data from '../../../common/interface/Data'
 import {MODULES} from './rfi.constants'
-import {ADD, EDIT} from '../../../../core/CRUD'
+import {ADD, EDIT} from '../../../../core/crud'
 import {fetchContactList} from '../../customer.action'
 import {fetchRfiList, addRfi, updateRfi, removeRfi, fetchLastRfiDetail} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'

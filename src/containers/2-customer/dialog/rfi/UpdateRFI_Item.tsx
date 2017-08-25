@@ -21,7 +21,7 @@ import SelectContact from '../base/SelectContact'
 
 import {MODULES} from './rfi.constants'
 import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
-import {EDIT, ADD} from '../../../../core/CRUD'
+import {EDIT, ADD} from '../../../../core/crud'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface UpdateRFI_ItemProps {

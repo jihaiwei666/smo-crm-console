@@ -29,9 +29,7 @@ interface CDAProps extends CommonFunction {
   cdaDetail: any
   addCda: any
   addCdaSuccess: boolean
-  updateCda: (options) => void
   updateCdaSuccess: boolean
-  removeCda: (cdaId: string) => void
   removeCdaSuccess: boolean
 }
 
@@ -56,13 +54,9 @@ class CDA extends React.Component<CDAProps> {
       this.props.fetchCdaList(this.props.customerId)
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
-      this.props.showSuccess('更新CDA成功！')
-      this.props.clearState(CUSTOMER.UPDATE_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
-      this.props.showSuccess('删除CDA成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
   }
@@ -72,7 +66,7 @@ class CDA extends React.Component<CDAProps> {
     const list = data || []
     const item = list[this.state.index] || {}
     return (
-      <div className="p5">
+      <div className="customer-cda">
         {
           this.state.showAddCDA && (
             <AddCDA_Dialog
@@ -90,13 +84,10 @@ class CDA extends React.Component<CDAProps> {
 
         {
           this.state.showLookDialog && (
-            <LookCDA_Dialog
+            <UpdateCDA_Dialog
+              canEdit={false}
               customerId={this.props.customerId}
               cdaId={item.cdaId}
-              fetchCDA_Detail={this.props.fetchCDA_Detail}
-              cdaDetail={this.props.cdaDetail}
-              fetchProjectList={this.props.fetchProjectList}
-              customerProjectData={this.props.customerProjectData}
               onExited={() => this.setState({showLookDialog: false})}
             />
           )
@@ -107,16 +98,6 @@ class CDA extends React.Component<CDAProps> {
             <UpdateCDA_Dialog
               customerId={this.props.customerId}
               cdaId={item.cdaId}
-              fetchCDA_Detail={this.props.fetchCDA_Detail}
-              cdaDetail={this.props.cdaDetail}
-              fetchProjectList={this.props.fetchProjectList}
-              customerProjectData={this.props.customerProjectData}
-              fetchContactList={this.props.fetchContactList}
-              customerContactData={this.props.customerContactData}
-              updateCda={this.props.updateCda}
-              updateCdaSuccess={this.props.updateCdaSuccess}
-              removeCda={this.props.removeCda}
-              removeCdaSuccess={this.props.removeCdaSuccess}
               onExited={() => this.setState({showEditDialog: false})}
             />
           )
@@ -162,12 +143,11 @@ function mapStateToProps(state, props) {
     ...state.customer,
     customerId: props.customerId,
     cdaList: state.cdaList,
-    cdaDetail: state.cdaDetail,
     customerProjectData: state.customerProjectData,
     customerContactData: state.customerContactData
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda, fetchProjectList, fetchContactList
+  fetchCdaList, addCda, updateCda, removeCda, fetchProjectList, fetchContactList
 })(addCommonFunction(CDA))

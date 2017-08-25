@@ -35,3 +35,25 @@
         margin-top: 15px;
     }
 }
+
+.customer-cda {
+    margin-top: 10px;
+    .fix-head-list {
+        .fix-body-wrap {
+            .row-container {
+                &:nth-of-type(odd) {
+                    background-color: rgba(255, 0, 0, 0.07);
+                }
+                &:nth-of-type(even) {
+                    background-color: rgba(0, 255, 0, 0.07);
+                }
+                &:hover {
+                    background-color: rgba(0, 0, 255, 0.1);
+                }
+                &.selected {
+                    background-color: rgba(0, 0, 255, 0.15);
+                }
+            }
+        }
+    }
+}

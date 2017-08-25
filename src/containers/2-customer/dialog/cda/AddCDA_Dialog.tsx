@@ -16,11 +16,10 @@ import DatePicker from '../../../../components/form/DatePicker'
 import SelectContact from '../base/SelectContact'
 import SingleFile from '../../../common/file/SingleFile'
 
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
+import {ADD} from '../../../../core/crud'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import {ADD} from '../../../../core/CRUD'
-import {NECESSARY, IMPORTANT} from '../../../common/Label'
-import Index from '../../../common/Index'
 
 interface CDA_DialogProps {
   customerId: string

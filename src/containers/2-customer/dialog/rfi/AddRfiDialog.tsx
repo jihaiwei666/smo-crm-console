@@ -21,7 +21,7 @@ import Input from '../../../../components/form/Input'
 
 import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import {ADD} from '../../../../core/CRUD'
+import {ADD} from '../../../../core/crud'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
