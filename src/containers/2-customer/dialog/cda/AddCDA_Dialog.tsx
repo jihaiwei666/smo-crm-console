@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/14.
  */
 import React from 'react'
+import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import Select1 from 'app-core/common/Select1'
 import Confirm from 'app-core/common/Confirm'
@@ -16,12 +17,17 @@ import DatePicker from '../../../../components/form/DatePicker'
 import SelectContact from '../base/SelectContact'
 import SingleFile from '../../../common/file/SingleFile'
 
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import {ADD} from '../../../../core/crud'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import {addCda} from './cda.action'
+import {fetchContactList, fetchProjectList} from '../../customer.action'
+import {CUSTOMER} from '../../../../core/constants/types'
 
-interface CDA_DialogProps {
+interface AddCDA_DialogProps extends CommonFunction {
   customerId: string
   fetchProjectList: (customerId) => void
   customerProjectData: any
@@ -34,7 +40,7 @@ interface CDA_DialogProps {
 
 let cdaBrokerId = 1
 
-class CDA_Dialog extends React.Component<CDA_DialogProps> {
+class AddCDA_Dialog extends React.Component<AddCDA_DialogProps> {
   _scanFile: any
   state = {
     show: true,
@@ -94,8 +100,10 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
     this.props.fetchContactList(this.props.customerId)
   }
 
-  componentWillReceiveProps(nextProps: CDA_DialogProps) {
+  componentWillReceiveProps(nextProps: AddCDA_DialogProps) {
     if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
+      this.props.showSuccess('添加CDA成功！')
+      this.props.clearState(CUSTOMER.ADD_CDA)
       this.close()
     }
   }
@@ -198,4 +206,15 @@ class CDA_Dialog extends React.Component<CDA_DialogProps> {
   }
 }
 
-export default CDA_Dialog
+function mapStateToProps(state, props) {
+  return {
+    customerId: props.customerId,
+    addCdaSuccess: state.customer.addCdaSuccess,
+    customerProjectData: state.customerProjectData,
+    customerContactData: state.customerContactData
+  }
+}
+
+export default connect(mapStateToProps, {
+  addCda, fetchProjectList, fetchContactList
+})(addCommonFunction(AddCDA_Dialog))

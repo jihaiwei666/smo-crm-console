@@ -4,30 +4,22 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import Data from '../../../common/interface/Data'
 import Button from '../../../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../../../components/fix-head-list/'
 import AddCDA_Dialog from '../cda/AddCDA_Dialog'
-import LookCDA_Dialog from '../cda/LookCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
+import Data from '../../../common/interface/Data'
 import {fetchProjectList, fetchContactList} from '../../customer.action'
-import {fetchCdaList, fetchCDA_Detail, addCda, updateCda, removeCda} from './cda.action'
+import {fetchCdaList, addCda} from './cda.action'
 import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 
 interface CDAProps extends CommonFunction {
   customerId: string
-  cdaList?: Data<any[]>
   fetchCdaList: (customerId) => void
-  fetchProjectList: (customerId) => void
-  customerProjectData: any
-  fetchContactList: (customerId) => void
-  customerContactData: any
-  fetchCDA_Detail: (cdaId: string) => void
-  cdaDetail: any
-  addCda: any
+  cdaList: Data<any[]>
   addCdaSuccess: boolean
   updateCdaSuccess: boolean
   removeCdaSuccess: boolean
@@ -49,8 +41,6 @@ class CDA extends React.Component<CDAProps> {
 
   componentWillReceiveProps(nextProps: CDAProps) {
     if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
-      this.props.showSuccess('添加CDA成功！')
-      this.props.clearState(CUSTOMER.ADD_CDA)
       this.props.fetchCdaList(this.props.customerId)
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
@@ -71,12 +61,6 @@ class CDA extends React.Component<CDAProps> {
           this.state.showAddCDA && (
             <AddCDA_Dialog
               customerId={this.props.customerId}
-              fetchProjectList={this.props.fetchProjectList}
-              customerProjectData={this.props.customerProjectData}
-              fetchContactList={this.props.fetchContactList}
-              customerContactData={this.props.customerContactData}
-              addCda={this.props.addCda}
-              addCdaSuccess={this.props.addCdaSuccess}
               onExited={() => this.setState({showAddCDA: false})}
             />
           )
@@ -140,14 +124,14 @@ class CDA extends React.Component<CDAProps> {
 
 function mapStateToProps(state, props) {
   return {
-    ...state.customer,
+    addCdaSuccess: state.customer.addCdaSuccess,
+    updateCdaSuccess: state.customer.updateCdaSuccess,
+    removeCdaSuccess: state.customer.removeCdaSuccess,
     customerId: props.customerId,
-    cdaList: state.cdaList,
-    customerProjectData: state.customerProjectData,
-    customerContactData: state.customerContactData
+    cdaList: state.cdaList
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchCdaList, addCda, updateCda, removeCda, fetchProjectList, fetchContactList
+  fetchCdaList, addCda, fetchProjectList, fetchContactList
 })(addCommonFunction(CDA))
