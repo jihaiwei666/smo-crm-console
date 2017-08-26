@@ -22,7 +22,7 @@ class AddFileButton extends React.Component<AddFileButtonProps> {
     return (
       <FileUpload accept={this.props.accept} multiple={this.props.multiple} onFileUploadSuccess={this.props.onUploadSuccess}>
         <Button className="small" disabled={this.props.disabled}>
-          <img src={require('./upload.svg')} className="btn-icon"/>
+          <img src={require('./upload.svg')} className="upload-btn-icon"/>
           上传
         </Button>
       </FileUpload>

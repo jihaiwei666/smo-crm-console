@@ -5,6 +5,7 @@ import './antd/popover/style/'
 import './common.scss'
 
 import '../components/form/input.scss'
+import '../components/form/auto-complete/auto-complete.scss'
 import '../components/fix-head-list/fix-head-list.scss'
 import '../components/query-filter/query-filter.scss'
 import './file-upload.scss'

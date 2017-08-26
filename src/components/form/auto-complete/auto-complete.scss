@@ -1,0 +1,32 @@
+
+.auto-complete {
+    width: 300px;
+    display: inline-block;
+    position: relative;
+
+    .input {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .more-options {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 4px 0;
+        border-left: 1px solid #00a854;
+        border-right: 1px solid #00a854;
+        border-bottom: 1px solid #00a854;
+        transition: height 1s;
+
+        .option-item {
+            cursor: pointer;
+            padding: 7px 10px;
+            &:hover {
+                background: #dddddd;
+            }
+        }
+    }
+}

@@ -7,19 +7,23 @@ import Form from 'app-core/form/Form'
 
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndInput from '../../../common/LabelAndInput'
-import Save from '../../../common/Save'
+import AutoComplete from '../../../../components/form/auto-complete/AutoComplete'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
+import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import Data from '../../../common/interface/Data'
 import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {addCustomer, updateCustomer} from '../../customer.action'
-import Update from '../../../common/Update'
+import {addCustomer, updateCustomer, querySimilarName} from '../../customer.action'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
+  querySimilarName: (customerName) => void
+  similarNameList: Data<string[]>
   addCustomer: (baseInfo) => void
   initCustomerBaseInfo?: any
   updateCustomer: (baseInfo) => void
@@ -83,6 +87,10 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
     }
   }
 
+  componentDidMount() {
+    this.props.querySimilarName('')
+  }
+
   componentWillReceiveProps(nextProps: CustomerBasicInfoProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.props.showSuccess('添加客户信息成功！')
@@ -98,10 +106,14 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
     return (
       <Form onValidChange={valid => this.setState({valid})}>
         <div className="bb">
-          <LabelAndInput
-            label="客户名称" inputType={NECESSARY}
-            required={true} name="customerName"
-            value={this.state.customerName} onChange={v => this.setState({customerName: v})}/>
+          <LabelAndInput1 label="客户名称" inputType={NECESSARY}>
+            <AutoComplete
+              placeholder="请输入或选择客户名称"
+              options={this.props.similarNameList.data || []}
+              value={this.state.customerName}
+              onChange={v => this.setState({customerName: v})}
+            />
+          </LabelAndInput1>
           <div className="tip">客户名称只能输入汉字、英文、数字、-、（、）， “-”作为母公司名与子公司名的连接符号</div>
         </div>
 
@@ -197,11 +209,12 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
 function mapStateToProps(state, props) {
   return {
     ...state.customer,
+    similarNameList: state.similarNameList,
     customerId: props.customerId,
     initCustomerBaseInfo: props.initCustomerBaseInfo
   }
 }
 
 export default connect(mapStateToProps, {
-  addCustomer, updateCustomer
+  addCustomer, updateCustomer, querySimilarName
 })(addCommonFunction(CustomerBasicInfo))

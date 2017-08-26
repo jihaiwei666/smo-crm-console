@@ -30,6 +30,7 @@ export const TODO_REMIND = {
 export const CUSTOMER = {
   FETCH_LIST: null,
   FETCH_BD_LIST: null,
+  QUERY_SIMILAR_NAME: null,
   ADD_CUSTOMER: null,
   REMOVE_CUSTOMER: null,
   UPDATE_CUSTOMER: null,

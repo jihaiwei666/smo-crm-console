@@ -10,11 +10,11 @@ import AddCDA_Dialog from '../cda/AddCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
 import Data from '../../../common/interface/Data'
-import {fetchProjectList, fetchContactList} from '../../customer.action'
-import {fetchCdaList, addCda} from './cda.action'
-import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {fetchProjectList, fetchContactList} from '../../customer.action'
+import {fetchCdaList, addCda} from './cda.action'
+import LookCDA_Dialog from './LookCDA_Dialog'
 
 interface CDAProps extends CommonFunction {
   customerId: string
@@ -36,7 +36,9 @@ class CDA extends React.Component<CDAProps> {
   }
 
   componentDidMount() {
-    this.props.fetchCdaList(this.props.customerId)
+    if (this.props.customerId) {
+      this.props.fetchCdaList(this.props.customerId)
+    }
   }
 
   componentWillReceiveProps(nextProps: CDAProps) {
@@ -68,7 +70,7 @@ class CDA extends React.Component<CDAProps> {
 
         {
           this.state.showLookDialog && (
-            <UpdateCDA_Dialog
+            <LookCDA_Dialog
               canEdit={false}
               customerId={this.props.customerId}
               cdaId={item.cdaId}

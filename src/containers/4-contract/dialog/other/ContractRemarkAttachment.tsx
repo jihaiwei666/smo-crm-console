@@ -63,6 +63,7 @@ class ContractRemarkAttachment extends React.Component<ContractRemarkAttachmentP
 
 function mapStateToProps(state, props) {
   return {
+    initRemarkAttachment: props.initRemarkAttachment,
     updateRemarkAttachmentSuccess: state.contract.updateRemarkAttachmentSuccess,
     contractId: props.contractId
   }

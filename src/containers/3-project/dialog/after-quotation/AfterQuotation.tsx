@@ -5,7 +5,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import DatePicker from 'antd/lib/date-picker'
-import {Row, Part} from 'app-core/layout/'
+import {Row} from 'app-core/layout/'
 import Form from 'app-core/form/Form'
 
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
@@ -13,7 +13,6 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Input from '../../../../components/form/Input'
 import Radio from '../../../../components/form/radio/Radio'
-import Button from '../../../../components/button/Button'
 import MoneyUnit from '../../../common/MoneyUnit'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
@@ -23,6 +22,7 @@ import {getDateStr} from '../../../../core/utils/dateUtils'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
+import SingleFile from '../../../common/file/SingleFile'
 
 const {MonthPicker} = DatePicker
 
@@ -39,6 +39,7 @@ interface AfterQuotationProps extends CommonFunction {
 }
 
 class AfterQuotation extends React.Component<AfterQuotationProps> {
+  _priceFile: any
   state = {
     valid: false,
 
@@ -54,7 +55,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
     bidDate: null,
     bookLanguage: '',
     pptLanguage: '',
-
+    priceFile: null
   }
 
   save = () => {
@@ -75,7 +76,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
           "bid_language": this.state.bookLanguage,
           "ppt_language": this.state.pptLanguage,
         },
-        "priceFiles": []
+        "priceFiles": this._priceFile.getData()
       })
     } else {
       this.props.addAfterQuotation({
@@ -93,7 +94,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
           "bid_language": this.state.bookLanguage,
           "ppt_language": this.state.pptLanguage,
         },
-        "priceFiles": []
+        "priceFiles": this._priceFile.getData()
       })
     }
   }
@@ -179,7 +180,12 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
         <div className="bb">
           <LabelAndInput1 label="报价文档">
-            <Button>上传</Button>
+            <SingleFile
+              ref={c => this._priceFile = c}
+              file={this.state.priceFile}
+              onChange={file => this.setState({priceFile: file})}
+              onClear={() => this.setState({priceFile: null})}
+            />
           </LabelAndInput1>
           <div className="tip">只需要上传最终版报价，旧版本请删除</div>
         </div>

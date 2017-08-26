@@ -42,6 +42,7 @@ button, input, select, textarea {
 h1 {
     font-size: 18px;
 }
+
 /*
 
 a {
@@ -112,6 +113,10 @@ input[disabled], button[disabled] {
 
 .flex1 {
     flex: 1;
+}
+
+.hidden {
+    display: none;
 }
 
 @keyframes slide-up {

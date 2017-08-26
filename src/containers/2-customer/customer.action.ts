@@ -4,7 +4,7 @@
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CUSTOMER} from '../../core/constants/types'
 import {_get, _post} from '../../core/http'
-import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList} from './customer.helper'
+import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList, handleSimilarName} from './customer.helper'
 
 const urlPrefix = '/customer'
 
@@ -14,6 +14,16 @@ export function fetchList(options) {
       type: CUSTOMER.FETCH_LIST,
       http: () => _post(urlPrefix + '/v1/list', {body: options}),
       handleResponse: handleClientList
+    }
+  }
+}
+
+export function querySimilarName(customerName) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.QUERY_SIMILAR_NAME,
+      http: () => _get(urlPrefix + `/v1/names/like?customer_name=${customerName}`),
+      handleResponse: handleSimilarName
     }
   }
 }

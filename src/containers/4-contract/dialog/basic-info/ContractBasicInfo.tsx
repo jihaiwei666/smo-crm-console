@@ -88,11 +88,11 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
     }
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
       this.props.showSuccess('添加合同信息成功！')
-      this.props.clearState(PROJECT.ADD_PROJECT_INFO)
+      this.props.clearState(CONTRACT.ADD_CONTRACT)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
       this.props.showSuccess('更新合同信息成功！')
-      this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
+      this.props.clearState(CONTRACT.UPDATE_CONTRACT)
     }
   }
 

@@ -55,14 +55,31 @@
     position: relative;
     margin: 10px;
 
+    .to-download-file {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        background: rgba(100, 0, 0, 0.7);
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .remove-uploaded-file {
         position: absolute;
         cursor: pointer;
+        z-index: 1;
         top: 0;
         right: 0;
     }
 
     .uploaded-file-type-icon {
+        position: relative;
         text-align: center;
         .img-type {
             cursor: pointer;

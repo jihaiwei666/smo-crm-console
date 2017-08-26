@@ -33,6 +33,7 @@ export function handleContractDetail(data) {
   const relationInfo = data['contractRelation_info'] || {}
   const operationList = data['operations'].list || []
   const collectionList = data['collection_info'] || []
+  const remarkAttachment = data['contractFiles'] || {}
 
   return {
     bdAnBdpc: {
@@ -44,7 +45,7 @@ export function handleContractDetail(data) {
       codePrefix: baseInfo['contract_project_info_code'],
       serialNumber: baseInfo['contract_serial_code'],
       bdCode: baseInfo['contract_bd_code'],
-      isFirstOperation: baseInfo['first_cooperation'],
+      isFirstOperation: baseInfo['first_cooperation'] ? '是' : '否',
       projectId: baseInfo['project_info_id']
     },
     beforeSign: {
@@ -63,6 +64,14 @@ export function handleContractDetail(data) {
       customers: relationInfo['relationCustomers'].map(item => ({
         customerId: item['customer_info_id'],
         customerName: item['customer_name']
+      }))
+    },
+    remarkAttachment: {
+      remark: remarkAttachment['remark'] || '',
+      attachment: remarkAttachment['files'].map(item => ({
+        id: item['file_id'],
+        fileUrl: item['file_url'],
+        fileName: item['file_name'],
       }))
     },
     operationRecordList: handleOperationList(operationList)

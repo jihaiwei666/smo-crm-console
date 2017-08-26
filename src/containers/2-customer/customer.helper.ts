@@ -33,6 +33,10 @@ export function handleClientList(data) {
   }
 }
 
+export function handleSimilarName(data) {
+  return data
+}
+
 export function handleCustomerProjectList(data) {
   return data.map(item => ({
     value: item['project_info_id'],

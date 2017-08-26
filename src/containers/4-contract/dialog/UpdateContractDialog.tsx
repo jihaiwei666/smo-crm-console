@@ -74,6 +74,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   render() {
     let baseInfo = null, initBdAndBdpc = null, initBeforeSign = null, initAfterSign = null, relationInfo = null, operationRecordList = []
     let projectId = '', beforeSignId = '', afterSignId = ''
+    let initRemarkAttachment = null
 
     const {loaded, data} = this.props.contractDetail
     if (loaded) {
@@ -84,6 +85,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       initAfterSign = data.afterSign
       relationInfo = data.relationInfo
       operationRecordList = data.operationRecordList
+      initRemarkAttachment = data.remarkAttachment
 
       if (initBeforeSign) {
         beforeSignId = initBeforeSign.beforeSignId
@@ -144,7 +146,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   <ContractAssociateInfo relationInfo={relationInfo}/>
 
                   <CategoryTitle title="备注及附件"/>
-                  <ContractRemarkAttachment contractId={this.props.contractId}/>
+                  <ContractRemarkAttachment contractId={this.props.contractId} initRemarkAttachment={initRemarkAttachment}/>
 
                   <CategoryTitle title="操作记录"/>
                   <OperationRecord operationRecordList={operationRecordList}/>

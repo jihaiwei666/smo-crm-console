@@ -52,6 +52,7 @@ export default combineReducers({
   customer: wrapReducerState(customer),
   customerList: wrapReducerState(data(CUSTOMER.FETCH_LIST)),
   customerInfo: wrapReducerState(data(CUSTOMER.FETCH_CUSTOMER_DETAIL)),
+  similarNameList: wrapReducerState(data(CUSTOMER.QUERY_SIMILAR_NAME)),
   BDList: wrapReducerState(data(APP.FETCH_BD)),
   BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
   customerProjectData: wrapReducerState(data(CUSTOMER.FETCH_PROJECT_LIST)),

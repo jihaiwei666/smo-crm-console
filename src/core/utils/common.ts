@@ -20,3 +20,13 @@ export function toPercent(value) {
     return value
   }
 }
+
+export function downloadFile(src) {
+  let $a = document.createElement('a')
+  $a.setAttribute("href", src)
+  $a.setAttribute("download", "")
+
+  let evObj = document.createEvent('MouseEvents')
+  evObj.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, true, false, 0, null)
+  $a.dispatchEvent(evObj)
+}
