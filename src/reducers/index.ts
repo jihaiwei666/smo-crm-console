@@ -77,6 +77,8 @@ export default combineReducers({
   institutionList: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_LIST)),
   institutionInfo: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_INFO)),
   collectionList: wrapReducerState(data(CONTRACT.FETCH_COLLECTION_LIST)),
+  newAfterSign: wrapReducerState(data(CONTRACT.ADD_AFTER_SIGN)),
+  partClientInfo: wrapReducerState(data(CONTRACT.FETCH_CLIENT_INFO_FROM_PROJECT)),
 
   recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
 

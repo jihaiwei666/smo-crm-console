@@ -15,7 +15,7 @@ export default {
   ADD, REMOVE, DELETE, UPDATE
 }
 
-export function handleCrudList(list, parentId, option: Config) {
+export function handleCrudList(list, option: Config, parentId?: string) {
   return list.filter(item => item.crud != null).map(item => {
     if (item.crud == DELETE) {
       return {

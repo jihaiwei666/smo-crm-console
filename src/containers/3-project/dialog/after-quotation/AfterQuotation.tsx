@@ -14,15 +14,16 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Input from '../../../../components/form/Input'
 import Radio from '../../../../components/form/radio/Radio'
 import MoneyUnit from '../../../common/MoneyUnit'
+import SingleFile from '../../../common/file/SingleFile'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
-import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
-import {getDateStr} from '../../../../core/utils/dateUtils'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
-import SingleFile from '../../../common/file/SingleFile'
+import regex from '../../../../core/constants/regex'
+import {getDateStr, getYearMonth} from '../../../../core/utils/dateUtils'
+import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 
 const {MonthPicker} = DatePicker
 
@@ -71,12 +72,12 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
           "is_success_order": this.state.is_A_Order,
           "pm_working_hours": this.state.pmWorkingHours,
           "crc_working_hours": this.state.crcWorkingHours,
-          "intervention_time": this.state.involveYearMonth,
+          "intervention_time": getYearMonth(this.state.involveYearMonth),
           "bidding_time": getDateStr(this.state.bidDate),
           "bid_language": this.state.bookLanguage,
           "ppt_language": this.state.pptLanguage,
         },
-        "priceFiles": this._priceFile.getData()
+        "priceFile": this._priceFile.getData()
       })
     } else {
       this.props.addAfterQuotation({
@@ -89,12 +90,12 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
           "is_success_order": this.state.is_A_Order,
           "pm_working_hours": this.state.pmWorkingHours,
           "crc_working_hours": this.state.crcWorkingHours,
-          "intervention_time": this.state.involveYearMonth,
+          "intervention_time": getYearMonth(this.state.involveYearMonth),
           "bidding_time": getDateStr(this.state.bidDate),
           "bid_language": this.state.bookLanguage,
           "ppt_language": this.state.pptLanguage,
         },
-        "priceFiles": this._priceFile.getData()
+        "priceFile": this._priceFile.getData()
       })
     }
   }
@@ -126,7 +127,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               required={true} name="serviceChargeUnit"
               value={this.state.serviceChargeUnit} onChange={v => this.setState({serviceChargeUnit: v})}/>
             <Input
-              width="200px" required={true} name="serviceChargeValue"
+              width="200px" required={true} name="serviceChargeValue" format={regex.INTEGER}
               value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
           </Row>
         </LabelAndInput1>
@@ -136,7 +137,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               required={true} name="contractMoneyUnit"
               value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
             <Input
-              width="200px" required={true} name="contractMoneyValue"
+              width="200px" required={true} name="contractMoneyValue" format={regex.INTEGER}
               value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
           </Row>
         </LabelAndInput1>

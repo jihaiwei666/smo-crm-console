@@ -2,7 +2,6 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import addFormSupport from 'app-core/core/hoc/addFormSupport'
 
@@ -22,13 +21,16 @@ class Input extends React.Component<InputProps> {
       return value.trim().length != 0
     }
   }
-  static contextTypes = {
-    setValid: PropTypes.func
+
+  state = {
+    touched: false
   }
 
   componentWillMount() {
     if (this.props.value == null) {
       // console.log((this.props.name || this.props.placeholder) + '\'s value is null !!!')
+      // 将null，undefined重置为 空字符串
+      this.props.onChange('')
     }
   }
 
@@ -40,6 +42,8 @@ class Input extends React.Component<InputProps> {
 
   render() {
     const {width, className, onChange, format, ...otherProps} = this.props
+    let valid = checkValid(this.props.format, this.props.value)
+    let invalid = this.props.required && this.state.touched && !valid
     let style: any = {}
     if (width) {
       style.width = width
@@ -47,8 +51,9 @@ class Input extends React.Component<InputProps> {
     return (
       <input
         style={style}
-        className={classnames('input', className)} {...otherProps}
+        className={classnames('input', className, {invalid: invalid})} {...otherProps}
         value={this.props.value || ''}
+        onBlur={() => this.setState({touched: true})}
         onChange={e => this.props.onChange(e.target.value)}
       />
     )

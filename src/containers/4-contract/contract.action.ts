@@ -6,6 +6,7 @@ import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CONTRACT} from '../../core/constants/types'
 import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo} from './contract.helper'
 import {handleInstitutionList, handleInstitutionInfo, handleCollectionList} from './dialog/make-collections/make-collection.helper'
+import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 
 const urlPrefix = '/contract'
 
@@ -99,10 +100,10 @@ export function updateBeforeSign(options) {
 }
 
 //部分信息直接从项目中复制过来
-export function fetchPartAfterSignInfoFromProject(projectId) {
+export function fetchClientInfoFromProject(projectId) {
   return {
     [THREE_PHASE]: {
-      type: CONTRACT.FETCH_PART_AFTER_SIGN_INFO_FROM_PROJECT,
+      type: CONTRACT.FETCH_CLIENT_INFO_FROM_PROJECT,
       http: () => _get(urlPrefix + `/v1/copyProjectInfoForContract/${projectId}`),
       handleResponse: handlePartAfterSignInfo
     }
@@ -113,7 +114,8 @@ export function addAfterSign(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.ADD_AFTER_SIGN,
-      http: () => _post(urlPrefix + '/v1/addContractAfterSigned', {body: options})
+      http: () => _post(urlPrefix + '/v1/addContractAfterSigned', {body: options}),
+      handleResponse: handleAfterSign
     }
   }
 }

@@ -65,7 +65,7 @@ function listCrud1(WrapperComponent, serverHandleConfig?: Config) {
     }
 
     getData() {
-      return handleCrudList(this.props.list, '', serverHandleConfig)
+      return handleCrudList(this.props.list, serverHandleConfig)
     }
 
     render() {

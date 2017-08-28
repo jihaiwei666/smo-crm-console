@@ -9,7 +9,8 @@ import {ADD, UPDATE, DELETE, handleCrudList} from '../../core/crud'
 import {copyList} from '../../core/utils/common'
 
 export interface CrudProps {
-  parentId: string
+  required?: boolean
+  parentId?: string
   showAdd?: boolean
   list: any[]
   onChange: (list: any[]) => void
@@ -26,7 +27,8 @@ let uid = 1
 function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
   class Crud extends React.Component<CrudProps> {
     static defaultProps = {
-      showAdd: false
+      showAdd: false,
+      required: false
     }
     _wrapper: any
 
@@ -65,11 +67,11 @@ function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
     }
 
     getData() {
-      return handleCrudList(this.props.list, this.props.parentId, serverHandleConfig)
+      return handleCrudList(this.props.list, serverHandleConfig, this.props.parentId)
     }
 
     componentWillMount() {
-      if (this.props.list.length == 0) {
+      if (this.props.list.length == 0 && this.props.required) {
         this.onAdd()
       }
     }

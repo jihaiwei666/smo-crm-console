@@ -8,6 +8,7 @@ import Spinner from 'app-core/common/Spinner'
 
 import {copyList, downloadFile} from '../../core/utils/common'
 import crud from '../../core/crud'
+import DownloadFile from '../file/DownloadFile'
 
 export interface ServerFile {
   id: string
@@ -60,9 +61,11 @@ class FileList extends React.Component<FileListProps> {
                   <div className="uploaded-file-type-icon">
                     {
                       this.state.touchIndex == index && (
-                        <div className="to-download-file" onClick={() => downloadFile(fileUrl)}>
-                          <img src={require('../download.svg')}/>
-                        </div>
+                        <DownloadFile url={fileUrl}>
+                          <div className="to-download-file">
+                            <img src={require('../download.svg')}/>
+                          </div>
+                        </DownloadFile>
                       )
                     }
                     <FileType fileType={fileType} fileUrl={fileUrl}/>

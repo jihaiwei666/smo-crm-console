@@ -54,6 +54,12 @@ class BeforeSign extends React.Component<BeforeSignProps> {
     })
   }
 
+  checkRemark = () => {
+    if (this.state.contractType != '4') {
+      this.setState({remark: ''})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initBeforeSign) {
       this.setState(this.props.initBeforeSign)
@@ -77,7 +83,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
         <LabelAndInput1 className="pb5 bb" label="合同类型" inputType={NECESSARY}>
           <Radio.Group
             required={true} name="contractType"
-            value={this.state.contractType} onChange={v => this.setState({contractType: v})}
+            value={this.state.contractType} onChange={v => this.setState({contractType: v}, this.checkRemark)}
           >
             <Radio value="1">大项目主合同</Radio>
             <Radio value="2">CRC三方协议</Radio>
@@ -85,7 +91,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
             <div className="mt5">
               <Radio value="4">其它，请备注：</Radio>
               <Input width="300px" disabled={this.state.contractType != 4}
-                     value={this.state.remark} onChange={e => this.setState({remark: e.target.value})}/>
+                     value={this.state.remark} onChange={v => this.setState({remark: v})}/>
             </div>
           </Radio.Group>
         </LabelAndInput1>

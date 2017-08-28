@@ -9,6 +9,7 @@ import AppFunctionPage from '../common/interface/AppFunctionPage'
 import Data from '../common/interface/Data'
 import {handleListData} from '../common/common.helper'
 import {fetchList} from './recycle-bin.action'
+import DownloadFile from '../../components/file/DownloadFile'
 
 interface RecycleBinProps extends AppFunctionPage {
   recycleBinList: Data<any>
@@ -43,7 +44,9 @@ class RecycleBin extends React.Component<RecycleBinProps> {
                 <span className="mr10">
                   {item.name}
                 </span>
-                <a target="__blank" href={item.url}>下载</a>
+                <DownloadFile url={item.url}>
+                  下载
+                </DownloadFile>
               </div>
             )
           })

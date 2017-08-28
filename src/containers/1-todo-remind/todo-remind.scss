@@ -15,7 +15,8 @@
     .todo-remind-list {
         font-family: monospace;
         overflow: auto;
-        padding: 15px;
+        margin: 15px;
+        padding: 5px 10px 5px 5px;
     }
 
     .todo-remind-item {
@@ -33,7 +34,18 @@
         }
 
         .relevant-item {
-            color: gray;
+            display: inline-block;
+            margin-right: 10px;
+            .relevant-item-text {
+                color: gray;
+            }
+        }
+
+        .remind-attachment {
+            display: inline-block;
+            .remind-attachment-text {
+                color: gray;
+            }
         }
 
         .relevant-type {
@@ -44,6 +56,7 @@
             padding: 3px 7px;
             color: #3db8c1;
         }
+
         .relevant-type-name {
             margin-left: 5px;
             text-decoration: underline;

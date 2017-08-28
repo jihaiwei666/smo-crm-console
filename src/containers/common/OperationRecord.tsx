@@ -7,10 +7,11 @@ import Popover from 'antd/lib/popover'
 import Spinner from 'app-core/common/Spinner'
 
 import {getOperationType} from './common.helper'
-import {fetchAccountInfo} from '../../actions/app.action'
 import AccountInfo from './account/AccountInfo'
 import Data from './interface/Data'
+
 import {getPositionName} from '../7-account-manage/account-manage.helper'
+import {fetchAccountInfo} from '../../actions/app.action'
 
 interface OperationRecordProps {
   fetchAccountInfo: (email) => void

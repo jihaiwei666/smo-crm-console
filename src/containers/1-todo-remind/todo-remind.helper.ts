@@ -16,7 +16,12 @@ export function handleTodoRemindList(data) {
       relevantType: item['relation_type'],
       relevantId: item['relation_id'],
       remindType: item['reminder_from'],
-      remindStatus: item['reminder_status']
+      remindStatus: item['reminder_status'],
+      attachments: (item['fileList'] || []).map(item => ({
+        id: item['file_id'],
+        name: item['file_name'],
+        url: item['file_url'],
+      }))
     }))
   }
 }

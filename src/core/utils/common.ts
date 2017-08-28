@@ -30,3 +30,7 @@ export function downloadFile(src) {
   evObj.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, true, false, 0, null)
   $a.dispatchEvent(evObj)
 }
+
+export function notEmpty(v) {
+  return v != null && v != ''
+}

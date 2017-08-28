@@ -21,24 +21,31 @@ import Progress from './Progress'
 import ContractSignatory from './ContractSignatory'
 import PM from './PM'
 import CoordinateBD from './CoordinateBD'
+import Attachment from '../../../../components/attachment/Attachment'
+import TextAndButton from '../../../common/TextAndButton'
+import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
-import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
-import {fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
-import {CONTRACT} from '../../../../core/constants/types'
-import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
-import Attachment from '../../../../components/attachment/Attachment'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import Data from '../../../common/interface/Data'
+import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
+import {CONTRACT} from '../../../../core/constants/types'
+import regex from '../../../../core/constants/regex'
+import {notEmpty} from '../../../../core/utils/common'
+import {fetchClientInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
 
 interface AfterSignProps extends CommonFunction {
   contractId?: string
   projectId?: string
   afterSignId?: string
-  fetchPartAfterSignInfoFromProject: (projectId) => void
+  initAfterSign: any
+  fetchClientInfoFromProject: (projectId) => void
+  partClientInfo: Data<any>
   addAfterSign: (options) => void
   addAfterSignSuccess: boolean
-  initAfterSign: any
+  newAfterSign: Data<any>
   updateAfterSign: (options) => void
   updateAfterSignSuccess: boolean
 }
@@ -184,20 +191,30 @@ class AfterSign extends React.Component<AfterSignProps> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.projectId && !this.props.afterSignId) {
-      this.props.fetchPartAfterSignInfoFromProject(this.props.projectId)
-    }
-  }
-
   componentWillReceiveProps(nextProps: AfterSignProps) {
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
       this.props.showSuccess('添加签署后成功！')
-      this.props.clearState(CONTRACT.ADD_BEFORE_SIGN)
+      this.props.clearState(CONTRACT.ADD_AFTER_SIGN)
+      this.setState(nextProps.newAfterSign)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.showSuccess('更新签署后成功！')
-      this.props.clearState(CONTRACT.UPDATE_BEFORE_SIGN)
+      this.props.clearState(CONTRACT.UPDATE_AFTER_SIGN)
+    }
+    if (!this.props.partClientInfo.loaded && nextProps.partClientInfo.loaded) {
+      const {indication, serviceTypes, centerNumber, enrollmentCount} = nextProps.partClientInfo.data
+      if (!this.state.indication) {
+        this.setState({indication})
+      }
+      if (this.state.serviceTypes.length == 0) {
+        this.setState({serviceTypes})
+      }
+      if (this.state.centerNumber == '') {
+        this.setState({centerNumber})
+      }
+      if (this.state.enrollmentCount == '') {
+        this.setState({enrollmentCount})
+      }
     }
   }
 
@@ -218,10 +235,12 @@ class AfterSign extends React.Component<AfterSignProps> {
             </LabelAndInput1>
             <LabelAndInput
               label="中心数" required={true} name="centerNumber"
+              format={regex.INTEGER}
               value={this.state.centerNumber} onChange={v => this.setState({centerNumber: v})}
             />
             <LabelAndInput
               label="入组例数" required={true} name="enrollmentCount"
+              format={regex.INTEGER}
               value={this.state.enrollmentCount} onChange={v => this.setState({enrollmentCount: v})}
             />
             <LabelAndInput
@@ -229,7 +248,13 @@ class AfterSign extends React.Component<AfterSignProps> {
               value={this.state.servicePeriod} onChange={v => this.setState({servicePeriod: v})}
             />
           </InputGroup>
-          <div className="tip">关联项目后，项目信息中的部分信息直接复制到合同信息中</div>
+          <TextAndButton text="关联项目后，项目信息中的部分信息直接复制到合同信息中">
+            <Button className="small default"
+                    disabled={!this.props.projectId || notEmpty(this.props.afterSignId)}
+                    onClick={() => this.props.fetchClientInfoFromProject(this.props.projectId)}>
+              从项目中复制
+            </Button>
+          </TextAndButton>
         </div>
         <InputGroup className="bb" label="费用明细" inputType={NECESSARY}>
           <LabelAndInput1 label="CRC服务费">
@@ -239,6 +264,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                 value={this.state.crcMoneyUnit} onChange={v => this.setState({crcMoneyUnit: v})}/>
               <Input
                 width="150px" required={true} name="crcMoneyValue"
+                format={regex.INTEGER}
                 value={this.state.crcMoneyValue} onChange={v => this.setState({crcMoneyValue: v})}
               />
             </Row>
@@ -250,15 +276,16 @@ class AfterSign extends React.Component<AfterSignProps> {
                 value={this.state.pmServeFeeUnit} onChange={v => this.setState({pmServeFeeUnit: v})}/>
               <Input
                 width="150px" required={true} name="pmServeFeeValue"
+                format={regex.INTEGER}
                 value={this.state.pmServeFeeValue} onChange={v => this.setState({pmServeFeeValue: v})}
               />
             </Row>
           </LabelAndInput1>
           <LabelAndInput label="代垫费" value={this.state.replacementFee} onChange={v => this.setState({replacementFee: v})}/>
-          <LabelAndInput label="税费" value={this.state.taxes} onChange={v => this.setState({taxes: v})}/>
+          <LabelAndInput label="税费" format={regex.INTEGER} value={this.state.taxes} onChange={v => this.setState({taxes: v})}/>
           <LabelAndInput label="税率" value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}/>
         </InputGroup>
-        <div className="bb">
+        <div className="pb5 bb">
           <InputGroup label="付款节点" inputType={NECESSARY}>
             <Radio.Group
               required={true} name="paymentNode"
@@ -271,6 +298,7 @@ class AfterSign extends React.Component<AfterSignProps> {
               this.state.paymentNode == '1' && (
                 <NodeDate
                   ref={c => this._nodeData = c}
+                  required={true}
                   parentId={this.props.afterSignId}
                   list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}
                 />
@@ -280,6 +308,7 @@ class AfterSign extends React.Component<AfterSignProps> {
               this.state.paymentNode == '2' && (
                 <Progress
                   ref={c => this._progress = c}
+                  required={true}
                   parentId={this.props.afterSignId}
                   showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
               )
@@ -292,6 +321,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           <ContractSignatory
             ref={c => this._signatoryList = c}
             parentId={this.props.afterSignId}
+            required={true}
             list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
         </LabelAndInput1>
 
@@ -418,13 +448,15 @@ function mapStateToProps(state, props) {
   return {
     addAfterSignSuccess: state.contract.addAfterSignSuccess,
     updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
+    newAfterSign: state.newAfterSign,
     contractId: props.contractId,
     projectId: props.projectId,
     afterSignId: props.afterSignId,
     initAfterSign: props.initAfterSign,
+    partClientInfo: state.partClientInfo
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchPartAfterSignInfoFromProject, addAfterSign, updateAfterSign
+  fetchClientInfoFromProject, addAfterSign, updateAfterSign
 })(addCommonFunction(AfterSign))

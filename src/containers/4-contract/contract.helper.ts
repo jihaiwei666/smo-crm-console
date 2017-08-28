@@ -86,5 +86,10 @@ export function handleProjectList(data) {
 }
 
 export function handlePartAfterSignInfo(data) {
-  return {}
+  return {
+    indication: data['indication'],
+    serviceTypes: [],
+    centerNumber: data['center_number'],
+    enrollmentCount: data['group_number']
+  }
 }

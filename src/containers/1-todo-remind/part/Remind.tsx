@@ -7,6 +7,7 @@ import ScrollContainer from 'app-core/core/ScrollContainer'
 
 import {getRelevantTypeText} from '../todo-remind.helper'
 import RemindStatus from './RemindStatus'
+import DownloadFile from '../../../components/file/DownloadFile'
 
 interface RemindProps {
   remindList: any[]
@@ -42,11 +43,29 @@ class Remind extends React.Component<RemindProps> {
                     {item['content']}
                   </div>
                   <div>
-                    <span className="relevant-item">关联项：</span>
-                    <span className="relevant-type">
+                    <div className="relevant-item">
+                      <span className="relevant-item-text">关联项：</span>
+                      <span className="relevant-type">
                         {getRelevantTypeText(item.relevantType)}
                       </span>
-                    <span className="relevant-type-name">{item['name']}</span>
+                      <span className="relevant-type-name">{item['name']}</span>
+                    </div>
+                    {
+                      item.attachments.length != 0 && (
+                        <div className="remind-attachment">
+                          <span className="remind-attachment-text">附件:</span>
+                          {
+                            item.attachments.map(attachment => {
+                              return (
+                                <DownloadFile key={attachment.id} url={attachment.url} className="mr7">
+                                  [{attachment.name}]
+                                </DownloadFile>
+                              )
+                            })
+                          }
+                        </div>
+                      )
+                    }
                   </div>
                 </Part>
                 <div className="todo-remind-status">

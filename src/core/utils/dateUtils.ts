@@ -29,3 +29,7 @@ export function getDate(d) {
   }
   return moment(d)
 }
+
+export function getYearMonth(d) {
+  return d.format('YYYY-MM')
+}

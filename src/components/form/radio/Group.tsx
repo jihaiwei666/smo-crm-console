@@ -13,10 +13,6 @@ interface GroupProps {
 }
 
 class Group extends React.Component<GroupProps> {
-  static contextTypes = {
-    setValid: PropTypes.func
-  }
-
   static childContextTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func
@@ -44,4 +40,4 @@ class Group extends React.Component<GroupProps> {
   }
 }
 
-export default addFormSupport(Group, ({props}) => props.value != null)
+export default addFormSupport(Group, ({props}) => props.value != null && props.value != '')

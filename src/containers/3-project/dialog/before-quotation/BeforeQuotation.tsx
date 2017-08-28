@@ -14,19 +14,19 @@ import Input from '../../../../components/form/Input'
 import Select1 from 'app-core/common/Select1'
 import Radio from '../../../../components/form/radio/Radio'
 import TextArea from 'app-core/form/TextArea'
-import Button from '../../../../components/button/Button'
-import PM from '../../../4-contract/dialog/after-sign/PM'
-import Save from '../../../common/Save'
-import Update from '../../../common/Update'
-
-import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
-import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
+import PMList from './PMList'
 import PlanAttachment from './PlanAttachment'
 import AddAttachmentButton from '../../../common/file/AddAttachmentButton'
 import ResearchCenter from './ResearchCenter'
-import {PROJECT} from '../../../../core/constants/types'
-import CommonFunction from '../../../common/interface/CommonFunction'
+import Save from '../../../common/Save'
+import Update from '../../../common/Update'
+
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
+import {PROJECT} from '../../../../core/constants/types'
+import regex from '../../../../core/constants/regex'
+import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
 
 interface BeforeQuotationProps extends CommonFunction {
   projectId: string
@@ -158,12 +158,12 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </LabelAndInput1>
         <LabelAndInput
           label="中心数" inputType={NECESSARY}
-          required={true} name="centerNumber"
+          required={true} name="centerNumber" format={regex.INTEGER}
           value={this.state.centerNumber} onChange={v => this.setState({centerNumber: v})}
         />
         <LabelAndInput
-          name="enrollmentCount" label="入组例数" inputType={NECESSARY}
-          required={true}
+          label="入组例数" inputType={NECESSARY}
+          required={true} name="enrollmentCount" format={regex.INTEGER}
           value={this.state.enrollmentCount} onChange={v => this.setState({enrollmentCount: v})}
         />
         <LabelAndInput
@@ -214,6 +214,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
                        value={this.state.treatDomain} onChange={v => this.setState({treatDomain: v})}
         />
         <LabelAndInput name="filterCount" label="筛选例数" inputType={IMPORTANT}
+                       format={regex.INTEGER}
                        value={this.state.filterCount} onChange={v => this.setState({filterCount: v})}
         />
         <LabelAndInput1 className="bb" label="成单可能性">
@@ -227,7 +228,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </LabelAndInput1>
 
         <LabelAndInput1 className="bb" label="竞标支持PM">
-          <PM
+          <PMList
             ref={c => this._pm = c}
             parentId={this.props.beforeQuotationId}
             list={this.state.pmList} onChange={list => this.setState({pmList: list})}

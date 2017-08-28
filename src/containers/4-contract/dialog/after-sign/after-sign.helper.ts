@@ -4,7 +4,10 @@
 import {getDate} from '../../../../core/utils/dateUtils'
 
 export function handleAfterSign(afterSign) {
-  const base = afterSign['contractAfterSignedVo'] || {}
+  const base = afterSign['contractAfterSignedVo']
+  if (!base) {
+    return null
+  }
   const nodeList = afterSign['paymentNodeList'] || []
   const signatoryList = afterSign['contractSignedList'] || []
   const pmList = afterSign['pmList'] || []

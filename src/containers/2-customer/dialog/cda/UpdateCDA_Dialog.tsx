@@ -91,7 +91,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
   }
 
   update = () => {
-    let cdaList = handleCrudList(this.state.cdaList, '', {
+    let cdaList = handleCrudList(this.state.cdaList, {
       ifAdd: (item) => ({
         "contacts_info_id": item.username
       }),

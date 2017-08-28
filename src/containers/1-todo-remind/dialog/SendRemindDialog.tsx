@@ -17,10 +17,10 @@ import Attachment from '../../../components/attachment/Attachment'
 import LimitTextArea from '../../../components/form/LimitTextArea'
 
 import Data from '../../common/interface/Data'
+import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
 import {remindType} from '../todo-remind.constant'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
-import addCommonFunction from '../../_frameset/addCommonFunction'
 import {TODO_REMIND} from '../../../core/constants/types'
 
 interface SendRemindDialogProps extends CommonFunction {
