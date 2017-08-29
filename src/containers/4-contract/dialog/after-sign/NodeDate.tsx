@@ -27,7 +27,11 @@ class NodeDate extends React.Component<NodeDateProps> {
       <div>
         <LabelAndInput1 label="节点日期">
           <DatePicker value={item.nodeDate} onChange={v => this.props.onUpdate({nodeDate: v})}/>
-          <RemoveIcon onClick={this.props.onRemove}/>
+          {
+            index != 0 && (
+              <RemoveIcon onClick={this.props.onRemove}/>
+            )
+          }
           {
             index == total - 1 && (
               <AddIcon onClick={this.props.onAdd}/>

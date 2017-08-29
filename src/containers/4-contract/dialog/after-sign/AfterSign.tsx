@@ -14,6 +14,7 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import Input from '../../../../components/form/Input'
+import MoneyInput from '../../../../components/form/MoneyInput'
 import MoneyUnit from '../../../common/MoneyUnit'
 import Radio from '../../../../components/form/radio/Radio'
 import NodeDate from './NodeDate'
@@ -33,7 +34,7 @@ import Data from '../../../common/interface/Data'
 import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
 import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
-import {notEmpty} from '../../../../core/utils/common'
+import {notEmpty, isEmpty} from '../../../../core/utils/common'
 import {fetchClientInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
 
 interface AfterSignProps extends CommonFunction {
@@ -57,6 +58,8 @@ class AfterSign extends React.Component<AfterSignProps> {
   _pmList: any
   _bdList: any
   _attachment: any
+  initNodeDateList = []
+  initProgressList = []
   state = {
     valid: true,
 
@@ -131,7 +134,7 @@ class AfterSign extends React.Component<AfterSignProps> {
       "contractSignedList": this._signatoryList.getData(),
       "pmList": this._pmList.getData(),
       "bdList": this._bdList.getData(),
-      "fileList": [],
+      "fileList": this._attachment.getData(),
       "paymentNodeList": this._getPaymentNode()
     })
   }
@@ -172,7 +175,7 @@ class AfterSign extends React.Component<AfterSignProps> {
       "contractSignedList": this._signatoryList.getData(),
       "pmList": this._pmList.getData(),
       "bdList": this._bdList.getData(),
-      "fileList": [],
+      "fileList": this._attachment.getData(),
       "paymentNodeList": this._getPaymentNode()
     })
   }
@@ -185,8 +188,25 @@ class AfterSign extends React.Component<AfterSignProps> {
     }
   }
 
+  checkRemark = () => {
+    if (this.state.chargingType != '5') {
+      this.setState({remark: ''})
+    }
+  }
+
+  handlePaymentNodeChange = (v) => {
+    this.setState({paymentNode: v})
+    if (v == '1') {
+      this.setState({progressList: this.initProgressList})
+    } else if (v == '2') {
+      this.setState({nodeDateList: this.initNodeDateList})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initAfterSign) {
+      this.initNodeDateList = this.props.initAfterSign.nodeDateList
+      this.initProgressList = this.props.initAfterSign.progressList
       this.setState(this.props.initAfterSign)
     }
   }
@@ -203,16 +223,16 @@ class AfterSign extends React.Component<AfterSignProps> {
     }
     if (!this.props.partClientInfo.loaded && nextProps.partClientInfo.loaded) {
       const {indication, serviceTypes, centerNumber, enrollmentCount} = nextProps.partClientInfo.data
-      if (!this.state.indication) {
+      if (notEmpty(indication) && isEmpty(this.state.indication)) {
         this.setState({indication})
       }
       if (this.state.serviceTypes.length == 0) {
         this.setState({serviceTypes})
       }
-      if (this.state.centerNumber == '') {
+      if (notEmpty(centerNumber) && isEmpty(this.state.centerNumber)) {
         this.setState({centerNumber})
       }
-      if (this.state.enrollmentCount == '') {
+      if (notEmpty(enrollmentCount) && isEmpty(this.state.enrollmentCount)) {
         this.setState({enrollmentCount})
       }
     }
@@ -250,7 +270,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           </InputGroup>
           <TextAndButton text="关联项目后，项目信息中的部分信息直接复制到合同信息中">
             <Button className="small default"
-                    disabled={!this.props.projectId || notEmpty(this.props.afterSignId)}
+                    disabled={!this.props.projectId}
                     onClick={() => this.props.fetchClientInfoFromProject(this.props.projectId)}>
               从项目中复制
             </Button>
@@ -262,9 +282,8 @@ class AfterSign extends React.Component<AfterSignProps> {
               <MoneyUnit
                 required={true} name="crcMoneyUnit"
                 value={this.state.crcMoneyUnit} onChange={v => this.setState({crcMoneyUnit: v})}/>
-              <Input
+              <MoneyInput
                 width="150px" required={true} name="crcMoneyValue"
-                format={regex.INTEGER}
                 value={this.state.crcMoneyValue} onChange={v => this.setState({crcMoneyValue: v})}
               />
             </Row>
@@ -274,9 +293,8 @@ class AfterSign extends React.Component<AfterSignProps> {
               <MoneyUnit
                 required={true} name="pmServeFeeUnit"
                 value={this.state.pmServeFeeUnit} onChange={v => this.setState({pmServeFeeUnit: v})}/>
-              <Input
+              <MoneyInput
                 width="150px" required={true} name="pmServeFeeValue"
-                format={regex.INTEGER}
                 value={this.state.pmServeFeeValue} onChange={v => this.setState({pmServeFeeValue: v})}
               />
             </Row>
@@ -289,7 +307,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           <InputGroup label="付款节点" inputType={NECESSARY}>
             <Radio.Group
               required={true} name="paymentNode"
-              value={this.state.paymentNode} onChange={v => this.setState({paymentNode: v})}
+              value={this.state.paymentNode} onChange={this.handlePaymentNodeChange}
             >
               <Radio value="1">按日期</Radio>
               <Radio value="2">按进度</Radio>
@@ -352,7 +370,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         <LabelAndInput1 label="计费方式" inputType={NECESSARY} className="bb">
           <Radio.Group
             required={true} name="chargingType"
-            value={this.state.chargingType} onChange={v => this.setState({chargingType: v})}>
+            value={this.state.chargingType} onChange={v => this.setState({chargingType: v}, this.checkRemark)}>
             <div className="pb5 mb5 bb">
               <Radio value="1">按例</Radio>
               <Radio value="2">按访视</Radio>
@@ -401,7 +419,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         />
 
         <LabelAndInput1 className="bb" label="试验阶段" inputType={IMPORTANT}>
-          <div style={{width: '200px'}}>
+          <div style={{width: '250px'}}>
             <Select1 options={trailPhaseOptions} value={this.state.trailPhase} onChange={v => this.setState({trailPhase: v})}/>
           </div>
         </LabelAndInput1>
@@ -431,12 +449,12 @@ class AfterSign extends React.Component<AfterSignProps> {
 
         {
           this.props.afterSignId && (
-            <Update disabled={!this.state.valid} onClick={this.update}/>
+            <Update disabled={!this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.update}/>
           )
         }
         {
           !this.props.afterSignId && (
-            <Save disabled={!this.props.contractId || !this.state.valid} onClick={this.add}/>
+            <Save disabled={!this.props.contractId || !this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.add}/>
           )
         }
       </Form>

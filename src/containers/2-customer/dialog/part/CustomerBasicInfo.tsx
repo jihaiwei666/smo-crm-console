@@ -105,7 +105,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   render() {
     return (
       <Form onValidChange={valid => this.setState({valid})}>
-        <div className="bb">
+        <div className="row-line">
           <LabelAndInput1 label="客户名称" inputType={NECESSARY}>
             <AutoComplete
               placeholder="请输入或选择客户名称"
@@ -140,7 +140,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
           </Radio.Group>
         </LabelAndInput1>
 
-        <div className="bb">
+        <div className="row-line">
           <LabelAndInput placeholder="" label="客户编码" disabled={true} value={this.state.customerNumber}/>
           <div className="tip">进入项目合作或进入供应商，则系统自动生成客户编码（流水号），无法修改</div>
         </div>

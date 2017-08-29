@@ -24,7 +24,7 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
-import {EDIT, ADD, UPDATE} from '../../../../core/crud'
+import {EDIT, ADD, UPDATE, default as crud} from '../../../../core/crud'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
@@ -54,7 +54,7 @@ function getNextBroker() {
   return {
     id: id++,
     broker: '',
-    isLocal: true
+    crud: crud.ADD
   }
 }
 
@@ -67,7 +67,7 @@ function getNextSupplier() {
     isFixed: '',
     unitPrice: '',
     brokerList: [],
-    isLocal: true
+    crud: crud.ADD
   }
 }
 
@@ -98,7 +98,7 @@ class Supplier extends React.Component<SupplierProps> {
       },
       "customerProviderInfoDockers": supplier.brokerList.map(broker => ({
         "contacts_info_id": broker.broker,
-        "sign": 2
+        "sign": crud.ADD
       }))
     }))
     let options = {
@@ -127,11 +127,11 @@ class Supplier extends React.Component<SupplierProps> {
       },
       "customerProviderInfoDockers": supplier.brokerList.map(broker => ({
         "provider_info_id": supplier.id,
-        "provider_info_docker_id": broker.isLocal ? '' : broker.id,
+        "provider_info_docker_id": broker.crud == crud.ADD ? '' : broker.id,
         "contacts_info_id": broker.broker,
-        "sign": broker.isLocal ? ADD : EDIT
+        "sign": broker.crud == crud.ADD ? ADD : EDIT
       })),
-      "sign": supplier.isLocal ? ADD : EDIT
+      "sign": supplier.crud == crud.ADD ? ADD : EDIT
     }))
     let options = {
       customerProvider: {

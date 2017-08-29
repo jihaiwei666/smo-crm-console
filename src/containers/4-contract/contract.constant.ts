@@ -36,3 +36,16 @@ export const nodeProgressOptions = [
   {value: '9', text: '第y家研究中心关闭'},
   {value: '10', text: '数据库锁定'},
 ]
+
+export const nodeProgress = {
+  contractSigned: '1',
+  xxPercentCenterStart: '2',
+  yCenterStart: '3',
+  xxPercentEnrollment: '4',
+  yEnrollment: '5',
+  xxPercentOut: '6',
+  yOut: '7',
+  xxPercentCenterClose: '8',
+  yCenterClose: '9',
+  databaseLock: '10'
+}

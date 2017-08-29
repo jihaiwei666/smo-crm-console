@@ -60,6 +60,7 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
       "invoice_mailing_address": this.state.invoicePostAddress,
       "invoice_recipient": this.state.invoiceReceiver,
       "invoice_recipient_contact": this.state.receiverContactInfo,
+      "subsidiary_id": this.state.institution,
       "biling_apply_date": this.state.invoiceDate,
       "biling_date": this.state.invoiceDate,
       "remind_reminders_date": this.state.pressForMoneyDate,

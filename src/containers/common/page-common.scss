@@ -37,7 +37,8 @@
     }
 }
 
-.row-line {
+.row-line, .input-row {
+    padding-bottom: 7px;
     border-bottom: 1px solid #e6e6e6;
 }
 
@@ -169,4 +170,32 @@
             margin-bottom: 3px;
         }
     }
+}
+
+.input-have-unit {
+    position: relative;
+    width: 250px;
+    border: 1px solid #cfdadd;
+    border-radius: 3px;
+    padding: 4px 10px;
+
+    input {
+        border: none;
+        width: 150px;
+        outline: none;
+    }
+    .unit {
+        position: absolute;
+        top: 3px;
+        right: 5px;
+    }
+
+    &:focus {
+        border: 1px solid #00a854;
+    }
+
+    &.invalid {
+        border: 1px solid #d9534f;
+    }
+
 }

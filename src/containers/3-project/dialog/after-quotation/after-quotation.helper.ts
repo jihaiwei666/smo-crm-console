@@ -6,7 +6,7 @@ import {getSingleFile} from '../../../common/common.helper'
 
 export function handleAfterQuotation(afterQuotation) {
   const afterQuotationBase = afterQuotation['projectAfterOffer'] || {}
-  const file = afterQuotation['priceFile'] || {}
+  const file = afterQuotation['priceFile']
   return {
     afterQuotationId: afterQuotationBase['after_offer_id'],
     serviceChargeUnit: afterQuotationBase['service_charge_unit'],

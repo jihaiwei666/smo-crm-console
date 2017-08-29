@@ -124,6 +124,12 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     })
   }
 
+  checkRemark = () => {
+    if (this.state.projectCategory != '5') {
+      this.setState({categoryRemark: ''})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initBeforeQuotation) {
       this.setState(this.props.initBeforeQuotation)
@@ -171,14 +177,14 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
           required={true}
           value={this.state.enrollmentPeriod} onChange={v => this.setState({enrollmentPeriod: v})}
         />
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput
             name="bidParty" label="申办方" inputType={IMPORTANT}
             value={this.state.bidParty} onChange={v => this.setState({bidParty: v})}
           />
           <div className="tip">默认申办方为所关联客户</div>
         </div>
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput
             name="cro" label="CRO" inputType={IMPORTANT}
             value={this.state.cro} onChange={v => this.setState({cro: v})}
@@ -187,7 +193,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </div>
 
         <LabelAndInput1 className="bb" label="项目分类">
-          <Radio.Group name="projectCategory" value={this.state.projectCategory} onChange={v => this.setState({projectCategory: v})}>
+          <Radio.Group name="projectCategory" value={this.state.projectCategory} onChange={v => this.setState({projectCategory: v}, this.checkRemark)}>
             <Radio value="1">药物</Radio>
             <Radio value="2">器械</Radio>
             <Radio value="3">试剂</Radio>
@@ -249,7 +255,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
           </PlanAttachment>
         </LabelAndInput1>
 
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput1 label="研究中心名单">
             <ResearchCenter
               ref={c => this._center = c}

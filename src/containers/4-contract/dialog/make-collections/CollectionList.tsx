@@ -7,9 +7,12 @@ import {connect} from 'react-redux'
 import MakeCollection from './MakeCollection'
 
 import Data from '../../../common/interface/Data'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import {updateCollection, fetchInstitutionList, fetchInstitutionInfo} from '../../contract.action'
+import {CONTRACT} from '../../../../core/constants/types'
+import addCommonFunction from '../../../_frameset/addCommonFunction'
 
-interface CollectionListProps {
+interface CollectionListProps extends CommonFunction {
   contractId: string
   collectionList: any[]
   fetchInstitutionList: (contractId) => void
@@ -17,9 +20,17 @@ interface CollectionListProps {
   fetchInstitutionInfo: (institutionId) => void
   institutionInfo: Data<any[]>
   updateCollection: (options) => void
+  updateCollectionSuccess: boolean
 }
 
 class CollectionList extends React.Component<CollectionListProps> {
+  componentWillReceiveProps(nextProps: CollectionListProps) {
+    if (!this.props.updateCollectionSuccess && nextProps.updateCollectionSuccess) {
+      this.props.showSuccess('更新收款成功！')
+      this.props.clearState(CONTRACT.UPDATE_COLLECTION)
+    }
+  }
+
   render() {
     return (
       <div>
@@ -57,10 +68,11 @@ function mapStateToProps(state, props) {
     contractId: props.contractId,
     collectionList: props.collectionList,
     institutionList: state.institutionList,
-    institutionInfo: state.institutionInfo
+    institutionInfo: state.institutionInfo,
+    updateCollectionSuccess: state.contract.updateCollectionSuccess
   }
 }
 
 export default connect(mapStateToProps, {
   fetchInstitutionList, updateCollection, fetchInstitutionInfo
-})(CollectionList)
+})(addCommonFunction(CollectionList))

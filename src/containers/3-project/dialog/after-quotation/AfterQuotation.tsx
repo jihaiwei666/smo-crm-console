@@ -11,7 +11,7 @@ import Form from 'app-core/form/Form'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Input from '../../../../components/form/Input'
+import MoneyInput from '../../../../components/form/MoneyInput'
 import Radio from '../../../../components/form/radio/Radio'
 import MoneyUnit from '../../../common/MoneyUnit'
 import SingleFile from '../../../common/file/SingleFile'
@@ -126,8 +126,8 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
             <MoneyUnit
               required={true} name="serviceChargeUnit"
               value={this.state.serviceChargeUnit} onChange={v => this.setState({serviceChargeUnit: v})}/>
-            <Input
-              width="200px" required={true} name="serviceChargeValue" format={regex.INTEGER}
+            <MoneyInput
+              width="200px" required={true} name="serviceChargeValue"
               value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
           </Row>
         </LabelAndInput1>
@@ -136,8 +136,8 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
             <MoneyUnit
               required={true} name="contractMoneyUnit"
               value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
-            <Input
-              width="200px" required={true} name="contractMoneyValue" format={regex.INTEGER}
+            <MoneyInput
+              width="200px" required={true} name="contractMoneyValue"
               value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
           </Row>
         </LabelAndInput1>
@@ -179,7 +179,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
           </Radio.Group>
         </LabelAndInput1>
 
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput1 label="报价文档">
             <SingleFile
               ref={c => this._priceFile = c}

@@ -33,6 +33,7 @@ interface ContractBasicInfoProps extends CommonFunction {
   addContractSuccess: boolean
   updateContract: (options) => void
   updateContractSuccess: boolean
+  onProjectIdChange: (projectId) => void
 }
 
 class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
@@ -73,7 +74,9 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
   }
 
   componentWillMount() {
-    this.setState(this.props.initBaseInfo)
+    if (this.props.initBaseInfo) {
+      this.setState(this.props.initBaseInfo)
+    }
   }
 
   componentDidMount() {
@@ -89,17 +92,19 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
       this.props.showSuccess('添加合同信息成功！')
       this.props.clearState(CONTRACT.ADD_CONTRACT)
+      this.props.onProjectIdChange(this.state.projectId)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
       this.props.showSuccess('更新合同信息成功！')
       this.props.clearState(CONTRACT.UPDATE_CONTRACT)
+      this.props.onProjectIdChange(this.state.projectId)
     }
   }
 
   render() {
     return (
       <Form onValidChange={valid => this.setState({valid})}>
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput
             label="合同名称" inputType={NECESSARY}
             required={true} name="contractName"
@@ -108,13 +113,13 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
-          <div style={{width: '250px'}}>
+          <div style={{width: '400px'}}>
             <Select1 options={this.props.projectList.data || []}
                      value={this.state.projectId} onChange={this.handleProjectChange}
             />
           </div>
         </LabelAndInput1>
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput1 label="合同编号" inputType={NECESSARY}>
             <Input width="30%" disabled={true} placeholder="选择关联项目后自动产生" className="m5"
                    value={this.state.codePrefix || '无项目编号'}/>
@@ -131,7 +136,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           </LabelAndInput1>
           <div className="tip">合同编号格式为：项目编号-流水号（3位数字）-协同BD，项目编号关联项目后产生</div>
         </div>
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput label="是否首次合作" disabled={true} placeholder="尚未确定" value={this.state.isFirstOperation}/>
           <div className="tip">由系统检测该客户是否有历史合同，不可修改</div>
         </div>
@@ -155,7 +160,8 @@ function mapStateToProps(state, props) {
   return {
     ...state.contract,
     projectList: state.contractProjectList,
-    contractId: props.contractId
+    contractId: props.contractId,
+    onProjectIdChange: props.onProjectIdChange
   }
 }
 

@@ -3,6 +3,7 @@
  */
 import {getDateStr, getDateTimeStr} from '../../core/utils/dateUtils'
 import Data from './interface/Data'
+import crud from '../../core/crud'
 
 export function getOperationType(type) {
   switch (type) {
@@ -75,4 +76,9 @@ export function getSingleFile(file) {
     fileUrl: file['file_url'],
     fileName: file['file_name'],
   }
+}
+
+export function lastItemIsLocal(list) {
+  if (list.length == 0) return false
+  return list[list.length - 1].crud == crud.ADD
 }

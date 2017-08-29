@@ -34,3 +34,26 @@ export function downloadFile(src) {
 export function notEmpty(v) {
   return v != null && v != ''
 }
+
+export function isEmpty(v) {
+  return v == null || v == ''
+}
+
+/**
+ * 3位逗号分隔
+ * @param value
+ * @return {string}
+ */
+export function getMoneyText(value) {
+  if (!value) return ''
+  let i = 1, p = value.length - 3 * i
+  let result = ''
+  while (p > 0) {
+    result = ',' + value.substr(p, 3) + result
+    p = value.length - 3 * ++i
+  }
+  if (p <= 0) {
+    result = value.substr(0, p + 3) + result
+  }
+  return result
+}

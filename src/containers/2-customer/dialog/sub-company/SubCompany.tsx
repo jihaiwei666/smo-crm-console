@@ -11,6 +11,8 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
+import crud from '../../../../core/crud'
+import {lastItemIsLocal} from '../../../common/common.helper'
 
 interface SubCompanyProps extends CommonFunction {
   customerId: string
@@ -36,12 +38,12 @@ class SubCompany extends React.Component<SubCompanyProps> {
 
   addCompany = () => {
     let companyList = this.state.companyList
-    companyList.push({uid: id++, companyId: null, isLocal: true})
+    companyList.push({id: id++, companyId: null, crud: crud.ADD, isLocal: true})
     this.setState({companyList})
   }
 
-  saveSubCompany = (uid, options) => {
-    this.companyUid = uid
+  saveSubCompany = (id, options) => {
+    this.companyUid = id
     this.props.addSubCompany(options)
   }
 
@@ -53,7 +55,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
   componentWillMount() {
     let subCompanyList = this.props.subCompanyList
     if (subCompanyList && subCompanyList.length != 0) {
-      let companyList = subCompanyList.map(c => ({uid: c.companyId, companyId: c.companyId}))
+      let companyList = subCompanyList.map(c => ({id: c.companyId, companyId: c.companyId}))
       this.setState({companyList: companyList})
     }
   }
@@ -63,7 +65,9 @@ class SubCompany extends React.Component<SubCompanyProps> {
       this.props.showSuccess('添加子公司成功！')
       this.props.clearState(CUSTOMER.ADD_SUB_COMPANY)
       let companyList = this.state.companyList
-      companyList.find(c => c.uid == this.companyUid).companyId = nextProps.newSubCompanyId
+      let match = companyList.find(c => c.id == this.companyUid)
+      match.companyId = nextProps.newSubCompanyId
+      match.crud = null
       this.setState({companyList})
     }
     if (!this.props.updateSubCompanySuccess && nextProps.updateSubCompanySuccess) {
@@ -99,10 +103,10 @@ class SubCompany extends React.Component<SubCompanyProps> {
         {
           this.state.companyList.map((c, index) => {
             return (
-              <Company key={c.isLocal ? c.uid : c.companyId}
+              <Company key={c.isLocal ? c.id : c.companyId}
                        customerId={this.props.customerId}
                        companyId={c.companyId}
-                       addCompany={(options) => this.saveSubCompany(c.uid, options)}
+                       addCompany={(options) => this.saveSubCompany(c.id, options)}
                        companyInfo={this._getCompanyInfo(c.companyId)}
                        updateCompany={this.props.updateSubCompany}
                        removeCompany={this.removeSubCompany}
@@ -112,9 +116,11 @@ class SubCompany extends React.Component<SubCompanyProps> {
           })
         }
         <div className="clearfix m10">
-          <span className="input-unit-illustrate">录入分/子公司或下属院区信息，如果分/子公司或下属院区成单，则需新建客户处理</span>
+          <span className="tip">录入分/子公司或下属院区信息，如果分/子公司或下属院区成单，则需新建客户处理</span>
           <div className="pull-right">
-            <Button className="small" onClick={this.addCompany} disabled={!this.props.customerId}>添加</Button>
+            <Button className="small"
+                    onClick={this.addCompany}
+                    disabled={!this.props.customerId || lastItemIsLocal(this.state.companyList)}>添加</Button>
           </div>
         </div>
       </div>

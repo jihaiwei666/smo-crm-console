@@ -25,7 +25,7 @@ import SelectContact from '../base/SelectContact'
 
 import Data from '../../../common/interface/Data'
 import {MODULES} from './rfi.constants'
-import {ADD, EDIT} from '../../../../core/crud'
+import {ADD, EDIT, default as crud} from '../../../../core/crud'
 import {fetchContactList} from '../../customer.action'
 import {fetchRfiList, addRfi, updateRfi, removeRfi, fetchLastRfiDetail} from './rfi.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
@@ -54,7 +54,7 @@ function getNextBroker() {
   return {
     id: id++,
     contactId: '',
-    isLocal: true
+    crud: crud.ADD
   }
 }
 
@@ -104,10 +104,10 @@ class RFI extends React.Component<RFIProps> {
         "model_remark": this.state.remark
       },
       "customerRfiDockerList": this.state.brokerList.map(broker => ({
-        "customer_rfi_docker_id": broker.isLocal ? '' : broker.id,
+        "customer_rfi_docker_id": broker.crud == crud.ADD ? '' : broker.id,
         "contacts_info_id": broker.contactId,
         "customer_rfi_id": this.rfiId,
-        "sign": broker.isLocal ? ADD : EDIT
+        "sign": broker.crud == crud.ADD ? ADD : EDIT
       }))
     })
   }

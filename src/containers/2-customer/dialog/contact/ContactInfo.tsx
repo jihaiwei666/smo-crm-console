@@ -16,6 +16,8 @@ import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {lastItemIsLocal} from '../../../common/common.helper'
+import crud from '../../../../core/crud'
 
 interface ContactProps extends CustomerState, CommonFunction {
   customerId: string
@@ -45,12 +47,12 @@ class ContactInfo extends React.Component<ContactProps> {
 
   addLocalContact = () => {
     let list = this.state.list
-    list.push({uid: id++, contactId: null, addFlag: true})
+    list.push({id: id++, contactId: null, crud: crud.ADD, isLocal: true})
     this.setState({list})
   }
 
-  saveContact = (uid, options) => {
-    this.localContactUid = uid
+  saveContact = (id, options) => {
+    this.localContactUid = id
     this.props.addContact(options)
   }
 
@@ -62,7 +64,7 @@ class ContactInfo extends React.Component<ContactProps> {
   componentWillMount() {
     let initContactInfo = this.props.initContactInfo
     if (initContactInfo && initContactInfo.length != 0) {
-      let list = initContactInfo.map(c => ({uid: c.contactId, contactId: c.contactId}))
+      let list = initContactInfo.map(c => ({id: c.contactId, contactId: c.contactId}))
       this.setState({list})
     }
   }
@@ -72,7 +74,9 @@ class ContactInfo extends React.Component<ContactProps> {
       this.props.showSuccess('添加联系人信息成功！')
       this.props.clearState(CUSTOMER.ADD_CONTACT)
       let list = this.state.list
-      list.find(c => c.uid == this.localContactUid).contactId = nextProps.newContactId
+      let match = list.find(c => c.id == this.localContactUid)
+      match.contactId = nextProps.newContactId
+      match.crud = null
       this.setState({list})
     }
     if (!this.props.updateContactSuccess && nextProps.updateContactSuccess) {
@@ -89,7 +93,7 @@ class ContactInfo extends React.Component<ContactProps> {
     }
   }
 
-  _getCompanyInfo = (contactId) => {
+  _getContactInfo = (contactId) => {
     let contactInfo = null
     let list = this.props.initContactInfo
     if (list) {
@@ -103,8 +107,6 @@ class ContactInfo extends React.Component<ContactProps> {
   }
 
   render() {
-
-
     return (
       <div>
         {
@@ -128,12 +130,12 @@ class ContactInfo extends React.Component<ContactProps> {
           this.state.list.map((c, index) => {
             return (
               <Contact
-                key={c.addFlag ? c.uid : c.contactId}
+                key={c.isLocal ? c.id : c.contactId}
                 customerId={this.props.customerId}
                 contactId={c.contactId}
                 index={index}
-                addContact={(options) => this.saveContact(c.uid, options)}
-                contactInfo={this._getCompanyInfo(c.contactId)}
+                addContact={(options) => this.saveContact(c.id, options)}
+                contactInfo={this._getContactInfo(c.contactId)}
                 updateContact={this.props.updateContact}
                 removeContact={this.removeContact}
               />
@@ -143,7 +145,8 @@ class ContactInfo extends React.Component<ContactProps> {
         <div className="clearfix p10 bb">
           <span className="input-unit-illustrate">请先完善联系人信息，之后才能在CDA、供应商、RFI的对接人中选择该联系人</span>
           <div className="pull-right">
-            <Button className="small" onClick={this.addLocalContact} disabled={!this.props.customerId}>添加</Button>
+            <Button className="small" onClick={this.addLocalContact}
+                    disabled={!this.props.customerId || lastItemIsLocal(this.state.list)}>添加</Button>
           </div>
         </div>
 

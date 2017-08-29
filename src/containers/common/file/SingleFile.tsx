@@ -6,6 +6,7 @@ import React from 'react'
 import RemoveIcon from '../../../components/RemoveIcon'
 import AddFileButton from '../../../components/button/AddFileButton'
 import crud from '../../../core/crud'
+import DownloadFile from '../../../components/file/DownloadFile'
 
 interface SingleFileProps {
   file: any
@@ -73,7 +74,9 @@ class SingleFile extends React.Component<SingleFileProps> {
         {
           !empty && (
             <div className="m5">
-              <span className="mr10">{this.props.file.fileName}</span>
+              <DownloadFile url={this.props.file.fileUrl} className="mr10">
+                [ {this.props.file.fileName} ]
+              </DownloadFile>
               {
                 this.props.showRemove && (
                   <RemoveIcon onClick={this.handleClear}/>

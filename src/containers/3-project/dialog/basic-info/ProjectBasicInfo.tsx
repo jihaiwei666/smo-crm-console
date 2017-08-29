@@ -78,7 +78,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   render() {
     return (
       <Form onValidChange={valid => this.setState({valid})}>
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput
             label="项目名称" inputType={NECESSARY}
             required={true} name="projectName"
@@ -87,7 +87,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、）</div>
         </div>
 
-        <div className="bb">
+        <div className="input-row">
           <LabelAndInput label="项目编码"
                          value={this.state.projectCode} onChange={v => this.setState({projectCode: v})}
           />

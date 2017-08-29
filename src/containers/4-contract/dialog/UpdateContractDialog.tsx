@@ -27,6 +27,8 @@ interface UpdateContractDialogProps {
   fetchContractDetail: (contractId) => void
   contractDetail: Data<any>
 
+  addContractSuccess: boolean
+  updateContractSuccess: boolean
   updateBdAndBdpc: (options) => void
   updateBdAndBdpcSuccess: boolean
 
@@ -44,6 +46,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   collectionList = []
   state = {
     show: true,
+    projectId: '',
     collectionList: []
   }
 
@@ -59,12 +62,16 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
     if (!this.props.contractDetail.loaded && nextProps.contractDetail.loaded) {
       const {data} = nextProps.contractDetail
       this.collectionList = data.collectionList
+      this.setState({projectId: data.baseInfo.projectId})
     }
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
       this.props.fetchCollectionList(this.props.contractId)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.fetchCollectionList(this.props.contractId)
+    }
+    if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
+
     }
     if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
       this.collectionList = nextProps.collectionList.data
@@ -73,13 +80,13 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
   render() {
     let baseInfo = null, initBdAndBdpc = null, initBeforeSign = null, initAfterSign = null, relationInfo = null, operationRecordList = []
-    let projectId = '', beforeSignId = '', afterSignId = ''
+    let beforeSignId = '', afterSignId = ''
     let initRemarkAttachment = null
 
     const {loaded, data} = this.props.contractDetail
     if (loaded) {
       baseInfo = data.baseInfo
-      projectId = baseInfo.projectId
+
       initBdAndBdpc = data.bdAnBdpc
       initBeforeSign = data.beforeSign
       initAfterSign = data.afterSign
@@ -119,7 +126,11 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   />
 
                   <CategoryTitle title="合同信息"/>
-                  <ContractBasicInfo contractId={this.props.contractId} initBaseInfo={baseInfo}/>
+                  <ContractBasicInfo
+                    contractId={this.props.contractId}
+                    initBaseInfo={baseInfo}
+                    onProjectIdChange={projectId => this.setState({projectId})}
+                  />
 
                   <CategoryTitle title="签署前"/>
                   <BeforeSign
@@ -131,7 +142,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   <CategoryTitle title="签署后"/>
                   <AfterSign
                     contractId={this.props.contractId}
-                    projectId={projectId}
+                    projectId={this.state.projectId}
                     afterSignId={afterSignId}
                     initAfterSign={initAfterSign}
                   />

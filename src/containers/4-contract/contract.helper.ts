@@ -45,7 +45,7 @@ export function handleContractDetail(data) {
       codePrefix: baseInfo['contract_project_info_code'],
       serialNumber: baseInfo['contract_serial_code'],
       bdCode: baseInfo['contract_bd_code'],
-      isFirstOperation: baseInfo['first_cooperation'] ? '是' : '否',
+      isFirstOperation: getFirstOperation(baseInfo['first_cooperation']),
       projectId: baseInfo['project_info_id']
     },
     beforeSign: {
@@ -86,10 +86,17 @@ export function handleProjectList(data) {
 }
 
 export function handlePartAfterSignInfo(data) {
+  data = data || {}
   return {
     indication: data['indication'],
     serviceTypes: [],
     centerNumber: data['center_number'],
     enrollmentCount: data['group_number']
   }
+}
+
+export function getFirstOperation(v) {
+  if (v == '1') return '是'
+  if (v == '2') return '否'
+  return ''
 }

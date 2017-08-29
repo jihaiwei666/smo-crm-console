@@ -6,11 +6,12 @@ import DatePicker from 'antd/lib/date-picker'
 import Select1 from 'app-core/common/Select1'
 
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import LabelAndInput from '../../../common/LabelAndInput'
 import Button from '../../../../components/button/Button'
 
 import listCrud from '../../../../components/hoc/listCrud'
-import {nodeProgressOptions} from '../../contract.constant'
+import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
+import InputWithSuffix from '../../../../components/form/InputWithSuffix'
+import Input from '../../../../components/form/Input'
 
 interface ProgressProps {
   item: any
@@ -22,6 +23,27 @@ interface ProgressProps {
 }
 
 class Progress extends React.Component<ProgressProps> {
+  getSuffix = () => {
+    switch (this.props.item.node) {
+      case nodeProgress.xxPercentCenterStart:
+        return '%中心启动'
+      case nodeProgress.yCenterStart:
+        return '家中心启动'
+      case nodeProgress.xxPercentEnrollment:
+        return '%受试者入组'
+      case nodeProgress.yEnrollment:
+        return '位受试者入组'
+      case nodeProgress.xxPercentOut:
+        return '%受试者出组'
+      case nodeProgress.yOut:
+        return '位受试者出组'
+      case nodeProgress.xxPercentCenterClose:
+        return '%研究中心关闭'
+      case nodeProgress.yCenterClose:
+        return '家研究中心关闭'
+    }
+  }
+
   render() {
     const {item, index, total} = this.props
 
@@ -29,13 +51,21 @@ class Progress extends React.Component<ProgressProps> {
       <div className="progress-item">
         <LabelAndInput1 label="节点">
           <Select1 width="250px" value={item.node} options={nodeProgressOptions}
-                   onChange={(v) => this.props.onUpdate({node: v})}
+                   onChange={(v) => this.props.onUpdate({node: v, quota: ''})}
           />
         </LabelAndInput1>
-        <LabelAndInput
-          label="指标" placeholder="请输入指标数字"
-          value={item.quota} onChange={v => this.props.onUpdate({quota: v})}
-        />
+        <LabelAndInput1 label="指标">
+          {
+            (item.node == '' || item.node == nodeProgress.contractSigned || item.node == nodeProgress.databaseLock) ? (
+              <Input width="250px" placeholder="请输入指标数字" disabled={true}/>
+            ) : (
+              <InputWithSuffix
+                placeholder="请输入指标数字" suffix={this.getSuffix()}
+                value={item.quota} onChange={v => this.props.onUpdate({quota: v})}
+              />
+            )
+          }
+        </LabelAndInput1>
         <LabelAndInput1 label="预估日期">
           <DatePicker value={item.date} onChange={v => this.props.onUpdate({date: v})}/>
         </LabelAndInput1>

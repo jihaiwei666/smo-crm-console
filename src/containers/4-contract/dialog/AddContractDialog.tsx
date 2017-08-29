@@ -32,6 +32,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
   state = {
     show: true,
     contractId: '',
+    projectId: ''
   }
 
   close = () => {
@@ -40,8 +41,6 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
 
   componentWillReceiveProps(nextProps: AddContractDialogProps) {
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
-      this.props.showSuccess('添加合同信息成功！')
-      this.props.clearState(CONTRACT.ADD_CONTRACT)
       this.setState({contractId: nextProps.newContractId})
     }
   }
@@ -63,13 +62,13 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               />
 
               <CategoryTitle title="合同信息"/>
-              <ContractBasicInfo contractId={this.state.contractId}/>
+              <ContractBasicInfo contractId={this.state.contractId} onProjectIdChange={projectId => this.setState({projectId})}/>
 
               <CategoryTitle title="签署前"/>
               <BeforeSign contractId={this.state.contractId}/>
 
               <CategoryTitle title="签署后"/>
-              <AfterSign contractId={this.state.contractId}/>
+              <AfterSign contractId={this.state.contractId} projectId={this.state.projectId}/>
 
               <CategoryTitle title="收款"/>
               <CollectionList
