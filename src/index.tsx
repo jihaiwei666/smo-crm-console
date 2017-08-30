@@ -18,6 +18,7 @@ import request_3_phase from './middlewares/request_3_phase'
 import handle_error from './middlewares/handle_error'
 import rootSaga from './sagas/'
 import {_get} from './core/http'
+import {APP} from './core/constants/types'
 
 let history = createBrowserHistory()
 let sagaMiddleware = createSagaMiddleware()
@@ -35,7 +36,7 @@ if (module.hot) {
 _get('/user/v1/getUserStatus').then(data => {
   let userName = data['account']
   let roleCode = data['post_type']
-  store.dispatch({type: ''})
+  store.dispatch({type: APP.INIT_USER, user: {userName, roleCode}})
   render(
     <Root store={store} history={history} roleCode={roleCode}/>,
     document.getElementById('root')

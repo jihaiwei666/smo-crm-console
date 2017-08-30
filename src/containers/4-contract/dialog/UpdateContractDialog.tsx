@@ -80,7 +80,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
   render() {
     let baseInfo = null, initBdAndBdpc = null, initBeforeSign = null, initAfterSign = null, relationInfo = null, operationRecordList = []
-    let beforeSignId = '', afterSignId = ''
     let initRemarkAttachment = null
 
     const {loaded, data} = this.props.contractDetail
@@ -93,13 +92,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       relationInfo = data.relationInfo
       operationRecordList = data.operationRecordList
       initRemarkAttachment = data.remarkAttachment
-
-      if (initBeforeSign) {
-        beforeSignId = initBeforeSign.beforeSignId
-      }
-      if (initAfterSign) {
-        afterSignId = initAfterSign.afterSignId
-      }
     }
 
     return (
@@ -134,7 +126,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                 <CategoryTitle title="签署前"/>
                 <BeforeSign
                   contractId={this.props.contractId}
-                  beforeSignId={beforeSignId}
                   initBeforeSign={initBeforeSign}
                 />
 
@@ -142,7 +133,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                 <AfterSign
                   contractId={this.props.contractId}
                   projectId={this.state.projectId}
-                  afterSignId={afterSignId}
                   initAfterSign={initAfterSign}
                 />
 

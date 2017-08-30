@@ -53,6 +53,11 @@ class RecentOpen extends React.Component<RecentOpenProps> {
 
         <header>最近打开</header>
         <main>
+          {
+            list.length == 0 && (
+              <div className="no-recent-open">暂无最近打开记录</div>
+            )
+          }
           <ul className="nav-items">
             {
               list.map(item => {

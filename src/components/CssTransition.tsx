@@ -40,11 +40,7 @@ class CssTransition extends React.Component<CssTransitionProps> {
     if (!this.props.visible && this.state.show) {
       child = React.cloneElement(child, {className: classnames('leave', child.props.className)})
     }
-    return (
-      <span>
-        {child}
-      </span>
-    )
+    return child
   }
 }
 

@@ -12,22 +12,23 @@ import Radio from '../../../../components/form/radio/Radio'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
-import {addBeforeSign, updateBeforeSign} from '../../contract.action'
-import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
 import {CONTRACT} from '../../../../core/constants/types'
+import {addBeforeSign, updateBeforeSign} from '../../contract.action'
 
 interface BeforeSignProps extends CommonFunction {
   contractId?: string
-  beforeSignId?: string
+  initBeforeSign: any
   addBeforeSign: (options) => void
   addBeforeSignSuccess: boolean
-  initBeforeSign: any
+  newBeforeSignId: string
   updateBeforeSign: (options) => void
   updateBeforeSignSuccess: boolean
 }
 
 class BeforeSign extends React.Component<BeforeSignProps> {
+  beforeSignId = ''
   state = {
     valid: true,
     contractType: null,
@@ -47,7 +48,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
   update = () => {
     this.props.updateBeforeSign({
       "contract_info_id": this.props.contractId,
-      "before_signed_id": this.props.beforeSignId,
+      "before_signed_id": this.beforeSignId,
       "contract_type": this.state.contractType,
       "contract_type_remark": this.state.remark,
       "contract_template": this.state.templateType,
@@ -62,6 +63,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
 
   componentWillMount() {
     if (this.props.initBeforeSign) {
+      this.beforeSignId = this.props.initBeforeSign.beforeSignId
       this.setState(this.props.initBeforeSign)
     }
   }
@@ -70,6 +72,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
     if (!this.props.addBeforeSignSuccess && nextProps.addBeforeSignSuccess) {
       this.props.showSuccess('添加签署前成功！')
       this.props.clearState(CONTRACT.ADD_BEFORE_SIGN)
+      this.beforeSignId = nextProps.newBeforeSignId
     }
     if (!this.props.updateBeforeSignSuccess && nextProps.updateBeforeSignSuccess) {
       this.props.showSuccess('更新签署前成功！')
@@ -102,12 +105,12 @@ class BeforeSign extends React.Component<BeforeSignProps> {
           </Radio.Group>
         </LabelAndInput1>
         {
-          !this.props.beforeSignId && (
+          !this.beforeSignId && (
             <Save disabled={!this.props.contractId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
-          this.props.beforeSignId && (
+          this.beforeSignId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
@@ -120,6 +123,7 @@ function mapStateToProps(state, props) {
   return {
     addBeforeSignSuccess: state.contract.addBeforeSignSuccess,
     updateBeforeSignSuccess: state.contract.updateBeforeSignSuccess,
+    newBeforeSignId: state.contract.newBeforeSignId,
     contractId: props.contractId,
     beforeSignId: props.beforeSignId,
     initBeforeSign: props.initBeforeSign

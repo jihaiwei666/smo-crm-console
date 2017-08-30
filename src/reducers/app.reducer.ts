@@ -1,13 +1,22 @@
 /**
  * Created by jiangyukun on 2017/7/5.
  */
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
-import phase from '../core/constants/phase'
+import {APP} from '../core/constants/types'
 
-const initValue = {}
+const initValue = {
+  user: null,
+  changePasswordSuccess: false
+}
 
-export default function _app(iState = fromJS(initValue), action) {
+export default function app(iState = fromJS(initValue), action) {
+  let nextIState = iState
+  switch (action.type) {
+    case APP.INIT_USER:
+      nextIState = nextIState.set('user', action.user)
+      break
+  }
 
-  return iState
+  return nextIState
 }

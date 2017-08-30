@@ -2,7 +2,8 @@
  * Created by jiangyukun on 2017/8/12.
  */
 export function handleBeforeQuotation(beforeQuotation) {
-  const beforeQuotationBase = beforeQuotation['projectBeforeOffer'] || {}
+  const beforeQuotationBase = beforeQuotation['projectBeforeOffer']
+  if (!beforeQuotationBase) return null
   const pmList = beforeQuotation['projectBeforeOfferPmList'] || []
   const planList = beforeQuotation['planFiles'] || []
   const centerList = beforeQuotation['researchCenterFiles'] || []
@@ -16,6 +17,7 @@ export function handleBeforeQuotation(beforeQuotation) {
     bidParty: beforeQuotationBase['bidders'],
     cro: beforeQuotationBase['cro'],
     projectCategory: beforeQuotationBase['project_type'],
+    categoryRemark: beforeQuotationBase['project_type_other_remark'],
     testPeriod: beforeQuotationBase['test_stage'],
     planCode: beforeQuotationBase['program_number'],
     researchProduct: beforeQuotationBase['research_product'],

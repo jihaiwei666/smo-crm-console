@@ -74,6 +74,12 @@ body {
             }
         }
 
+        .no-recent-open {
+            color: #aaa;
+            font-size: 13px;
+            padding: 15px 0 0 15px;
+        }
+
         .nav-items {
             li {
                 position: relative;
@@ -100,7 +106,6 @@ body {
                     a {
                         color: #fff;
                     }
-
                 }
                 &.active:after {
                     transition: height 0.5s;
@@ -125,6 +130,57 @@ body {
 
         header {
             height: 60px;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+            padding: 0 15px;
+            .user-status {
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 8px 10px;
+            }
+            .user-info {
+                position: relative;
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 10px;
+
+                border-radius: 5px;
+                background: rgba(245, 166, 35, 0.2);
+                &.active {
+                    border-radius: 5px 5px 0 0;
+                }
+                .user-name {
+                    padding: 7px 10px;
+                }
+                img {
+                    height: 15px;
+                    vertical-align: top;
+                }
+                .dropdown-item-container {
+                    position: absolute;
+                    right: 0;
+                    width: 100px;
+                    text-align: center;
+                    background: #b9def0;
+                    padding: 7px 5px;
+                    color: #666;
+                    border-radius: 5px 0 5px 5px;
+                    &.leave {
+                        animation: fadeOut .3ms;
+                        animation-fill-mode: forwards;
+                        transition: all .3ms;
+                    }
+                    .dropdown-item {
+                        padding: 4px 0;
+                        &:hover {
+                            background: #000;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
         }
         .page-content {
             flex: 1;
@@ -151,5 +207,14 @@ body {
         .dropdown {
             height: 20px;
         }
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }

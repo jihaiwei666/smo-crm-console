@@ -40,13 +40,12 @@ import {fetchClientInfoFromProject, addAfterSign, updateAfterSign} from '../../c
 interface AfterSignProps extends CommonFunction {
   contractId?: string
   projectId?: string
-  afterSignId?: string
   initAfterSign: any
   fetchClientInfoFromProject: (projectId) => void
   partClientInfo: Data<any>
   addAfterSign: (options) => void
   addAfterSignSuccess: boolean
-  newAfterSign: Data<any>
+  newAfterSign: any
   updateAfterSign: (options) => void
   updateAfterSignSuccess: boolean
 }
@@ -58,8 +57,10 @@ class AfterSign extends React.Component<AfterSignProps> {
   _pmList: any
   _bdList: any
   _attachment: any
+
   initNodeDateList = []
   initProgressList = []
+  afterSignId = ''
   state = {
     valid: true,
 
@@ -142,7 +143,7 @@ class AfterSign extends React.Component<AfterSignProps> {
   update = () => {
     this.props.updateAfterSign({
       "contractAfterSignedVo": {
-        "after_signed_id": this.props.afterSignId,
+        "after_signed_id": this.afterSignId,
         "contract_info_id": this.props.contractId,
         "project_indication": this.state.indication,
         "project_service_type": this.state.serviceTypes.join(','),
@@ -205,6 +206,7 @@ class AfterSign extends React.Component<AfterSignProps> {
 
   componentWillMount() {
     if (this.props.initAfterSign) {
+      this.afterSignId = this.props.initAfterSign.afterSignId
       this.initNodeDateList = this.props.initAfterSign.nodeDateList
       this.initProgressList = this.props.initAfterSign.progressList
       this.setState(this.props.initAfterSign)
@@ -215,6 +217,7 @@ class AfterSign extends React.Component<AfterSignProps> {
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
       this.props.showSuccess('添加签署后成功！')
       this.props.clearState(CONTRACT.ADD_AFTER_SIGN)
+      this.afterSignId = nextProps.newAfterSign.afterSignId
       this.setState(nextProps.newAfterSign)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
@@ -239,7 +242,6 @@ class AfterSign extends React.Component<AfterSignProps> {
   }
 
   render() {
-    console.log(this.state.attachmentList)
     return (
       <Form onValidChange={valid => this.setState({valid})}>
         <div className="bb">
@@ -318,7 +320,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                 <NodeDate
                   ref={c => this._nodeData = c}
                   required={true}
-                  parentId={this.props.afterSignId}
+                  parentId={this.afterSignId}
                   list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}
                 />
               )
@@ -328,7 +330,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                 <Progress
                   ref={c => this._progress = c}
                   required={true}
-                  parentId={this.props.afterSignId}
+                  parentId={this.afterSignId}
                   showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
               )
             }
@@ -339,7 +341,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         <LabelAndInput1 className="bb" label="合同签署方" inputType={NECESSARY}>
           <ContractSignatory
             ref={c => this._signatoryList = c}
-            parentId={this.props.afterSignId}
+            parentId={this.afterSignId}
             required={true}
             list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
         </LabelAndInput1>
@@ -391,7 +393,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         <LabelAndInput1 className="bb" label="PM" inputType={IMPORTANT}>
           <PM
             ref={c => this._pmList = c}
-            parentId={this.props.afterSignId}
+            parentId={this.afterSignId}
             list={this.state.pmList} onChange={list => this.setState({pmList: list})}/>
         </LabelAndInput1>
 
@@ -402,7 +404,7 @@ class AfterSign extends React.Component<AfterSignProps> {
         <LabelAndInput1 className="bb" label="协同BD" inputType={IMPORTANT}>
           <CoordinateBD
             ref={c => this._bdList = c}
-            parentId={this.props.afterSignId}
+            parentId={this.afterSignId}
             list={this.state.bdList} onChange={list => this.setState({bdList: list})}/>
         </LabelAndInput1>
 
@@ -449,12 +451,12 @@ class AfterSign extends React.Component<AfterSignProps> {
         </div>
 
         {
-          this.props.afterSignId && (
+          this.afterSignId && (
             <Update disabled={!this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.update}/>
           )
         }
         {
-          !this.props.afterSignId && (
+          !this.afterSignId && (
             <Save disabled={!this.props.contractId || !this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.add}/>
           )
         }
@@ -467,7 +469,7 @@ function mapStateToProps(state, props) {
   return {
     addAfterSignSuccess: state.contract.addAfterSignSuccess,
     updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
-    newAfterSign: state.newAfterSign,
+    newAfterSign: state.contract.newAfterSign,
     contractId: props.contractId,
     projectId: props.projectId,
     afterSignId: props.afterSignId,

@@ -14,8 +14,10 @@ const initValue = {
   fetchCodePrefixSuccess: false,
   isFirstOperation: null,
   addBeforeSignSuccess: false,
+  newBeforeSignId: '',
   updateBeforeSignSuccess: false,
   addAfterSignSuccess: false,
+  newAfterSign: null,
   updateAfterSignSuccess: false,
   updateCollectionSuccess: false,
   updateRemarkAttachmentSuccess: false,
@@ -32,6 +34,12 @@ export default function contract(iState = fromJS(initValue), action) {
       break
     case CONTRACT.ADD_CONTRACT + phase.SUCCESS:
       nextIState = nextIState.set('newContractId', action.data)
+      break
+    case CONTRACT.ADD_BEFORE_SIGN + phase.SUCCESS:
+      nextIState = nextIState.set('newBeforeSignId', action.data)
+      break
+    case CONTRACT.ADD_AFTER_SIGN + phase.SUCCESS:
+      nextIState = nextIState.set('newAfterSign', action.data)
       break
   }
 

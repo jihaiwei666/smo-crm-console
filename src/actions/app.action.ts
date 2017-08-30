@@ -48,3 +48,13 @@ export function fetchAccountInfo(email) {
     }
   }
 }
+
+//todo
+export function changePassword(userId, oldPassword, newPassword) {
+  return {
+    [THREE_PHASE]: {
+      type: APP.CHANGE_PASSWORD,
+      http: () => _get(``)
+    }
+  }
+}

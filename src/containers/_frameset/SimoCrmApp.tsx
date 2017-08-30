@@ -13,14 +13,18 @@ import Modules from './Modules'
 import RecentOpen from './RecentOpen'
 
 import Data from '../common/interface/Data'
-import {fetchRecentOpenList} from '../../actions/app.action'
+import {fetchRecentOpenList, changePassword} from '../../actions/app.action'
 import {getPath} from '../../core/env'
 import pages from '../../core/pages'
+import Header from './Header'
 
 interface SimoCrmAppProps {
+  user: any
   roleCode: number
   fetchRecentOpenList: (start) => void
   recentOpenList: Data<any>
+  changePassword: () => void
+  changePasswordSuccess: boolean
   message: any
   changeMessageStatus: any
   match: any
@@ -54,7 +58,11 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> {
           </nav>
         </aside>
         <main>
-          <header></header>
+          <Header
+            user={this.props.user}
+            changePassword={this.props.changePassword}
+            changePasswordSuccess={this.props.changePasswordSuccess}
+          />
           <PageContent roleCode={this.props.roleCode} match={this.props.match}/>
         </main>
       </div>
@@ -74,5 +82,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  changeMessageStatus, fetchRecentOpenList
+  changeMessageStatus, fetchRecentOpenList, changePassword
 })(SimoCrmApp)

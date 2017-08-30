@@ -10,9 +10,11 @@ import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 import Form from 'app-core/form/Form'
 
 import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
-import {CUSTOMER} from '../../../core/constants/types'
-import CommonFunction from '../../common/interface/CommonFunction'
+
 import addCommonFunction from '../../_frameset/addCommonFunction'
+import CommonFunction from '../../common/interface/CommonFunction'
+import {CUSTOMER} from '../../../core/constants/types'
+import {relevantType} from '../../1-todo-remind/todo-remind.constant'
 
 interface ApplyBdpcFollowUpDialogProps extends CommonFunction {
   customerId: string
@@ -44,6 +46,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
       "content": '申请BDPC支持此项目',
       "reminder_type": this.state.remindTypeList,
       "relation_id": this.props.customerId,
+      "relation_type": relevantType.CLIENT,
       "reminder_from": 2,
     })
   }

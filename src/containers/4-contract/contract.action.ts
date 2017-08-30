@@ -85,7 +85,8 @@ export function addBeforeSign(options) {
   return {
     [THREE_PHASE]: {
       type: CONTRACT.ADD_BEFORE_SIGN,
-      http: () => _post(urlPrefix + '/v1/addContractBeforeSigned', {body: options})
+      http: () => _post(urlPrefix + '/v1/addContractBeforeSigned', {body: options}),
+      handleResponse: data => data['before_signed_id']
     }
   }
 }

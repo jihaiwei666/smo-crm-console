@@ -10,11 +10,13 @@ function generatorValueFromKey(prefix: string, obj: object): void {
 }
 
 export const APP = {
+  INIT_USER: null,
   FETCH_BD: null,
   FETCH_BDPC: null,
   FETCH_RECENT_OPEN_LIST: null,
   FETCH_OPERATION_HISTORY_LIST: null,
-  FETCH_ACCOUNT_INFO: null
+  FETCH_ACCOUNT_INFO: null,
+  CHANGE_PASSWORD: null
 }
 
 export const TODO_REMIND = {
