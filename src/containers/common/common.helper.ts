@@ -1,8 +1,8 @@
 /**
  * Created by jiangyukun on 2017/8/7.
  */
-import {getDateStr, getDateTimeStr} from '../../core/utils/dateUtils'
 import Data from './interface/Data'
+import {getDateTimeStr} from '../../core/utils/dateUtils'
 import crud from '../../core/crud'
 
 export function getOperationType(type) {
@@ -78,7 +78,21 @@ export function getSingleFile(file) {
   }
 }
 
+export function getAttachmentList(list) {
+  if (!list) return []
+  return list.map(item => ({
+    id: item['file_id'],
+    fileName: item['file_name'],
+    fileUrl: item['file_url'],
+  }))
+}
+
 export function lastItemIsLocal(list) {
   if (list.length == 0) return false
   return list[list.length - 1].crud == crud.ADD
+}
+
+export function numberToText(number) {
+  if (number == null) return ''
+  return number + ''
 }

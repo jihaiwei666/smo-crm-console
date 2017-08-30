@@ -4,10 +4,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import {Row, Part} from 'app-core/layout/'
 import Spinner from 'app-core/common/Spinner'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import CustomerBasicInfo from './part/CustomerBasicInfo'
 import BD_BDPC from './part/BD_BDPC'
@@ -83,67 +83,49 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
           }
           {
             loaded && (
-              <Row className="body-box">
-                <Part className="form-container">
+              <RightNav navItems={['客户信息', '分/子公司或下属院区', '联系人', 'CDA', '供应商', 'RFI', '关联信息', '备注及附件', '操作记录']}>
+                <BD_BDPC
+                  customerId={this.props.customerId}
+                  initBdAndBdpc={initBdAndBdpc}
+                />
+                <CategoryTitle title="客户信息"/>
+                <CustomerBasicInfo
+                  customerId={this.props.customerId}
+                  initCustomerBaseInfo={initCustomerBaseInfo}
+                />
 
-                  <BD_BDPC
-                    customerId={this.props.customerId}
-                    initBdAndBdpc={initBdAndBdpc}
-                  />
-                  <CategoryTitle title="客户信息"/>
-                  <CustomerBasicInfo
-                    customerId={this.props.customerId}
-                    initCustomerBaseInfo={initCustomerBaseInfo}
-                  />
+                <CategoryTitle title="分/子公司或下属院区"/>
+                <SubCompany
+                  customerId={this.props.customerId}
+                  subCompanyList={subCompanyList}
+                />
+                <CategoryTitle title="联系人"/>
+                <ContactInfo customerId={this.props.customerId} initContactInfo={initContactInfo}/>
 
-                  <CategoryTitle title="分/子公司或下属院区"/>
-                  <SubCompany
-                    customerId={this.props.customerId}
-                    subCompanyList={subCompanyList}
-                  />
-                  <CategoryTitle title="联系人"/>
-                  <ContactInfo customerId={this.props.customerId} initContactInfo={initContactInfo}/>
+                <CategoryTitle title="CDA"/>
+                <CDA customerId={this.props.customerId}/>
 
-                  <CategoryTitle title="CDA"/>
-                  <CDA customerId={this.props.customerId}/>
+                <CategoryTitle title="供应商"/>
+                <Supplier
+                  customerId={this.props.customerId}
+                  initSupplierInfo={supplierInfo}
+                />
 
-                  <CategoryTitle title="供应商"/>
-                  <Supplier
-                    customerId={this.props.customerId}
-                    initSupplierInfo={supplierInfo}
-                  />
+                <CategoryTitle title="RFI"/>
+                <RFI customerId={this.props.customerId} initRfiInfo={rfiInfo}/>
 
-                  <CategoryTitle title="RFI"/>
-                  <RFI customerId={this.props.customerId} initRfiInfo={rfiInfo}/>
+                <CategoryTitle title="关联信息"/>
+                <AssociateInfo relationInfo={relationInfo}/>
 
-                  <CategoryTitle title="关联信息"/>
-                  <AssociateInfo relationInfo={relationInfo}/>
+                <CategoryTitle title="备注及附件"/>
+                <CustomerRemarkAttachment
+                  customerId={this.props.customerId}
+                  initRemarkAttachment={remarkAttachment}
+                />
 
-                  <CategoryTitle title="备注及附件"/>
-                  <CustomerRemarkAttachment
-                    customerId={this.props.customerId}
-                    initRemarkAttachment={remarkAttachment}
-                  />
-
-                  <CategoryTitle title="操作记录"/>
-                  <OperationRecord operationRecordList={operationRecordList}/>
-                </Part>
-                <div className="customer-nav">
-                  <ul className="nav-category-group">
-                    <li className="active">
-                      客户信息
-                    </li>
-                    <li>分/子公司或下属院区</li>
-                    <li>联系人</li>
-                    <li>CDA</li>
-                    <li>供应商</li>
-                    <li>RFI</li>
-                    <li>关联信息</li>
-                    <li>备注及附件</li>
-                    <li>操作记录</li>
-                  </ul>
-                </div>
-              </Row>
+                <CategoryTitle title="操作记录"/>
+                <OperationRecord operationRecordList={operationRecordList}/>
+              </RightNav>
             )
           }
         </Modal.Body>

@@ -5,8 +5,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
-import {Row, Part} from 'app-core/layout'
 
+import RightNav from '../../../components/nav/RightNav'
 import BD_BDPC from './base/BD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
@@ -21,7 +21,6 @@ import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateBdAndBdpc} from '../project.action'
 
 interface AddProjectDialogProps extends ProjectState {
-
   fetchBD: () => void
   BDList: any
 
@@ -74,58 +73,45 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
           <Modal.Title>添加项目</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row className="body-box">
-            <Part className="form-container">
-              <BD_BDPC
-                disabled={this.state.projectId == ''}
-                fetchBD={this.props.fetchBD}
-                BDList={this.props.BDList}
-                fetchBDPC={this.props.fetchBDPC}
-                BDPCList={this.props.BDPCList}
-                updateBdAndBdpc={this.updateBdAndBdpc}
-                updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
-              />
+          <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
+            <BD_BDPC
+              disabled={this.state.projectId == ''}
+              fetchBD={this.props.fetchBD}
+              BDList={this.props.BDList}
+              fetchBDPC={this.props.fetchBDPC}
+              BDPCList={this.props.BDPCList}
+              updateBdAndBdpc={this.updateBdAndBdpc}
+              updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
+            />
 
-              <CategoryTitle title="项目信息"/>
-              <ProjectBasicInfo
-                projectId={this.state.projectId}
-              />
+            <CategoryTitle title="项目信息"/>
+            <ProjectBasicInfo
+              projectId={this.state.projectId}
+            />
 
-              <CategoryTitle title="报价前"/>
-              <BeforeQuotation
-                projectId={this.state.projectId}
-                beforeQuotationId={this.state.beforeQuotationId}
-              />
+            <CategoryTitle title="报价前"/>
+            <BeforeQuotation
+              projectId={this.state.projectId}
+              beforeQuotationId={this.state.beforeQuotationId}
+            />
 
-              <CategoryTitle title="报价后"/>
-              <AfterQuotation
-                projectId={this.state.projectId}
-                afterQuotationId={this.state.afterQuotationId}
-              />
+            <CategoryTitle title="报价后"/>
+            <AfterQuotation
+              projectId={this.state.projectId}
+              afterQuotationId={this.state.afterQuotationId}
+            />
 
-              <CategoryTitle title="关联信息"/>
-              <ProjectAssociateInfo relationInfo={{}}/>
+            <CategoryTitle title="关联信息"/>
+            <ProjectAssociateInfo relationInfo={{}}/>
 
-              <CategoryTitle title="备注及附件"/>
-              <ProjectRemarkAttachment
-                projectId={this.state.projectId}
-              />
+            <CategoryTitle title="备注及附件"/>
+            <ProjectRemarkAttachment
+              projectId={this.state.projectId}
+            />
 
-              <CategoryTitle title="操作记录"/>
-              <OperationRecord operationRecordList={[]}/>
-
-            </Part>
-            <div className="project-nav">
-              <ul className="nav-category-group">
-                <li className="active">项目信息</li>
-                <li>报价前</li>
-                <li>报价后</li>
-                <li>关联信息</li>
-                <li>备注及附件</li>
-                <li>操作记录</li>
-              </ul>
-            </div>
-          </Row>
+            <CategoryTitle title="操作记录"/>
+            <OperationRecord operationRecordList={[]}/>
+          </RightNav>
         </Modal.Body>
       </Modal>
     )

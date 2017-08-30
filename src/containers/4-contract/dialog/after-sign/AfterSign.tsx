@@ -239,6 +239,7 @@ class AfterSign extends React.Component<AfterSignProps> {
   }
 
   render() {
+    console.log(this.state.attachmentList)
     return (
       <Form onValidChange={valid => this.setState({valid})}>
         <div className="bb">

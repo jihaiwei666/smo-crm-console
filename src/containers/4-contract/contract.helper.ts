@@ -87,9 +87,10 @@ export function handleProjectList(data) {
 
 export function handlePartAfterSignInfo(data) {
   data = data || {}
+  let types = data['service_type'] || ''
   return {
     indication: data['indication'],
-    serviceTypes: [],
+    serviceTypes: types.split(','),
     centerNumber: data['center_number'],
     enrollmentCount: data['group_number']
   }

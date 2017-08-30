@@ -4,10 +4,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import {Row, Part} from 'app-core/layout'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import Spinner from 'app-core/common/Spinner'
 
+import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import ContractBdBdpc from './other/ContractBdBdpc'
 import ContractBasicInfo from './basic-info/ContractBasicInfo'
@@ -118,62 +118,49 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
           }
           {
             loaded && (
-              <Row className="body-box">
-                <Part className="form-container">
-                  <ContractBdBdpc
-                    contractId={this.props.contractId}
-                    initBdAndBdpc={initBdAndBdpc}
-                  />
+              <RightNav navItems={['合同信息', '签署前', '签署后', '收款', '关联信息', '备注及附件', '操作记录']}>
+                <ContractBdBdpc
+                  contractId={this.props.contractId}
+                  initBdAndBdpc={initBdAndBdpc}
+                />
 
-                  <CategoryTitle title="合同信息"/>
-                  <ContractBasicInfo
-                    contractId={this.props.contractId}
-                    initBaseInfo={baseInfo}
-                    onProjectIdChange={projectId => this.setState({projectId})}
-                  />
+                <CategoryTitle title="合同信息"/>
+                <ContractBasicInfo
+                  contractId={this.props.contractId}
+                  initBaseInfo={baseInfo}
+                  onProjectIdChange={projectId => this.setState({projectId})}
+                />
 
-                  <CategoryTitle title="签署前"/>
-                  <BeforeSign
-                    contractId={this.props.contractId}
-                    beforeSignId={beforeSignId}
-                    initBeforeSign={initBeforeSign}
-                  />
+                <CategoryTitle title="签署前"/>
+                <BeforeSign
+                  contractId={this.props.contractId}
+                  beforeSignId={beforeSignId}
+                  initBeforeSign={initBeforeSign}
+                />
 
-                  <CategoryTitle title="签署后"/>
-                  <AfterSign
-                    contractId={this.props.contractId}
-                    projectId={this.state.projectId}
-                    afterSignId={afterSignId}
-                    initAfterSign={initAfterSign}
-                  />
+                <CategoryTitle title="签署后"/>
+                <AfterSign
+                  contractId={this.props.contractId}
+                  projectId={this.state.projectId}
+                  afterSignId={afterSignId}
+                  initAfterSign={initAfterSign}
+                />
 
-                  <CategoryTitle title="收款"/>
-                  <CollectionList
-                    contractId={this.props.contractId}
-                    collectionList={this.collectionList}
-                  />
+                <CategoryTitle title="收款"/>
+                <CollectionList
+                  contractId={this.props.contractId}
+                  collectionList={this.collectionList}
+                />
 
-                  <CategoryTitle title="关联信息"/>
-                  <ContractAssociateInfo relationInfo={relationInfo}/>
+                <CategoryTitle title="关联信息"/>
+                <ContractAssociateInfo relationInfo={relationInfo}/>
 
-                  <CategoryTitle title="备注及附件"/>
-                  <ContractRemarkAttachment contractId={this.props.contractId} initRemarkAttachment={initRemarkAttachment}/>
+                <CategoryTitle title="备注及附件"/>
+                <ContractRemarkAttachment contractId={this.props.contractId} initRemarkAttachment={initRemarkAttachment}/>
 
-                  <CategoryTitle title="操作记录"/>
-                  <OperationRecord operationRecordList={operationRecordList}/>
-                </Part>
-                <div className="contract-nav">
-                  <ul className="nav-category-group">
-                    <li className="active">合同信息</li>
-                    <li>签署前</li>
-                    <li>签署后</li>
-                    <li>收款</li>
-                    <li>关联信息</li>
-                    <li>备注及附件</li>
-                    <li>操作记录</li>
-                  </ul>
-                </div>
-              </Row>
+                <CategoryTitle title="操作记录"/>
+                <OperationRecord operationRecordList={operationRecordList}/>
+              </RightNav>
             )
           }
         </Modal.Body>

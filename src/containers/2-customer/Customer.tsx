@@ -35,8 +35,8 @@ const showEdit = process.env.NODE_ENV != 'production'
 class Customer extends React.Component<CustomerProps> {
   state = {
     index: -1,
-    showAddDialog: false,
-    showEditDialog: showEdit,
+    showAddDialog: true,
+    showEditDialog: false,
     showDeleteConfirm: false,
 
     currentPage: 0,

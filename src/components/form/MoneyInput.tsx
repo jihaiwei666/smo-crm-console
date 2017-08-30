@@ -23,7 +23,7 @@ class MoneyInput extends React.Component<MoneyInputProps> {
   render() {
     let value = getMoneyText(this.props.value)
     return (
-      <Input {...this.props} value={value} onChange={this.onChange} format={checkFormat}/>
+      <Input className="money-input" {...this.props} value={value} onChange={this.onChange} format={checkFormat}/>
     )
   }
 }

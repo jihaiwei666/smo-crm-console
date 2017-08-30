@@ -5,9 +5,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
-import {Row, Part} from 'app-core/layout'
 import Spinner from 'app-core/common/Spinner'
 
+import RightNav from '../../../components/nav/RightNav'
 import BD_BDPC from './base/BD_BDPC'
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import CategoryTitle from '../../common/CategoryTitle'
@@ -108,59 +108,46 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
           }
           {
             loaded && (
-              <Row className="body-box">
-                <Part className="form-container">
-                  <BD_BDPC
-                    initBdAndBdpc={initBdAndBdpc}
-                    disabled={this.props.projectId == ''}
-                    fetchBD={this.props.fetchBD}
-                    BDList={this.props.BDList}
-                    fetchBDPC={this.props.fetchBDPC}
-                    BDPCList={this.props.BDPCList}
-                    updateBdAndBdpc={this.updateBdAndBdpc}
-                    updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
-                  />
+              <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
+                <BD_BDPC
+                  initBdAndBdpc={initBdAndBdpc}
+                  disabled={this.props.projectId == ''}
+                  fetchBD={this.props.fetchBD}
+                  BDList={this.props.BDList}
+                  fetchBDPC={this.props.fetchBDPC}
+                  BDPCList={this.props.BDPCList}
+                  updateBdAndBdpc={this.updateBdAndBdpc}
+                  updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
+                />
 
-                  <CategoryTitle title="项目信息"/>
-                  <ProjectBasicInfo projectId={this.props.projectId} baseInfo={baseInfo}/>
+                <CategoryTitle title="项目信息"/>
+                <ProjectBasicInfo projectId={this.props.projectId} baseInfo={baseInfo}/>
 
-                  <CategoryTitle title="报价前"/>
-                  <BeforeQuotation projectId={this.props.projectId}
-                                   beforeQuotationId={this.state.beforeQuotationId}
-                                   initBeforeQuotation={initBeforeQuotation}
-                  />
+                <CategoryTitle title="报价前"/>
+                <BeforeQuotation projectId={this.props.projectId}
+                                 beforeQuotationId={this.state.beforeQuotationId}
+                                 initBeforeQuotation={initBeforeQuotation}
+                />
 
-                  <CategoryTitle title="报价后"/>
-                  <AfterQuotation
-                    projectId={this.props.projectId}
-                    afterQuotationId={this.state.afterQuotationId}
-                    initAfterQuotation={initAfterQuotation}
-                  />
+                <CategoryTitle title="报价后"/>
+                <AfterQuotation
+                  projectId={this.props.projectId}
+                  afterQuotationId={this.state.afterQuotationId}
+                  initAfterQuotation={initAfterQuotation}
+                />
 
-                  <CategoryTitle title="关联信息"/>
-                  <ProjectAssociateInfo relationInfo={relationInfo}/>
+                <CategoryTitle title="关联信息"/>
+                <ProjectAssociateInfo relationInfo={relationInfo}/>
 
-                  <CategoryTitle title="备注及附件"/>
-                  <ProjectRemarkAttachment
-                    projectId={this.props.projectId}
-                    initRemarkAttachment={initRemarkAttachment}
-                  />
+                <CategoryTitle title="备注及附件"/>
+                <ProjectRemarkAttachment
+                  projectId={this.props.projectId}
+                  initRemarkAttachment={initRemarkAttachment}
+                />
 
-                  <CategoryTitle title="操作记录"/>
-                  <OperationRecord operationRecordList={operationRecordList}/>
-
-                </Part>
-                <div className="project-nav">
-                  <ul className="nav-category-group">
-                    <li className="active">项目信息</li>
-                    <li>报价前</li>
-                    <li>报价后</li>
-                    <li>关联信息</li>
-                    <li>备注及附件</li>
-                    <li>操作记录</li>
-                  </ul>
-                </div>
-              </Row>
+                <CategoryTitle title="操作记录"/>
+                <OperationRecord operationRecordList={operationRecordList}/>
+              </RightNav>
             )
           }
         </Modal.Body>

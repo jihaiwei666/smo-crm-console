@@ -2,11 +2,12 @@
  * Created by jiangyukun on 2017/7/10.
  */
 import React from 'react'
+
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
-import {Row, Part} from 'app-core/layout/'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
 import CustomerBasicInfo from './part/CustomerBasicInfo'
@@ -55,58 +56,40 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
           <Modal.Title>添加客户</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row className="body-box">
-            <Part className="form-container">
-              <BD_BDPC
-                customerId={this.state.customerId}
-              />
+          <RightNav navItems={['客户信息', '分/子公司或下属院区', '联系人', 'CDA', '供应商', 'RFI', '关联信息', '备注及附件', '操作记录']}>
+            <BD_BDPC
+              customerId={this.state.customerId}
+            />
 
-              <CategoryTitle title="客户信息"/>
-              <CustomerBasicInfo
-                customerId={this.state.customerId}
-              />
+            <CategoryTitle title="客户信息"/>
+            <CustomerBasicInfo
+              customerId={this.state.customerId}
+            />
 
-              <CategoryTitle title="分/子公司或下属院区"/>
-              <SubCompany customerId={this.state.customerId}/>
+            <CategoryTitle title="分/子公司或下属院区"/>
+            <SubCompany customerId={this.state.customerId}/>
 
-              <CategoryTitle title="联系人"/>
-              <ContactInfo customerId={this.state.customerId}/>
+            <CategoryTitle title="联系人"/>
+            <ContactInfo customerId={this.state.customerId}/>
 
-              <CategoryTitle title="CDA"/>
-              <CDA customerId={this.state.customerId}/>
+            <CategoryTitle title="CDA"/>
+            <CDA customerId={this.state.customerId}/>
 
-              <CategoryTitle title="供应商"/>
+            <CategoryTitle title="供应商"/>
+            <Supplier customerId={this.state.customerId}/>
 
-              <Supplier customerId={this.state.customerId}/>
+            <CategoryTitle title="RFI"/>
+            <RFI customerId={this.state.customerId}/>
 
-              <CategoryTitle title="RFI"/>
-              <RFI customerId={this.state.customerId}/>
+            <CategoryTitle title="关联信息"/>
+            <AssociateInfo/>
 
-              <CategoryTitle title="关联信息"/>
-              <AssociateInfo/>
+            <CategoryTitle title="备注及附件"/>
+            <CustomerRemarkAttachment customerId={this.state.customerId}/>
 
-              <CategoryTitle title="备注及附件"/>
-              <CustomerRemarkAttachment customerId={this.state.customerId}/>
-
-              <CategoryTitle title="操作记录"/>
-              <OperationRecord operationRecordList={[]}/>
-            </Part>
-            <div className="customer-nav">
-              <ul className="nav-category-group">
-                <li className="active">
-                  客户信息
-                </li>
-                <li>分/子公司或下属院区</li>
-                <li>联系人</li>
-                <li>CDA</li>
-                <li>供应商</li>
-                <li>RFI</li>
-                <li>关联信息</li>
-                <li>备注及附件</li>
-                <li>操作记录</li>
-              </ul>
-            </div>
-          </Row>
+            <CategoryTitle title="操作记录"/>
+            <OperationRecord operationRecordList={[]}/>
+          </RightNav>
         </Modal.Body>
       </Modal>
     )

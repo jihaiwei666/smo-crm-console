@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/8/7.
  */
 import {getDate} from '../../../../core/utils/dateUtils'
+import {numberToText, getAttachmentList} from '../../../common/common.helper'
 
 export function handleAfterSign(afterSign) {
   const base = afterSign['contractAfterSignedVo']
@@ -20,12 +21,12 @@ export function handleAfterSign(afterSign) {
     enrollmentCount: base['project_group_number'],
     servicePeriod: base['project_service_stage'],
     crcMoneyUnit: base['cost_detail_crc_service_fee_unit'],
-    crcMoneyValue: base['cost_detail_crc_service_fee_value'],
+    crcMoneyValue: numberToText(base['cost_detail_crc_service_fee_value']),
     pmServeFeeUnit: base['cost_detail_pm_service_fee_unit'],
-    pmServeFeeValue: base['cost_detail_pm_service_fee_value'],
+    pmServeFeeValue: numberToText(base['cost_detail_pm_service_fee_value']),
     replacementFee: base['cost_detail_acting_mat_fee'],
-    taxes: base['cost_detail_taxes_fee'] || '',
-    taxRate: base['cost_detail_taxes_rate'] || '',
+    taxes: numberToText(base['cost_detail_taxes_fee']),
+    taxRate: numberToText(base['cost_detail_taxes_rate']),
     paymentNode: base['payment_node'] || '',
     payer: base['payer'] || '',
     contractSignDate: getDate(base['contract_award_date']),
@@ -54,8 +55,9 @@ export function handleAfterSign(afterSign) {
     })),
     bdList: bdList.map(item => ({
       id: item['id'],
-      pm: item['value']
+      bd: item['value']
     })),
+    attachmentList: getAttachmentList(afterSign['fileList'])
   }
 }
 
