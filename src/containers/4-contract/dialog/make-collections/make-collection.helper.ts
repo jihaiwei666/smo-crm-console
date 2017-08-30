@@ -5,6 +5,7 @@ import {getDate} from '../../../../core/utils/dateUtils'
 
 export function handleCollectionList(collectionList) {
   return collectionList.filter(item => item != null).map(item => ({
+    paymentNode: item['pay_node_type'],
     collectionId: item['collection_id'],
     nodeDate: getDate(item['payment_node_date']),
     collectionMoney: item['receivables_amount'],

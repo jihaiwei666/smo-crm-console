@@ -8,14 +8,15 @@ interface InputWithSuffixProps {
   onChange: (v) => void
   placeholder: string
   suffix: string
+  disabled?: boolean
 }
 
 class InputWithSuffix extends React.Component<InputWithSuffixProps> {
   render() {
     return (
-      <div className="input-have-unit">
+      <div className="input-have-unit" disabled={this.props.disabled}>
         <input className="" placeholder={this.props.placeholder} value={this.props.value}
-               onChange={e => this.props.onChange(e.target.value)}/>
+               onChange={e => this.props.onChange(e.target.value)} disabled={this.props.disabled}/>
         <div className="unit">{this.props.suffix}</div>
       </div>
     )

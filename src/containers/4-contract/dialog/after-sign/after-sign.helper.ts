@@ -3,6 +3,7 @@
  */
 import {getDate} from '../../../../core/utils/dateUtils'
 import {numberToText, getAttachmentList} from '../../../common/common.helper'
+import {nodeProgress} from '../../contract.constant'
 
 export function handleAfterSign(afterSign) {
   const base = afterSign['contractAfterSignedVo']
@@ -81,4 +82,25 @@ function getProgressList(paymentNode, nodeList) {
     quota: item['payment_node_value'],
     date: getDate(item['payment_node_estimated_date'])
   }))
+}
+
+export function getSuffix(nodeType) {
+  switch (nodeType) {
+    case nodeProgress.xxPercentCenterStart:
+      return '%中心启动'
+    case nodeProgress.yCenterStart:
+      return '家中心启动'
+    case nodeProgress.xxPercentEnrollment:
+      return '%受试者入组'
+    case nodeProgress.yEnrollment:
+      return '位受试者入组'
+    case nodeProgress.xxPercentOut:
+      return '%受试者出组'
+    case nodeProgress.yOut:
+      return '位受试者出组'
+    case nodeProgress.xxPercentCenterClose:
+      return '%研究中心关闭'
+    case nodeProgress.yCenterClose:
+      return '家研究中心关闭'
+  }
 }

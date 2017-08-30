@@ -12,6 +12,7 @@ import listCrud from '../../../../components/hoc/listCrud'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
 import InputWithSuffix from '../../../../components/form/InputWithSuffix'
 import Input from '../../../../components/form/Input'
+import {getSuffix} from './after-sign.helper'
 
 interface ProgressProps {
   item: any
@@ -23,26 +24,6 @@ interface ProgressProps {
 }
 
 class Progress extends React.Component<ProgressProps> {
-  getSuffix = () => {
-    switch (this.props.item.node) {
-      case nodeProgress.xxPercentCenterStart:
-        return '%中心启动'
-      case nodeProgress.yCenterStart:
-        return '家中心启动'
-      case nodeProgress.xxPercentEnrollment:
-        return '%受试者入组'
-      case nodeProgress.yEnrollment:
-        return '位受试者入组'
-      case nodeProgress.xxPercentOut:
-        return '%受试者出组'
-      case nodeProgress.yOut:
-        return '位受试者出组'
-      case nodeProgress.xxPercentCenterClose:
-        return '%研究中心关闭'
-      case nodeProgress.yCenterClose:
-        return '家研究中心关闭'
-    }
-  }
 
   render() {
     const {item, index, total} = this.props
@@ -60,7 +41,7 @@ class Progress extends React.Component<ProgressProps> {
               <Input width="250px" placeholder="请输入指标数字" disabled={true}/>
             ) : (
               <InputWithSuffix
-                placeholder="请输入指标数字" suffix={this.getSuffix()}
+                placeholder="请输入指标数字" suffix={getSuffix(item.node)}
                 value={item.quota} onChange={v => this.props.onUpdate({quota: v})}
               />
             )
