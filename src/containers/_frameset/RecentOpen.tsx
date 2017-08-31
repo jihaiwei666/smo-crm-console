@@ -61,6 +61,18 @@ class RecentOpen extends React.Component<RecentOpenProps> {
           <ul className="nav-items">
             {
               list.map(item => {
+                if (item.isDeleted) {
+                  return (
+                    <li key={item.id} className="removed">
+                      <a>
+                        <span className="recent-open-type">
+                          {getRecentOpenTypeText(item.module)}
+                        </span>
+                        {item.name}
+                      </a>
+                    </li>
+                  )
+                }
                 return (
                   <li key={item.id} onClick={() => this.setState({module: item.module, moduleId: item.moduleId})}>
                     <a>

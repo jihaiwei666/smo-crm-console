@@ -24,6 +24,7 @@ export function handleRecentOpenList(data) {
       module: item['type'],
       moduleId: item['target_id'],
       name: item['target_title'],
+      isDeleted: item['id_is_delete']
     }))
   }
 }
