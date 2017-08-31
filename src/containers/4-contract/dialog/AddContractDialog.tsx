@@ -14,20 +14,26 @@ import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import CollectionList from './make-collections/CollectionList'
-
-import {updateCollection} from '../contract.action'
 import ContractRemarkAttachment from './other/ContractRemarkAttachment'
-import CommonFunction from '../../common/interface/CommonFunction'
+
+import Data from '../../common/interface/Data'
 import addCommonFunction from '../../_frameset/addCommonFunction'
+import CommonFunction from '../../common/interface/CommonFunction'
+import {updateCollection, fetchCollectionList} from '../contract.action'
 
 interface AddContractDialogProps extends CommonFunction {
   addContractSuccess: boolean
   newContractId: string
   updateCollection: (options) => void
+  fetchCollectionList: (contractId) => void
+  collectionList: Data<any>
+  addAfterSignSuccess: boolean
+  updateAfterSignSuccess: boolean
   onExited: () => void
 }
 
 class AddContractDialog extends React.Component<AddContractDialogProps> {
+  collectionList = []
   state = {
     show: true,
     contractId: '',
@@ -41,6 +47,15 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
   componentWillReceiveProps(nextProps: AddContractDialogProps) {
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
       this.setState({contractId: nextProps.newContractId})
+    }
+    if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
+      this.props.fetchCollectionList(this.state.contractId)
+    }
+    if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
+      this.props.fetchCollectionList(this.state.contractId)
+    }
+    if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
+      this.collectionList = nextProps.collectionList.data
     }
   }
 
@@ -71,7 +86,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
             <CategoryTitle title="收款"/>
             <CollectionList
               contractId={this.state.contractId}
-              collectionList={[]}
+              collectionList={this.collectionList}
               updateCollection={this.props.updateCollection}
             />
 
@@ -92,10 +107,13 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
 function mapStateToProps(state, props) {
   return {
     newContractId: state.contract.newContractId,
-    addContractSuccess: state.contract.addContractSuccess
+    addContractSuccess: state.contract.addContractSuccess,
+    addAfterSignSuccess: state.contract.addAfterSignSuccess,
+    updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
+    collectionList: state.collectionList
   }
 }
 
 export default connect(mapStateToProps, {
-  updateCollection
+  updateCollection, fetchCollectionList
 })(addCommonFunction(AddContractDialog))

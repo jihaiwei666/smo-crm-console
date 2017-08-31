@@ -2,6 +2,13 @@
     display: flex;
     flex-direction: column;
 
+    .no-list-data {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #aaa;
+        text-align: center;
+    }
+
     .back-to-all {
         cursor: pointer;
         display: inline-block;

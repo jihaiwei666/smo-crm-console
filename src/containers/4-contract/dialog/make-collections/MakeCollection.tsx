@@ -95,7 +95,7 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     if (this.props.institutionInfo.loaded) {
       institutionInfo = this.props.institutionInfo.data
     }
-    let nodeType = '2' //todo
+    let {progressNode, progressQuota, progressDate} = this.props.initCollection
 
     return (
       <div className="make-collection-item">
@@ -113,25 +113,23 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
               this.paymentNode == '2' && (
                 <div className="input-row">
                   <LabelAndInput1 label="节点">
-                    <Select1 width="250px" disabled={true}
-                             value={nodeType} options={nodeProgressOptions} onChange={v => null}
-                    />
+                    <Select1 width="250px" disabled={true} value={progressNode} options={nodeProgressOptions}/>
                   </LabelAndInput1>
                   <LabelAndInput1 label="指标">
                     {
-                      (nodeType == '' || nodeType == nodeProgress.contractSigned || nodeType == nodeProgress.databaseLock) ? (
-                        <Input width="250px" placeholder="请输入指标数字" disabled={true}/>
+                      (progressNode == '' || progressNode == nodeProgress.contractSigned || progressNode == nodeProgress.databaseLock) ? (
+                        <Input width="250px" placeholder="请输入指标数字" disabled={true} value={progressQuota}/>
                       ) : (
                         <InputWithSuffix
                           disabled={true}
-                          placeholder="请输入指标数字" suffix={getSuffix(nodeType)}
-                          value={''} onChange={v => null}
+                          placeholder="请输入指标数字" suffix={getSuffix(progressNode)}
+                          value={progressQuota}
                         />
                       )
                     }
                   </LabelAndInput1>
                   <LabelAndInput1 label="预估日期">
-                    <DatePicker disabled={true} value={this.state.nodeDate} onChange={v => this.setState({nodeDate: v})}/>
+                    <DatePicker disabled={true} value={progressDate}/>
                   </LabelAndInput1>
                 </div>
               )

@@ -70,9 +70,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.fetchCollectionList(this.props.contractId)
     }
-    if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
-
-    }
     if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
       this.collectionList = nextProps.collectionList.data
     }

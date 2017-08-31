@@ -142,7 +142,6 @@ body {
             }
             .user-info {
                 position: relative;
-                cursor: pointer;
                 display: inline-block;
                 margin-right: 10px;
 
@@ -152,6 +151,7 @@ body {
                     border-radius: 5px 5px 0 0;
                 }
                 .user-name {
+                    cursor: pointer;
                     padding: 7px 10px;
                 }
                 img {
@@ -173,6 +173,7 @@ body {
                         transition: all .3ms;
                     }
                     .dropdown-item {
+                        cursor: pointer;
                         padding: 4px 0;
                         &:hover {
                             background: #000;
@@ -213,8 +214,10 @@ body {
 @keyframes fadeOut {
     from {
         opacity: 1;
+        height: auto;
     }
     to {
         opacity: 0;
+        height: 0;
     }
 }

@@ -85,6 +85,7 @@ function getProgressList(paymentNode, nodeList) {
 }
 
 export function getSuffix(nodeType) {
+  nodeType += ''
   switch (nodeType) {
     case nodeProgress.xxPercentCenterStart:
       return '%中心启动'

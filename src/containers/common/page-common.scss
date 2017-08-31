@@ -172,6 +172,14 @@
     }
 }
 
+.operation-record-container {
+    padding: 10px;
+
+    .operation-content {
+        word-break: break-all;
+    }
+}
+
 .input-have-unit {
     position: relative;
     width: 250px;

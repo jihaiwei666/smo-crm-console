@@ -5,7 +5,7 @@ import React from 'react'
 
 interface InputWithSuffixProps {
   value: string
-  onChange: (v) => void
+  onChange?: (v) => void
   placeholder: string
   suffix: string
   disabled?: boolean

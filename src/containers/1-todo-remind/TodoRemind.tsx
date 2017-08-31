@@ -183,6 +183,11 @@ class TodoRemind extends React.Component<TodoRemindProps> {
             />
           )
         }
+        {
+          list.length == 0 && (
+            <div className="no-list-data">暂无数据</div>
+          )
+        }
       </div>
     )
   }
