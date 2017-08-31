@@ -10,7 +10,7 @@ import {copyList} from '../../../core/utils/common'
 import './check-group.scss'
 
 interface CheckGroupProps {
-  options: { value: any, text: string }[]
+  options: { value: any, text: string, disabled?: boolean }[]
   value: any[]
   onChange: (value: any[]) => void
   required?: boolean
@@ -40,6 +40,7 @@ class CheckGroup extends React.Component<CheckGroupProps> {
                 key={option.value}
                 checked={this.props.value.indexOf(option.value) != -1}
                 onChange={() => this.handleChange(option.value)}
+                disabled={option.disabled}
               >
                 {option.text}
               </CheckBox>

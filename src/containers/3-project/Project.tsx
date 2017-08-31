@@ -14,7 +14,7 @@ import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
 
 import {fetchList, removeProject} from './project.action'
-import {handleListData} from '../common/common.helper'
+import {handleListData, getNameAndEmail} from '../common/common.helper'
 import ProjectState from './ProjectState'
 import {PROJECT} from '../../core/constants/types'
 
@@ -112,7 +112,7 @@ class Project extends React.Component<ProjectProps> {
         <div className="m15">
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
-        <FixHeadList total={total}>
+        <FixHeadList total={total} weights={[1, 1, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>项目名称</FixHead.Item>
             <FixHead.Item>客户名称</FixHead.Item>
@@ -132,8 +132,8 @@ class Project extends React.Component<ProjectProps> {
                     <FixRow.Item>{item['projectName']}</FixRow.Item>
                     <FixRow.Item>{item['customerName']}</FixRow.Item>
                     <FixRow.Item>{item['projectCode']}</FixRow.Item>
-                    <FixRow.Item>{item['bd']}</FixRow.Item>
-                    <FixRow.Item>{item['bdpc']}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.bdName, item.bd)}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.bdpcName, item.bdpc)}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
                       <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>

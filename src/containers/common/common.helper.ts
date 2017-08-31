@@ -96,3 +96,10 @@ export function numberToText(number) {
   if (number == null) return ''
   return number + ''
 }
+
+export function getNameAndEmail(name, email) {
+  if (!name && !email) return ''
+  if (!name) return email
+  if (!email) return name
+  return `${name}（${email}）`
+}

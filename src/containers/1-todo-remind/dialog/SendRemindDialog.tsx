@@ -19,9 +19,9 @@ import LimitTextArea from '../../../components/form/LimitTextArea'
 import Data from '../../common/interface/Data'
 import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
-import {remindType} from '../todo-remind.constant'
-import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
+import {remindTypeOptions} from '../todo-remind.constant'
 import {TODO_REMIND} from '../../../core/constants/types'
+import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 
 interface SendRemindDialogProps extends CommonFunction {
   fetchUserCategoryInfo: () => void
@@ -136,7 +136,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
             <FlexDiv>
               <Part>提醒方式：</Part>
               <Part weight={2}>
-                <CheckGroup options={remindType} value={this.state.remindType} onChange={v => this.setState({remindType: v})}>
+                <CheckGroup options={remindTypeOptions} value={this.state.remindType} onChange={v => this.setState({remindType: v})}>
                 </CheckGroup>
               </Part>
             </FlexDiv>

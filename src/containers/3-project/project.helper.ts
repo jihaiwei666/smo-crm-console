@@ -11,7 +11,9 @@ export function handleProjectList(data) {
       projectName: item['project_info_name'],
       projectCode: item['project_info_code'],
       bd: item['project_the_bd'],
+      bdName: item['project_the_bd_name'],
       bdpc: item['project_the_bdpc'],
+      bdpcName: item['project_the_bdpc_name'],
     }))
   }
 }

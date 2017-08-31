@@ -156,6 +156,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
         {
           this.state.listType == 'all' && (
             <Remind
+              fromOrTo="to"
               remindList={list}
               loadMore={this.loadMoreUnCompleteRemind}
               updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}
@@ -165,6 +166,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
         {
           this.state.listType == 'my' && (
             <Remind
+              fromOrTo="from"
               remindList={list}
               loadMore={this.loadMoreMyRemind}
               updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}
@@ -174,6 +176,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
         {
           this.state.listType == 'complete' && (
             <Remind
+              fromOrTo="to"
               remindList={list}
               loadMore={this.loadMoreCompleteRemind}
               updateStatus={(updateStatusId, status) => this.setState({updateStatusId, status})}

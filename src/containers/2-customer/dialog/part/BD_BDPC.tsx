@@ -99,7 +99,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
               />
             </Part>
           </FlexDiv>
-          <div className="input-unit-illustrate">客户所有人为产生相关项目或产生MSA后，系统自动匹配BD，有争议时由BD负责人线下确认后修改</div>
+          <div className="tip mt5">客户所有人为产生相关项目或产生MSA后，系统自动匹配BD，有争议时由BD负责人线下确认后修改</div>
         </InputUnit>
 
         <InputUnit className="clearfix">
@@ -113,7 +113,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
               />
             </Part>
           </FlexDiv>
-          <div className="input-unit-illustrate">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
+          <div className="tip mt5">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
           <div className="pull-right">
             <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showApply: true})}>申请BDPC跟进</Button>
           </div>

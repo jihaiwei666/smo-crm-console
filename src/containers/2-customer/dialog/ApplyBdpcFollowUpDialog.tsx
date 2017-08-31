@@ -13,8 +13,8 @@ import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
 
 import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
+import {relevantType, remindTypeOptions} from '../../1-todo-remind/todo-remind.constant'
 import {CUSTOMER} from '../../../core/constants/types'
-import {relevantType} from '../../1-todo-remind/todo-remind.constant'
 
 interface ApplyBdpcFollowUpDialogProps extends CommonFunction {
   customerId: string
@@ -32,7 +32,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
 
     valid: true,
     bdpc: '',
-    remindTypeList: [],
+    remindTypeList: ['1'],
     email: false
   }
 
@@ -102,7 +102,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
               <Part weight={2}>
                 <CheckGroup
                   required={true} name="remindType"
-                  options={[{value: '1', text: '系统消息'}, {value: '2', text: '邮件'}]}
+                  options={remindTypeOptions}
                   value={this.state.remindTypeList} onChange={v => this.setState({remindTypeList: v})}
                 >
                 </CheckGroup>

@@ -21,7 +21,9 @@ export function handleContractList(data) {
       contractCode: item['contract_code'],
       contractType: item['contract_type'],
       bd: item['customer_the_bd'],
+      bdName: item['customer_the_bd_name'],
       bdpc: item['customer_the_bdpc'],
+      bdpcName: item['customer_the_bdpc_name'],
     }))
   }
 }

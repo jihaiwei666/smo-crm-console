@@ -10,9 +10,14 @@ import ConfirmOrClose from 'app-core/common/ConfirmOrClose'
 
 import Label, {NECESSARY} from '../common/Label'
 import Input from '../../components/form/Input'
+import CommonFunction from '../common/interface/CommonFunction'
+import addCommonFunction from './addCommonFunction'
+import {APP} from '../../core/constants/types'
+import md5 from '../../core/utils/md5'
 
-interface ChangePasswordDialogProps {
-  changePassword: () => void
+interface ChangePasswordDialogProps extends CommonFunction {
+  user: any
+  changePassword: (userId, oldPassword, newPassword) => void
   changePasswordSuccess: boolean
   onExited: () => void
 }
@@ -26,12 +31,18 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
     newPassword: '',
   }
 
+  changePassword = () => {
+    this.props.changePassword(this.props.user.userId, this.state.oldPassword, md5(this.state.newPassword))
+  }
+
   close = () => {
     this.setState({show: false})
   }
 
   componentWillReceiveProps(nextProps: ChangePasswordDialogProps) {
     if (!this.props.changePasswordSuccess && nextProps.changePasswordSuccess) {
+      this.props.showSuccess('修改密码成功！')
+      this.props.clearState(APP.CHANGE_PASSWORD)
       this.close()
     }
   }
@@ -43,7 +54,7 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
           this.state.showChangeConfirm && (
             <Confirm message="确定重置密码吗？"
                      onExited={() => this.setState({showChangeConfirm: false})}
-                     onConfirm={() => null}/>
+                     onConfirm={this.changePassword}/>
           )
         }
 
@@ -83,4 +94,4 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
   }
 }
 
-export default ChangePasswordDialog
+export default addCommonFunction(ChangePasswordDialog)

@@ -13,7 +13,7 @@ export const category = [
   {value: relevantType.CONTRACT, text: '合同'},
 ]
 
-export const remindType = [
-  {value: '1', text: '系统消息'},
+export const remindTypeOptions = [
+  {value: '1', text: '系统消息', disabled: true},
   {value: '2', text: '邮件'},
 ]

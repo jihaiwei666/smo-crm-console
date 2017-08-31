@@ -1,18 +1,19 @@
 /**
  * Created by jiangyukun on 2017/7/12.
  */
+import {getNameAndEmail} from '../containers/common/common.helper'
 
 export function handleBDListData(BDListData) {
   return BDListData.map(d => ({
     value: d['account'],
-    text: d['account']
+    text: getNameAndEmail(d['name'], d['account'])
   }))
 }
 
 export function handleBDPCListData(BDPCListData) {
   return BDPCListData.map(d => ({
     value: d['account'],
-    text: d['account']
+    text: getNameAndEmail(d['name'], d['account'])
   }))
 }
 

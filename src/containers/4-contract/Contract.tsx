@@ -12,7 +12,7 @@ import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
-import {handleListData} from '../common/common.helper'
+import {handleListData, getNameAndEmail} from '../common/common.helper'
 import {getContractType} from './contract.helper'
 import {fetchList, removeContract} from './contract.action'
 import {CONTRACT} from '../../core/constants/types'
@@ -124,7 +124,7 @@ class Contract extends React.Component<ContractProps> {
           <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
         </div>
 
-        <FixHeadList total={total}>
+        <FixHeadList total={total} weights={[1, 2, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>合同名称</FixHead.Item>
             <FixHead.Item>合同编号</FixHead.Item>
@@ -144,8 +144,8 @@ class Contract extends React.Component<ContractProps> {
                     <FixRow.Item>{item.contractName}</FixRow.Item>
                     <FixRow.Item>{item.contractCode}</FixRow.Item>
                     <FixRow.Item>{getContractType(item.contractType)}</FixRow.Item>
-                    <FixRow.Item>{item.bd}</FixRow.Item>
-                    <FixRow.Item>{item.bdpc}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.bdName, item.bd)}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.bdpcName, item.bdpc)}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
                       <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>

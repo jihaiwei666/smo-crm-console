@@ -10,6 +10,7 @@ import RemindStatus from './RemindStatus'
 import DownloadFile from '../../../components/file/DownloadFile'
 
 interface RemindProps {
+  fromOrTo: string
   remindList: any[]
   loadMore: (start) => void
   updateStatus: (remindId, status) => void
@@ -33,8 +34,23 @@ class Remind extends React.Component<RemindProps> {
               <Row key={item.id} className="todo-remind-item">
                 <Part className="m10">
                   <div>
-                    {item['email']}
-                    <span className="send-text">发来：</span>
+                    {
+                      this.props.fromOrTo == 'to' && (
+                        <span>
+                          <span className="mr7">{item.from}</span>
+                          <span className="send-text">发来：</span>
+                        </span>
+                      )
+                    }
+                    {
+                      this.props.fromOrTo == 'from' && (
+                        <span>
+                          <span className="send-text">发给：</span>
+                          {item.to}
+                          </span>
+                      )
+                    }
+
                     <div className="pull-right">
                       {item.sendTime}
                     </div>

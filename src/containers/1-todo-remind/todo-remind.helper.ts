@@ -3,13 +3,15 @@
  */
 import {getPositionName} from '../7-account-manage/account-manage.helper'
 import {getDateTimeStr} from '../../core/utils/dateUtils'
+import {getNameAndEmail} from '../common/common.helper'
 
 export function handleTodoRemindList(data) {
   return {
     total: data['totalCount'],
     list: data['list'].map(item => ({
       id: item['todo_reminder_id'],
-      email: item['sender'],
+      from: item['sender'],
+      to: item['recipient'],
       sendTime: getDateTimeStr(item['send_time']),
       content: item['content'],
       name: item['name'],
@@ -30,7 +32,7 @@ export function handleUserCategoryInfo(data) {
   return data.map((category, index) => ({
     categoryName: getPositionName(category['post_type']),
     options: category['list'].map(user => ({
-      value: user['account'], text: user['account']
+      value: user['account'], text: getNameAndEmail(user['name'], user['account'])
     }))
   }))
 }

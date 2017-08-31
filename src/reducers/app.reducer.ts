@@ -4,6 +4,7 @@
 import {fromJS} from 'immutable'
 
 import {APP} from '../core/constants/types'
+import {handleFlagState} from '../containers/common/reduxUtils'
 
 const initValue = {
   user: null,
@@ -17,6 +18,6 @@ export default function app(iState = fromJS(initValue), action) {
       nextIState = nextIState.set('user', action.user)
       break
   }
-
+  nextIState = handleFlagState(nextIState, action, APP.CHANGE_PASSWORD, 'changePasswordSuccess')
   return nextIState
 }

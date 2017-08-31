@@ -20,7 +20,9 @@ export function handleClientList(data) {
       customerName: item['customer_name'],
       customerCategory: item['customer_type'],
       customerOwner: item['customer_owner'],
+      customerOwnerName: item['customer_owner_name'],
       customerCreator: item['create_person'],
+      customerCreatorName: item['create_person_name'],
       operation: {
         canEdit: item['permissionOperation']['is_can_read'],
         canDelete: item['permissionOperation']['is_can_delete']

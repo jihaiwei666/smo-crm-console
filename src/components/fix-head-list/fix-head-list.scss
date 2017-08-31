@@ -3,6 +3,7 @@
     overflow: auto;
     display: flex;
     flex-direction: column;
+    font-family: SimSun, monospace;
     .head-container {
         display: flex;
 
@@ -30,6 +31,7 @@
             display: flex;
 
             .item {
+                word-break: break-all;
                 padding: 15px 0 15px 10px;
             }
 

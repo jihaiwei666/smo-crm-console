@@ -12,7 +12,7 @@ import ChangePasswordDialog from './ChangePasswordDialog'
 
 interface HeaderProps {
   user: any
-  changePassword: () => void
+  changePassword: (userId, oldPassword, newPassword) => void
   changePasswordSuccess: boolean
 }
 
@@ -34,6 +34,7 @@ class Header extends React.Component<HeaderProps> {
         {
           this.state.showResetPassword && (
             <ChangePasswordDialog
+              user={this.props.user}
               changePassword={this.props.changePassword}
               changePasswordSuccess={this.props.changePasswordSuccess}
               onExited={() => this.setState({showResetPassword: false})}

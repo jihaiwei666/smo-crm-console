@@ -35,15 +35,20 @@ class RightNav extends React.Component<RightNavProps> {
   calculateTitleHeight = () => {
     this.heightList = []
     this.navTitles.forEach((title, index) => {
-      this.heightList.push(findDOMNode<HTMLDivElement>(title).offsetTop - 60)
+      this.heightList.push(findDOMNode<HTMLDivElement>(title).offsetTop - 55)
     })
   }
 
   showActive() {
-    const top = findDOMNode<HTMLDivElement>(this._container).scrollTop
+    const container = findDOMNode<HTMLDivElement>(this._container)
+    const top = container.scrollTop, height = container.clientHeight
     for (let i = 0; i < this.heightList.length; i++) {
       if (this.heightList[i] >= top) {
-        this.setState({active: i})
+        if (this.heightList[i] < top + height / 2) {
+          this.setState({active: i})
+        } else {
+          this.setState({active: i - 1})
+        }
         break
       }
     }

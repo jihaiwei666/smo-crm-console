@@ -10,6 +10,7 @@ interface CheckBoxProps {
   className?: string
   checked: boolean
   onChange: (checked: boolean) => void
+  disabled?: boolean
 }
 
 class CheckBox extends React.Component<CheckBoxProps> {
@@ -20,8 +21,8 @@ class CheckBox extends React.Component<CheckBoxProps> {
   render() {
     return (
       <label className={classnames('checkbox-wrapper', this.props.className)}>
-        <span className={classnames('checkbox', {'checkbox-checked': this.props.checked})}>
-          <input className="checkbox-input" type="checkbox" onChange={this.handleChange}/>
+        <span className={classnames('checkbox', {'checkbox-checked': this.props.checked}, {'checkbox-disabled': this.props.disabled})}>
+          <input className="checkbox-input" type="checkbox" onChange={this.handleChange} disabled={this.props.disabled}/>
           <span className="checkbox-inner"></span>
         </span>
 

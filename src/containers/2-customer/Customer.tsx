@@ -21,7 +21,7 @@ import AppFunctionPage from '../common/interface/AppFunctionPage'
 import Data from '../common/interface/Data'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
 import {CUSTOMER} from '../../core/constants/types'
-import {handleListData, getOperation} from '../common/common.helper'
+import {handleListData, getOperation, getNameAndEmail} from '../common/common.helper'
 import {getCustomerType} from './customer.helper'
 import {fetchList, removeCustomer} from './customer.action'
 
@@ -177,7 +177,7 @@ class Customer extends React.Component<CustomerProps> {
           )
         }
 
-        <FixHeadList total={total}>
+        <FixHeadList total={total} weights={[1, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>客户名称</FixHead.Item>
             <FixHead.Item>客户类型</FixHead.Item>
@@ -195,8 +195,8 @@ class Customer extends React.Component<CustomerProps> {
                   >
                     <FixRow.Item>{item['customerName']}</FixRow.Item>
                     <FixRow.Item>{getCustomerType(item['customerCategory'])}</FixRow.Item>
-                    <FixRow.Item>{item['customerOwner']}</FixRow.Item>
-                    <FixRow.Item>{item['customerCreator']}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.customerOwnerName, item.customerOwner)}</FixRow.Item>
+                    <FixRow.Item>{getNameAndEmail(item.customerCreatorName, item.customerCreator)}</FixRow.Item>
                     <FixRow.Item>
                       {
                         item.operation.canEdit && (
