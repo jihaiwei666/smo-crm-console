@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import Popover from 'antd/lib/popover'
 import Spinner from 'app-core/common/Spinner'
 
-import {getOperationType} from './common.helper'
+import {getOperationType, getNameAndEmail} from './common.helper'
 import AccountInfo from './account/AccountInfo'
 import Data from './interface/Data'
 
@@ -25,9 +25,10 @@ export interface Record {
   module: number
   email: string
   content: string
+  name: string
 }
 
-class OperationRecord extends React.Component<OperationRecordProps, any> {
+class OperationRecord extends React.Component<OperationRecordProps> {
   email: ''
   handleChange = (email) => {
     if (this.email != email) {
@@ -67,7 +68,7 @@ class OperationRecord extends React.Component<OperationRecordProps, any> {
                       content={accountInfo} title={<div className="account-info-header">账号信息</div>}
                       onVisibleChange={() => this.handleChange(record.email)}
                     >
-                      <a>{record.email}</a>
+                      <a>{getNameAndEmail(record.name, record.email)}</a>
                     </Popover>
                   </div>
                   <div className="pull-right">{record.date}</div>

@@ -39,6 +39,7 @@ export function handleOperationList(operationRecordList) {
     type: item['operation_type'],
     module: item['operation_model'],
     email: item['operation_person'],
+    name: item['operation_person_name'],
     content: item['operation_content'],
   }))
 }

@@ -35,9 +35,10 @@ if (module.hot) {
 
 _get('/user/v1/getUserStatus').then(data => {
   let userId = data['user_id']
-  let userName = data['account']
+  let email = data['account']
+  let userName = data['name']
   let roleCode = data['post_type']
-  store.dispatch({type: APP.INIT_USER, user: {userId, userName, roleCode}})
+  store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode}})
   render(
     <Root store={store} history={history} roleCode={roleCode}/>,
     document.getElementById('root')

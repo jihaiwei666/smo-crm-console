@@ -32,7 +32,7 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
   }
 
   changePassword = () => {
-    this.props.changePassword(this.props.user.userId, this.state.oldPassword, md5(this.state.newPassword))
+    this.props.changePassword(this.props.user.userId, md5(this.state.oldPassword), md5(this.state.newPassword))
   }
 
   close = () => {
@@ -87,7 +87,8 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <ConfirmOrClose onCancel={this.close} onConfirm={() => this.setState({showChangeConfirm: true})} disabled={!this.state.valid}/>
+          <ConfirmOrClose onCancel={this.close} onConfirm={() => this.setState({showChangeConfirm: true})}
+                          disabled={!this.state.valid || this.state.newPassword == this.state.oldPassword}/>
         </Modal.Footer>
       </Modal>
     )

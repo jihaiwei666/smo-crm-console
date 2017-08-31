@@ -49,12 +49,13 @@ export function fetchAccountInfo(email) {
   }
 }
 
-
 export function changePassword(userId, oldPassword, newPassword) {
+  oldPassword = oldPassword.toUpperCase()
+  newPassword = newPassword.toUpperCase()
   return {
     [THREE_PHASE]: {
       type: APP.CHANGE_PASSWORD,
-      http: () => _patch(`/user/v1/updateUserPassWord/${userId}/${newPassword}`)
+      http: () => _patch(`/user/v1/updateUserPassWord/${userId}/${newPassword}/${oldPassword}`)
     }
   }
 }

@@ -66,8 +66,12 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
     if (!this.props.projectDetail.loaded && nextProps.projectDetail.loaded) {
       let {data} = nextProps.projectDetail
       let {beforeQuotation, afterQuotation} = data
-      this.setState({beforeQuotationId: beforeQuotation.beforeQuotationId})
-      this.setState({afterQuotationId: afterQuotation.afterQuotationId})
+      if (beforeQuotation) {
+        this.setState({beforeQuotationId: beforeQuotation.beforeQuotationId})
+      }
+      if (afterQuotation) {
+        this.setState({afterQuotationId: afterQuotation.afterQuotationId})
+      }
     }
     if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
       this.setState({beforeQuotationId: nextProps.newBeforeQuotation.beforeQuotationId})
