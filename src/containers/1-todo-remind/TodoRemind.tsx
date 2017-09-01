@@ -3,11 +3,10 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-
-
 import Confirm from 'app-core/common/Confirm'
 
 import Button from '../../components/button/Button'
+import Remind from './part/Remind'
 import SendRemindDialog from './dialog/SendRemindDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
@@ -15,7 +14,6 @@ import List from '../common/interface/List'
 import {TODO_REMIND} from '../../core/constants/types'
 import {fetchAllList, fetchMyList, fetchCompleteList, updateRemindStatus} from './todo-remind.action'
 import {handlePageListData} from '../../reducers/page-list.reducer'
-import Remind from './part/Remind'
 
 interface TodoRemindProps extends AppFunctionPage {
   fetchAllList: (start) => void

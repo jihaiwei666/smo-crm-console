@@ -1,9 +1,9 @@
 /**
  * Created by jiangyukun on 2017/7/11.
  */
+import {getDateStr} from '../../core/utils/dateUtils'
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleLastRfiDetail} from './dialog/rfi/rfi.helper'
-import {getDateStr} from '../../core/utils/dateUtils'
 import {handleOperationList, getNullValue} from '../common/common.helper'
 import {customerTypeMapper} from './customer.constant'
 
@@ -74,6 +74,7 @@ export function handleClientInfo(data) {
       customerCategory: getNullValue(baseInfo['customer_type']),
       customerAddress: baseInfo['customer_address'] || '',
       importantLevel: getNullValue(baseInfo['customer_important_level']),
+      customerNumber: baseInfo['customer_code'],
       taxpayerIdentifyNumber: baseInfo['billing_taxpayer_number'] || '',
       bank: baseInfo['billing_open_bank'],
       bankAccount: baseInfo['billing_open_bank_account'],

@@ -1,8 +1,8 @@
 /**
  * Created by jiangyukun on 2017/7/6.
  */
-import {getPositionName} from '../7-account-manage/account-manage.helper'
 import {getDateTimeStr} from '../../core/utils/dateUtils'
+import {getPositionName} from '../7-account-manage/account-manage.helper'
 import {getNameAndEmail} from '../common/common.helper'
 
 export function handleTodoRemindList(data) {
@@ -11,7 +11,9 @@ export function handleTodoRemindList(data) {
     list: data['list'].map(item => ({
       id: item['todo_reminder_id'],
       from: item['sender'],
+      fromName: item['sender_name'],
       to: item['recipient'],
+      toName: item['recipient_name'],
       sendTime: getDateTimeStr(item['send_time']),
       content: item['content'],
       name: item['name'],

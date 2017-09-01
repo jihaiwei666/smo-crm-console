@@ -5,9 +5,14 @@ import React from 'react'
 import {Row, Part} from 'app-core/layout/'
 import ScrollContainer from 'app-core/core/ScrollContainer'
 
-import {getRelevantTypeText} from '../todo-remind.helper'
 import RemindStatus from './RemindStatus'
 import DownloadFile from '../../../components/file/DownloadFile'
+import UpdateCustomerDialog from '../../2-customer/dialog/UpdateCustomerDialog'
+import UpdateProjectDialog from '../../3-project/dialog/UpdateProjectDialog'
+import UpdateContractDialog from '../../4-contract/dialog/UpdateContractDialog'
+
+import {getRelevantTypeText} from '../todo-remind.helper'
+import {getNameAndEmail} from '../../common/common.helper'
 
 interface RemindProps {
   fromOrTo: string
@@ -18,7 +23,9 @@ interface RemindProps {
 
 class Remind extends React.Component<RemindProps> {
   state = {
-    start: 0
+    start: 0,
+    relevantId: '',
+    relevantType: ''
   }
 
   loadMore = () => {
@@ -29,6 +36,30 @@ class Remind extends React.Component<RemindProps> {
     return (
       <ScrollContainer className="todo-remind-list" onScrollBottom={() => this.setState({start: this.state.start + 1}, this.loadMore)}>
         {
+          this.state.relevantType == '1' && this.state.relevantId && (
+            <UpdateCustomerDialog
+              customerId={this.state.relevantId}
+              onExited={() => this.setState({relevantId: ''})}
+            />
+          )
+        }
+        {
+          this.state.relevantType == '2' && this.state.relevantId && (
+            <UpdateProjectDialog
+              projectId={this.state.relevantId}
+              onExited={() => this.setState({relevantId: ''})}
+            />
+          )
+        }
+        {
+          this.state.relevantType == '3' && this.state.relevantId && (
+            <UpdateContractDialog
+              contractId={this.state.relevantId}
+              onExited={() => this.setState({relevantId: ''})}
+            />
+          )
+        }
+        {
           this.props.remindList.map((item, index) => {
             return (
               <Row key={item.id} className="todo-remind-item">
@@ -37,7 +68,7 @@ class Remind extends React.Component<RemindProps> {
                     {
                       this.props.fromOrTo == 'to' && (
                         <span>
-                          <span className="mr7">{item.from}</span>
+                          <span className="mr7">{getNameAndEmail(item.fromName, item.from)}</span>
                           <span className="send-text">发来：</span>
                         </span>
                       )
@@ -46,7 +77,7 @@ class Remind extends React.Component<RemindProps> {
                       this.props.fromOrTo == 'from' && (
                         <span>
                           <span className="send-text">发给：</span>
-                          {item.to}
+                          {getNameAndEmail(item.toName, item.to)}
                           </span>
                       )
                     }
@@ -64,7 +95,9 @@ class Remind extends React.Component<RemindProps> {
                       <span className="relevant-type">
                         {getRelevantTypeText(item.relevantType)}
                       </span>
-                      <span className="relevant-type-name">{item['name']}</span>
+                      <span className="relevant-type-name" onClick={() => this.setState({relevantId: item.relevantId, relevantType: item.relevantType})}>
+                        {item['name']}
+                      </span>
                     </div>
                     {
                       item.attachments.length != 0 && (
