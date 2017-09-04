@@ -31,6 +31,7 @@ import {getDateStr} from '../../../../core/utils/dateUtils'
 import {fetchContactList} from '../../customer.action'
 import {addSupplier, updateSupplier, fetchLastSupplierDetail} from './supplier.action'
 import Index from '../../../common/Index'
+import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 
 interface SupplierProps extends CustomerState, CommonFunction {
   customerId: string
@@ -208,6 +209,7 @@ class Supplier extends React.Component<SupplierProps> {
       this.props.clearState(CUSTOMER.ADD_SUPPLIER)
       this.supplierId = nextProps.newSupplierInfo.supplierId
       this.msaId = nextProps.newSupplierInfo.msaId
+      eventBus.emit(EVENT_NAMES.MSA_UPDATE)
     }
     if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
       this.props.showSuccess('更新供应商信息成功！')
@@ -215,6 +217,7 @@ class Supplier extends React.Component<SupplierProps> {
     }
     if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
       this.props.fetchLastSupplierDetail(this.props.customerId)
+      eventBus.emit(EVENT_NAMES.MSA_UPDATE)
     }
     if (!this.props.removeMsaSuccess && nextProps.removeMsaSuccess) {
       this.props.fetchLastSupplierDetail(this.props.customerId)

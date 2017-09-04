@@ -1,7 +1,7 @@
 import {contractTypeMapper} from './contract.constant'
 
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
-import {handleOperationList} from '../common/common.helper'
+import {handleOperationList, handleAttachmentList} from '../common/common.helper'
 import {handleCollectionList} from './dialog/make-collections/make-collection.helper'
 
 export function getContractType(type) {
@@ -25,6 +25,13 @@ export function handleContractList(data) {
       bdpc: item['customer_the_bdpc'],
       bdpcName: item['customer_the_bdpc_name'],
     }))
+  }
+}
+
+export function handleContractRemarkAttachment(remarkAttachment) {
+  return {
+    remark: remarkAttachment['remark'] || '',
+    attachment: handleAttachmentList(remarkAttachment['files'])
   }
 }
 
@@ -68,14 +75,7 @@ export function handleContractDetail(data) {
         customerName: item['customer_name']
       }))
     },
-    remarkAttachment: {
-      remark: remarkAttachment['remark'] || '',
-      attachment: remarkAttachment['files'].map(item => ({
-        id: item['file_id'],
-        fileUrl: item['file_url'],
-        fileName: item['file_name'],
-      }))
-    },
+    remarkAttachment: handleContractRemarkAttachment(remarkAttachment),
     operationRecordList: handleOperationList(operationList)
   }
 }

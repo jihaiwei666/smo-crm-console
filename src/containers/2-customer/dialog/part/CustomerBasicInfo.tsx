@@ -18,7 +18,8 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import Data from '../../../common/interface/Data'
 import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
-import {addCustomer, updateCustomer, querySimilarName} from '../../customer.action'
+import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
+import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
@@ -27,6 +28,8 @@ interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   addCustomer: (baseInfo) => void
   initCustomerBaseInfo?: any
   updateCustomer: (baseInfo) => void
+  fetchBasicInfo: (customerId) => void
+  customerBasicInfo: Data<any>
 }
 
 class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
@@ -87,8 +90,13 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
     }
   }
 
+  refreshBasicInfo = () => {
+    this.props.fetchBasicInfo(this.props.customerId)
+  }
+
   componentDidMount() {
     this.props.querySimilarName('')
+    eventBus.addListener(EVENT_NAMES.MSA_UPDATE, this.refreshBasicInfo)
   }
 
   componentWillReceiveProps(nextProps: CustomerBasicInfoProps) {
@@ -100,6 +108,13 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
       this.props.showSuccess('更新客户信息成功！')
       this.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
     }
+    if (!this.props.customerBasicInfo.loaded && nextProps.customerBasicInfo.loaded) {
+      this.setState(nextProps.customerBasicInfo.data)
+    }
+  }
+
+  componentWillUnmount() {
+    eventBus.removeListener(EVENT_NAMES.MSA_UPDATE, this.refreshBasicInfo)
   }
 
   render() {
@@ -211,10 +226,11 @@ function mapStateToProps(state, props) {
     ...state.customer,
     similarNameList: state.similarNameList,
     customerId: props.customerId,
-    initCustomerBaseInfo: props.initCustomerBaseInfo
+    initCustomerBaseInfo: props.initCustomerBaseInfo,
+    customerBasicInfo: state.customerBasicInfo
   }
 }
 
 export default connect(mapStateToProps, {
-  addCustomer, updateCustomer, querySimilarName
+  addCustomer, updateCustomer, querySimilarName, fetchBasicInfo
 })(addCommonFunction(CustomerBasicInfo))

@@ -6,16 +6,19 @@ import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 
-import {updateRemarkAndAttachment} from '../../contract.action'
-import {CONTRACT} from '../../../../core/constants/types'
+import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CONTRACT} from '../../../../core/constants/types'
+import {updateRemarkAndAttachment, fetchContractRemarkAttachment} from '../../contract.action'
 
 interface ContractRemarkAttachmentProps extends CommonFunction {
   contractId?: string
   initRemarkAttachment?: any
   updateRemarkAndAttachment: (options) => void
   updateRemarkAttachmentSuccess: boolean
+  fetchContractRemarkAttachment: (contractId) => void
+  contractRemarkAttachment: Data<any>
 }
 
 class ContractRemarkAttachment extends React.Component<ContractRemarkAttachmentProps> {
@@ -43,6 +46,10 @@ class ContractRemarkAttachment extends React.Component<ContractRemarkAttachmentP
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
       this.props.clearState(CONTRACT.UPDATE_REMARK_ATTACHMENT)
+      this.props.fetchContractRemarkAttachment(this.props.contractId)
+    }
+    if (!this.props.contractRemarkAttachment.loaded && nextProps.contractRemarkAttachment.loaded) {
+      this.setState(nextProps.contractRemarkAttachment.data)
     }
   }
 
@@ -65,10 +72,11 @@ function mapStateToProps(state, props) {
   return {
     initRemarkAttachment: props.initRemarkAttachment,
     updateRemarkAttachmentSuccess: state.contract.updateRemarkAttachmentSuccess,
+    contractRemarkAttachment: state.contractRemarkAttachment,
     contractId: props.contractId
   }
 }
 
 export default connect(mapStateToProps, {
-  updateRemarkAndAttachment
+  updateRemarkAndAttachment, fetchContractRemarkAttachment
 })(addCommonFunction(ContractRemarkAttachment))

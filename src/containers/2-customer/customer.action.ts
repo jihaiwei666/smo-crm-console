@@ -4,7 +4,10 @@
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CUSTOMER} from '../../core/constants/types'
 import {_get, _post} from '../../core/http'
-import {handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList, handleSimilarName} from './customer.helper'
+import {
+  handleClientList, handleClientInfo, handleCustomerProjectList, handleCustomerContactList, handleSimilarName, handleCustomerRemarkAttachment,
+  handleCustomerBdBdpc, handleCustomerBasicInfo
+} from './customer.helper'
 
 const urlPrefix = '/customer'
 
@@ -24,6 +27,16 @@ export function querySimilarName(customerName) {
       type: CUSTOMER.QUERY_SIMILAR_NAME,
       http: () => _get(urlPrefix + `/v1/names/like?customer_name=${customerName}`),
       handleResponse: handleSimilarName
+    }
+  }
+}
+
+export function fetchBasicInfo(customerId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.FETCH_BASIC_INFO,
+      http: () => _get(urlPrefix + `/v1/info/${customerId}`),
+      handleResponse: handleCustomerBasicInfo
     }
   }
 }
@@ -62,6 +75,16 @@ export function updateBdAndBdpc(options) {
     [THREE_PHASE]: {
       type: CUSTOMER.UPDATE_BD_AND_BDPC,
       http: () => _post(urlPrefix + '/v1/info/edit/belong', {body: options})
+    }
+  }
+}
+
+export function fetchCustomerBdBdpc(customerId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.FETCH_CUSTOMER_BD_BDPC,
+      http: () => _get(urlPrefix + `/v1/info/belong/${customerId}`),
+      handleResponse: handleCustomerBdBdpc
     }
   }
 }
@@ -119,6 +142,16 @@ export function updateRemarkAndAttachment(options) {
     [THREE_PHASE]: {
       type: CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT,
       http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
+    }
+  }
+}
+
+export function fetchCustomerRemarkAttachment(customerId) {
+  return {
+    [THREE_PHASE]: {
+      type: CUSTOMER.FETCH_CUSTOMER_REMARK_ATTACHMENT,
+      http: () => _get(urlPrefix + `/v1/info/remark/${customerId}`),
+      handleResponse: handleCustomerRemarkAttachment
     }
   }
 }

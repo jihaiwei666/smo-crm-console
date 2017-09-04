@@ -4,7 +4,7 @@
 import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {PROJECT} from '../../core/constants/types'
-import {handleProjectList, handleClientList, handleProjectDetail} from './project.helper'
+import {handleProjectList, handleClientList, handleProjectDetail, handleProjectRemarkAttachment} from './project.helper'
 import {handleBeforeQuotation} from './dialog/before-quotation/before-quotation.helper'
 import {handleAfterQuotation} from './dialog/after-quotation/after-quotation.helper'
 
@@ -111,6 +111,16 @@ export function updateRemarkAndAttachment(options) {
     [THREE_PHASE]: {
       type: PROJECT.UPDATE_REMARK_ATTACHMENT,
       http: () => _post(urlPrefix + '/v1/info/edit/remark', {body: options})
+    }
+  }
+}
+
+export function fetchProjectRemarkAttachment(projectId) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.FETCH_PROJECT_REMARK_ATTACHMENT,
+      http: () => _post(urlPrefix + `/v1/info/remark/${projectId}`),
+      handleResponse: handleProjectRemarkAttachment
     }
   }
 }

@@ -12,12 +12,14 @@ import Button from '../../../../components/button/Button'
 import Save from '../../../common/Save'
 import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
 
-import {applyBdpcFollowUp, updateBdAndBdpc} from '../../customer.action'
 import CustomerState from '../../CustomerState'
-import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
-import {CUSTOMER} from '../../../../core/constants/types'
+import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {CUSTOMER} from '../../../../core/constants/types'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
+import {applyBdpcFollowUp, updateBdAndBdpc, fetchCustomerBdBdpc} from '../../customer.action'
 
 interface BD_BDPC_Props extends CustomerState, CommonFunction {
   customerId: string
@@ -25,10 +27,12 @@ interface BD_BDPC_Props extends CustomerState, CommonFunction {
   BDList: any
   fetchBDPC: () => void
   BDPCList: any
-  updateBdAndBdpc: any
+  initBdAndBdpc?: any
+  updateBdAndBdpc: (options) => void
   applyBdpcFollowUp: (options) => void
 
-  initBdAndBdpc?: any
+  fetchCustomerBdBdpc: (customerId) => void
+  customerBdBdpc: Data<any>
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
@@ -47,6 +51,10 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
     })
   }
 
+  refreshBdBdpc = () => {
+    this.props.fetchCustomerBdBdpc(this.props.customerId)
+  }
+
   componentWillMount() {
     if (this.props.initBdAndBdpc) {
       this.setState(this.props.initBdAndBdpc)
@@ -54,6 +62,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   }
 
   componentDidMount() {
+    eventBus.addListener(EVENT_NAMES.MSA_UPDATE, this.refreshBdBdpc)
     this.props.fetchBD()
     this.props.fetchBDPC()
   }
@@ -63,6 +72,13 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
       this.props.showSuccess('更新 所有人、所属BDPC 成功！')
       this.props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
     }
+    if (!this.props.customerBdBdpc.loaded && nextProps.customerBdBdpc.loaded) {
+      this.setState(nextProps.customerBdBdpc.data)
+    }
+  }
+
+  componentWillUnmount() {
+    eventBus.removeListener(EVENT_NAMES.MSA_UPDATE, this.refreshBdBdpc)
   }
 
   render() {
@@ -131,10 +147,11 @@ function mapStateToProps(state, props) {
     customerId: props.customerId,
     initBdAndBdpc: props.initBdAndBdpc,
     BDList: state.BDList,
-    BDPCList: state.BDPCList
+    BDPCList: state.BDPCList,
+    customerBdBdpc: state.customerBdBdpc
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC, applyBdpcFollowUp, updateBdAndBdpc
+  fetchBD, fetchBDPC, applyBdpcFollowUp, updateBdAndBdpc, fetchCustomerBdBdpc
 })(addCommonFunction(BD_BDPC))

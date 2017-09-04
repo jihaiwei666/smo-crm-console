@@ -41,6 +41,8 @@ export default combineReducers({
   message: wrapReducerState(message),
   recentOpenList: wrapReducerState(data(APP.FETCH_RECENT_OPEN_LIST)),
   accountInfo: wrapReducerState(data(APP.FETCH_ACCOUNT_INFO)),
+  BDList: wrapReducerState(data(APP.FETCH_BD)),
+  BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
 
   todoRemind: wrapReducerState(todoRemind),
   todoRemindAllList: wrapReducerState(pageList(TODO_REMIND.FETCH_LIST)),
@@ -52,9 +54,9 @@ export default combineReducers({
   customer: wrapReducerState(customer),
   customerList: wrapReducerState(data(CUSTOMER.FETCH_LIST)),
   customerInfo: wrapReducerState(data(CUSTOMER.FETCH_CUSTOMER_DETAIL)),
+  customerBasicInfo: wrapReducerState(data(CUSTOMER.FETCH_BASIC_INFO)),
   similarNameList: wrapReducerState(data(CUSTOMER.QUERY_SIMILAR_NAME)),
-  BDList: wrapReducerState(data(APP.FETCH_BD)),
-  BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
+  customerBdBdpc: wrapReducerState(data(CUSTOMER.FETCH_CUSTOMER_BD_BDPC)),
   customerProjectData: wrapReducerState(data(CUSTOMER.FETCH_PROJECT_LIST)),
   customerContactData: wrapReducerState(data(CUSTOMER.FETCH_CONTACT_LIST)),
   cdaList: wrapReducerState(data(CUSTOMER.FETCH_CDA_LIST)),
@@ -64,11 +66,13 @@ export default combineReducers({
   rfiList: wrapReducerState(data(CUSTOMER.FETCH_RFI_LIST)),
   lastRfiDetail: wrapReducerState(data(CUSTOMER.FETCH_LAST_RFI_DETAIL)),
   lastSupplierDetail: wrapReducerState(data(CUSTOMER.FETCH_LAST_SUPPLIER_DETAIL)),
+  customerRemarkAttachment: wrapReducerState(data(CUSTOMER.FETCH_CUSTOMER_REMARK_ATTACHMENT)),
 
   project: wrapReducerState(project),
   projectList: wrapReducerState(data(PROJECT.FETCH_LIST)),
   projectClientList: wrapReducerState(data(PROJECT.FETCH_CLIENT_LIST)),
   projectDetail: wrapReducerState(data(PROJECT.FETCH_PROJECT_DETAIL)),
+  projectRemarkAttachment: wrapReducerState(data(PROJECT.FETCH_PROJECT_REMARK_ATTACHMENT)),
 
   contract: wrapReducerState(contract),
   contractDetail: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_DETAIL)),
@@ -79,6 +83,7 @@ export default combineReducers({
   collectionList: wrapReducerState(data(CONTRACT.FETCH_COLLECTION_LIST)),
   newAfterSign: wrapReducerState(data(CONTRACT.ADD_AFTER_SIGN)),
   partClientInfo: wrapReducerState(data(CONTRACT.FETCH_CLIENT_INFO_FROM_PROJECT)),
+  contractRemarkAttachment: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_REMARK_ATTACHMENT)),
 
   recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
 

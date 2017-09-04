@@ -21,6 +21,8 @@ import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
 
 import CustomerState from '../CustomerState'
+import Button from '../../../components/button/Button'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
 interface AddCustomerDialogProps extends CustomerState {
   addCustomer: (options) => void
@@ -32,6 +34,7 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
   state = {
     show: true,
     showAddConfirm: false,
+    showSendRemind: false,
     customerId: null,
   }
 
@@ -51,9 +54,18 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
         style={{width: '60%'}} contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
-
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>添加客户</Modal.Title>
+          <Modal.Title>
+            添加客户
+            <div className="pull-right">
+              <Button className="small" disabled={!this.state.customerId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <RightNav navItems={['客户信息', '分/子公司或下属院区', '联系人', 'CDA', '供应商', 'RFI', '关联信息', '备注及附件', '操作记录']}>

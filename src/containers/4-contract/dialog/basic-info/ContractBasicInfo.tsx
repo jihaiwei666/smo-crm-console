@@ -113,7 +113,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
-          <div style={{width: '400px'}}>
+          <div style={{width: '300px'}}>
             <Select1 options={this.props.projectList.data || []}
                      value={this.state.projectId} onChange={this.handleProjectChange}
             />
@@ -126,6 +126,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
             -
             <Input width="20%" className="m5" placeholder="请输入流水号"
                    required={true} name="serialNumber"
+                   format={/^\d{3}$/}
                    value={this.state.serialNumber} onChange={v => this.setState({serialNumber: v})}
             />
             -

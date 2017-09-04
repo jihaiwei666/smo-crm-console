@@ -25,13 +25,24 @@ export function handleClientList(data) {
   }))
 }
 
+export function handleProjectRemarkAttachment(remarkAttachment) {
+  return {
+    remark: remarkAttachment['remark'] || '',
+    attachment: remarkAttachment['files'].map(item => ({
+      id: item['file_id'],
+      fileUrl: item['file_url'],
+      fileName: item['file_name'],
+    }))
+  }
+}
+
 export function handleProjectDetail(data) {
   const baseInfo = data['projectInfo']
   const bdAndBdpc = data['bdAndBdpc']
   const beforeQuotation = data['projectBeforeOffer'] || {}
   const afterQuotation = data['projectAfterOffer'] || {}
   const relationInfo = data['projectRelationInfo'] || {}
-  const operationRecordList = data['operations']
+  const operationRecordList = data['operations'] || []
   const remarkAttachment = data['remarkAndFile'] || {}
   return {
     baseInfo: {
@@ -55,14 +66,7 @@ export function handleProjectDetail(data) {
         contractName: item['contract_name']
       }))
     },
-    remarkAttachment: {
-      remark: remarkAttachment['remark'] || '',
-      attachment: remarkAttachment['files'].map(item => ({
-        id: item['file_id'],
-        fileUrl: item['file_url'],
-        fileName: item['file_name'],
-      }))
-    },
+    remarkAttachment: handleProjectRemarkAttachment(remarkAttachment),
     operationRecordList: handleOperationList(operationRecordList)
   }
 }

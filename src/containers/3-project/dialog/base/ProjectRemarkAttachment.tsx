@@ -6,16 +6,19 @@ import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 
-import {updateRemarkAndAttachment} from '../../project.action'
-import {PROJECT} from '../../../../core/constants/types'
+import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import {PROJECT} from '../../../../core/constants/types'
+import {updateRemarkAndAttachment, fetchProjectRemarkAttachment} from '../../project.action'
 
 interface ProjectRemarkAttachmentProps extends CommonFunction {
   projectId?: string
   initRemarkAttachment?: any
   updateRemarkAndAttachment: (options) => void
   updateRemarkAttachmentSuccess: boolean
+  fetchProjectRemarkAttachment: (projectId) => void
+  projectRemarkAttachment: Data<any>
 }
 
 class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentProps> {
@@ -43,6 +46,10 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
       this.props.clearState(PROJECT.UPDATE_REMARK_ATTACHMENT)
+      this.props.fetchProjectRemarkAttachment(this.props.projectId)
+    }
+    if (!this.props.projectRemarkAttachment.loaded && nextProps.projectRemarkAttachment.loaded) {
+      this.setState(nextProps.projectRemarkAttachment.data)
     }
   }
 
@@ -64,10 +71,11 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
 function mapStateToProps(state, props) {
   return {
     updateRemarkAttachmentSuccess: state.project.updateRemarkAttachmentSuccess,
+    projectRemarkAttachment: state.projectRemarkAttachment,
     projectId: props.projectId
   }
 }
 
 export default connect(mapStateToProps, {
-  updateRemarkAndAttachment
+  updateRemarkAndAttachment, fetchProjectRemarkAttachment
 })(addCommonFunction(ProjectRemarkAttachment))

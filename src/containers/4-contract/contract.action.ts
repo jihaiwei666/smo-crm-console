@@ -4,7 +4,7 @@
 import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CONTRACT} from '../../core/constants/types'
-import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo} from './contract.helper'
+import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo, handleContractRemarkAttachment} from './contract.helper'
 import {handleInstitutionList, handleInstitutionInfo, handleCollectionList} from './dialog/make-collections/make-collection.helper'
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 
@@ -175,6 +175,16 @@ export function updateRemarkAndAttachment(options) {
     [THREE_PHASE]: {
       type: CONTRACT.UPDATE_REMARK_ATTACHMENT,
       http: () => _post(urlPrefix + '/v1/updateContractRemark', {body: options})
+    }
+  }
+}
+
+export function fetchContractRemarkAttachment(contractId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_CONTRACT_REMARK_ATTACHMENT,
+      http: () => _get(urlPrefix + `/v1/getContractRemark/${contractId}`),
+      handleResponse: handleContractRemarkAttachment
     }
   }
 }

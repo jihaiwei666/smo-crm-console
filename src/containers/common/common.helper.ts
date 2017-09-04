@@ -88,6 +88,8 @@ export function getAttachmentList(list) {
   }))
 }
 
+export let handleAttachmentList = getAttachmentList
+
 export function lastItemIsLocal(list) {
   if (list.length == 0) return false
   return list[list.length - 1].crud == crud.ADD

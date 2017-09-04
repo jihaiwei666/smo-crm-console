@@ -4,7 +4,7 @@
 import {getDateStr} from '../../core/utils/dateUtils'
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleLastRfiDetail} from './dialog/rfi/rfi.helper'
-import {handleOperationList, getNullValue} from '../common/common.helper'
+import {handleOperationList, getNullValue, handleAttachmentList} from '../common/common.helper'
 import {customerTypeMapper} from './customer.constant'
 
 export function getCustomerType(type) {
@@ -56,6 +56,38 @@ export function handleCustomerContactList(data) {
   }))
 }
 
+export function handleCustomerBasicInfo(baseInfo) {
+  return {
+    customerName: baseInfo['customer_name'] || '',
+    customerCategory: getNullValue(baseInfo['customer_type']),
+    customerAddress: baseInfo['customer_address'] || '',
+    importantLevel: getNullValue(baseInfo['customer_important_level']),
+    customerNumber: baseInfo['customer_code'],
+    taxpayerIdentifyNumber: baseInfo['billing_taxpayer_number'] || '',
+    bank: baseInfo['billing_open_bank'],
+    bankAccount: baseInfo['billing_open_bank_account'],
+    billAddress: baseInfo['billing_address'],
+    telephone: baseInfo['billing_telephone'],
+    billPostAddress: baseInfo['billing_invoice_mailing_address'],
+    billReceiver: baseInfo['billing_invoice_recipient'],
+    receiverContactInfo: baseInfo['billing_recipient_contact'],
+  }
+}
+
+export function handleCustomerRemarkAttachment(remarkAttachment) {
+  return {
+    remark: remarkAttachment['remark'] || '',
+    attachment: handleAttachmentList(remarkAttachment['files'])
+  }
+}
+
+export function handleCustomerBdBdpc(bdAndBdpc) {
+  return {
+    owner: bdAndBdpc['customer_owner'],
+    bdpc: bdAndBdpc['customer_the_bdpc'],
+  }
+}
+
 export function handleClientInfo(data) {
   const baseInfo = data['customerInfo'] || {}
   const bdAndBdpc = data['bdAndBdpc'] || {}
@@ -69,25 +101,8 @@ export function handleClientInfo(data) {
   const remarkAttachment = data['remarkAndFile'] || {}
 
   return {
-    customerBaseInfo: {
-      customerName: baseInfo['customer_name'] || '',
-      customerCategory: getNullValue(baseInfo['customer_type']),
-      customerAddress: baseInfo['customer_address'] || '',
-      importantLevel: getNullValue(baseInfo['customer_important_level']),
-      customerNumber: baseInfo['customer_code'],
-      taxpayerIdentifyNumber: baseInfo['billing_taxpayer_number'] || '',
-      bank: baseInfo['billing_open_bank'],
-      bankAccount: baseInfo['billing_open_bank_account'],
-      billAddress: baseInfo['billing_address'],
-      telephone: baseInfo['billing_telephone'],
-      billPostAddress: baseInfo['billing_invoice_mailing_address'],
-      billReceiver: baseInfo['billing_invoice_recipient'],
-      receiverContactInfo: baseInfo['billing_recipient_contact'],
-    },
-    bdAndBdpc: {
-      owner: bdAndBdpc['customer_owner'],
-      bdpc: bdAndBdpc['customer_the_bdpc'],
-    },
+    customerBaseInfo: handleCustomerBasicInfo(baseInfo),
+    bdAndBdpc: handleCustomerBdBdpc(bdAndBdpc),
     subCompanyList: subCompany.map(c => ({
       companyId: c['subsidiary_id'],
       companyName: c['subsidiary_name'],
@@ -128,14 +143,7 @@ export function handleClientInfo(data) {
         projectName: item['project_info_name']
       }))
     },
-    remarkAttachment: {
-      remark: remarkAttachment['remark'] || '',
-      attachment: remarkAttachment['files'].map(item => ({
-        id: item['file_id'],
-        fileUrl: item['file_url'],
-        fileName: item['file_name'],
-      }))
-    },
+    remarkAttachment: handleCustomerRemarkAttachment(remarkAttachment),
     operationRecordList: handleOperationList(operationRecordList)
   }
 }

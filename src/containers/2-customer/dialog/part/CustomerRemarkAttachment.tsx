@@ -6,16 +6,19 @@ import {connect} from 'react-redux'
 
 import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 
-import CommonFunction from '../../../common/interface/CommonFunction'
-import {updateRemarkAndAttachment} from '../../customer.action'
-import {CUSTOMER} from '../../../../core/constants/types'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import Data from '../../../common/interface/Data'
+import {CUSTOMER} from '../../../../core/constants/types'
+import {updateRemarkAndAttachment, fetchCustomerRemarkAttachment} from '../../customer.action'
 
 interface CustomerRemarkAttachmentProps extends CommonFunction {
   customerId?: string
   initRemarkAttachment?: any
   updateRemarkAndAttachment: (options) => void
   updateRemarkAttachmentSuccess: boolean
+  fetchCustomerRemarkAttachment: (customerId) => void
+  customerRemarkAttachment: Data<any>
 }
 
 class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentProps> {
@@ -43,6 +46,10 @@ class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentP
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
       this.props.clearState(CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT)
+      this.props.fetchCustomerRemarkAttachment(this.props.customerId)
+    }
+    if (!this.props.customerRemarkAttachment.loaded && nextProps.customerRemarkAttachment.loaded) {
+      this.setState(nextProps.customerRemarkAttachment.data)
     }
   }
 
@@ -64,10 +71,11 @@ class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentP
 function mapStateToProps(state, props) {
   return {
     updateRemarkAttachmentSuccess: state.customer.updateRemarkAttachmentSuccess,
+    customerRemarkAttachment: state.customerRemarkAttachment,
     customerId: props.customerId
   }
 }
 
 export default connect(mapStateToProps, {
-  updateRemarkAndAttachment
+  updateRemarkAndAttachment, fetchCustomerRemarkAttachment
 })(addCommonFunction(CustomerRemarkAttachment))

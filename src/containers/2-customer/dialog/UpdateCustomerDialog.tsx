@@ -19,6 +19,8 @@ import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
+import Button from '../../../components/button/Button'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
 import CustomerState from '../CustomerState'
 import {fetchCustomerDetail, fetchContactList} from '../customer.action'
@@ -36,6 +38,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   state = {
     show: true,
     showAddConfirm: false,
+    showSendRemind: false
   }
 
   close = () => {
@@ -71,9 +74,18 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
         contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
-
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>编辑客户</Modal.Title>
+          <Modal.Title>
+            编辑客户
+            <div className="pull-right">
+              <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {

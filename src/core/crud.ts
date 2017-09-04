@@ -3,6 +3,8 @@
  */
 import {Config} from '../components/hoc/listCrud'
 
+export const DEFAULT = '-1'
+
 export const DELETE = '1'
 export const REMOVE = '1'
 
@@ -12,7 +14,7 @@ export const EDIT = '3'
 export const UPDATE = '3'
 
 export default {
-  ADD, REMOVE, DELETE, UPDATE
+  DEFAULT, ADD, REMOVE, DELETE, UPDATE
 }
 
 export function handleCrudList(list, option: Config, parentId?: string) {
