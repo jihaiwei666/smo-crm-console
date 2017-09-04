@@ -3,24 +3,19 @@
  */
 import React from 'react'
 
-import CheckBox from '../../../components/form/checkbox/CheckBox'
-import Button from '../../../components/button/Button'
-
-interface RemindStatusProps {
+interface RemindStatusFromProps {
   remind: any
   updateStatus: (remindId, status) => void
 }
 
-class RemindStatus extends React.Component<RemindStatusProps> {
+class RemindStatusFrom extends React.Component<RemindStatusFromProps> {
   render() {
     let remind = this.props.remind
     if (remind.remindType == '1') {
       if (!remind.remindStatus) {
         return (
           <div onClick={() => this.props.updateStatus(remind.id, 'complete')}>
-            <CheckBox checked={false} onChange={() => null}>
-              已完成
-            </CheckBox>
+            未处理
           </div>
         )
       } else if (remind.remindStatus == '1') {
@@ -32,8 +27,7 @@ class RemindStatus extends React.Component<RemindStatusProps> {
       if (!remind.remindStatus) {
         return (
           <div>
-            <Button className="small" onClick={() => this.props.updateStatus(remind.id, 'accept')}>接受</Button>
-            <Button className="small danger" onClick={() => this.props.updateStatus(remind.id, 'reject')}>拒绝</Button>
+            未处理
           </div>
         )
       } else if (remind.remindStatus == '1') {
@@ -50,4 +44,4 @@ class RemindStatus extends React.Component<RemindStatusProps> {
   }
 }
 
-export default RemindStatus
+export default RemindStatusFrom

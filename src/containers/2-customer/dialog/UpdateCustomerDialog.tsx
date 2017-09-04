@@ -23,18 +23,20 @@ import Button from '../../../components/button/Button'
 import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
 import CustomerState from '../CustomerState'
+import Data from '../../common/interface/Data'
 import {fetchCustomerDetail, fetchContactList} from '../customer.action'
 
 interface UpdateCustomerDialogProps extends CustomerState {
   customerId: string
   fetchCustomerDetail: (customerId) => void
-  customerInfo: any
+  customerInfo: Data<any>
 
   fetchContactList: (customerId: string) => void
   onExited: () => void
 }
 
 class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
+  customerName = ''
   state = {
     show: true,
     showAddConfirm: false,
@@ -51,17 +53,22 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
   }
 
   componentWillReceiveProps(nextProps: UpdateCustomerDialogProps) {
-
+    if (!this.props.customerInfo.loaded && nextProps.customerInfo.loaded) {
+      const initCustomerBaseInfo = nextProps.customerInfo.data.customerBaseInfo
+      if (initCustomerBaseInfo) {
+        this.customerName = initCustomerBaseInfo.customerName
+      }
+    }
   }
 
   render() {
     let {loaded, data} = this.props.customerInfo
     data = data || {}
     const initCustomerBaseInfo = data.customerBaseInfo
+
     const initBdAndBdpc = data.bdAndBdpc
     const subCompanyList = data.subCompanyList
     const initContactInfo = data.contactInfo
-    // const cdaList = data.cdaList
     const supplierInfo = data.supplierInfo
     const rfiInfo = data.rfiInfo
     const relationInfo = data.relationInfo
@@ -76,7 +83,11 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
       >
         {
           this.state.showSendRemind && (
-            <SendRemindDialog onExited={() => this.setState({showSendRemind: false})}/>
+            <SendRemindDialog
+              relevantId={this.props.customerId}
+              relevantType={'1'}
+              relevantText={this.customerName}
+              onExited={() => this.setState({showSendRemind: false})}/>
           )
         }
         <Modal.Header closeButton={true}>
@@ -104,6 +115,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                 <CustomerBasicInfo
                   customerId={this.props.customerId}
                   initCustomerBaseInfo={initCustomerBaseInfo}
+                  onCustomerNameChange={name => this.customerName = name}
                 />
 
                 <CategoryTitle title="分/子公司或下属院区"/>

@@ -5,8 +5,9 @@ import React from 'react'
 import {Row, Part} from 'app-core/layout/'
 import ScrollContainer from 'app-core/core/ScrollContainer'
 
-import RemindStatus from './RemindStatus'
 import DownloadFile from '../../../components/file/DownloadFile'
+import RemindStatusTo from './RemindStatusTo'
+import RemindStatusFrom from './RemindStatusFrom'
 import UpdateCustomerDialog from '../../2-customer/dialog/UpdateCustomerDialog'
 import UpdateProjectDialog from '../../3-project/dialog/UpdateProjectDialog'
 import UpdateContractDialog from '../../4-contract/dialog/UpdateContractDialog'
@@ -119,10 +120,22 @@ class Remind extends React.Component<RemindProps> {
                 </Part>
                 <div className="todo-remind-status">
                   <Row className="h-100 h-middle v-middle">
-                    <RemindStatus
-                      remind={item}
-                      updateStatus={this.props.updateStatus}
-                    />
+                    {
+                      this.props.fromOrTo == 'to' && (
+                        <RemindStatusTo
+                          remind={item}
+                          updateStatus={this.props.updateStatus}
+                        />
+                      )
+                    }
+                    {
+                      this.props.fromOrTo == 'from' && (
+                        <RemindStatusFrom
+                          remind={item}
+                          updateStatus={this.props.updateStatus}
+                        />
+                      )
+                    }
                   </Row>
                 </div>
               </Row>

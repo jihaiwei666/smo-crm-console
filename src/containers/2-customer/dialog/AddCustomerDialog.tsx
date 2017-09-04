@@ -31,6 +31,7 @@ interface AddCustomerDialogProps extends CustomerState {
 }
 
 class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
+  customerName = ''
   state = {
     show: true,
     showAddConfirm: false,
@@ -56,7 +57,11 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
       >
         {
           this.state.showSendRemind && (
-            <SendRemindDialog onExited={() => this.setState({showSendRemind: false})}/>
+            <SendRemindDialog
+              relevantId={this.state.customerId}
+              relevantType={'1'}
+              relevantText={this.customerName}
+              onExited={() => this.setState({showSendRemind: false})}/>
           )
         }
         <Modal.Header closeButton={true}>
@@ -76,6 +81,7 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
             <CategoryTitle title="客户信息"/>
             <CustomerBasicInfo
               customerId={this.state.customerId}
+              onCustomerNameChange={name => this.customerName = name}
             />
 
             <CategoryTitle title="分/子公司或下属院区"/>

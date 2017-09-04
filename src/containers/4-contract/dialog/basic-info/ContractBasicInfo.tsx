@@ -17,8 +17,8 @@ import Data from '../../../common/interface/Data'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
+import {CONTRACT} from '../../../../core/constants/types'
 import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
-import {CONTRACT, PROJECT} from '../../../../core/constants/types'
 
 interface ContractBasicInfoProps extends CommonFunction {
   contractId?: string
@@ -34,6 +34,7 @@ interface ContractBasicInfoProps extends CommonFunction {
   updateContract: (options) => void
   updateContractSuccess: boolean
   onProjectIdChange: (projectId) => void
+  onContractNameChange: (contractName) => void
 }
 
 class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
@@ -93,11 +94,13 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
       this.props.showSuccess('添加合同信息成功！')
       this.props.clearState(CONTRACT.ADD_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
+      this.props.onContractNameChange(this.state.contractName)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
       this.props.showSuccess('更新合同信息成功！')
       this.props.clearState(CONTRACT.UPDATE_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
+      this.props.onContractNameChange(this.state.contractName)
     }
   }
 

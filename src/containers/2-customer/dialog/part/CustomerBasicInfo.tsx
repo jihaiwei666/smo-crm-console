@@ -13,13 +13,13 @@ import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
+import CustomerState from '../../CustomerState'
+import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import Data from '../../../common/interface/Data'
-import CustomerState from '../../CustomerState'
 import {CUSTOMER} from '../../../../core/constants/types'
-import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
+import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
@@ -30,6 +30,7 @@ interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   updateCustomer: (baseInfo) => void
   fetchBasicInfo: (customerId) => void
   customerBasicInfo: Data<any>
+  onCustomerNameChange: (customerName) => void
 }
 
 class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
@@ -72,7 +73,6 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
       "customer_type": customerCategory,
       "customer_address": customerAddress,
       "customer_important_level": importantLevel,
-
       "billing_taxpayer_number": taxpayerIdentifyNumber,
       "billing_open_bank": bank,
       "billing_open_bank_account": bankAccount,
@@ -103,10 +103,12 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.props.showSuccess('添加客户信息成功！')
       this.props.clearState(CUSTOMER.ADD_CUSTOMER)
+      this.props.onCustomerNameChange(this.state.customerName)
     }
     if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
       this.props.showSuccess('更新客户信息成功！')
       this.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
+      this.props.onCustomerNameChange(this.state.customerName)
     }
     if (!this.props.customerBasicInfo.loaded && nextProps.customerBasicInfo.loaded) {
       this.setState(nextProps.customerBasicInfo.data)

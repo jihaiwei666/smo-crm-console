@@ -27,6 +27,7 @@ interface ProjectBasicInfoProps extends CommonFunction {
   addProjectInfoSuccess: boolean
   updateProjectBaseInfo: (options) => void
   updateProjectInfoSuccess: boolean
+  onProjectNameChange: (projectName) => void
 }
 
 class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
@@ -68,10 +69,12 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
     if (!this.props.addProjectInfoSuccess && nextProps.addProjectInfoSuccess) {
       this.props.showSuccess('添加项目信息成功！')
       this.props.clearState(PROJECT.ADD_PROJECT_INFO)
+      this.props.onProjectNameChange(this.state.projectName)
     }
     if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
       this.props.showSuccess('更新项目信息成功！')
       this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
+      this.props.onProjectNameChange(this.state.projectName)
     }
   }
 

@@ -20,6 +20,8 @@ import Data from '../../common/interface/Data'
 import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
 import {updateCollection, fetchCollectionList} from '../contract.action'
+import Button from '../../../components/button/Button'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
 interface AddContractDialogProps extends CommonFunction {
   addContractSuccess: boolean
@@ -33,9 +35,11 @@ interface AddContractDialogProps extends CommonFunction {
 }
 
 class AddContractDialog extends React.Component<AddContractDialogProps> {
+  contractName = ''
   collectionList = []
   state = {
     show: true,
+    showSendRemind: false,
     contractId: '',
     projectId: ''
   }
@@ -65,8 +69,22 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
         style={{width: '60%'}} contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog
+              relevantId={this.state.projectId}
+              relevantType={'3'}
+              relevantText={this.contractName}
+              onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>添加合同</Modal.Title>
+          <Modal.Title>
+            添加合同
+            <div className="pull-right">
+              <Button className="small" disabled={!this.state.contractId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <RightNav navItems={['合同信息', '签署前', '签署后', '收款', '关联信息', '备注及附件', '操作记录']}>
@@ -75,7 +93,11 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
             />
 
             <CategoryTitle title="合同信息"/>
-            <ContractBasicInfo contractId={this.state.contractId} onProjectIdChange={projectId => this.setState({projectId})}/>
+            <ContractBasicInfo
+              contractId={this.state.contractId}
+              onProjectIdChange={projectId => this.setState({projectId})}
+              onContractNameChange={name=>this.contractName = name}
+            />
 
             <CategoryTitle title="签署前"/>
             <BeforeSign contractId={this.state.contractId}/>

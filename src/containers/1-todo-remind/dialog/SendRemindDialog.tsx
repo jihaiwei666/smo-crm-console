@@ -24,6 +24,9 @@ import {TODO_REMIND} from '../../../core/constants/types'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 
 interface SendRemindDialogProps extends CommonFunction {
+  relevantId?: string
+  relevantType?: string
+  relevantText?: string
   fetchUserCategoryInfo: () => void
   fetchRelevantItemList: (category: string, searchKey: string) => void
   relevantItemList: Data<any>
@@ -70,6 +73,18 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     this.setState({relevantItem: value})
     this.relevantType = relevantType
     this.text = text
+  }
+
+  componentWillMount() {
+    if (this.props.relevantId) {
+      this.setState({relevantItem: this.props.relevantId})
+    }
+    if (this.props.relevantType) {
+      this.relevantType = this.props.relevantType
+    }
+    if (this.props.relevantText) {
+      this.text = this.props.relevantText
+    }
   }
 
   componentDidMount() {

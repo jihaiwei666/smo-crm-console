@@ -19,6 +19,8 @@ import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
 
 import {fetchBD, fetchBDPC} from '../../../actions/app.action'
 import {updateBdAndBdpc} from '../project.action'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
+import Button from '../../../components/button/Button'
 
 interface AddProjectDialogProps extends ProjectState {
   fetchBD: () => void
@@ -34,9 +36,12 @@ interface AddProjectDialogProps extends ProjectState {
 }
 
 class AddProjectDialog extends React.Component<AddProjectDialogProps> {
+  projectName = ''
   state = {
     show: true,
     showAddConfirm: false,
+    showSendRemind: false,
+
     projectId: '',
     beforeQuotationId: '',
     afterQuotationId: '',
@@ -69,8 +74,22 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
         style={{width: '60%'}} contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog
+              relevantId={this.state.projectId}
+              relevantType={'2'}
+              relevantText={this.projectName}
+              onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>添加项目</Modal.Title>
+          <Modal.Title>
+            添加项目
+            <div className="pull-right">
+              <Button className="small" disabled={!this.state.projectId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
@@ -87,6 +106,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
             <CategoryTitle title="项目信息"/>
             <ProjectBasicInfo
               projectId={this.state.projectId}
+              onProjectNameChange={name => this.projectName = name}
             />
 
             <CategoryTitle title="报价前"/>

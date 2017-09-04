@@ -21,6 +21,8 @@ import CollectionList from './make-collections/CollectionList'
 import ContractRemarkAttachment from './other/ContractRemarkAttachment'
 
 import {fetchContractDetail, fetchCollectionList} from '../contract.action'
+import Button from '../../../components/button/Button'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -43,11 +45,12 @@ interface UpdateContractDialogProps {
 }
 
 class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
+  contractName = ''
   collectionList = []
   state = {
     show: true,
-    projectId: '',
-    collectionList: []
+    showSendRemind: false,
+    projectId: ''
   }
 
   close = () => {
@@ -61,6 +64,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   componentWillReceiveProps(nextProps: UpdateContractDialogProps) {
     if (!this.props.contractDetail.loaded && nextProps.contractDetail.loaded) {
       const {data} = nextProps.contractDetail
+      this.contractName = data.baseInfo.contractName
       this.collectionList = data.collectionList
       this.setState({projectId: data.baseInfo.projectId})
     }
@@ -82,7 +86,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
     const {loaded, data} = this.props.contractDetail
     if (loaded) {
       baseInfo = data.baseInfo
-
       initBdAndBdpc = data.bdAnBdpc
       initBeforeSign = data.beforeSign
       initAfterSign = data.afterSign
@@ -96,8 +99,22 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
         style={{width: '60%'}} contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog
+              relevantId={this.props.contractId}
+              relevantType={'3'}
+              relevantText={this.contractName}
+              onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>编辑合同</Modal.Title>
+          <Modal.Title>
+            编辑合同
+            <div className="pull-right">
+              <Button className="small" disabled={!this.props.contractId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {
@@ -118,6 +135,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   contractId={this.props.contractId}
                   initBaseInfo={baseInfo}
                   onProjectIdChange={projectId => this.setState({projectId})}
+                  onContractNameChange={name => this.contractName = name}
                 />
 
                 <CategoryTitle title="签署前"/>

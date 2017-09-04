@@ -21,6 +21,8 @@ import ProjectAssociateInfo from './base/ProjectAssociateInfo'
 import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
 import ProjectState from '../ProjectState'
 import Data from '../../common/interface/Data'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
+import Button from '../../../components/button/Button'
 
 interface UpdateProjectDialogProps extends ProjectState {
   projectId: string
@@ -39,9 +41,12 @@ interface UpdateProjectDialogProps extends ProjectState {
 }
 
 class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
+  projectName = ''
   state = {
     show: true,
     showAddConfirm: false,
+    showSendRemind: false,
+
     beforeQuotationId: '',
     afterQuotationId: '',
   }
@@ -65,7 +70,8 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
   componentWillReceiveProps(nextProps: UpdateProjectDialogProps) {
     if (!this.props.projectDetail.loaded && nextProps.projectDetail.loaded) {
       let {data} = nextProps.projectDetail
-      let {beforeQuotation, afterQuotation} = data
+      let {baseInfo, beforeQuotation, afterQuotation} = data
+      this.projectName = baseInfo.projectName
       if (beforeQuotation) {
         this.setState({beforeQuotationId: beforeQuotation.beforeQuotationId})
       }
@@ -101,8 +107,22 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
         style={{width: '60%'}} contentComponent={FullDialogContent}
         show={this.state.show} onHide={this.close} onExited={this.props.onExited}
       >
+        {
+          this.state.showSendRemind && (
+            <SendRemindDialog
+              relevantId={this.props.projectId}
+              relevantType={'2'}
+              relevantText={this.projectName}
+              onExited={() => this.setState({showSendRemind: false})}/>
+          )
+        }
         <Modal.Header closeButton={true}>
-          <Modal.Title>编辑项目</Modal.Title>
+          <Modal.Title>
+            编辑项目
+            <div className="pull-right">
+              <Button className="small" disabled={!this.props.projectId} onClick={() => this.setState({showSendRemind: true})}>发提醒</Button>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {
@@ -125,7 +145,11 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
                 />
 
                 <CategoryTitle title="项目信息"/>
-                <ProjectBasicInfo projectId={this.props.projectId} baseInfo={baseInfo}/>
+                <ProjectBasicInfo
+                  projectId={this.props.projectId}
+                  baseInfo={baseInfo}
+                  onProjectNameChange={name => this.projectName = name}
+                />
 
                 <CategoryTitle title="报价前"/>
                 <BeforeQuotation projectId={this.props.projectId}

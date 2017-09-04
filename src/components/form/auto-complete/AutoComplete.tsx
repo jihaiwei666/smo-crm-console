@@ -16,6 +16,10 @@ interface AutoCompleteProps {
 }
 
 class AutoComplete extends React.Component<AutoCompleteProps> {
+  static defaultProps = {
+    onFocus: () => null
+  }
+
   _input: HTMLInputElement
   state = {
     showMoreOptions: false
