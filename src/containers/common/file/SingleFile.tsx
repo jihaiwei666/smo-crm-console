@@ -13,11 +13,13 @@ interface SingleFileProps {
   onChange: (file) => void
   onClear: () => void
   showRemove?: boolean
+  accept?: string
 }
 
 class SingleFile extends React.Component<SingleFileProps> {
   static defaultProps = {
-    showRemove: true
+    showRemove: true,
+    accept: 'image/png,image/jpg,image/jpeg'
   }
   removeFlag = false
 
@@ -88,7 +90,7 @@ class SingleFile extends React.Component<SingleFileProps> {
         {
           empty && (
             <AddFileButton
-              accept="image/png,image/jpg,image/jpeg" multiple={false}
+              accept={this.props.accept} multiple={false}
               onUploadSuccess={this.handleUploaded}
             />
           )

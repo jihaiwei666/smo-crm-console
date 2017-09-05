@@ -186,6 +186,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               file={this.state.priceFile}
               onChange={file => this.setState({priceFile: file})}
               onClear={() => this.setState({priceFile: null})}
+              accept="*"
             />
           </LabelAndInput1>
           <div className="tip">只需要上传最终版报价，旧版本请删除</div>

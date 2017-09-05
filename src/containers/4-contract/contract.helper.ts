@@ -35,6 +35,14 @@ export function handleContractRemarkAttachment(remarkAttachment) {
   }
 }
 
+export function handleContractBdBdpc(bdAnBdpc) {
+  bdAnBdpc = bdAnBdpc || {}
+  return {
+    bd: bdAnBdpc['contract_the_bd'],
+    bdpc: bdAnBdpc['contract_the_bdpc']
+  }
+}
+
 export function handleContractDetail(data) {
   const baseInfo = data['contract_info']
   const bdAnBdpc = data['bdAndBdpc']
@@ -45,10 +53,7 @@ export function handleContractDetail(data) {
   const remarkAttachment = data['contractFiles'] || {}
 
   return {
-    bdAnBdpc: {
-      bd: bdAnBdpc['contract_the_bd'],
-      bdpc: bdAnBdpc['contract_the_bdpc']
-    },
+    bdAnBdpc: handleContractBdBdpc(bdAnBdpc),
     baseInfo: {
       contractName: baseInfo['contract_name'],
       codePrefix: baseInfo['contract_project_info_code'],

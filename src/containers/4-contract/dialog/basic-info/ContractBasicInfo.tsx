@@ -19,6 +19,7 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {CONTRACT} from '../../../../core/constants/types'
 import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
 
 interface ContractBasicInfoProps extends CommonFunction {
   contractId?: string
@@ -95,6 +96,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
       this.props.clearState(CONTRACT.ADD_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
       this.props.onContractNameChange(this.state.contractName)
+      eventBus.emit(EVENT_NAMES.ADD_CONTRACT_SUCCESS)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
       this.props.showSuccess('更新合同信息成功！')
@@ -117,8 +119,10 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
           <div style={{width: '300px'}}>
-            <Select1 options={this.props.projectList.data || []}
-                     value={this.state.projectId} onChange={this.handleProjectChange}
+            <Select1
+              options={this.props.projectList.data || []}
+              required={true} name="projectId"
+              value={this.state.projectId} onChange={this.handleProjectChange}
             />
           </div>
         </LabelAndInput1>

@@ -9,5 +9,6 @@ let eventBus = new events.EventEmitter()
 export default eventBus
 
 export const EVENT_NAMES = {
-  MSA_UPDATE: 'MSA_UPDATE'
+  MSA_UPDATE: 'MSA_UPDATE',
+  ADD_CONTRACT_SUCCESS: 'ADD_CONTRACT_SUCCESS'
 }

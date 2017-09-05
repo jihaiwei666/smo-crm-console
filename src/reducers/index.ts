@@ -84,6 +84,7 @@ export default combineReducers({
   newAfterSign: wrapReducerState(data(CONTRACT.ADD_AFTER_SIGN)),
   partClientInfo: wrapReducerState(data(CONTRACT.FETCH_CLIENT_INFO_FROM_PROJECT)),
   contractRemarkAttachment: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_REMARK_ATTACHMENT)),
+  contractBdBdpc: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_BD_BDPC)),
 
   recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
 

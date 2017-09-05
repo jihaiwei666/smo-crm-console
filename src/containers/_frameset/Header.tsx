@@ -23,9 +23,8 @@ class Header extends React.Component<HeaderProps> {
   }
 
   logout = () => {
-    _get('/user/v1/logout').then(() => {
-      location.href = `${context}/login`
-    })
+    _get('/user/v1/logout')
+    location.href = `${context}/login`
   }
 
   render() {

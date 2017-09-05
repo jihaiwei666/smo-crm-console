@@ -4,7 +4,7 @@
 import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {CONTRACT} from '../../core/constants/types'
-import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo, handleContractRemarkAttachment} from './contract.helper'
+import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo, handleContractRemarkAttachment, handleContractBdBdpc} from './contract.helper'
 import {handleInstitutionList, handleInstitutionInfo, handleCollectionList} from './dialog/make-collections/make-collection.helper'
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 
@@ -35,6 +35,16 @@ export function updateBdAndBdpc(options) {
     [THREE_PHASE]: {
       type: CONTRACT.UPDATE_BD_AND_BDPC,
       http: () => _post(urlPrefix + '/v1/updateContractBdAndBdpc', {body: options})
+    }
+  }
+}
+
+export function fetchContractBdBdpc(contractId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_CONTRACT_BD_BDPC,
+      http: () => _get(urlPrefix + `/v1/getBdAndBdpcById/${contractId}`),
+      handleResponse: handleContractBdBdpc
     }
   }
 }
