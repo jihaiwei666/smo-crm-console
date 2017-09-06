@@ -21,12 +21,12 @@ export function handleCrudList(list, option: Config, parentId?: string) {
   return list.filter(item => item.crud != null).map(item => {
     if (item.crud == DELETE) {
       return {
-        ...option.ifRemove(item),
+        ...option.ifRemove(item, parentId),
         "sign": DELETE
       }
     } else if (item.crud == UPDATE) {
       return {
-        ...option.ifUpdate(item),
+        ...option.ifUpdate(item, parentId),
         "sign": UPDATE
       }
     } else if (item.crud == ADD) {
@@ -38,8 +38,16 @@ export function handleCrudList(list, option: Config, parentId?: string) {
   })
 }
 
-export function handleItemUpdate(item) {
+export function handleUpdateCrud(item) {
   if (item.crud != ADD) {
     item.crud = UPDATE
+  }
+}
+
+export function handleListRemove(list, index) {
+  if (list[index].crud == ADD) {
+    list.splice(index, 1)
+  } else {
+    list[index].crud = REMOVE
   }
 }

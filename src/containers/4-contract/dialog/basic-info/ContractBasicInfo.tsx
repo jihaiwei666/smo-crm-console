@@ -61,6 +61,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
       "contract_serial_code": this.state.serialNumber,
       "contract_bd_code": this.state.bdCode,
       "project_info_id": this.state.projectId,
+      "is_first_cooperation": this.state.isFirstOperation
     })
   }
 
@@ -72,6 +73,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
       "contract_serial_code": this.state.serialNumber,
       "contract_bd_code": this.state.bdCode,
       "project_info_id": this.state.projectId,
+      "is_first_cooperation": this.state.isFirstOperation
     })
   }
 
@@ -88,7 +90,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
   componentWillReceiveProps(nextProps: ContractBasicInfoProps) {
     if (!this.props.fetchCodePrefixSuccess && nextProps.fetchCodePrefixSuccess) {
       this.setState({codePrefix: nextProps.newContractCodePrefix})
-      this.setState({isFirstOperation: nextProps.isFirstOperation ? '是' : '否'})
+      this.setState({isFirstOperation: nextProps.isFirstOperation})
       this.props.clearState(CONTRACT.FETCH_CONTRACT_CODE_PREFIX)
     }
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
@@ -145,7 +147,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">合同编号格式为：项目编号-流水号（3位数字）-协同BD，项目编号关联项目后产生</div>
         </div>
         <div className="input-row">
-          <LabelAndInput label="是否首次合作" disabled={true} placeholder="尚未确定" value={this.state.isFirstOperation}/>
+          <LabelAndInput label="是否首次合作" disabled={true} placeholder="尚未确定" value={this.state.isFirstOperation == '1' ? '是' : '否'}/>
           <div className="tip">由系统检测该客户是否有历史合同，不可修改</div>
         </div>
 

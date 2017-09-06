@@ -20,6 +20,7 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
+import InputGroup from '../../../common/InputGroup'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string
@@ -163,7 +164,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
         </div>
 
         <div className="bb">
-          <LabelAndInput1 label="开票信息" inputType={IMPORTANT}>
+          <InputGroup label="开票信息" inputType={IMPORTANT}>
             <div className="bill-info">
               <LabelAndInput
                 label="纳税人识别号"
@@ -206,7 +207,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
                 onChange={v => this.setState({receiverContactInfo: v})}
               />
             </div>
-          </LabelAndInput1>
+          </InputGroup>
         </div>
         {
           !this.props.customerId && (

@@ -21,7 +21,8 @@ export function handleProjectList(data) {
 export function handleClientList(data) {
   return data.map(item => ({
     value: item['customer_info_id'],
-    text: item['customer_name']
+    text: item['customer_name'],
+    roleType: item['customer_type']
   }))
 }
 

@@ -5,7 +5,7 @@ import React from 'react'
 
 import AddIcon from '../AddIcon'
 
-import {ADD, UPDATE, DELETE, handleCrudList} from '../../core/crud'
+import {ADD, UPDATE, DELETE, handleCrudList, handleListRemove} from '../../core/crud'
 import {copyList} from '../../core/utils/common'
 
 export interface CrudProps {
@@ -18,8 +18,8 @@ export interface CrudProps {
 
 export type Config = {
   ifAdd?: (item, parentId) => any
-  ifUpdate?: (item) => any
-  ifRemove?: (item) => any
+  ifUpdate?: (item, parentId) => any
+  ifRemove?: (item, parentId) => any
 }
 
 let uid = 1
@@ -30,7 +30,6 @@ function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
       showAdd: false,
       required: false
     }
-    _wrapper: any
 
     onAdd = () => {
       let list = copyList(this.props.list)
@@ -58,11 +57,7 @@ function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
     onRemove = (id) => {
       let list = copyList(this.props.list)
       let index = list.indexOf(list.find(item => item.id == id))
-      if (list[index].crud == ADD) {
-        list.splice(index, 1)
-      } else {
-        list[index].crud = DELETE
-      }
+      handleListRemove(list, index)
       this.props.onChange(list)
     }
 
@@ -87,7 +82,6 @@ function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
               }
               return (
                 <WrapperComponent
-                  ref={c => this._wrapper = c}
                   key={item.id}
                   item={item}
                   index={index}

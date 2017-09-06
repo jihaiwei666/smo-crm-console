@@ -27,6 +27,7 @@ import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
 import {PROJECT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
+import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 
 interface BeforeQuotationProps extends CommonFunction {
   projectId: string
@@ -132,10 +133,20 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     }
   }
 
+  setCro = (clientName) => {
+    if (!this.props.beforeQuotationId && !this.state.cro) {
+      this.setState({cro: clientName})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initBeforeQuotation) {
       this.setState(this.props.initBeforeQuotation)
     }
+  }
+
+  componentDidMount() {
+    eventBus.addListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, this.setCro)
   }
 
   componentWillReceiveProps(nextProps: BeforeQuotationProps) {
@@ -149,6 +160,10 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
       this.props.clearState(PROJECT.UPDATE_BEFORE_QUOTATION)
       this.setState(nextProps.newBeforeQuotation)
     }
+  }
+
+  componentWillUnmount() {
+    eventBus.removeListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, this.setCro)
   }
 
   render() {

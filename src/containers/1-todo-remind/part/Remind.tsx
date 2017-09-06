@@ -96,9 +96,20 @@ class Remind extends React.Component<RemindProps> {
                       <span className="relevant-type">
                         {getRelevantTypeText(item.relevantType)}
                       </span>
-                      <span className="relevant-type-name" onClick={() => this.setState({relevantId: item.relevantId, relevantType: item.relevantType})}>
-                        {item['name']}
-                      </span>
+                      {
+                        item.relevantRemoved && (
+                          <span className="relevant-type-name removed" title="此关联项已删除">
+                            {item['name']}
+                          </span>
+                        )
+                      }
+                      {
+                        !item.relevantRemoved && (
+                          <span className="relevant-type-name" onClick={() => this.setState({relevantId: item.relevantId, relevantType: item.relevantType})}>
+                            {item['name']}
+                          </span>
+                        )
+                      }
                     </div>
                     {
                       item.attachments.length != 0 && (

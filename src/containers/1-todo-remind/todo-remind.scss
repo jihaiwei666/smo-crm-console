@@ -68,6 +68,11 @@
             cursor: pointer;
             margin-left: 5px;
             text-decoration: underline;
+            &.removed {
+                cursor: default;
+                color: rgba(255, 0, 0, 0.5);
+                text-decoration: none;
+            }
         }
 
         .send-text {

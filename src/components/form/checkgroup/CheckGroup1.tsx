@@ -4,25 +4,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import {copyList} from '../../../core/utils/common'
+
 interface CheckGroup1Props {
   value: any[]
   onChange: (value: any[]) => void
 }
 
-class CheckGroup1 extends React.Component<CheckGroup1Props> {
+type ChildContextTypes = {
+  value: any[]
+  onChange: (value) => void
+}
+
+class CheckGroup1 extends React.Component<CheckGroup1Props> implements React.ChildContextProvider<ChildContextTypes> {
   static childContextTypes = {
-    handleChange: PropTypes.func
+    value: PropTypes.array,
+    onChange: PropTypes.func
   }
 
-  value = []
-
   handleChange = (value) => {
-    if (this.value.indexOf(value) == -1) {
-      this.value.push(value)
+    let newValue = copyList(this.props.value)
+    if (newValue.indexOf(value) == -1) {
+      newValue.push(value)
     } else {
-      this.value.splice(this.value.indexOf(value), 1)
+      newValue.splice(newValue.indexOf(value), 1)
     }
-    this.props.onChange(this.value)
+    this.props.onChange(newValue)
   }
 
   render() {
@@ -35,8 +42,8 @@ class CheckGroup1 extends React.Component<CheckGroup1Props> {
 
   getChildContext() {
     return {
-      value: this.value,
-      handleChange: this.handleChange
+      value: this.props.value,
+      onChange: this.handleChange
     }
   }
 }

@@ -3,6 +3,7 @@
  */
 import {getDate} from '../../../../core/utils/dateUtils'
 import {getSingleFile} from '../../../common/common.helper'
+import {handleCrudList} from '../../../../core/crud'
 
 export function handleSupplierServerData(data) {
   data = data || {}
@@ -48,5 +49,24 @@ export function handleMsaListData(data) {
       endDate: getDate(base['msa_end_time']),
       scanFile: getSingleFile(item['customerProviderMsaFile'])
     }
+  })
+}
+
+export function handleBrokerListCrud(brokerList, supplierId) {
+  return handleCrudList(brokerList, {
+    ifAdd: (item) => ({
+      "provider_info_id": supplierId,
+      "provider_info_docker_id": item.id,
+      "contacts_info_id": item.broker,
+    }),
+    ifRemove: (item) => ({
+      "provider_info_docker_id": item.id,
+      "contacts_info_id": item.broker,
+    }),
+    ifUpdate: (item) => ({
+      "provider_info_id": supplierId,
+      "provider_info_docker_id": item.id,
+      "contacts_info_id": item.broker
+    })
   })
 }

@@ -7,6 +7,7 @@ import DatePicker from 'antd/lib/date-picker'
 import {FlexDiv, Part} from 'app-core/layout'
 import Form from 'app-core/form/Form'
 
+import Line from '../../../../components/layout/Line'
 import Input from '../../../../components/form/Input'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import Button from '../../../../components/button/Button'
@@ -16,8 +17,9 @@ import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
-import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 import SelectContact from '../base/SelectContact'
+import CheckGroup1 from '../../../../components/form/checkgroup/CheckGroup1'
+import CheckBox1 from '../../../../components/form/checkbox/CheckBox1'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import RFI_ListDialog from './RFI_ListDialog'
@@ -26,7 +28,6 @@ import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {MODULES} from './rfi.constants'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {ADD, EDIT, default as crud} from '../../../../core/crud'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
@@ -122,6 +123,12 @@ class RFI extends React.Component<RFIProps> {
     this.forceUpdate()
   }
 
+  checkModuleRemark = () => {
+    if (this.state.modules.indexOf('9') == -1) {
+      this.setState({remark: ''})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initRfiInfo) {
       this.rfiId = this.props.initRfiInfo.rfiId
@@ -200,20 +207,35 @@ class RFI extends React.Component<RFIProps> {
                 <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
               </TextAndButton>
             </InputGroup>
-            <LabelAndInput className="pb5 bb" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
+            <LabelAndInput className="input-row" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
             <LabelAndInput1 className="bb" label="语言" inputType={IMPORTANT}>
               <Radio.Group value={this.state.language} onChange={v => this.setState({language: v})}>
                 <Radio value="1">中文</Radio>
                 <Radio value="2">English</Radio>
               </Radio.Group>
             </LabelAndInput1>
-            <LabelAndInput1 label="模块" inputType={IMPORTANT} className="pb5 bb">
-              <CheckGroup options={MODULES} value={this.state.modules} onChange={v => this.setState({modules: v})}/>
-              {
-                this.state.modules.indexOf('9') != -1 && (
-                  <Input placeholder="请输入备注" value={this.state.remark} onChange={v => this.setState({remark: v})}/>
-                )
-              }
+            <LabelAndInput1 label="模块" inputType={IMPORTANT} className="input-row">
+              <CheckGroup1 value={this.state.modules} onChange={v => this.setState({modules: v}, this.checkModuleRemark)}>
+                <div>
+                  <CheckBox1 value="1">公司信息</CheckBox1>
+                  <CheckBox1 value="2">财务</CheckBox1>
+                  <CheckBox1 value="3">合规</CheckBox1>
+                  <CheckBox1 value="4">培训</CheckBox1>
+                </div>
+                <Line/>
+                <div>
+                  <CheckBox1 value="5">项目管理</CheckBox1>
+                  <CheckBox1 value="6">项目经验</CheckBox1>
+                  <CheckBox1 value="7">IT</CheckBox1>
+                  <CheckBox1 value="8">第三方供应商</CheckBox1>
+                </div>
+                <Line/>
+                <div>
+                  <CheckBox1 value="9">其它，请备注：</CheckBox1>
+                  <Input width="200px" className="small" placeholder="请输入备注" disabled={this.state.modules.indexOf('9') == -1}
+                         value={this.state.remark} onChange={v => this.setState({remark: v})}/>
+                </div>
+              </CheckGroup1>
             </LabelAndInput1>
           </Part>
         </FlexDiv>

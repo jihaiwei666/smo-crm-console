@@ -17,7 +17,7 @@ import Input from '../../../../components/form/Input'
 import MoneyInput from '../../../../components/form/MoneyInput'
 import MoneyUnit from '../../../common/MoneyUnit'
 import Radio from '../../../../components/form/radio/Radio'
-import NodeDate from './NodeDate'
+import NodeDate, {handleNodeDateCrud} from './NodeDate'
 import Progress from './Progress'
 import ContractSignatory from './ContractSignatory'
 import PM from './PM'
@@ -36,6 +36,8 @@ import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {notEmpty, isEmpty} from '../../../../core/utils/common'
 import {fetchClientInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
+import InputWithSuffix from '../../../../components/form/InputWithSuffix'
+import CrudList from '../../../../components/CrudList'
 
 interface AfterSignProps extends CommonFunction {
   contractId?: string
@@ -51,7 +53,6 @@ interface AfterSignProps extends CommonFunction {
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
-  _nodeData: any
   _progress: any
   _signatoryList: any
   _pmList: any
@@ -183,7 +184,7 @@ class AfterSign extends React.Component<AfterSignProps> {
 
   _getPaymentNode() {
     if (this.state.paymentNode == '1') {
-      return this._nodeData.getData()
+      return handleNodeDateCrud(this.state.nodeDateList, this.afterSignId)
     } else {
       return this._progress.getData()
     }
@@ -304,7 +305,13 @@ class AfterSign extends React.Component<AfterSignProps> {
           </LabelAndInput1>
           <LabelAndInput label="代垫费" value={this.state.replacementFee} onChange={v => this.setState({replacementFee: v})}/>
           <LabelAndInput label="税费" format={regex.INTEGER} value={this.state.taxes} onChange={v => this.setState({taxes: v})}/>
-          <LabelAndInput label="税率" value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}/>
+          <LabelAndInput1 label="税率">
+            <InputWithSuffix
+              placeholder="请输入数字"
+              suffix="%"
+              value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}
+            />
+          </LabelAndInput1>
         </InputGroup>
         <div className="pb5 bb">
           <InputGroup label="付款节点" inputType={NECESSARY}>
@@ -317,12 +324,24 @@ class AfterSign extends React.Component<AfterSignProps> {
             </Radio.Group>
             {
               this.state.paymentNode == '1' && (
-                <NodeDate
-                  ref={c => this._nodeData = c}
-                  required={true}
-                  parentId={this.afterSignId}
-                  list={this.state.nodeDateList} onChange={list => this.setState({nodeDateList: list})}
-                />
+                <CrudList
+                  required={true} name="paymentNode"
+                  onAdd={() => ({nodeDate: null})}
+                  list={this.state.nodeDateList}
+                  onChange={list => this.setState({nodeDateList: list})}
+                  checkItemValid={item => item.nodeDate != null}
+                  renderItem={
+                    (nodeDate, index, total) => {
+                      return (
+                        <NodeDate
+                          key={nodeDate.id}
+                          item={nodeDate}
+                          index={index}
+                          total={total}
+                        />
+                      )
+                    }
+                  }/>
               )
             }
             {

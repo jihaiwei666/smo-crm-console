@@ -63,20 +63,14 @@ export function handleAfterSign(afterSign) {
 }
 
 function getNodeDateList(paymentNode, nodeList) {
-  if (paymentNode != '1') {
-    return []
-  }
-  return nodeList.map(item => ({
+  return nodeList.filter(node => node['payment_node_type'] == '1').map(item => ({
     id: item['payment_node_id'],
     nodeDate: getDate(item['payment_node_date'])
   }))
 }
 
 function getProgressList(paymentNode, nodeList) {
-  if (paymentNode != '2') {
-    return []
-  }
-  return nodeList.map(item => ({
+  return nodeList.filter(node => node['payment_node_type'] == '2').map(item => ({
     id: item['payment_node_id'],
     node: item['payment_node_key'],
     quota: item['payment_node_value'],

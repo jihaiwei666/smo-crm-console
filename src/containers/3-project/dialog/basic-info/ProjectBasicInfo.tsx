@@ -17,6 +17,8 @@ import Update from '../../../common/Update'
 import {PROJECT} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {customerTypeMapper, customerType} from '../../../2-customer/customer.constant'
 
 interface ProjectBasicInfoProps extends CommonFunction {
   projectId?: string
@@ -55,6 +57,14 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
     })
   }
 
+  triggerCroClient = (clientList) => {
+    if (!this.state.relativeClient) return
+    let matchClient = clientList.find(client => client.value == this.state.relativeClient)
+    if (matchClient.roleType == customerType.cro) {
+      eventBus.emit(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, matchClient.text)
+    }
+  }
+
   componentWillMount() {
     if (this.props.baseInfo) {
       this.setState(this.props.baseInfo)
@@ -70,11 +80,17 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
       this.props.showSuccess('添加项目信息成功！')
       this.props.clearState(PROJECT.ADD_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
+      this.triggerCroClient(nextProps.clientList.data)
     }
     if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
       this.props.showSuccess('更新项目信息成功！')
       this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
+      this.triggerCroClient(nextProps.clientList.data)
+    }
+    if (!this.props.clientList.loaded && nextProps.clientList.loaded) {
+      let clientList = nextProps.clientList.data
+      this.triggerCroClient(clientList)
     }
   }
 

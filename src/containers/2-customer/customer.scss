@@ -57,3 +57,13 @@
         }
     }
 }
+
+.supplier-broker-item {
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+    .remove-broker-container {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+}

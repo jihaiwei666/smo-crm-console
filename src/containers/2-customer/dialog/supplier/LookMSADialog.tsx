@@ -20,6 +20,7 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {fetchMSAList, addMsa, updateMsa, removeMsa} from './supplier.action'
+import DownloadFile from '../../../../components/file/DownloadFile'
 
 interface LookMSADialogProps extends CommonFunction {
   supplierId: string
@@ -109,16 +110,21 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
                         />
                       </LabelAndInput1>
                       <LabelAndInput1 label="结束日期">
-                        <DatePicker
-                          value={item.endDate} onChange={v => null}
-                        />
+                        <DatePicker value={item.endDate}/>
                       </LabelAndInput1>
                       <LabelAndInput1 label="MSA扫描件">
-                        <SingleFile
-                          file={item.scanFile}
-                          onChange={file => null}
-                          onClear={() => null}
-                        />
+                        {
+                          item.scanFile && (
+                            <DownloadFile url={item.scanFile.fileUrl}>
+                              <span>[ {item.scanFile.fileName} ]</span>
+                            </DownloadFile>
+                          )
+                        }
+                        {
+                          !item.scanFile && (
+                            <span>无</span>
+                          )
+                        }
                       </LabelAndInput1>
                       <div className="clearfix">
                         <div className="pull-right tip">

@@ -27,7 +27,7 @@ import {fetchCDA_Detail, updateCda, removeCda} from './cda.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {CUSTOMER} from '../../../../core/constants/types'
-import crud, {handleItemUpdate, handleCrudList} from '../../../../core/crud'
+import crud, {handleUpdateCrud, handleCrudList} from '../../../../core/crud'
 
 interface UpdateCDA_DialogProps extends CommonFunction {
   canEdit?: boolean
@@ -80,7 +80,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
   handleContactChange = (index, value) => {
     let cdaList = updateItemAtIndex(this.state.cdaList, index, cda => {
       cda.username = value
-      handleItemUpdate(cda)
+      handleUpdateCrud(cda)
     })
     this.setState({cdaList})
   }

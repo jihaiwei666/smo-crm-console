@@ -15,7 +15,7 @@ interface CheckBox1Props {
 class CheckBox1 extends React.Component<CheckBox1Props> {
   static Group = CheckGroup1
   static contextTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.array,
     onChange: PropTypes.func
   }
 

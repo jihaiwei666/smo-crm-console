@@ -8,6 +8,13 @@ export const customerTypeMapper = {
   '4': 'Site',
 }
 
+export const customerType = {
+  sponsor: 1,
+  cro: 2,
+  smo: 3,
+  site: 4
+}
+
 export const customerTypeOptions = [
   {value: '1', text: 'Sponsor'},
   {value: '2', text: 'CRO'},
