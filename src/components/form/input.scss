@@ -1,23 +1,31 @@
 .input {
-    width: 100%;
-    color: #333;
-    border: 1px solid #cfdadd;
-    border-radius: 3px;
-    padding: 4px 10px;
-    outline: none;
 
-    &:focus {
-        border: 1px solid #00a854;
+    &.default-input {
+        width: 100%;
+        color: #333;
+        border: 1px solid #cfdadd;
+        border-radius: 3px;
+        padding: 4px 10px;
+        outline: none;
+
+        &[type=text] {
+            height: 32px;
+        }
+
+        &:focus {
+            border: 1px solid #00a854;
+        }
+
+        &.invalid {
+            border: 1px solid #d9534f;
+        }
+
+        &.small, &.sm {
+            line-height: 1;
+            padding: 3px 7px;
+        }
     }
 
-    &.invalid {
-        border: 1px solid rgba(255, 0, 0, .2);
-    }
-
-    &.small, &.sm {
-        line-height: 1;
-        padding: 3px 7px;
-    }
 }
 
 input[disabled] {

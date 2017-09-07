@@ -8,15 +8,16 @@ import {connect} from 'react-redux'
 import MessageManage from 'app-core/message/'
 import {changeMessageStatus} from 'app-core/message/message.action'
 
+import Header from './Header'
 import PageContent from './PageContent'
 import Modules from './Modules'
 import RecentOpen from './RecentOpen'
 
 import Data from '../common/interface/Data'
-import {fetchRecentOpenList, changePassword} from '../../actions/app.action'
 import {getPath} from '../../core/env'
 import pages from '../../core/pages'
-import Header from './Header'
+import {fetchRecentOpenList, changePassword} from '../../actions/app.action'
+import {fetchUnReadRemindAmount, clearRemindAmount} from '../1-todo-remind/todo-remind.action'
 
 interface SimoCrmAppProps {
   user: any
@@ -30,18 +31,34 @@ interface SimoCrmAppProps {
   match: any
   currentPath: string
   router: any
+  fetchUnReadRemindAmount: () => void
+  fetchUnreadRemindAmountSuccess: boolean
+  unreadRemindAmount: number
+  clearRemindAmount: () => void
 }
 
-class SimoCrmApp extends React.Component<SimoCrmAppProps> {
+class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.ChildContextProvider<any> {
+  static childContextTypes = {
+    roleCode: PropTypes.number
+  }
   static contextTypes = {
     router: PropTypes.any
   }
+  taskId = null
 
   componentDidMount() {
     this.props.fetchRecentOpenList(0)
     if (this.props.router.location.pathname == getPath('index')) {
       this.context.router.history.replace(getPath(pages.todoRemind))
     }
+    this.props.fetchUnReadRemindAmount()
+    this.taskId = setInterval(() => {
+      this.props.fetchUnReadRemindAmount()
+    }, 30000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.taskId)
   }
 
   render() {
@@ -53,7 +70,12 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> {
             <img src={require('../images/simo.png')}/>
           </header>
           <nav className="nav-container">
-            <Modules roleCode={this.props.roleCode} currentPath={this.props.currentPath}/>
+            <Modules
+              fetchUnreadRemindAmountSuccess={this.props.fetchUnreadRemindAmountSuccess}
+              unreadRemindAmount={this.props.unreadRemindAmount}
+              clearRemindAmount={this.props.clearRemindAmount}
+              roleCode={this.props.roleCode}
+              currentPath={this.props.currentPath}/>
             <RecentOpen recentOpenList={this.props.recentOpenList}/>
           </nav>
         </aside>
@@ -67,6 +89,12 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> {
         </main>
       </div>
     )
+  }
+
+  getChildContext() {
+    return {
+      roleCode: this.props.roleCode
+    }
   }
 }
 
@@ -82,5 +110,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  changeMessageStatus, fetchRecentOpenList, changePassword
+  changeMessageStatus, fetchRecentOpenList, changePassword, fetchUnReadRemindAmount, clearRemindAmount
 })(SimoCrmApp)

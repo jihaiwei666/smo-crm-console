@@ -4,6 +4,7 @@
 import Data from './interface/Data'
 import {getDateTimeStr} from '../../core/utils/dateUtils'
 import crud from '../../core/crud'
+import {roleCategory} from '../7-account-manage/account-manage.constant'
 
 export function getOperationType(type) {
   switch (type) {
@@ -105,4 +106,8 @@ export function getNameAndEmail(name, email) {
   if (!name) return email
   if (!email) return name
   return `${name}（${email}）`
+}
+
+export function showBdBdpcUpdate(roleCode) {
+  return roleCode == roleCategory.bdLeader || roleCode == roleCategory.bdpcLeader || roleCode == roleCategory.systemManage
 }

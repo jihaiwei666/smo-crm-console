@@ -7,36 +7,26 @@ import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import Spinner from 'app-core/common/Spinner'
 
+import Button from '../../../components/button/Button'
 import RightNav from '../../../components/nav/RightNav'
-import BD_BDPC from './base/BD_BDPC'
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
+import ProjectBD_BDPC from './base/ProjectBD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
 import BeforeQuotation from './before-quotation/BeforeQuotation'
 import AfterQuotation from './after-quotation/AfterQuotation'
-
-import {fetchProjectDetail, updateBdAndBdpc} from '../project.action'
 import OperationRecord from '../../common/OperationRecord'
 import ProjectAssociateInfo from './base/ProjectAssociateInfo'
 import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
+
 import ProjectState from '../ProjectState'
 import Data from '../../common/interface/Data'
-import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
-import Button from '../../../components/button/Button'
+import {fetchProjectDetail} from '../project.action'
 
 interface UpdateProjectDialogProps extends ProjectState {
   projectId: string
   fetchProjectDetail: (projectId) => void
   projectDetail: Data<any>
-  fetchBD: () => void
-  BDList: any
-
-  fetchBDPC: () => void
-  BDPCList: any
-
-  updateBdAndBdpc: (options) => void
-  updateBdAndBdpcSuccess: boolean
-
   onExited: () => void
 }
 
@@ -53,14 +43,6 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 
   close = () => {
     this.setState({show: false})
-  }
-
-  updateBdAndBdpc = (bd, bdpc) => {
-    this.props.updateBdAndBdpc({
-      "project_info_id": this.props.projectId,
-      "project_the_bd": bd,
-      "project_the_bdpc": bdpc
-    })
   }
 
   componentDidMount() {
@@ -133,16 +115,7 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
           {
             loaded && (
               <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
-                <BD_BDPC
-                  initBdAndBdpc={initBdAndBdpc}
-                  disabled={this.props.projectId == ''}
-                  fetchBD={this.props.fetchBD}
-                  BDList={this.props.BDList}
-                  fetchBDPC={this.props.fetchBDPC}
-                  BDPCList={this.props.BDPCList}
-                  updateBdAndBdpc={this.updateBdAndBdpc}
-                  updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
-                />
+                <ProjectBD_BDPC initBdAndBdpc={initBdAndBdpc} projectId={this.props.projectId}/>
 
                 <CategoryTitle title="项目信息"/>
                 <ProjectBasicInfo
@@ -187,13 +160,10 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
 function mapStateToProps(state) {
   return {
     ...state.project,
-    BDList: state.BDList,
-    BDPCList: state.BDPCList,
     projectDetail: state.projectDetail
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC,
-  fetchProjectDetail, updateBdAndBdpc,
+  fetchProjectDetail
 })(UpdateProjectDialog)

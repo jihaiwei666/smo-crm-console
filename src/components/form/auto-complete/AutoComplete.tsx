@@ -44,7 +44,7 @@ class AutoComplete extends React.Component<AutoCompleteProps> {
             ref={c => this._input = c}
             tabIndex={this.props.tabIndex}
             placeholder={this.props.placeholder}
-            className="input"
+            className="input default-input"
             onFocus={this.handleFocus}
             value={this.props.value} onChange={(e) => this.props.onChange(e.target.value)}
           />

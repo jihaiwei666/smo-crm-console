@@ -23,6 +23,9 @@ import {MODULES} from './rfi.constants'
 import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
 import {EDIT, ADD} from '../../../../core/crud'
 import {getDateStr} from '../../../../core/utils/dateUtils'
+import CheckGroup1 from '../../../../components/form/checkgroup/CheckGroup1'
+import CheckBox1 from '../../../../components/form/checkbox/CheckBox1'
+import Line from '../../../../components/layout/Line'
 
 interface UpdateRFI_ItemProps {
   customerId: string
@@ -65,6 +68,12 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
   handleBrokerChange = (brokerIndex, stateKey, value) => {
     updateItemAtIndex(this.state.brokerList, brokerIndex, b => b[stateKey] = value)
     this.forceUpdate()
+  }
+
+  checkModuleRemark = () => {
+    if (this.state.modules.indexOf('9') == -1) {
+      this.setState({remark: ''})
+    }
   }
 
   update = () => {
@@ -146,13 +155,28 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
             <Radio value="2">English</Radio>
           </Radio.Group>
         </LabelAndInput1>
-        <LabelAndInput1 label="模块" inputType={IMPORTANT}>
-          <CheckGroup options={MODULES} value={this.state.modules} onChange={v => this.setState({modules: v})}/>
-          {
-            this.state.modules.indexOf('9') != -1 && (
-              <Input placeholder="请输入备注" value={this.state.remark} onChange={v => this.setState({remark: v})}/>
-            )
-          }
+        <LabelAndInput1 label="模块" inputType={IMPORTANT} className="input-row">
+          <CheckGroup1 value={this.state.modules} onChange={v => this.setState({modules: v}, this.checkModuleRemark)}>
+            <div>
+              <CheckBox1 value="1">公司信息</CheckBox1>
+              <CheckBox1 value="2">财务</CheckBox1>
+              <CheckBox1 value="3">合规</CheckBox1>
+              <CheckBox1 value="4">培训</CheckBox1>
+            </div>
+            <Line/>
+            <div>
+              <CheckBox1 value="5">项目管理</CheckBox1>
+              <CheckBox1 value="6">项目经验</CheckBox1>
+              <CheckBox1 value="7">IT</CheckBox1>
+              <CheckBox1 value="8">第三方供应商</CheckBox1>
+            </div>
+            <Line/>
+            <div>
+              <CheckBox1 value="9">其它，请备注：</CheckBox1>
+              <Input width="200px" className="small" placeholder="请输入备注" disabled={this.state.modules.indexOf('9') == -1}
+                     value={this.state.remark} onChange={v => this.setState({remark: v})}/>
+            </div>
+          </CheckGroup1>
         </LabelAndInput1>
         <div className="m10">
           <Row>

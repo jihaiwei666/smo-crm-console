@@ -18,13 +18,15 @@ import MoneyInput from '../../../../components/form/MoneyInput'
 import MoneyUnit from '../../../common/MoneyUnit'
 import Radio from '../../../../components/form/radio/Radio'
 import NodeDate, {handleNodeDateCrud} from './NodeDate'
-import Progress from './Progress'
+import Progress, {handleProgressListCrud} from './Progress'
 import ContractSignatory from './ContractSignatory'
 import PM from './PM'
 import CoordinateBD from './CoordinateBD'
 import Attachment from '../../../../components/attachment/Attachment'
 import TextAndButton from '../../../common/TextAndButton'
 import Button from '../../../../components/button/Button'
+import InputWithSuffix from '../../../../components/form/InputWithSuffix'
+import CrudList from '../../../../components/CrudList'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
@@ -35,9 +37,7 @@ import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
 import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {notEmpty, isEmpty} from '../../../../core/utils/common'
-import {fetchClientInfoFromProject, addAfterSign, updateAfterSign} from '../../contract.action'
-import InputWithSuffix from '../../../../components/form/InputWithSuffix'
-import CrudList from '../../../../components/CrudList'
+import {fetchClientInfoFromProject, addAfterSign, fetchAfterSign, updateAfterSign} from '../../contract.action'
 
 interface AfterSignProps extends CommonFunction {
   contractId?: string
@@ -47,18 +47,20 @@ interface AfterSignProps extends CommonFunction {
   partClientInfo: Data<any>
   addAfterSign: (options) => void
   addAfterSignSuccess: boolean
-  newAfterSign: any
+  newAfterSignId: string
+  fetchAfterSign: (afterSignId) => void
+  afterSignDetail: Data<any>
   updateAfterSign: (options) => void
   updateAfterSignSuccess: boolean
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
-  _progress: any
   _signatoryList: any
   _pmList: any
   _bdList: any
   _attachment: any
 
+  paymentNodeSwitchable = true
   initNodeDateList = []
   initProgressList = []
   afterSignId = ''
@@ -186,7 +188,7 @@ class AfterSign extends React.Component<AfterSignProps> {
     if (this.state.paymentNode == '1') {
       return handleNodeDateCrud(this.state.nodeDateList, this.afterSignId)
     } else {
-      return this._progress.getData()
+      return handleProgressListCrud(this.state.progressList, this.afterSignId)
     }
   }
 
@@ -210,6 +212,7 @@ class AfterSign extends React.Component<AfterSignProps> {
       this.afterSignId = this.props.initAfterSign.afterSignId
       this.initNodeDateList = this.props.initAfterSign.nodeDateList
       this.initProgressList = this.props.initAfterSign.progressList
+      this.paymentNodeSwitchable = this.props.initAfterSign.paymentNodeSwitchable
       this.setState(this.props.initAfterSign)
     }
   }
@@ -218,12 +221,16 @@ class AfterSign extends React.Component<AfterSignProps> {
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
       this.props.showSuccess('添加签署后成功！')
       this.props.clearState(CONTRACT.ADD_AFTER_SIGN)
-      this.afterSignId = nextProps.newAfterSign.afterSignId
-      this.setState(nextProps.newAfterSign)
+      this.afterSignId = nextProps.newAfterSignId
+      this.props.fetchAfterSign(this.props.contractId)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.showSuccess('更新签署后成功！')
       this.props.clearState(CONTRACT.UPDATE_AFTER_SIGN)
+      this.props.fetchAfterSign(this.props.contractId)
+    }
+    if (!this.props.afterSignDetail.loaded && nextProps.afterSignDetail.loaded) {
+      this.setState(nextProps.afterSignDetail.data)
     }
     if (!this.props.partClientInfo.loaded && nextProps.partClientInfo.loaded) {
       const {indication, serviceTypes, centerNumber, enrollmentCount} = nextProps.partClientInfo.data
@@ -303,10 +310,18 @@ class AfterSign extends React.Component<AfterSignProps> {
               />
             </Row>
           </LabelAndInput1>
-          <LabelAndInput label="代垫费" value={this.state.replacementFee} onChange={v => this.setState({replacementFee: v})}/>
-          <LabelAndInput label="税费" format={regex.INTEGER} value={this.state.taxes} onChange={v => this.setState({taxes: v})}/>
+          <LabelAndInput
+            label="代垫费"
+            required={true} name="replacementFee"
+            value={this.state.replacementFee} onChange={v => this.setState({replacementFee: v})}/>
+          <LabelAndInput
+            label="税费"
+            required={true} name="taxes"
+            format={regex.INTEGER} value={this.state.taxes} onChange={v => this.setState({taxes: v})}/>
           <LabelAndInput1 label="税率">
             <InputWithSuffix
+              required={true} name="taxRate"
+              format={regex.PERCENT_INTEGER}
               placeholder="请输入数字"
               suffix="%"
               value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}
@@ -319,8 +334,8 @@ class AfterSign extends React.Component<AfterSignProps> {
               required={true} name="paymentNode"
               value={this.state.paymentNode} onChange={this.handlePaymentNodeChange}
             >
-              <Radio value="1">按日期</Radio>
-              <Radio value="2">按进度</Radio>
+              <Radio value="1" disabled={!this.paymentNodeSwitchable}>按日期</Radio>
+              <Radio value="2" disabled={!this.paymentNodeSwitchable}>按进度</Radio>
             </Radio.Group>
             {
               this.state.paymentNode == '1' && (
@@ -330,27 +345,38 @@ class AfterSign extends React.Component<AfterSignProps> {
                   list={this.state.nodeDateList}
                   onChange={list => this.setState({nodeDateList: list})}
                   checkItemValid={item => item.nodeDate != null}
-                  renderItem={
-                    (nodeDate, index, total) => {
-                      return (
-                        <NodeDate
-                          key={nodeDate.id}
-                          item={nodeDate}
-                          index={index}
-                          total={total}
-                        />
-                      )
-                    }
-                  }/>
+                  renderItem={(nodeDate, index, total) => {
+                    return (
+                      <NodeDate
+                        key={nodeDate.id}
+                        item={nodeDate}
+                        index={index}
+                        total={total}
+                      />
+                    )
+                  }}
+                />
               )
             }
             {
               this.state.paymentNode == '2' && (
-                <Progress
-                  ref={c => this._progress = c}
-                  required={true}
-                  parentId={this.afterSignId}
-                  showAdd={true} list={this.state.progressList} onChange={list => this.setState({progressList: list})}/>
+                <CrudList
+                  required={true} name="progressList"
+                  onAdd={() => ({node: '', quota: '', date: null})}
+                  list={this.state.progressList}
+                  onChange={list => this.setState({progressList: list})}
+                  checkItemValid={item => item.node != '' && item.quota != '' && item.date != null}
+                  renderItem={(progress, index, total) => {
+                    return (
+                      <Progress
+                        key={progress.id}
+                        item={progress}
+                        index={index}
+                        total={total}
+                      />
+                    )
+                  }}
+                />
               )
             }
           </InputGroup>
@@ -488,15 +514,16 @@ function mapStateToProps(state, props) {
   return {
     addAfterSignSuccess: state.contract.addAfterSignSuccess,
     updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
-    newAfterSign: state.contract.newAfterSign,
+    newAfterSignId: state.contract.newAfterSignId,
     contractId: props.contractId,
     projectId: props.projectId,
     afterSignId: props.afterSignId,
     initAfterSign: props.initAfterSign,
-    partClientInfo: state.partClientInfo
+    partClientInfo: state.partClientInfo,
+    afterSignDetail: state.afterSignDetail
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchClientInfoFromProject, addAfterSign, updateAfterSign
+  fetchClientInfoFromProject, addAfterSign, fetchAfterSign, updateAfterSign
 })(addCommonFunction(AfterSign))

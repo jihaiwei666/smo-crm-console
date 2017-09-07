@@ -4,53 +4,55 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import ScrollContainer from 'app-core/core/ScrollContainer'
 
-import AppFunctionPage from '../common/interface/AppFunctionPage'
-import Data from '../common/interface/Data'
-import {handleListData} from '../common/common.helper'
-import {fetchList} from './recycle-bin.action'
 import DownloadFile from '../../components/file/DownloadFile'
+
+import Data from '../common/interface/Data'
+import AppFunctionPage from '../common/interface/AppFunctionPage'
+import {handlePageListData} from '../../reducers/page-list.reducer'
+import {fetchList} from './recycle-bin.action'
 
 interface RecycleBinProps extends AppFunctionPage {
   recycleBinList: Data<any>
 }
 
 class RecycleBin extends React.Component<RecycleBinProps> {
+  start = 0
   state = {
     index: -1,
-    currentPage: 0,
   }
 
-  toPage = (newPage) => {
-    if (newPage == null) newPage = this.state.currentPage
-    if (newPage != this.state.currentPage) {
-      this.setState({currentPage: newPage})
-    }
-    this.props.fetchList(newPage)
+  loadMore = () => {
+    this.start++
+    this.props.fetchList(this.start)
   }
 
   componentDidMount() {
-    this.toPage(0)
+    this.props.fetchList(this.start)
   }
 
   render() {
-    const {total, list, loading, loaded} = handleListData(this.props.recycleBinList)
+    const {total, list, loading, loaded} = handlePageListData(this.props.recycleBinList)
     return (
       <div className="app-function-page">
-        {
-          list.map((item, index) => {
-            return (
-              <div key={index} className="m10">
+        <ScrollContainer className="recycle-bin-container" onScrollBottom={this.loadMore}>
+          {
+            list.map((item, index) => {
+              return (
+                <div key={index} className="m10">
                 <span className="mr10">
                   {item.name}
                 </span>
-                <DownloadFile url={item.url}>
-                  下载
-                </DownloadFile>
-              </div>
-            )
-          })
-        }
+                  <DownloadFile url={item.url}>
+                    下载
+                  </DownloadFile>
+                </div>
+              )
+            })
+          }
+          <a className="load-more" onClick={this.loadMore}>加载更多</a>
+        </ScrollContainer>
       </div>
     )
   }

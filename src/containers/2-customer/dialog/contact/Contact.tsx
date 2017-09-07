@@ -4,6 +4,7 @@
 import React from 'react'
 import {Row, Part} from 'app-core/layout'
 import Confirm from 'app-core/common/Confirm'
+
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
@@ -93,7 +94,7 @@ class Contact extends React.Component<ContactProps> {
           </LabelAndInput1>
           <LabelAndInput label="地址" value={this.state.address} onChange={v => this.setState({address: v})}/>
           <LabelAndInput1 label="备注" className="bb">
-            <textarea className="input" rows={5}
+            <textarea className="input default-input" rows={5}
                       value={this.state.remark} onChange={e => this.setState({remark: e.target.value})}
             ></textarea>
           </LabelAndInput1>

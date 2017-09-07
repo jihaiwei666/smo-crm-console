@@ -7,6 +7,7 @@ import {CONTRACT} from '../../core/constants/types'
 import {handleContractList, handleProjectList, handleContractDetail, handlePartAfterSignInfo, handleContractRemarkAttachment, handleContractBdBdpc} from './contract.helper'
 import {handleInstitutionList, handleInstitutionInfo, handleCollectionList} from './dialog/make-collections/make-collection.helper'
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
+import {getDate} from '../../core/utils/dateUtils'
 
 const urlPrefix = '/contract'
 
@@ -126,6 +127,16 @@ export function addAfterSign(options) {
     [THREE_PHASE]: {
       type: CONTRACT.ADD_AFTER_SIGN,
       http: () => _post(urlPrefix + '/v1/addContractAfterSigned', {body: options}),
+      handleResponse: data => data['contractAfterSignedVo']['after_signed_id']
+    }
+  }
+}
+
+export function fetchAfterSign(afterSignId) {
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.FETCH_AFTER_SIGN,
+      http: () => _get(urlPrefix + `/v1/getContractAfterSignedInfo/${afterSignId}`),
       handleResponse: handleAfterSign
     }
   }
@@ -204,6 +215,19 @@ export function removeContract(contractId) {
     [THREE_PHASE]: {
       type: CONTRACT.REMOVE_CONTRACT,
       http: () => _get(urlPrefix + `/v1/deleteContractInfo/${contractId}`)
+    }
+  }
+}
+
+export function submitBillApply(content) {
+  const options = {
+    content: content
+  }
+  return {
+    [THREE_PHASE]: {
+      type: CONTRACT.SUBMIT_BILL_APPLY,
+      http: () => _post(urlPrefix + '/v1/submitApply', {body: options}),
+      handleResponse: data => getDate(data)
     }
   }
 }

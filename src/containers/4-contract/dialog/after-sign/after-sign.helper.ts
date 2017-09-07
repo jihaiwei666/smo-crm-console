@@ -29,6 +29,7 @@ export function handleAfterSign(afterSign) {
     taxes: numberToText(base['cost_detail_taxes_fee']),
     taxRate: numberToText(base['cost_detail_taxes_rate']),
     paymentNode: base['payment_node'] || '',
+    paymentNodeSwitchable: base['is_can_switch'] != '2',
     payer: base['payer'] || '',
     contractSignDate: getDate(base['contract_award_date']),
     takeEffectDate: getDate(base['effective_date']),

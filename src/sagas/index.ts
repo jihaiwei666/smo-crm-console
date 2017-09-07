@@ -3,8 +3,9 @@
  */
 import {fork} from 'redux-saga/effects'
 
-import {fetchList, fetchMyList, fetchCompleteList} from '../containers/1-todo-remind/todo-remind.saga'
 import {fetchRecentOpenList} from '../actions/app.saga'
+import {fetchList, fetchMyList, fetchCompleteList} from '../containers/1-todo-remind/todo-remind.saga'
+import {fetchRecycleBinList} from '../containers/6-recycle-bin/recycle-bin.saga'
 
 export default function* root() {
   yield [
@@ -12,5 +13,6 @@ export default function* root() {
     fork(fetchMyList),
     fork(fetchCompleteList),
     fork(fetchRecentOpenList),
+    fork(fetchRecycleBinList),
   ]
 }

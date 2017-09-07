@@ -102,3 +102,13 @@ export function handlePartAfterSignInfo(data) {
     enrollmentCount: data['group_number']
   }
 }
+
+export function getIsFirstOperation(value) {
+  if (value == '1') {
+    return '是'
+  }
+  if (value == '2') {
+    return '否'
+  }
+  return ''
+}

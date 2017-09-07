@@ -17,8 +17,10 @@ const initValue = {
   newBeforeSignId: '',
   updateBeforeSignSuccess: false,
   addAfterSignSuccess: false,
-  newAfterSign: null,
+  newAfterSignId: '',
   updateAfterSignSuccess: false,
+  submitBillApplySuccess: false,
+  newBillDate: null,
   updateCollectionSuccess: false,
   updateRemarkAttachmentSuccess: false,
   removeContractSuccess: false
@@ -39,7 +41,11 @@ export default function contract(iState = fromJS(initValue), action) {
       nextIState = nextIState.set('newBeforeSignId', action.data)
       break
     case CONTRACT.ADD_AFTER_SIGN + phase.SUCCESS:
-      nextIState = nextIState.set('newAfterSign', action.data)
+      nextIState = nextIState.set('newAfterSignId', action.data)
+      break
+
+    case CONTRACT.SUBMIT_BILL_APPLY + phase.SUCCESS:
+      nextIState = nextIState.set('newBillDate', action.data)
       break
   }
 
@@ -55,7 +61,9 @@ export default function contract(iState = fromJS(initValue), action) {
 
   nextIState = handleFlagState(nextIState, action, CONTRACT.ADD_AFTER_SIGN, 'addAfterSignSuccess')
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_AFTER_SIGN, 'updateAfterSignSuccess')
+
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_COLLECTION, 'updateCollectionSuccess')
+  nextIState = handleFlagState(nextIState, action, CONTRACT.SUBMIT_BILL_APPLY, 'submitBillApplySuccess')
 
   nextIState = handleFlagState(nextIState, action, CONTRACT.UPDATE_REMARK_ATTACHMENT, 'updateRemarkAttachmentSuccess')
   nextIState = handleFlagState(nextIState, action, CONTRACT.REMOVE_CONTRACT, 'removeContractSuccess')

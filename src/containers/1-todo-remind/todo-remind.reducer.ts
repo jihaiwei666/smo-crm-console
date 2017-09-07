@@ -9,7 +9,7 @@ import {handleFlagState} from '../common/reduxUtils'
 
 const initValue = {
   sendRemindSuccess: false,
-  updateRemindStatusSuccess: false
+  updateRemindStatusSuccess: false,
 }
 
 export default function todoRemind(iState = fromJS(initValue), action): any {

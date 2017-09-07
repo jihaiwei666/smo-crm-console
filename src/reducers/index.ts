@@ -73,6 +73,7 @@ export default combineReducers({
   projectClientList: wrapReducerState(data(PROJECT.FETCH_CLIENT_LIST)),
   projectDetail: wrapReducerState(data(PROJECT.FETCH_PROJECT_DETAIL)),
   projectRemarkAttachment: wrapReducerState(data(PROJECT.FETCH_PROJECT_REMARK_ATTACHMENT)),
+  projectBdBdpc: wrapReducerState(data(PROJECT.FETCH_PROJECT_BD_BDPC)),
 
   contract: wrapReducerState(contract),
   contractDetail: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_DETAIL)),
@@ -81,12 +82,12 @@ export default combineReducers({
   institutionList: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_LIST)),
   institutionInfo: wrapReducerState(data(CONTRACT.FETCH_INSTITUTION_INFO)),
   collectionList: wrapReducerState(data(CONTRACT.FETCH_COLLECTION_LIST)),
-  newAfterSign: wrapReducerState(data(CONTRACT.ADD_AFTER_SIGN)),
+  afterSignDetail: wrapReducerState(data(CONTRACT.FETCH_AFTER_SIGN)),
   partClientInfo: wrapReducerState(data(CONTRACT.FETCH_CLIENT_INFO_FROM_PROJECT)),
   contractRemarkAttachment: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_REMARK_ATTACHMENT)),
   contractBdBdpc: wrapReducerState(data(CONTRACT.FETCH_CONTRACT_BD_BDPC)),
 
-  recycleBinList: wrapReducerState(data(RECYCLE_BIN.FETCH_LIST)),
+  recycleBinList: wrapReducerState(pageList(RECYCLE_BIN.FETCH_LIST)),
 
   accountManage: wrapReducerState(accountManage),
   accountList: wrapReducerState(data(ACCOUNT_MANAGE.FETCH_LIST)),

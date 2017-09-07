@@ -26,14 +26,15 @@ class PageContent extends React.Component<PageContentProps> {
 
   componentWillMount() {
     const {todoRemind, customer, accountManage, project, report, contract, recycleBin} = pages
+    const roleCode = this.props.roleCode
     this.mapper = {
-      [accountManage]: () => <Chunk load={AccountManage}/>,
-      [todoRemind]: () => <Chunk load={TodoRemind}/>,
-      [customer]: () => <Chunk load={Customer}/>,
-      [project]: () => <Chunk load={Project}/>,
-      [contract]: () => <Chunk load={Contract}/>,
-      [report]: () => <Chunk load={Report}/>,
-      [recycleBin]: () => <Chunk load={RecycleBin}/>,
+      [accountManage]: () => <Chunk load={AccountManage} roleCode={roleCode}/>,
+      [todoRemind]: () => <Chunk load={TodoRemind} roleCode={roleCode}/>,
+      [customer]: () => <Chunk load={Customer} roleCode={roleCode}/>,
+      [project]: () => <Chunk load={Project} roleCode={roleCode}/>,
+      [contract]: () => <Chunk load={Contract} roleCode={roleCode}/>,
+      [report]: () => <Chunk load={Report} roleCode={roleCode}/>,
+      [recycleBin]: () => <Chunk load={RecycleBin} roleCode={roleCode}/>,
     }
   }
 

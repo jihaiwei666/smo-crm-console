@@ -9,19 +9,20 @@ import Select1 from 'app-core/common/Select1'
 import Label from '../../../common/Label'
 import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
-import Save from '../../../common/Save'
+import Update from '../../../common/Update'
 import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
 
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {CUSTOMER} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {showBdBdpcUpdate} from '../../../common/common.helper'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 import {applyBdpcFollowUp, updateBdAndBdpc, fetchCustomerBdBdpc} from '../../customer.action'
 
-interface BD_BDPC_Props extends CustomerState, CommonFunction {
+interface BD_BDPC_Props extends CustomerState, CommonFunctionAndRoleCode {
   customerId: string
   fetchBD: () => void
   BDList: any
@@ -135,7 +136,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </div>
 
         </InputUnit>
-        <Save disabled={!this.props.customerId} onClick={this.update}/>
+        <Update disabled={!this.props.customerId} onClick={this.update}/>
       </div>
     )
   }
@@ -154,4 +155,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC, applyBdpcFollowUp, updateBdAndBdpc, fetchCustomerBdBdpc
-})(addCommonFunction(BD_BDPC))
+})(getCommonFunctionAndRoleCode(BD_BDPC))

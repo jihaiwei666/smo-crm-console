@@ -224,7 +224,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
               />
             </LabelAndInput1>
             <LabelAndInput1 label="备注">
-            <textarea rows={4} className="input"
+            <textarea rows={4} className="input default-input"
                       value={this.state.remark} onChange={e => this.setState({remark: e.target.value})}
             ></textarea>
             </LabelAndInput1>

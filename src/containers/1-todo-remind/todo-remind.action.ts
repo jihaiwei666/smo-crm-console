@@ -36,6 +36,25 @@ export function fetchUserCategoryInfo() {
   }
 }
 
+export function fetchUnReadRemindAmount() {
+  return {
+    [THREE_PHASE]: {
+      type: TODO_REMIND.FETCH_UNREAD_REMIND_AMOUNT,
+      http: () => _get(urlPrefix + '/v1/getTodoReminderMessageByAccount'),
+      handleResponse: data => data
+    }
+  }
+}
+
+export function clearRemindAmount() {
+  return {
+    [THREE_PHASE]: {
+      type: TODO_REMIND.CLEAR_REMIND_AMOUNT,
+      http: () => _get(urlPrefix + '/v1/delTodoReminderMessageByAccount')
+    }
+  }
+}
+
 export function fetchRelevantItemList(category, searchKey) {
   const options = {
     "type": category,

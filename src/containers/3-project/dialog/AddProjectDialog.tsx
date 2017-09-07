@@ -6,8 +6,9 @@ import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import Button from '../../../components/button/Button'
 import RightNav from '../../../components/nav/RightNav'
-import BD_BDPC from './base/BD_BDPC'
+import BD_BDPC from './base/ProjectBD_BDPC'
 import CategoryTitle from '../../common/CategoryTitle'
 import ProjectBasicInfo from './basic-info/ProjectBasicInfo'
 import BeforeQuotation from './before-quotation/BeforeQuotation'
@@ -16,22 +17,9 @@ import OperationRecord from '../../common/OperationRecord'
 import ProjectAssociateInfo from './base/ProjectAssociateInfo'
 import ProjectState from '../ProjectState'
 import ProjectRemarkAttachment from './base/ProjectRemarkAttachment'
-
-import {fetchBD, fetchBDPC} from '../../../actions/app.action'
-import {updateBdAndBdpc} from '../project.action'
 import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
-import Button from '../../../components/button/Button'
 
 interface AddProjectDialogProps extends ProjectState {
-  fetchBD: () => void
-  BDList: any
-
-  fetchBDPC: () => void
-  BDPCList: any
-
-  updateBdAndBdpc: (options) => void
-  updateBdAndBdpcSuccess: boolean
-
   onExited: () => void
 }
 
@@ -49,14 +37,6 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
 
   close = () => {
     this.setState({show: false})
-  }
-
-  updateBdAndBdpc = (bd, bdpc) => {
-    this.props.updateBdAndBdpc({
-      "project_info_id": this.state.projectId,
-      "customer_owner": bd,
-      "customer_the_bdpc": bdpc
-    })
   }
 
   componentWillReceiveProps(nextProps: AddProjectDialogProps) {
@@ -93,15 +73,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
         </Modal.Header>
         <Modal.Body>
           <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
-            <BD_BDPC
-              disabled={this.state.projectId == ''}
-              fetchBD={this.props.fetchBD}
-              BDList={this.props.BDList}
-              fetchBDPC={this.props.fetchBDPC}
-              BDPCList={this.props.BDPCList}
-              updateBdAndBdpc={this.updateBdAndBdpc}
-              updateBd_BdpcSuccess={this.props.updateBd_BdpcSuccess}
-            />
+            <BD_BDPC projectId={this.state.projectId}/>
 
             <CategoryTitle title="项目信息"/>
             <ProjectBasicInfo
@@ -141,12 +113,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
 function mapStateToProps(state) {
   return {
     ...state.project,
-    BDList: state.BDList,
-    BDPCList: state.BDPCList
   }
 }
 
-export default connect(mapStateToProps, {
-  fetchBD, fetchBDPC,
-  updateBdAndBdpc,
-})(AddProjectDialog)
+export default connect(mapStateToProps, {})(AddProjectDialog)

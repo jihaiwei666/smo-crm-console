@@ -4,7 +4,7 @@
 import {_post, _get} from '../../core/http'
 import {THREE_PHASE} from '../../middlewares/request_3_phase'
 import {PROJECT} from '../../core/constants/types'
-import {handleProjectList, handleClientList, handleProjectDetail, handleProjectRemarkAttachment} from './project.helper'
+import {handleProjectList, handleClientList, handleProjectDetail, handleProjectRemarkAttachment, handleProjectBdBdpc} from './project.helper'
 import {handleBeforeQuotation} from './dialog/before-quotation/before-quotation.helper'
 import {handleAfterQuotation} from './dialog/after-quotation/after-quotation.helper'
 
@@ -25,6 +25,16 @@ export function updateBdAndBdpc(options) {
     [THREE_PHASE]: {
       type: PROJECT.UPDATE_BD_AND_BDPC,
       http: () => _post(urlPrefix + '/v1/info/edit/belong', {body: options})
+    }
+  }
+}
+
+export function fetchProjectBdBdpc(projectId) {
+  return {
+    [THREE_PHASE]: {
+      type: PROJECT.FETCH_PROJECT_BD_BDPC,
+      http: () => _get(urlPrefix + `/v1/info/belong/${projectId}`),
+      handleResponse: handleProjectBdBdpc
     }
   }
 }
@@ -119,7 +129,7 @@ export function fetchProjectRemarkAttachment(projectId) {
   return {
     [THREE_PHASE]: {
       type: PROJECT.FETCH_PROJECT_REMARK_ATTACHMENT,
-      http: () => _post(urlPrefix + `/v1/info/remark/${projectId}`),
+      http: () => _get(urlPrefix + `/v1/info/remark/${projectId}`),
       handleResponse: handleProjectRemarkAttachment
     }
   }

@@ -9,15 +9,34 @@ import pages from '../../core/pages'
 import {getPath} from '../../core/env'
 import CssTransition from '../../components/CssTransition'
 import {roleCategory} from '../7-account-manage/account-manage.constant'
+import CommonFunction from '../common/interface/CommonFunction'
+import addCommonFunction from './addCommonFunction'
+import {TODO_REMIND} from '../../core/constants/types'
 
-interface ModulesProps {
+interface ModulesProps extends CommonFunction {
   roleCode: number
   currentPath: string
+  fetchUnreadRemindAmountSuccess: boolean
+  unreadRemindAmount: number
+  clearRemindAmount: () => void
 }
 
 class Modules extends React.Component<ModulesProps> {
   state = {
-    open: true
+    open: true,
+    unreadRemindAmount: 0
+  }
+
+  clearRemindAmount = () => {
+    this.props.clearRemindAmount()
+    this.setState({unreadRemindAmount: 0})
+  }
+
+  componentWillReceiveProps(nextProps: ModulesProps) {
+    if (!this.props.fetchUnreadRemindAmountSuccess && nextProps.fetchUnreadRemindAmountSuccess) {
+      this.setState({unreadRemindAmount: nextProps.unreadRemindAmount})
+      this.props.clearState(TODO_REMIND.FETCH_UNREAD_REMIND_AMOUNT)
+    }
   }
 
   render() {
@@ -38,8 +57,13 @@ class Modules extends React.Component<ModulesProps> {
         <CssTransition visible={this.state.open} timeout={500}>
           <main>
             <ul className="nav-items">
-              <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})}>
+              <li className={classnames({'active': currentPath == getPath(pages.todoRemind)})} onClick={this.clearRemindAmount}>
                 <Link to={todoRemind}>待办提醒</Link>
+                {
+                  this.state.unreadRemindAmount != 0 && (
+                    <div className="unread-amount">{this.state.unreadRemindAmount}</div>
+                  )
+                }
               </li>
               <li className={classnames({'active': currentPath == getPath(pages.customer)})}>
                 <Link to={customer}>客户</Link>
@@ -77,4 +101,4 @@ class Modules extends React.Component<ModulesProps> {
   }
 }
 
-export default Modules
+export default addCommonFunction(Modules)

@@ -139,6 +139,12 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
     }
   }
 
+  setBidParty = (clientName) => {
+    if (!this.state.bidParty) {
+      this.setState({bidParty: clientName})
+    }
+  }
+
   componentWillMount() {
     if (this.props.initBeforeQuotation) {
       this.setState(this.props.initBeforeQuotation)
@@ -146,7 +152,8 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   }
 
   componentDidMount() {
-    eventBus.addListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, this.setCro)
+    eventBus.addListener(EVENT_NAMES.PROJECT_CLIENT_CHANGE, this.setBidParty)
+    eventBus.addListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_CRO, this.setCro)
   }
 
   componentWillReceiveProps(nextProps: BeforeQuotationProps) {
@@ -163,7 +170,8 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   }
 
   componentWillUnmount() {
-    eventBus.removeListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, this.setCro)
+    eventBus.removeListener(EVENT_NAMES.PROJECT_CLIENT_CHANGE, this.setBidParty)
+    eventBus.removeListener(EVENT_NAMES.PROJECT_CLIENT_ROLE_CRO, this.setCro)
   }
 
   render() {

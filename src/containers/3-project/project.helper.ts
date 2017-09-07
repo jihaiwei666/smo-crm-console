@@ -37,6 +37,13 @@ export function handleProjectRemarkAttachment(remarkAttachment) {
   }
 }
 
+export function handleProjectBdBdpc(bdAndBdpc) {
+  return {
+    bd: bdAndBdpc['project_the_bd'],
+    bdpc: bdAndBdpc['project_the_bdpc']
+  }
+}
+
 export function handleProjectDetail(data) {
   const baseInfo = data['projectInfo']
   const bdAndBdpc = data['bdAndBdpc']
@@ -51,10 +58,7 @@ export function handleProjectDetail(data) {
       projectCode: baseInfo['project_info_code'] || '',
       relativeClient: baseInfo['customer_info_id'] || '',
     },
-    bdAndBdpc: {
-      bd: bdAndBdpc['project_the_bd'],
-      bdpc: bdAndBdpc['project_the_bdpc']
-    },
+    bdAndBdpc: handleProjectBdBdpc(bdAndBdpc),
     beforeQuotation: handleBeforeQuotation(beforeQuotation),
     afterQuotation: handleAfterQuotation(afterQuotation),
     relationInfo: {

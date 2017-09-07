@@ -7,10 +7,10 @@ import {connect} from 'react-redux'
 import MakeCollection from './MakeCollection'
 
 import Data from '../../../common/interface/Data'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import {updateCollection, fetchInstitutionList, fetchInstitutionInfo} from '../../contract.action'
-import {CONTRACT} from '../../../../core/constants/types'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import CommonFunction from '../../../common/interface/CommonFunction'
+import {CONTRACT} from '../../../../core/constants/types'
+import {updateCollection, fetchInstitutionList, fetchInstitutionInfo, submitBillApply} from '../../contract.action'
 
 interface CollectionListProps extends CommonFunction {
   contractId: string
@@ -19,6 +19,9 @@ interface CollectionListProps extends CommonFunction {
   institutionList: Data<any[]>
   fetchInstitutionInfo: (institutionId) => void
   institutionInfo: Data<any[]>
+  submitBillApply: (content: string) => void
+  submitBillApplySuccess: boolean
+  newBillDate: any
   updateCollection: (options) => void
   updateCollectionSuccess: boolean
 }
@@ -29,6 +32,10 @@ class CollectionList extends React.Component<CollectionListProps> {
       this.props.showSuccess('更新收款成功！')
       this.props.clearState(CONTRACT.UPDATE_COLLECTION)
     }
+  }
+
+  componentDidMount() {
+    this.props.fetchInstitutionList(this.props.contractId)
   }
 
   render() {
@@ -49,10 +56,12 @@ class CollectionList extends React.Component<CollectionListProps> {
                 contractId={this.props.contractId}
                 collectionId={collection.collectionId}
                 initCollection={collection}
-                fetchInstitutionList={this.props.fetchInstitutionList}
                 institutionList={this.props.institutionList}
                 fetchInstitutionInfo={this.props.fetchInstitutionInfo}
                 institutionInfo={this.props.institutionInfo}
+                submitBillApply={this.props.submitBillApply}
+                submitBillApplySuccess={this.props.submitBillApplySuccess}
+                newBillDate={this.props.newBillDate}
                 updateCollection={this.props.updateCollection}
               />
             )
@@ -69,10 +78,12 @@ function mapStateToProps(state, props) {
     collectionList: props.collectionList,
     institutionList: state.institutionList,
     institutionInfo: state.institutionInfo,
+    submitBillApplySuccess: state.contract.submitBillApplySuccess,
+    newBillDate: state.contract.newBillDate,
     updateCollectionSuccess: state.contract.updateCollectionSuccess
   }
 }
 
 export default connect(mapStateToProps, {
-  fetchInstitutionList, updateCollection, fetchInstitutionInfo
+  fetchInstitutionList, updateCollection, fetchInstitutionInfo, submitBillApply
 })(addCommonFunction(CollectionList))

@@ -7,6 +7,7 @@ import Form from 'app-core/form/Form'
 
 import Radio from '../../../../components/form/radio/Radio'
 import LabelAndInput from '../../../common/LabelAndInput'
+import InputGroup from '../../../common/InputGroup'
 import AutoComplete from '../../../../components/form/auto-complete/AutoComplete'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Save from '../../../common/Save'
@@ -20,7 +21,6 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
-import InputGroup from '../../../common/InputGroup'
 
 interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   customerId: string

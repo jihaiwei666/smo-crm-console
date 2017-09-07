@@ -2,28 +2,35 @@
  * Created by jiangyukun on 2017/8/7.
  */
 import React from 'react'
+import PropTypes from 'prop-types'
 import DatePicker from 'antd/lib/date-picker'
 import Select1 from 'app-core/common/Select1'
 
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Button from '../../../../components/button/Button'
+import InputWithSuffix from '../../../../components/form/InputWithSuffix'
 
 import listCrud from '../../../../components/hoc/listCrud'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
-import InputWithSuffix from '../../../../components/form/InputWithSuffix'
 import Input from '../../../../components/form/Input'
 import {getSuffix} from './after-sign.helper'
+import {handleCrudList} from '../../../../core/crud'
+import AddIcon from '../../../../components/AddIcon'
+import RemoveIcon from '../../../../components/RemoveIcon'
+import regex from '../../../../core/constants/regex'
 
 interface ProgressProps {
   item: any
   index: number
   total: number
-  onAdd: () => void
-  onUpdate: (item) => void
-  onRemove: () => void
 }
 
 class Progress extends React.Component<ProgressProps> {
+  static contextTypes = {
+    onAdd: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onRemove: PropTypes.func
+  }
 
   render() {
     const {item, index, total} = this.props
@@ -32,7 +39,7 @@ class Progress extends React.Component<ProgressProps> {
       <div className="progress-item">
         <LabelAndInput1 label="节点">
           <Select1 width="250px" value={item.node} options={nodeProgressOptions}
-                   onChange={(v) => this.props.onUpdate({node: v, quota: ''})}
+                   onChange={(v) => this.context.onUpdate(item.id, {node: v, quota: ''})}
           />
         </LabelAndInput1>
         <LabelAndInput1 label="指标">
@@ -41,25 +48,29 @@ class Progress extends React.Component<ProgressProps> {
               <Input width="250px" placeholder="请输入指标数字" disabled={true}/>
             ) : (
               <InputWithSuffix
+                required={true} name="quota"
+                format={regex.PERCENT_INTEGER}
                 placeholder="请输入指标数字" suffix={getSuffix(item.node)}
-                value={item.quota} onChange={v => this.props.onUpdate({quota: v})}
+                value={item.quota} onChange={v => this.context.onUpdate(item.id, {quota: v})}
               />
             )
           }
         </LabelAndInput1>
         <LabelAndInput1 label="预估日期">
-          <DatePicker value={item.date} onChange={v => this.props.onUpdate({date: v})}/>
+          <DatePicker value={item.date} onChange={v => this.context.onUpdate(item.id, {date: v})}/>
         </LabelAndInput1>
         {
           index != 0 && (
             <div className="remove-progress">
-              <Button className="small danger" onClick={this.props.onRemove}>删除</Button>
+              <RemoveIcon onClick={() => this.context.onRemove(item.id)}/>
             </div>
           )
         }
         {
           index == total - 1 && (
-            <div></div>
+            <div>
+              <AddIcon onClick={this.context.onAdd}/>
+            </div>
           )
         }
       </div>
@@ -67,28 +78,24 @@ class Progress extends React.Component<ProgressProps> {
   }
 }
 
-function ifAdd(item, parentId) {
-  return {
-    "after_signed_id": parentId,
-    "payment_node_key": item.node,
-    "payment_node_value": item.quota,
-    "payment_node_estimated_date": item.date,
-  }
+export function handleProgressListCrud(list, afterSignId) {
+  return handleCrudList(list, {
+    ifAdd: item => ({
+      "after_signed_id": afterSignId,
+      "payment_node_key": item.node,
+      "payment_node_value": item.quota,
+      "payment_node_estimated_date": item.date
+    }),
+    ifUpdate: item => ({
+      "payment_node_id": item.id,
+      "payment_node_key": item.node,
+      "payment_node_value": item.quota,
+      "payment_node_estimated_date": item.date
+    }),
+    ifRemove: item => ({
+      "payment_node_id": item.id
+    })
+  })
 }
 
-function ifUpdate(item) {
-  return {
-    "payment_node_id": item.id,
-    "payment_node_key": item.node,
-    "payment_node_value": item.quota,
-    "payment_node_estimated_date": item.date,
-  }
-}
-
-function ifRemove(item) {
-  return {
-    "payment_node_id": item.id
-  }
-}
-
-export default listCrud(Progress, {node: '', quota: '', date: null}, {ifAdd, ifUpdate, ifRemove})
+export default Progress

@@ -11,16 +11,16 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
 import Save from '../../../common/Save'
-
-import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
 import Update from '../../../common/Update'
-import {PROJECT} from '../../../../core/constants/types'
-import CommonFunction from '../../../common/interface/CommonFunction'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import eventBus, {EVENT_NAMES} from '../../../../core/event'
-import {customerTypeMapper, customerType} from '../../../2-customer/customer.constant'
 
-interface ProjectBasicInfoProps extends CommonFunction {
+import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
+import {customerType} from '../../../2-customer/customer.constant'
+import {PROJECT} from '../../../../core/constants/types'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
+
+interface ProjectBasicInfoProps extends CommonFunctionAndRoleCode {
   projectId?: string
   baseInfo?: any
   fetchClientList: () => void
@@ -61,8 +61,9 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
     if (!this.state.relativeClient) return
     let matchClient = clientList.find(client => client.value == this.state.relativeClient)
     if (matchClient.roleType == customerType.cro) {
-      eventBus.emit(EVENT_NAMES.PROJECT_CLIENT_ROLE_TYPE, matchClient.text)
+      eventBus.emit(EVENT_NAMES.PROJECT_CLIENT_ROLE_CRO, matchClient.text)
     }
+    eventBus.emit(EVENT_NAMES.PROJECT_CLIENT_CHANGE, matchClient.text)
   }
 
   componentWillMount() {
@@ -81,6 +82,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
       this.props.clearState(PROJECT.ADD_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
       this.triggerCroClient(nextProps.clientList.data)
+      eventBus.emit(EVENT_NAMES.PROJECT_CREATE)
     }
     if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
       this.props.showSuccess('更新项目信息成功！')
@@ -107,9 +109,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
         </div>
 
         <div className="input-row">
-          <LabelAndInput label="项目编码"
-                         value={this.state.projectCode} onChange={v => this.setState({projectCode: v})}
-          />
+          <LabelAndInput label="项目编码" placeholder="暂未生成" disabled={true} value={this.state.projectCode}/>
           <div className="tip">有合同关联后，则生成项目编码（SM-年份-月份-BD缩写-流水号，如SM201705LXX001）</div>
         </div>
 
@@ -147,4 +147,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchClientList, addProjectBaseInfo, updateProjectBaseInfo
-})(addCommonFunction(ProjectBasicInfo))
+})(getCommonFunctionAndRoleCode(ProjectBasicInfo))
