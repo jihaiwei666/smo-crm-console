@@ -9,6 +9,7 @@ import {context} from '../../core/env'
 import {_get} from '../../core/http'
 import CssTransition from '../../components/CssTransition'
 import ChangePasswordDialog from './ChangePasswordDialog'
+import {getPositionName} from '../7-account-manage/account-manage.helper'
 
 interface HeaderProps {
   user: any
@@ -28,6 +29,7 @@ class Header extends React.Component<HeaderProps> {
   }
 
   render() {
+    let {userName, roleCode, email} = this.props.user
     return (
       <header>
         {
@@ -44,13 +46,14 @@ class Header extends React.Component<HeaderProps> {
           <OuterClick onOuterClick={() => this.setState({active: false})}>
             <div className={classnames('user-info', {active: this.state.active})}>
               <div className="user-name" onClick={() => this.setState({active: !this.state.active})}>
-                {this.props.user.userName}
+                {userName + ' [ ' + getPositionName(roleCode) + ' ] '}
                 <img src={require('./down.svg')}/>
               </div>
               <CssTransition visible={this.state.active} timeout={300}>
                 <ul className="dropdown-item-container">
-                  <li className="dropdown-item" onClick={this.logout}>退出登录</li>
-                  <li className="dropdown-item" onClick={() => this.setState({showResetPassword: true, active: false})}>修改密码</li>
+                  <li className="dropdown-item text">{email}</li>
+                  <li className="dropdown-item btn" onClick={() => this.setState({showResetPassword: true, active: false})}>修改密码</li>
+                  <li className="dropdown-item btn" onClick={this.logout}>退出登录</li>
                 </ul>
               </CssTransition>
             </div>

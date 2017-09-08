@@ -72,7 +72,7 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
+          <RightNav>
             <BD_BDPC projectId={this.state.projectId}/>
 
             <CategoryTitle title="项目信息"/>

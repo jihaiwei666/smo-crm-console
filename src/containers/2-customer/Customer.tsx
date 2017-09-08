@@ -99,7 +99,7 @@ class Customer extends React.Component<CustomerProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.customerList)
-    const operation = getOperation(this.props.customerList)
+    const buttonOperation = getOperation(this.props.customerList)
     const item = list[this.state.index] || {}
 
     let customerId = item.customerId
@@ -134,7 +134,7 @@ class Customer extends React.Component<CustomerProps> {
 
         <div className="m15">
           {
-            operation.canCreate && (
+            buttonOperation.canCreate && (
               <Button onClick={() => this.setState({showAddDialog: true})}>
                 <img className="btn-icon" src={require('./icon/create-cust.svg')}/>创建
               </Button>

@@ -114,7 +114,7 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
           }
           {
             loaded && (
-              <RightNav navItems={['项目信息', '报价前', '报价后', '关联信息', '备注及附件', '操作记录']}>
+              <RightNav>
                 <ProjectBD_BDPC initBdAndBdpc={initBdAndBdpc} projectId={this.props.projectId}/>
 
                 <CategoryTitle title="项目信息"/>

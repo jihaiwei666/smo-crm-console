@@ -15,7 +15,8 @@ import {PROJECT} from '../../../../core/constants/types'
 import {fetchBDPC, fetchBD} from '../../../../actions/app.action'
 import {updateBdAndBdpc, fetchProjectBdBdpc} from '../../project.action'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
-import {showBdBdpcUpdate} from '../../../common/common.helper'
+import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
+import {roleCategory} from '../../../7-account-manage/account-manage.constant'
 
 interface ProjectBD_BDPCProps extends CommonFunctionAndRoleCode {
   projectId: string
@@ -40,8 +41,8 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
   update = () => {
     this.props.updateBdAndBdpc({
       "project_info_id": this.props.projectId,
-      "customer_owner": this.state.bd,
-      "customer_the_bdpc": this.state.bdpc
+      "project_the_bd": this.state.bd,
+      "project_the_bdpc": this.state.bdpc
     })
   }
 
@@ -88,7 +89,8 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
       <div>
         <div className="input-row">
           <LabelAndInput1 label="所属BD">
-            <Select1 disabled={this.props.projectId == ''} options={BDList}
+            <Select1 disabled={this.props.projectId == '' || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
+                     options={BDList}
                      showClear={true}
                      value={this.state.bd} onChange={v => this.setState({bd: v})}
             />
@@ -98,14 +100,18 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
 
         <div className="input-row">
           <LabelAndInput1 label="所属BDPC">
-            <Select1 disabled={this.props.projectId == ''} options={BDPCList}
-                     showClear={true}
+            <Select1 disabled={this.props.projectId == '' || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdpcLeader)}
+                     options={BDPCList} showClear={true}
                      value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
             />
           </LabelAndInput1>
           <div className="tip">默认所属BDPC为关联客户的所属BDPC，有争议时由BDPC负责人线下确认后修改</div>
         </div>
-        <Update disabled={this.props.projectId == ''} onClick={this.update}/>
+        {
+          checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
+            <Update disabled={this.props.projectId == ''} onClick={this.update}/>
+          )
+        }
       </div>
     )
   }

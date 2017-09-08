@@ -11,7 +11,7 @@ interface CategoryTitleProps {
 class CategoryTitle extends React.Component<CategoryTitleProps> {
   constructor(props, context) {
     super()
-    context.addNavTitle(this)
+    context.addNavTitle(this, props.title)
   }
 
   static contextTypes = {

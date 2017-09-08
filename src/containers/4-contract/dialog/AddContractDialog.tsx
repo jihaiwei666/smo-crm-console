@@ -87,7 +87,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <RightNav navItems={['合同信息', '签署前', '签署后', '收款', '关联信息', '备注及附件', '操作记录']}>
+          <RightNav>
             <ContractBdBdpc
               contractId={this.state.contractId}
             />
@@ -96,7 +96,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
             <ContractBasicInfo
               contractId={this.state.contractId}
               onProjectIdChange={projectId => this.setState({projectId})}
-              onContractNameChange={name=>this.contractName = name}
+              onContractNameChange={name => this.contractName = name}
             />
 
             <CategoryTitle title="签署前"/>

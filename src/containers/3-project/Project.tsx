@@ -14,7 +14,7 @@ import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
 
 import {fetchList, removeProject} from './project.action'
-import {handleListData, getNameAndEmail} from '../common/common.helper'
+import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
 import ProjectState from './ProjectState'
 import {PROJECT} from '../../core/constants/types'
 
@@ -80,6 +80,7 @@ class Project extends React.Component<ProjectProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.projectList)
+    const buttonOperation = getOperation(this.props.projectList)
     const item = list[this.state.index]
 
     return (
@@ -110,7 +111,11 @@ class Project extends React.Component<ProjectProps> {
         }
 
         <div className="m15">
-          <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+          {
+            buttonOperation.canCreate && (
+              <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+            )
+          }
         </div>
         <FixHeadList total={total} weights={[1, 1, 1, 2, 2, 1]}>
           <FixHead>
@@ -135,8 +140,16 @@ class Project extends React.Component<ProjectProps> {
                     <FixRow.Item>{getNameAndEmail(item.bdName, item.bd)}</FixRow.Item>
                     <FixRow.Item>{getNameAndEmail(item.bdpcName, item.bdpc)}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                      {
+                        item.operation.canEdit && (
+                          <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
+                        )
+                      }
+                      {
+                        item.operation.canDelete && (
+                          <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                        )
+                      }
                     </FixRow.Item>
                   </FixRow>
                 )

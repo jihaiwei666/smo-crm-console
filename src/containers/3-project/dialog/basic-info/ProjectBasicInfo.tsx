@@ -18,6 +18,8 @@ import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFuncti
 import {customerType} from '../../../2-customer/customer.constant'
 import {PROJECT} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {isAdmin} from '../../../7-account-manage/account-manage.helper'
+import {checkHavePermission} from '../../../../core/permission'
 import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
 
 interface ProjectBasicInfoProps extends CommonFunctionAndRoleCode {
@@ -60,6 +62,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   triggerCroClient = (clientList) => {
     if (!this.state.relativeClient) return
     let matchClient = clientList.find(client => client.value == this.state.relativeClient)
+    if (!matchClient) return
     if (matchClient.roleType == customerType.cro) {
       eventBus.emit(EVENT_NAMES.PROJECT_CLIENT_ROLE_CRO, matchClient.text)
     }
@@ -109,7 +112,11 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
         </div>
 
         <div className="input-row">
-          <LabelAndInput label="项目编码" placeholder="暂未生成" disabled={true} value={this.state.projectCode}/>
+          <LabelAndInput
+            label="项目编码" placeholder="暂未生成"
+            disabled={!checkHavePermission(this.props.roleCode, isAdmin(this.props.roleCode))}
+            value={this.state.projectCode}
+          />
           <div className="tip">有合同关联后，则生成项目编码（SM-年份-月份-BD缩写-流水号，如SM201705LXX001）</div>
         </div>
 

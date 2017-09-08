@@ -4,7 +4,7 @@
 import {getDateStr} from '../../core/utils/dateUtils'
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleLastRfiDetail} from './dialog/rfi/rfi.helper'
-import {handleOperationList, getNullValue, handleAttachmentList} from '../common/common.helper'
+import {handleOperationList, getNullValue, handleAttachmentList, handleButtonOperation, handleItemOperation} from '../common/common.helper'
 import {customerTypeMapper} from './customer.constant'
 
 export function getCustomerType(type) {
@@ -12,7 +12,6 @@ export function getCustomerType(type) {
 }
 
 export function handleClientList(data) {
-  let permission = data['buttonPermission']
   return {
     total: data['totalCount'],
     list: data['customerList'].map(item => ({
@@ -23,15 +22,9 @@ export function handleClientList(data) {
       customerOwnerName: item['customer_owner_name'],
       customerCreator: item['create_person'],
       customerCreatorName: item['create_person_name'],
-      operation: {
-        canEdit: item['permissionOperation']['is_can_read'],
-        canDelete: item['permissionOperation']['is_can_delete']
-      }
+      operation: handleItemOperation(item['permissionOperation'])
     })),
-    operation: {
-      canCreate: permission['is_Can_Create'],
-      canImport: permission['is_Can_Import'],
-    }
+    operation: handleButtonOperation(data['buttonPermission'])
   }
 }
 

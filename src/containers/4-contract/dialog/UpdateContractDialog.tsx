@@ -124,7 +124,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
           }
           {
             loaded && (
-              <RightNav navItems={['合同信息', '签署前', '签署后', '收款', '关联信息', '备注及附件', '操作记录']}>
+              <RightNav>
                 <ContractBdBdpc
                   contractId={this.props.contractId}
                   initBdAndBdpc={initBdAndBdpc}

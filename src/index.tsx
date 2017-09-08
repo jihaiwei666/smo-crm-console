@@ -19,6 +19,7 @@ import handle_error from './middlewares/handle_error'
 import rootSaga from './sagas/'
 import {_get} from './core/http'
 import {APP} from './core/constants/types'
+import {roleCategory} from './containers/7-account-manage/account-manage.constant'
 
 let history = createBrowserHistory()
 let sagaMiddleware = createSagaMiddleware()
@@ -38,6 +39,7 @@ _get('/user/v1/getUserStatus').then(data => {
   let email = data['account']
   let userName = data['name']
   let roleCode = data['post_type']
+  // roleCode = roleCategory.systemManage //todo
   store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode}})
   render(
     <Root store={store} history={history} roleCode={roleCode}/>,

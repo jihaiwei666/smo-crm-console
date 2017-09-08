@@ -106,7 +106,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
           }
           {
             loaded && (
-              <RightNav navItems={['客户信息', '分/子公司或下属院区', '联系人', 'CDA', '供应商', 'RFI', '关联信息', '备注及附件', '操作记录']}>
+              <RightNav>
                 <BD_BDPC
                   customerId={this.props.customerId}
                   initBdAndBdpc={initBdAndBdpc}

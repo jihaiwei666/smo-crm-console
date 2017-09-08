@@ -1,7 +1,7 @@
 import {contractTypeMapper} from './contract.constant'
 
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
-import {handleOperationList, handleAttachmentList} from '../common/common.helper'
+import {handleOperationList, handleAttachmentList, handleButtonOperation, handleItemOperation} from '../common/common.helper'
 import {handleCollectionList} from './dialog/make-collections/make-collection.helper'
 
 export function getContractType(type) {
@@ -24,7 +24,9 @@ export function handleContractList(data) {
       bdName: item['customer_the_bd_name'],
       bdpc: item['customer_the_bdpc'],
       bdpcName: item['customer_the_bdpc_name'],
-    }))
+      operation: handleItemOperation(item['permissionOperation'])
+    })),
+    operation: handleButtonOperation(data['buttonPermission'])
   }
 }
 
@@ -44,11 +46,13 @@ export function handleContractBdBdpc(bdAnBdpc) {
 }
 
 export function handleContractDetail(data) {
-  const baseInfo = data['contract_info']
-  const bdAnBdpc = data['bdAndBdpc']
+  if (!data['contract_info']) return null
+  const baseInfo = data['contract_info'] || {}
+  const bdAnBdpc = data['bdAndBdpc'] || {}
   const beforeSign = data['contract_before_signed_info'] || {}
+  const afterSign = data['contract_after_signed_info'] || {}
   const relationInfo = data['contractRelation_info'] || {}
-  const operationList = data['operations'].list || []
+  const operationList = (data['operations'] || {}).list || []
   const collectionList = data['collection_info'] || []
   const remarkAttachment = data['contractFiles'] || {}
 
@@ -68,7 +72,7 @@ export function handleContractDetail(data) {
       remark: beforeSign['contract_type_remark'],
       templateType: beforeSign['contract_template'],
     },
-    afterSign: handleAfterSign(data['contract_after_signed_info']),
+    afterSign: handleAfterSign(afterSign),
     collectionList: handleCollectionList(collectionList),
     relationInfo: {
       projects: relationInfo['relationProjects'].map(item => ({

@@ -4,7 +4,7 @@
 import Data from './interface/Data'
 import {getDateTimeStr} from '../../core/utils/dateUtils'
 import crud from '../../core/crud'
-import {roleCategory} from '../7-account-manage/account-manage.constant'
+import {finalPermission} from '../../core/permission'
 
 export function getOperationType(type) {
   switch (type) {
@@ -69,6 +69,20 @@ export function getOperation(data: Data<any>) {
   return data.data.operation
 }
 
+export function handleItemOperation(permission) {
+  return {
+    canEdit: finalPermission(permission['is_can_read']),
+    canDelete: finalPermission(permission['is_can_delete'])
+  }
+}
+
+export function handleButtonOperation(permission) {
+  return {
+    canCreate: finalPermission(permission['is_Can_Create']),
+    canImport: finalPermission(permission['is_Can_Import']),
+  }
+}
+
 export function getSingleFile(file) {
   if (!file) {
     return null
@@ -105,9 +119,5 @@ export function getNameAndEmail(name, email) {
   if (!name && !email) return ''
   if (!name) return email
   if (!email) return name
-  return `${name}（${email}）`
-}
-
-export function showBdBdpcUpdate(roleCode) {
-  return roleCode == roleCategory.bdLeader || roleCode == roleCategory.bdpcLeader || roleCode == roleCategory.systemManage
+  return `${name} ( ${email} )`
 }

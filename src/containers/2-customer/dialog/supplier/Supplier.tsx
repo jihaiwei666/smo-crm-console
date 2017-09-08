@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DatePicker from 'antd/lib/date-picker'
 import {Row, Part} from 'app-core/layout'
 import Form from 'app-core/form/Form'
 
 import Button from '../../../../components/button/Button'
+import DatePicker from '../../../../components/form/DatePicker'
 import LabelAndInput from '../../../common/LabelAndInput'
 import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import InputGroup from '../../../common/InputGroup'
@@ -329,8 +329,8 @@ class Supplier extends React.Component<SupplierProps> {
           </div>
 
           <div className="bb">
-            <InputGroup label="MSA">
-              <LabelAndInput1 label="是否签署（*）">
+            <InputGroup label="MSA" inputType={NECESSARY}>
+              <LabelAndInput1 label="是否签署">
                 <Radio.Group
                   required={true} name="isDeployment"
                   value={this.state.isDeployment} onChange={v => this.setState({isDeployment: v})}>
@@ -339,10 +339,14 @@ class Supplier extends React.Component<SupplierProps> {
                 </Radio.Group>
               </LabelAndInput1>
               <LabelAndInput1 label="起始日期">
-                <DatePicker value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
+                <DatePicker
+                  required={true} name="startDate"
+                  value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
               </LabelAndInput1>
               <LabelAndInput1 label="结束日期">
-                <DatePicker value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
+                <DatePicker
+                  required={true} name="endDate"
+                  value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
               </LabelAndInput1>
               <LabelAndInput1 label="MSA扫描件">
                 <SingleFile
@@ -364,7 +368,7 @@ class Supplier extends React.Component<SupplierProps> {
         </Form>
         {
           !this.supplierId && (
-            <Save disabled={!this.state.valid} onClick={this.add}/>
+            <Save disabled={!this.props.customerId || !this.state.valid} onClick={this.add}/>
           )
         }
         {

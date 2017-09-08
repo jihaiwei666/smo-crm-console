@@ -8,10 +8,11 @@ import {findDOMNode} from 'react-dom'
 import {Row, Part} from 'app-core/layout/'
 
 interface RightNavProps {
-  navItems: string[]
+
 }
 
 class RightNav extends React.Component<RightNavProps> {
+  titleNames = []
   static childContextTypes = {
     addNavTitle: PropTypes.func
   }
@@ -24,8 +25,9 @@ class RightNav extends React.Component<RightNavProps> {
     active: -1
   }
 
-  addNavTitle = (navTitle) => {
+  addNavTitle = (navTitle, titleName) => {
     this.navTitles.push(navTitle)
+    this.titleNames.push(titleName)
   }
 
   handleScroll = () => {
@@ -77,7 +79,7 @@ class RightNav extends React.Component<RightNavProps> {
         <div className="customer-nav">
           <ul className="nav-category-group">
             {
-              this.props.navItems.map((item, index) => {
+              this.titleNames.map((item, index) => {
                 return (
                   <li key={index}
                       className={classnames({'active': this.state.active == index})}

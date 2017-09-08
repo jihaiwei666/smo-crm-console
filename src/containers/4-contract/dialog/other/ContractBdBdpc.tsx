@@ -10,14 +10,16 @@ import Update from '../../../common/Update'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 
 import Data from '../../../common/interface/Data'
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import CommonFunction from '../../../common/interface/CommonFunction'
+import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
+import {roleCategory} from '../../../7-account-manage/account-manage.constant'
 import {CONTRACT} from '../../../../core/constants/types'
-import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
+import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 import {updateBdAndBdpc, fetchContractBdBdpc} from '../../contract.action'
 
-interface ContractBdBdpcProps extends CommonFunction {
+interface ContractBdBdpcProps extends CommonFunctionAndRoleCode {
   contractId?: string
   fetchBD: () => void
   BDList: Data<any>
@@ -85,7 +87,8 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
       <div>
         <InputUnit>
           <LabelAndInput1 label="所属BD">
-            <Select1 disabled={!this.props.contractId} options={BDList}
+            <Select1 disabled={!this.props.contractId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
+                     options={BDList}
                      showClear={true}
                      value={this.state.bd} onChange={v => this.setState({bd: v})}
             />
@@ -96,14 +99,18 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
         <InputUnit>
           <LabelAndInput1 label="所属BDPC">
             <Select1
-              disabled={!this.props.contractId} options={BDPCList}
-              showClear={true}
+              disabled={!this.props.contractId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdpcLeader)}
+              options={BDPCList} showClear={true}
               value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
             />
           </LabelAndInput1>
           <div className="input-unit-illustrate">默认所属BDPC为关联客户的所属BDPC，有争议时由BDPC负责人线下确认后修改</div>
         </InputUnit>
-        <Update disabled={!this.props.contractId} onClick={this.updateBdAndBdpc}/>
+        {
+          checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
+            <Update disabled={!this.props.contractId} onClick={this.updateBdAndBdpc}/>
+          )
+        }
       </div>
     )
   }
@@ -121,4 +128,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchBD, fetchBDPC, updateBdAndBdpc, fetchContractBdBdpc
-})(addCommonFunction(ContractBdBdpc))
+})(getCommonFunctionAndRoleCode(ContractBdBdpc))

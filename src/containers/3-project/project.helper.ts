@@ -1,4 +1,4 @@
-import {handleOperationList} from '../common/common.helper'
+import {handleOperationList, handleItemOperation, handleButtonOperation} from '../common/common.helper'
 import {handleBeforeQuotation} from './dialog/before-quotation/before-quotation.helper'
 import {handleAfterQuotation} from './dialog/after-quotation/after-quotation.helper'
 
@@ -14,7 +14,11 @@ export function handleProjectList(data) {
       bdName: item['project_the_bd_name'],
       bdpc: item['project_the_bdpc'],
       bdpcName: item['project_the_bdpc_name'],
-    }))
+      operation: handleItemOperation(item['permissionOperation'])
+    })),
+    operation: {
+      canCreate: data['is_Can_Create']
+    }
   }
 }
 

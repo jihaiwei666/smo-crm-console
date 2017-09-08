@@ -35,7 +35,9 @@ class CollectionList extends React.Component<CollectionListProps> {
   }
 
   componentDidMount() {
-    this.props.fetchInstitutionList(this.props.contractId)
+    if (this.props.contractId) {
+      this.props.fetchInstitutionList(this.props.contractId)
+    }
   }
 
   render() {

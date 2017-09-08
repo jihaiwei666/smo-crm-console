@@ -45,7 +45,11 @@ class PageContent extends React.Component<PageContentProps> {
       <div className="page-content">
         <Route path={`${match.url}/${todoRemind}`} component={this.mapper[todoRemind]}/>
         <Route path={`${match.url}/${customer}`} component={this.mapper[customer]}/>
-        <Route path={`${match.url}/${project}`} component={this.mapper[project]}/>
+        {
+          this.props.roleCode != roleCategory.finance && (
+            <Route path={`${match.url}/${project}`} component={this.mapper[project]}/>
+          )
+        }
         <Route path={`${match.url}/${contract}`} component={this.mapper[contract]}/>
         <Route path={`${match.url}/${report}`} component={this.mapper[report]}/>
         {

@@ -18,7 +18,8 @@ import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionA
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {CUSTOMER} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
-import {showBdBdpcUpdate} from '../../../common/common.helper'
+import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
+import {roleCategory} from '../../../7-account-manage/account-manage.constant'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 import {applyBdpcFollowUp, updateBdAndBdpc, fetchCustomerBdBdpc} from '../../customer.action'
 
@@ -109,8 +110,8 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           <FlexDiv>
             <Label>客户所有人</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={BDList}
-                       showClear={true}
+              <Select1 disabled={!this.props.customerId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
+                       options={BDList} showClear={true}
                        value={this.state.owner} onChange={v => this.setState({owner: v})}
                        lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
               />
@@ -123,8 +124,8 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           <FlexDiv>
             <Label>所属BDPC</Label>
             <Part>
-              <Select1 disabled={!this.props.customerId} options={BDPCList}
-                       showClear={true}
+              <Select1 disabled={!this.props.customerId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdpcLeader)}
+                       options={BDPCList} showClear={true}
                        value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
                        lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
               />
@@ -136,7 +137,11 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </div>
 
         </InputUnit>
-        <Update disabled={!this.props.customerId} onClick={this.update}/>
+        {
+          checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
+            <Update disabled={!this.props.customerId} onClick={this.update}/>
+          )
+        }
       </div>
     )
   }

@@ -5,17 +5,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Confirm from 'app-core/common/Confirm'
 
-import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import Button from '../../components/button/Button'
 import PageCountNav from '../../components/nav/PageCountNav'
+import {FixHeadList, FixHead, FixBody, FixRow} from '../../components/fix-head-list/'
 import AddContractDialog from './dialog/AddContractDialog'
 import UpdateContractDialog from './dialog/UpdateContractDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
-import {handleListData, getNameAndEmail} from '../common/common.helper'
+import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
 import {getContractType} from './contract.helper'
-import {fetchList, removeContract} from './contract.action'
 import {CONTRACT} from '../../core/constants/types'
+import {fetchList, removeContract} from './contract.action'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
@@ -91,6 +91,7 @@ class Contract extends React.Component<ContractProps> {
 
   render() {
     const {total, list, loading, loaded} = handleListData(this.props.contractList)
+    const buttonOperation = getOperation(this.props.contractList)
     const item = list[this.state.index] || {}
 
     return (
@@ -121,7 +122,11 @@ class Contract extends React.Component<ContractProps> {
         }
 
         <div className="m15">
-          <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+          {
+            buttonOperation.canCreate && (
+              <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
+            )
+          }
         </div>
 
         <FixHeadList total={total} weights={[1, 2, 1, 2, 2, 1]}>
@@ -147,8 +152,16 @@ class Contract extends React.Component<ContractProps> {
                     <FixRow.Item>{getNameAndEmail(item.bdName, item.bd)}</FixRow.Item>
                     <FixRow.Item>{getNameAndEmail(item.bdpcName, item.bdpc)}</FixRow.Item>
                     <FixRow.Item>
-                      <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
-                      <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                      {
+                        item.operation.canEdit && (
+                          <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>查看</Button>
+                        )
+                      }
+                      {
+                        item.operation.canDelete && (
+                          <Button className="small danger" onClick={() => this.setState({showDeleteConfirm: true, index})}>删除</Button>
+                        )
+                      }
                     </FixRow.Item>
                   </FixRow>
                 )
