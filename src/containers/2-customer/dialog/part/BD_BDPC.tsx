@@ -92,7 +92,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
       BDPCList = this.props.BDPCList.data
     }
     return (
-      <div>
+      <div className="--module-item">
         {
           this.state.showApply && (
             <ApplyBdpcFollowUpDialog

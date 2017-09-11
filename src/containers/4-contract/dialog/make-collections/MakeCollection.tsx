@@ -38,6 +38,7 @@ interface MakeCollectionProps extends CommonFunction {
   submitBillApplySuccess: boolean
   newBillDate: any
   updateCollection: (options) => void
+  editAuthority: boolean
 }
 
 class MakeCollection extends React.Component<MakeCollectionProps> {
@@ -135,7 +136,7 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
         <Row>
           <Index index={this.props.index}/>
           <Part>
-            <Form onValidChange={valid => this.setState({valid})}>
+            <Form onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
               {
                 this.paymentNode == '1' && (
                   <LabelAndInput1 label="节点日期" className="input-row">
@@ -270,7 +271,14 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
             </Form>
           </Part>
         </Row>
-        <Update disabled={!this.state.valid} onClick={this.update}/>
+        {
+          this.props.editAuthority && (
+            <Update disabled={!this.state.valid} onClick={this.update}/>
+          )
+        }
+        {
+          !this.props.editAuthority && (<div className="m15"></div>)
+        }
       </div>
     )
   }

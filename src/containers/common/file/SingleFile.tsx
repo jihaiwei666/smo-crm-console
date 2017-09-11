@@ -15,6 +15,7 @@ interface SingleFileProps {
   onClear: () => void
   showRemove?: boolean
   accept?: string
+  disabled?: boolean
 }
 
 class SingleFile extends React.Component<SingleFileProps> {
@@ -93,6 +94,7 @@ class SingleFile extends React.Component<SingleFileProps> {
             <AddFileButton
               accept={this.props.accept} multiple={false}
               onUploadSuccess={this.handleUploaded}
+              disabled={this.props.disabled}
             />
           )
         }

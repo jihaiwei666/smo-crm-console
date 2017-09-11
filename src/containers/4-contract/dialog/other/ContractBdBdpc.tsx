@@ -84,7 +84,7 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
     }
 
     return (
-      <div>
+      <div className="--module-item">
         <InputUnit>
           <LabelAndInput1 label="所属BD">
             <Select1 disabled={!this.props.contractId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}

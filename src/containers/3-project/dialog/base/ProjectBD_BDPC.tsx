@@ -86,7 +86,7 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
     }
 
     return (
-      <div>
+      <div className="--module-item">
         <div className="input-row">
           <LabelAndInput1 label="所属BD">
             <Select1 disabled={this.props.projectId == '' || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}

@@ -51,6 +51,7 @@ interface SupplierProps extends CustomerState, CommonFunction {
   addMsa: (options) => void
   updateMsa: (options) => void
   removeMsa: (msaId) => void
+  editAuthority: boolean
 }
 
 let id = 1
@@ -77,6 +78,10 @@ function getNextSupplier() {
 }
 
 class Supplier extends React.Component<SupplierProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   supplierId: ''
   msaId: ''
   _scanFile: any
@@ -241,7 +246,7 @@ class Supplier extends React.Component<SupplierProps> {
   render() {
     const contactList = this.props.customerContactData.data || []
     return (
-      <div>
+      <div className="--module-item">
         {
           this.state.showMoreMSA && (
             <LookMSADialog
@@ -252,7 +257,7 @@ class Supplier extends React.Component<SupplierProps> {
             />
           )
         }
-        <Form onValidChange={valid => this.setState({valid})}>
+        <Form onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority || !this.props.customerId}>
           <InputGroup className="bb" label="供应商类别" inputType={NECESSARY}>
             <Radio.Group
               required={true} name="supplierType"
@@ -323,7 +328,7 @@ class Supplier extends React.Component<SupplierProps> {
             }/>
             <div>
               <TextAndButton text="点此添加按钮添加一条供应商信息">
-                <AddButton disabled={!this.props.customerId} onClick={this.addSupplier}/>
+                <AddButton disabled={!this.props.customerId || !this.props.editAuthority} onClick={this.addSupplier}/>
               </TextAndButton>
             </div>
           </div>
@@ -355,6 +360,7 @@ class Supplier extends React.Component<SupplierProps> {
                   file={this.state.scanFile}
                   onChange={file => this.setState({scanFile: file})}
                   onClear={() => this.setState({scanFile: null})}
+                  disabled={!this.props.editAuthority}
                 />
               </LabelAndInput1>
             </InputGroup>

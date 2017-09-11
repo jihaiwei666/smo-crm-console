@@ -74,6 +74,7 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
     let baseInfo = null, initBdAndBdpc = null, relationInfo = null, operationRecordList = []
     let initBeforeQuotation = null, initAfterQuotation = null
     let initRemarkAttachment = null
+    let authority: any = {}, lookAuthority: any = {}, editAuthority: any = {}
     if (loaded) {
       baseInfo = data.baseInfo
       initBdAndBdpc = data.bdAndBdpc
@@ -82,6 +83,9 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
       relationInfo = data.relationInfo
       initRemarkAttachment = data.remarkAttachment
       operationRecordList = data.operationRecordList
+      authority = data.authority
+      lookAuthority = authority.look
+      editAuthority = authority.edit
     }
 
     return (
@@ -117,25 +121,53 @@ class UpdateProjectDialog extends React.Component<UpdateProjectDialogProps> {
               <RightNav>
                 <ProjectBD_BDPC initBdAndBdpc={initBdAndBdpc} projectId={this.props.projectId}/>
 
-                <CategoryTitle title="项目信息"/>
-                <ProjectBasicInfo
-                  projectId={this.props.projectId}
-                  baseInfo={baseInfo}
-                  onProjectNameChange={name => this.projectName = name}
-                />
+                {
+                  lookAuthority.basicInfo && (
+                    <CategoryTitle title="项目信息" readonly={!editAuthority.basicInfo}/>
+                  )
+                }
+                {
+                  lookAuthority.basicInfo && (
+                    <ProjectBasicInfo
+                      projectId={this.props.projectId}
+                      baseInfo={baseInfo}
+                      onProjectNameChange={name => this.projectName = name}
+                      editAuthority={editAuthority.basicInfo}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="报价前"/>
-                <BeforeQuotation projectId={this.props.projectId}
-                                 beforeQuotationId={this.state.beforeQuotationId}
-                                 initBeforeQuotation={initBeforeQuotation}
-                />
+                {
+                  lookAuthority.beforeQuotation && (
+                    <CategoryTitle title="报价前" readonly={!editAuthority.beforeQuotation}/>
+                  )
+                }
+                {
+                  lookAuthority.beforeQuotation && (
+                    <BeforeQuotation
+                      projectId={this.props.projectId}
+                      beforeQuotationId={this.state.beforeQuotationId}
+                      initBeforeQuotation={initBeforeQuotation}
+                      editAuthority={editAuthority.beforeQuotation}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="报价后"/>
-                <AfterQuotation
-                  projectId={this.props.projectId}
-                  afterQuotationId={this.state.afterQuotationId}
-                  initAfterQuotation={initAfterQuotation}
-                />
+                {
+                  lookAuthority.afterQuotation && (
+                    <CategoryTitle title="报价后" readonly={!editAuthority.afterQuotation}/>
+                  )
+                }
+                {
+                  lookAuthority.afterQuotation && (
+                    <AfterQuotation
+                      projectId={this.props.projectId}
+                      afterQuotationId={this.state.afterQuotationId}
+                      initAfterQuotation={initAfterQuotation}
+                      editAuthority={editAuthority.afterQuotation}
+                    />
+                  )
+                }
 
                 <CategoryTitle title="关联信息"/>
                 <ProjectAssociateInfo relationInfo={relationInfo}/>

@@ -21,7 +21,6 @@ import Update from '../../../common/Update'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
-import regex from '../../../../core/constants/regex'
 import {getDateStr, getYearMonth} from '../../../../core/utils/dateUtils'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 
@@ -37,9 +36,14 @@ interface AfterQuotationProps extends CommonFunction {
 
   updateAfterQuotation: (options) => void
   updateAfterQuotationSuccess: boolean
+  editAuthority: boolean
 }
 
 class AfterQuotation extends React.Component<AfterQuotationProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   _priceFile: any
   state = {
     valid: false,
@@ -120,7 +124,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <LabelAndInput1 label="服务费" inputType={NECESSARY}>
           <Row>
             <MoneyUnit

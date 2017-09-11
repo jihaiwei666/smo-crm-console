@@ -74,6 +74,9 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
     const relationInfo = data.relationInfo
     const operationRecordList = data.operationRecordList
     const remarkAttachment = data.remarkAttachment
+    const authority = data.authority || {}
+    const lookAuthority = authority.look
+    const editAuthority = authority.edit
 
     return (
       <Modal
@@ -111,32 +114,87 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                   customerId={this.props.customerId}
                   initBdAndBdpc={initBdAndBdpc}
                 />
-                <CategoryTitle title="客户信息"/>
-                <CustomerBasicInfo
-                  customerId={this.props.customerId}
-                  initCustomerBaseInfo={initCustomerBaseInfo}
-                  onCustomerNameChange={name => this.customerName = name}
-                />
 
-                <CategoryTitle title="分/子公司或下属院区"/>
-                <SubCompany
-                  customerId={this.props.customerId}
-                  subCompanyList={subCompanyList}
-                />
-                <CategoryTitle title="联系人"/>
-                <ContactInfo customerId={this.props.customerId} initContactInfo={initContactInfo}/>
+                {
+                  lookAuthority.basicInfo && (
+                    <CategoryTitle title="客户信息" readonly={!editAuthority.basicInfo}/>
+                  )
+                }
 
-                <CategoryTitle title="CDA"/>
-                <CDA customerId={this.props.customerId}/>
+                {
+                  lookAuthority.basicInfo && (
+                    <CustomerBasicInfo
+                      customerId={this.props.customerId}
+                      initCustomerBaseInfo={initCustomerBaseInfo}
+                      onCustomerNameChange={name => this.customerName = name}
+                      editAuthority={editAuthority.basicInfo}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="供应商"/>
-                <Supplier
-                  customerId={this.props.customerId}
-                  initSupplierInfo={supplierInfo}
-                />
+                {
+                  lookAuthority.subCompany && (
+                    <CategoryTitle title="分/子公司或下属院区" readonly={!editAuthority.basicInfo}/>
+                  )
+                }
+                {
+                  lookAuthority.subCompany && (
+                    <SubCompany
+                      customerId={this.props.customerId}
+                      subCompanyList={subCompanyList}
+                      editAuthority={editAuthority.subCompany}
+                    />
+                  )
+                }
+                {
+                  lookAuthority.contact && (
+                    <CategoryTitle title="联系人" readonly={!editAuthority.contact}/>
+                  )
+                }
+                {
+                  lookAuthority.contact && (
+                    <ContactInfo
+                      customerId={this.props.customerId}
+                      initContactInfo={initContactInfo}
+                      editAuthority={editAuthority.contact}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="RFI"/>
-                <RFI customerId={this.props.customerId} initRfiInfo={rfiInfo}/>
+                {
+                  lookAuthority.cda && (
+                    <CategoryTitle title="CDA" readonly={!editAuthority.cda}/>
+                  )
+                }
+                {
+                  lookAuthority.cda && (
+                    <CDA customerId={this.props.customerId} editAuthority={editAuthority.cda}/>
+                  )
+                }
+                {
+                  lookAuthority.supplier && (
+                    <CategoryTitle title="供应商" readonly={!editAuthority.supplier}/>
+                  )
+                }
+                {
+                  lookAuthority.supplier && (
+                    <Supplier
+                      customerId={this.props.customerId}
+                      initSupplierInfo={supplierInfo}
+                      editAuthority={editAuthority.supplier}
+                    />
+                  )
+                }
+                {
+                  lookAuthority.rfi && (
+                    <CategoryTitle title="RFI" readonly={!editAuthority.rfi}/>
+                  )
+                }
+                {
+                  lookAuthority.rfi && (
+                    <RFI customerId={this.props.customerId} initRfiInfo={rfiInfo} editAuthority={editAuthority.rfi}/>
+                  )
+                }
 
                 <CategoryTitle title="关联信息"/>
                 <AssociateInfo relationInfo={relationInfo}/>

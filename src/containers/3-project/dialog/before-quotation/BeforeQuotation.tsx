@@ -38,9 +38,14 @@ interface BeforeQuotationProps extends CommonFunction {
   addBeforeQuotationSuccess: boolean
   updateBeforeQuotation: (options) => void
   updateBeforeQuotationSuccess: boolean
+  editAuthority: boolean
 }
 
 class BeforeQuotation extends React.Component<BeforeQuotationProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   _pm: any
   _planAttachment: any
   _center: any
@@ -176,7 +181,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <LabelAndInput
           label="适应症" inputType={NECESSARY}
           required={true} name="indication"

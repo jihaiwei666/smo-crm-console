@@ -156,7 +156,7 @@ export function fetchCollectionList(contractId) {
     [THREE_PHASE]: {
       type: CONTRACT.FETCH_COLLECTION_LIST,
       http: () => _get(urlPrefix + `/v1/getCollectionList/${contractId}`),
-      handleResponse: handleCollectionList
+      handleResponse: data => handleCollectionList(data['collection_info'])
     }
   }
 }

@@ -52,9 +52,14 @@ interface AfterSignProps extends CommonFunction {
   afterSignDetail: Data<any>
   updateAfterSign: (options) => void
   updateAfterSignSuccess: boolean
+  editAuthority: boolean
 }
 
 class AfterSign extends React.Component<AfterSignProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   _signatoryList: any
   _pmList: any
   _bdList: any
@@ -251,7 +256,7 @@ class AfterSign extends React.Component<AfterSignProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <div className="bb">
           <InputGroup label="客户模板" inputType={NECESSARY}>
             <LabelAndInput
@@ -496,14 +501,17 @@ class AfterSign extends React.Component<AfterSignProps> {
         </div>
 
         {
-          this.afterSignId && (
+          this.props.editAuthority && this.afterSignId && (
             <Update disabled={!this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.update}/>
           )
         }
         {
-          !this.afterSignId && (
+          this.props.editAuthority && !this.afterSignId && (
             <Save disabled={!this.props.contractId || !this.state.valid || !notEmpty(this.state.paymentNode)} onClick={this.add}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<div className="m15"></div>)
         }
       </Form>
     )

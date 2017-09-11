@@ -85,7 +85,8 @@ export function handleContractDetail(data) {
       }))
     },
     remarkAttachment: handleContractRemarkAttachment(remarkAttachment),
-    operationRecordList: handleOperationList(operationList)
+    operationRecordList: handleOperationList(operationList),
+    authority: handleContractAuthority(data['contractModuleAuth'])
   }
 }
 
@@ -115,4 +116,21 @@ export function getIsFirstOperation(value) {
     return '否'
   }
   return ''
+}
+
+function handleContractAuthority(authority) {
+  return {
+    look: {
+      basicInfo: authority['is_can_read_contract_info'],
+      beforeSign: authority['is_can_read_contract_before_signed'],
+      afterSign: authority['is_can_read_contract_after_signed'],
+      makeCollection: authority['is_can_read_contract_collection']
+    },
+    edit: {
+      basicInfo: authority['is_can_edit_contract_info'],
+      beforeSign: authority['is_can_edit_contract_before_signed'],
+      afterSign: authority['is_can_edit_contract_after_signed'],
+      makeCollection: authority['is_can_edit_contract_collection']
+    }
+  }
 }

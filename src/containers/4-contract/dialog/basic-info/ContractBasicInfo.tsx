@@ -37,9 +37,14 @@ interface ContractBasicInfoProps extends CommonFunction {
   updateContractSuccess: boolean
   onProjectIdChange: (projectId) => void
   onContractNameChange: (contractName) => void
+  editAuthority: boolean
 }
 
 class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   state = {
     valid: true,
     contractName: '',
@@ -111,7 +116,7 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <div className="input-row">
           <LabelAndInput
             label="合同名称" inputType={NECESSARY}
@@ -153,14 +158,17 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
         </div>
 
         {
-          this.props.contractId && (
+          this.props.editAuthority && this.props.contractId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
-          !this.props.contractId && (
+          this.props.editAuthority && !this.props.contractId && (
             <Save disabled={!this.state.valid} onClick={this.add}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<div className="m15"></div>)
         }
       </Form>
     )

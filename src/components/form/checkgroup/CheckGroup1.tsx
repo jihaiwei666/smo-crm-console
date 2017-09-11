@@ -3,23 +3,27 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+import addFormSupport from 'app-core/core/hoc/addFormSupport'
 
 import {copyList} from '../../../core/utils/common'
 
 interface CheckGroup1Props {
   value: any[]
   onChange: (value: any[]) => void
+  disabled?: boolean
 }
 
 type ChildContextTypes = {
   value: any[]
   onChange: (value) => void
+  disabled: boolean
 }
 
 class CheckGroup1 extends React.Component<CheckGroup1Props> implements React.ChildContextProvider<ChildContextTypes> {
   static childContextTypes = {
     value: PropTypes.array,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool
   }
 
   handleChange = (value) => {
@@ -43,9 +47,10 @@ class CheckGroup1 extends React.Component<CheckGroup1Props> implements React.Chi
   getChildContext() {
     return {
       value: this.props.value,
-      onChange: this.handleChange
+      onChange: this.handleChange,
+      disabled: this.props.disabled
     }
   }
 }
 
-export default CheckGroup1
+export default addFormSupport(CheckGroup1, ({props}) => true)

@@ -61,7 +61,7 @@ class OperationRecord extends React.Component<OperationRecordProps> {
         {
           this.props.operationRecordList.map((record, index) => {
             return (
-              <div key={index} className="operation-record-container">
+              <div key={index} className="operation-record-container --module-item">
                 <div className="mb7 clearfix">
                   <div className="pull-left">
                     <Popover

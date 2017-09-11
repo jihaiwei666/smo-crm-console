@@ -20,6 +20,7 @@ interface CompanyProps {
   companyInfo?: any
   updateCompany: (options) => void
   removeCompany: (companyId: string) => void
+  editAuthority: boolean
 }
 
 class Company extends React.Component<CompanyProps> {
@@ -94,7 +95,7 @@ class Company extends React.Component<CompanyProps> {
         }
         <Index index={this.props.index}/>
         <Part>
-          <Form onValidChange={valid => this.setState({valid})}>
+          <Form onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
             <LabelAndInput
               className="bb"
               label="名称" inputType={NECESSARY}

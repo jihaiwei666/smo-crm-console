@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import Button from '../../../components/button/Button'
 import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import BD_BDPC from './part/BD_BDPC'
@@ -19,12 +20,14 @@ import RFI from './rfi/RFI'
 import AssociateInfo from './part/AssociateInfo'
 import CustomerRemarkAttachment from './part/CustomerRemarkAttachment'
 import OperationRecord from '../../common/OperationRecord'
-
-import CustomerState from '../CustomerState'
-import Button from '../../../components/button/Button'
 import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
-interface AddCustomerDialogProps extends CustomerState {
+import CustomerState from '../CustomerState'
+import CommonFunctionAndRoleCode from '../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../_frameset/hoc/getCommonFunctionAndRoleCode'
+import {checkHavePermission, isRfi} from '../../../core/permission'
+
+interface AddCustomerDialogProps extends CustomerState, CommonFunctionAndRoleCode {
   addCustomer: (options) => void
   updateCustomer: (options) => void
   onExited: () => void
@@ -96,8 +99,14 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
             <CategoryTitle title="供应商"/>
             <Supplier customerId={this.state.customerId}/>
 
-            <CategoryTitle title="RFI"/>
-            <RFI customerId={this.state.customerId}/>
+            {
+              checkHavePermission(this.props.roleCode, isRfi(this.props.roleCode)) && (
+                <div>
+                  <CategoryTitle title="RFI"/>
+                  <RFI customerId={this.state.customerId}/>
+                </div>
+              )
+            }
 
             <CategoryTitle title="关联信息"/>
             <AssociateInfo/>
@@ -120,4 +129,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {})(AddCustomerDialog)
+export default connect(mapStateToProps)(getCommonFunctionAndRoleCode(AddCustomerDialog))

@@ -13,6 +13,7 @@ interface AutoCompleteProps {
   onChange: (value: string) => void
   onFocus?: () => void
   tabIndex?: number
+  disabled?: boolean
 }
 
 class AutoComplete extends React.Component<AutoCompleteProps> {
@@ -47,6 +48,7 @@ class AutoComplete extends React.Component<AutoCompleteProps> {
             className="input default-input"
             onFocus={this.handleFocus}
             value={this.props.value} onChange={(e) => this.props.onChange(e.target.value)}
+            disabled={this.props.disabled}
           />
           {
             <ul className={classnames('more-options', {'hidden': !this.state.showMoreOptions || matchOptions.length == 0})}>

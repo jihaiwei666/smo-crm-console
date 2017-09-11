@@ -82,6 +82,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   render() {
     let baseInfo = null, initBdAndBdpc = null, initBeforeSign = null, initAfterSign = null, relationInfo = null, operationRecordList = []
     let initRemarkAttachment = null
+    let authority: any = {}, lookAuthority: any = {}, editAuthority: any = {}
 
     const {loaded, data} = this.props.contractDetail
     if (loaded) {
@@ -92,6 +93,9 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       relationInfo = data.relationInfo
       operationRecordList = data.operationRecordList
       initRemarkAttachment = data.remarkAttachment
+      authority = data.authority
+      lookAuthority = authority.look
+      editAuthority = authority.edit
     }
 
     return (
@@ -130,32 +134,68 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   initBdAndBdpc={initBdAndBdpc}
                 />
 
-                <CategoryTitle title="合同信息"/>
-                <ContractBasicInfo
-                  contractId={this.props.contractId}
-                  initBaseInfo={baseInfo}
-                  onProjectIdChange={projectId => this.setState({projectId})}
-                  onContractNameChange={name => this.contractName = name}
-                />
+                {
+                  lookAuthority.basicInfo && (
+                    <CategoryTitle title="合同信息" readonly={!editAuthority.basicInfo}/>
+                  )
+                }
+                {
+                  lookAuthority.basicInfo && (
+                    <ContractBasicInfo
+                      contractId={this.props.contractId}
+                      initBaseInfo={baseInfo}
+                      onProjectIdChange={projectId => this.setState({projectId})}
+                      onContractNameChange={name => this.contractName = name}
+                      editAuthority={editAuthority.basicInfo}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="签署前"/>
-                <BeforeSign
-                  contractId={this.props.contractId}
-                  initBeforeSign={initBeforeSign}
-                />
+                {
+                  lookAuthority.beforeSign && (
+                    <CategoryTitle title="签署前" readonly={!editAuthority.beforeSign}/>
+                  )
+                }
+                {
+                  lookAuthority.beforeSign && (
+                    <BeforeSign
+                      contractId={this.props.contractId}
+                      initBeforeSign={initBeforeSign}
+                      editAuthority={editAuthority.beforeSign}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="签署后"/>
-                <AfterSign
-                  contractId={this.props.contractId}
-                  projectId={this.state.projectId}
-                  initAfterSign={initAfterSign}
-                />
+                {
+                  lookAuthority.afterSign && (
+                    <CategoryTitle title="签署后"/>
+                  )
+                }
+                {
+                  lookAuthority.afterSign && (
+                    <AfterSign
+                      contractId={this.props.contractId}
+                      projectId={this.state.projectId}
+                      initAfterSign={initAfterSign}
+                      editAuthority={editAuthority.afterSign}
+                    />
+                  )
+                }
 
-                <CategoryTitle title="收款"/>
-                <CollectionList
-                  contractId={this.props.contractId}
-                  collectionList={this.collectionList}
-                />
+                {
+                  lookAuthority.makeCollection && (
+                    <CategoryTitle title="收款"/>
+                  )
+                }
+                {
+                  lookAuthority.makeCollection && (
+                    <CollectionList
+                      contractId={this.props.contractId}
+                      collectionList={this.collectionList}
+                      editAuthority={editAuthority.makeCollection}
+                    />
+                  )
+                }
 
                 <CategoryTitle title="关联信息"/>
                 <ContractAssociateInfo relationInfo={relationInfo}/>

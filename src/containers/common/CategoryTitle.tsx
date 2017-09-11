@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 
 interface CategoryTitleProps {
   title: string
+  readonly?: boolean
 }
 
 class CategoryTitle extends React.Component<CategoryTitleProps> {
@@ -23,6 +24,9 @@ class CategoryTitle extends React.Component<CategoryTitleProps> {
       <div className="category-title">
         <div className="icon"></div>
         <span>{this.props.title}</span>
+        {
+          this.props.readonly && (<span style={{color: 'red'}}>[ 只读 ]</span>)
+        }
       </div>
     )
   }

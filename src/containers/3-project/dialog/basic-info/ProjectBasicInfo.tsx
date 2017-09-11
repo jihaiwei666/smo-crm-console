@@ -32,9 +32,14 @@ interface ProjectBasicInfoProps extends CommonFunctionAndRoleCode {
   updateProjectBaseInfo: (options) => void
   updateProjectInfoSuccess: boolean
   onProjectNameChange: (projectName) => void
+  editAuthority: boolean
 }
 
 class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   state = {
     valid: true,
     projectName: '',
@@ -101,7 +106,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <div className="input-row">
           <LabelAndInput
             label="项目名称" inputType={NECESSARY}
@@ -115,7 +120,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
           <LabelAndInput
             label="项目编码" placeholder="暂未生成"
             disabled={!checkHavePermission(this.props.roleCode, isAdmin(this.props.roleCode))}
-            value={this.state.projectCode}
+            value={this.state.projectCode} onChange={v => this.setState({projectCode: v})}
           />
           <div className="tip">有合同关联后，则生成项目编码（SM-年份-月份-BD缩写-流水号，如SM201705LXX001）</div>
         </div>

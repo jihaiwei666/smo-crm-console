@@ -4,7 +4,7 @@
 import {roleCategory} from '../containers/7-account-manage/account-manage.constant'
 
 export function finalPermission(permission): boolean {
-  return true
+  return permission
 }
 
 const _ = finalPermission
@@ -15,6 +15,10 @@ export function showBdBdpcUpdate(roleCode) {
 
 export function isBdLead(roleCode) {
   return roleCode == roleCategory.bdLeader
+}
+
+export function isRfi(roleCode) {
+  return roleCode == roleCategory.bdpcRfi
 }
 
 export function isSystemManage(roleCode) {

@@ -13,7 +13,7 @@ class AssociateInfo extends React.Component<AssociateInfoProps> {
   render() {
     const {projects} = this.props.relationInfo || {projects: []}
     return (
-      <div>
+      <div className="--module-item">
         <div className="bb">
           <FlexDiv>
             <Label>关联项目</Label>

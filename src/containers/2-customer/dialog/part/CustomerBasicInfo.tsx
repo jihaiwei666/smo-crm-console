@@ -32,9 +32,14 @@ interface CustomerBasicInfoProps extends CustomerState, CommonFunction {
   fetchBasicInfo: (customerId) => void
   customerBasicInfo: Data<any>
   onCustomerNameChange: (customerName) => void
+  editAuthority: boolean
 }
 
 class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   state = {
     valid: false,
 
@@ -122,7 +127,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <div className="row-line">
           <LabelAndInput1 label="客户名称" inputType={NECESSARY}>
             <AutoComplete
@@ -130,6 +135,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
               options={this.props.similarNameList.data || []}
               value={this.state.customerName}
               onChange={v => this.setState({customerName: v})}
+              disabled={!this.props.editAuthority}
             />
           </LabelAndInput1>
           <div className="tip">客户名称只能输入汉字、英文、数字、-、（、）， “-”作为母公司名与子公司名的连接符号</div>
@@ -211,12 +217,12 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
         </div>
         {
           !this.props.customerId && (
-            <Save disabled={!this.state.valid} onClick={this.save}/>
+            <Save disabled={!this.state.valid || !this.props.editAuthority} onClick={this.save}/>
           )
         }
         {
           this.props.customerId && (
-            <Update disabled={!this.state.valid} onClick={this.save}/>
+            <Update disabled={!this.state.valid || !this.props.editAuthority} onClick={this.save}/>
           )
         }
       </Form>

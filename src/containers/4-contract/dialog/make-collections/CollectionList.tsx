@@ -24,9 +24,14 @@ interface CollectionListProps extends CommonFunction {
   newBillDate: any
   updateCollection: (options) => void
   updateCollectionSuccess: boolean
+  editAuthority: boolean
 }
 
 class CollectionList extends React.Component<CollectionListProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   componentWillReceiveProps(nextProps: CollectionListProps) {
     if (!this.props.updateCollectionSuccess && nextProps.updateCollectionSuccess) {
       this.props.showSuccess('更新收款成功！')
@@ -42,7 +47,7 @@ class CollectionList extends React.Component<CollectionListProps> {
 
   render() {
     return (
-      <div>
+      <div className="--module-item">
         {
           this.props.collectionList.length == 0 && (
             <div className="add-payment-node-info-first">请先添加付款节点信息</div>
@@ -65,6 +70,7 @@ class CollectionList extends React.Component<CollectionListProps> {
                 submitBillApplySuccess={this.props.submitBillApplySuccess}
                 newBillDate={this.props.newBillDate}
                 updateCollection={this.props.updateCollection}
+                editAuthority={this.props.editAuthority}
               />
             )
           })

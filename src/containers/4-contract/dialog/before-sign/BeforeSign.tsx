@@ -25,9 +25,14 @@ interface BeforeSignProps extends CommonFunction {
   newBeforeSignId: string
   updateBeforeSign: (options) => void
   updateBeforeSignSuccess: boolean
+  editAuthority: boolean
 }
 
 class BeforeSign extends React.Component<BeforeSignProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   beforeSignId = ''
   state = {
     valid: true,
@@ -82,7 +87,7 @@ class BeforeSign extends React.Component<BeforeSignProps> {
 
   render() {
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
         <LabelAndInput1 className="pb5 bb" label="合同类型" inputType={NECESSARY}>
           <Radio.Group
             required={true} name="contractType"
@@ -105,14 +110,17 @@ class BeforeSign extends React.Component<BeforeSignProps> {
           </Radio.Group>
         </LabelAndInput1>
         {
-          !this.beforeSignId && (
+          this.props.editAuthority && !this.beforeSignId && (
             <Save disabled={!this.props.contractId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
-          this.beforeSignId && (
+          this.props.editAuthority && this.beforeSignId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<div className="m15"></div>)
         }
       </Form>
     )

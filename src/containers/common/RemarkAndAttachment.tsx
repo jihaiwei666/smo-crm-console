@@ -22,7 +22,7 @@ interface RemarkAndAttachmentProps {
 class RemarkAndAttachment extends React.Component<RemarkAndAttachmentProps> {
   render() {
     return (
-      <div>
+      <div className="--module-item">
         <LabelAndInput1 className="bb" label="备注">
           <TextArea rows={5} value={this.props.remark} onChange={this.props.onRemarkChange}></TextArea>
         </LabelAndInput1>

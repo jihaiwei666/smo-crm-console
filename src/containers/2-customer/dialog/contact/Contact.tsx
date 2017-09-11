@@ -19,6 +19,7 @@ interface ContactProps {
   updateContact: (options) => void
   contactInfo: any
   removeContact: (contactId) => void
+  editAuthority: boolean
 }
 
 class Contact extends React.Component<ContactProps> {

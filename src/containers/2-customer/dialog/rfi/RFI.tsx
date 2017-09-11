@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DatePicker from 'antd/lib/date-picker'
 import {FlexDiv, Part} from 'app-core/layout'
 import Form from 'app-core/form/Form'
 
@@ -20,6 +19,7 @@ import Radio from '../../../../components/form/radio/Radio'
 import SelectContact from '../base/SelectContact'
 import CheckGroup1 from '../../../../components/form/checkgroup/CheckGroup1'
 import CheckBox1 from '../../../../components/form/checkbox/CheckBox1'
+import DatePicker from '../../../../components/form/DatePicker'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 import RFI_ListDialog from './RFI_ListDialog'
@@ -47,6 +47,7 @@ interface RFIProps extends CustomerState, CommonFunction {
   addRfi: (options) => void
   updateRfi: (options) => void
   removeRfi: (rifId) => void
+  editAuthority: boolean
 }
 
 let id = 1
@@ -60,6 +61,10 @@ function getNextBroker() {
 }
 
 class RFI extends React.Component<RFIProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   rfiId = ''
   state = {
     valid: true,
@@ -161,7 +166,7 @@ class RFI extends React.Component<RFIProps> {
   render() {
     const contactList = this.props.customerContactData.data || []
     return (
-      <Form onValidChange={valid => this.setState({valid})}>
+      <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority || !this.props.customerId}>
         {
           this.state.showRfiListDialog && (
             <RFI_ListDialog
@@ -204,7 +209,7 @@ class RFI extends React.Component<RFIProps> {
                 })
               }
               <TextAndButton text="请先完善联系人信息，之后才能选择该联系人">
-                <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
+                <AddButton disabled={!this.props.customerId || !this.props.editAuthority} onClick={this.addBroker}/>
               </TextAndButton>
             </InputGroup>
             <LabelAndInput className="input-row" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>

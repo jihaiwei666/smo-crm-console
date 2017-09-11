@@ -4,3 +4,15 @@
     height: 1px;
     background: #e8e8e8;
 }
+
+.mask-container {
+    position: relative;
+    .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .1);
+    }
+}

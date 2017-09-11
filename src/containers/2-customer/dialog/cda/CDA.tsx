@@ -23,6 +23,7 @@ interface CDAProps extends CommonFunction {
   addCdaSuccess: boolean
   updateCdaSuccess: boolean
   removeCdaSuccess: boolean
+  editAuthority: boolean
 }
 
 class CDA extends React.Component<CDAProps> {
@@ -58,7 +59,7 @@ class CDA extends React.Component<CDAProps> {
     const list = data || []
     const item = list[this.state.index] || {}
     return (
-      <div className="customer-cda">
+      <div className="customer-cda --module-item">
         {
           this.state.showAddCDA && (
             <AddCDA_Dialog
@@ -117,7 +118,7 @@ class CDA extends React.Component<CDAProps> {
           </FixBody>
         </FixHeadList>
         <div className="m10 text-right">
-          <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showAddCDA: true})}>添加</Button>
+          <Button className="small" disabled={!this.props.customerId || !this.props.editAuthority} onClick={() => this.setState({showAddCDA: true})}>添加</Button>
         </div>
       </div>
     )

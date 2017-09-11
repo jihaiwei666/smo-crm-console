@@ -10,12 +10,14 @@ interface GroupProps {
   onChange?: any
   name?: string
   required?: boolean
+  disabled?: boolean
 }
 
 class Group extends React.Component<GroupProps> {
   static childContextTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool
   }
 
   valid: boolean
@@ -35,7 +37,8 @@ class Group extends React.Component<GroupProps> {
   getChildContext() {
     return {
       value: this.props.value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      disabled: this.props.disabled
     }
   }
 }

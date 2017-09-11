@@ -25,11 +25,16 @@ interface SubCompanyProps extends CommonFunction {
   removeSubCompanySuccess: boolean
 
   subCompanyList?: any[]
+  editAuthority: boolean
 }
 
 let id = 1
 
 class SubCompany extends React.Component<SubCompanyProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   companyUid: 0
   lastCompanyId: ''
   state = {
@@ -99,7 +104,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
 
   render() {
     return (
-      <div>
+      <div className="--module-item">
         {
           this.state.companyList.map((c, index) => {
             return (
@@ -111,6 +116,7 @@ class SubCompany extends React.Component<SubCompanyProps> {
                        updateCompany={this.props.updateSubCompany}
                        removeCompany={this.removeSubCompany}
                        index={index}
+                       editAuthority={this.props.editAuthority}
               />
             )
           })
@@ -118,9 +124,11 @@ class SubCompany extends React.Component<SubCompanyProps> {
         <div className="clearfix m10">
           <span className="tip">录入分/子公司或下属院区信息，如果分/子公司或下属院区成单，则需新建客户处理</span>
           <div className="pull-right">
-            <Button className="small"
-                    onClick={this.addCompany}
-                    disabled={!this.props.customerId || lastItemIsLocal(this.state.companyList)}>添加</Button>
+            <Button
+              className="small" onClick={this.addCompany}
+              disabled={!this.props.customerId || !this.props.editAuthority || lastItemIsLocal(this.state.companyList)}>
+              添加
+            </Button>
           </div>
         </div>
       </div>

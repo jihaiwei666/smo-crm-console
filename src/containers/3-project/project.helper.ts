@@ -76,6 +76,22 @@ export function handleProjectDetail(data) {
       }))
     },
     remarkAttachment: handleProjectRemarkAttachment(remarkAttachment),
-    operationRecordList: handleOperationList(operationRecordList)
+    operationRecordList: handleOperationList(operationRecordList),
+    authority: getProjectAuthority(data['projectModuleAuth'])
+  }
+}
+
+function getProjectAuthority(authority) {
+  return {
+    look: {
+      basicInfo: authority['is_can_read_project_info'],
+      beforeQuotation: authority['is_can_read_project_before_offer'],
+      afterQuotation: authority['is_can_read_project_after_offer']
+    },
+    edit: {
+      basicInfo: authority['is_can_edit_project_info'],
+      beforeQuotation: authority['is_can_edit_project_before_offer'],
+      afterQuotation: authority['is_can_edit_project_after_offer']
+    }
   }
 }

@@ -137,6 +137,28 @@ export function handleClientInfo(data) {
       }))
     },
     remarkAttachment: handleCustomerRemarkAttachment(remarkAttachment),
-    operationRecordList: handleOperationList(operationRecordList)
+    operationRecordList: handleOperationList(operationRecordList),
+    authority: handleDetailAuthority(data['customerModuleAuth'])
+  }
+}
+
+function handleDetailAuthority(authority) {
+  return {
+    look: {
+      basicInfo: authority['is_can_read_customer_info'],
+      cda: authority['is_can_read_customer_cda'],
+      contact: authority['is_can_read_customer_contacts'],
+      supplier: authority['is_can_read_customer_provider'],
+      rfi: authority['is_can_read_customer_rfi'],
+      subCompany: authority['is_can_read_customer_subsidiary'],
+    },
+    edit: {
+      basicInfo: authority['is_can_edit_customer_info'],
+      cda: authority['is_can_edit_customer_cda'],
+      contact: authority['is_can_edit_customer_contacts'],
+      supplier: authority['is_can_edit_customer_provider'],
+      rfi: authority['is_can_edit_customer_rfi'],
+      subCompany: authority['is_can_edit_customer_subsidiary'],
+    }
   }
 }

@@ -15,7 +15,7 @@ class ContractAssociateInfo extends React.Component<ContractAssociateInfoProps> 
     const {projects = [], customers = []} = this.props.relationInfo
 
     return (
-      <div className="mt10">
+      <div className="--module-item">
         <div className="bb">
           <FlexDiv>
             <Label>关联项目</Label>
