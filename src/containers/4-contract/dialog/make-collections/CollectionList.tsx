@@ -10,6 +10,7 @@ import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {CONTRACT} from '../../../../core/constants/types'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {updateCollection, fetchInstitutionList, fetchInstitutionInfo, submitBillApply} from '../../contract.action'
 
 interface CollectionListProps extends CommonFunction {
@@ -36,6 +37,10 @@ class CollectionList extends React.Component<CollectionListProps> {
     if (!this.props.updateCollectionSuccess && nextProps.updateCollectionSuccess) {
       this.props.showSuccess('更新收款成功！')
       this.props.clearState(CONTRACT.UPDATE_COLLECTION)
+      eventBus.emit(EVENT_NAMES.COLLECTION_UPDATED)
+    }
+    if (!this.props.contractId && nextProps.contractId) {
+      this.props.fetchInstitutionList(nextProps.contractId)
     }
   }
 

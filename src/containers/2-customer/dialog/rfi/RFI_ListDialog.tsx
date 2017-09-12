@@ -28,6 +28,7 @@ interface RFI_ListDialogProps extends CommonFunction {
   updateRfiSuccess: boolean
   removeRfi: (rfiId) => void
   removeRfiSuccess: boolean
+  editAuthority: boolean
   onExited: () => void
 }
 
@@ -98,6 +99,7 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
                       initRfi={rfi}
                       updateRfi={this.props.updateRfi}
                       removeRfi={this.props.removeRfi}
+                      editAuthority={this.props.editAuthority}
                     />
                   </Part>
                 </Row>
@@ -106,14 +108,27 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
           }
         </Modal.Body>
         <Modal.Footer>
-          <Row>
-            <Part className="p5">
-              <Button className="block default" onClick={this.close}>取消</Button>
-            </Part>
-            <Part className="p5">
-              <Button className="block" onClick={() => this.setState({showAddRfi: true})}>添加</Button>
-            </Part>
-          </Row>
+          {
+            this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="block default" onClick={this.close}>取消</Button>
+                </Part>
+                <Part className="p5">
+                  <Button className="block" onClick={() => this.setState({showAddRfi: true})}>添加</Button>
+                </Part>
+              </Row>
+            )
+          }
+          {
+            !this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="block default" onClick={this.close}>取消</Button>
+                </Part>
+              </Row>
+            )
+          }
         </Modal.Footer>
       </Modal>
     )

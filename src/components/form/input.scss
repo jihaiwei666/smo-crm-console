@@ -25,11 +25,12 @@
             padding: 3px 7px;
         }
     }
-
 }
 
 input[disabled] {
     cursor: not-allowed;
+    background: #eee;
+    color: gray !important;
 }
 
 .money-input {

@@ -18,6 +18,7 @@ import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 import {updateBdAndBdpc, fetchContractBdBdpc} from '../../contract.action'
+import MT15 from '../../../../components/layout/MT15'
 
 interface ContractBdBdpcProps extends CommonFunctionAndRoleCode {
   contractId?: string
@@ -110,6 +111,9 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
           checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
             <Update disabled={!this.props.contractId} onClick={this.updateBdAndBdpc}/>
           )
+        }
+        {
+          !checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (<MT15/>)
         }
       </div>
     )

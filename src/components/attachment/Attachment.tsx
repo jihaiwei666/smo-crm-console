@@ -13,6 +13,7 @@ interface AttachmentProps {
   onChange: (fileList: any[]) => void
   limit?: number
   title?: string
+  disabled?: boolean
 }
 
 let uid = 1
@@ -61,11 +62,17 @@ class Attachment extends React.Component<AttachmentProps> {
   }
 
   render() {
+    let total = this.props.fileList.filter(file => file.crud != crud.REMOVE).length
     return (
       <FileList fileList={this.props.fileList} onChange={this.props.onChange}>
         {
-          this.props.fileList.filter(file => file.crud != crud.REMOVE).length < this.props.limit && (
+          !this.props.disabled && total < this.props.limit && (
             <AddFile multiple={true} tip={this.props.title} onFileUploadSuccess={this.handleFileUploaded}/>
+          )
+        }
+        {
+          this.props.disabled && total == 0 && (
+            <div className="p10">暂无</div>
           )
         }
       </FileList>

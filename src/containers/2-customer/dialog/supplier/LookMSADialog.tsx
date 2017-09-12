@@ -10,17 +10,17 @@ import Confirm from 'app-core/common/Confirm'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
 import Button from '../../../../components/button/Button'
-import AddMsaDialog from './AddMsaDialog'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Index from '../../../common/Index'
-import SingleFile from '../../../common/file/SingleFile'
 import DatePicker from '../../../../components/form/DatePicker'
+import DownloadFile from '../../../../components/file/DownloadFile'
+import NoListData from '../../../common/NoListData'
+import AddMsaDialog from './AddMsaDialog'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {CUSTOMER} from '../../../../core/constants/types'
 import {fetchMSAList, addMsa, updateMsa, removeMsa} from './supplier.action'
-import DownloadFile from '../../../../components/file/DownloadFile'
 
 interface LookMSADialogProps extends CommonFunction {
   supplierId: string
@@ -32,6 +32,7 @@ interface LookMSADialogProps extends CommonFunction {
   updateMsaSuccess: boolean
   removeMsa: (msaId) => void
   removeMsaSuccess: boolean
+  editAuthority: boolean
   onExited: () => void
 }
 
@@ -98,56 +99,76 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
             )
           }
           {
-            loaded && (
-              data.map((item, index) => {
-                return (
-                  <Row key={item.msaId} className="msa-list-item">
-                    <Index index={index}/>
-                    <Part>
-                      <LabelAndInput1 label="起始日期">
-                        <DatePicker
-                          value={item.startDate} onChange={v => null}
-                        />
-                      </LabelAndInput1>
-                      <LabelAndInput1 label="结束日期">
-                        <DatePicker value={item.endDate}/>
-                      </LabelAndInput1>
-                      <LabelAndInput1 label="MSA扫描件">
-                        {
-                          item.scanFile && (
-                            <DownloadFile url={item.scanFile.fileUrl}>
-                              <span>[ {item.scanFile.fileName} ]</span>
-                            </DownloadFile>
-                          )
-                        }
-                        {
-                          !item.scanFile && (
-                            <span>无</span>
-                          )
-                        }
-                      </LabelAndInput1>
-                      <div className="clearfix">
-                        <div className="pull-right tip">
-                          <span className="mr5">点此删除按钮删除一条MSA信息</span>
-                          <Button className="small danger" onClick={() => this.setState({toRemoveMsaId: item.msaId})}>删除</Button>
-                        </div>
-                      </div>
-                    </Part>
-                  </Row>
-                )
-              })
+            loaded && data.length == 0 && (
+              <NoListData/>
             )
+          }
+          {
+            loaded && data.map((item, index) => {
+              return (
+                <Row key={item.msaId} className="msa-list-item">
+                  <Index index={index}/>
+                  <Part>
+                    <LabelAndInput1 label="起始日期">
+                      <DatePicker
+                        value={item.startDate} onChange={v => null}
+                      />
+                    </LabelAndInput1>
+                    <LabelAndInput1 label="结束日期">
+                      <DatePicker value={item.endDate}/>
+                    </LabelAndInput1>
+                    <LabelAndInput1 label="MSA扫描件">
+                      {
+                        item.scanFile && (
+                          <DownloadFile url={item.scanFile.fileUrl}>
+                            <span>[ {item.scanFile.fileName} ]</span>
+                          </DownloadFile>
+                        )
+                      }
+                      {
+                        !item.scanFile && (
+                          <span>无</span>
+                        )
+                      }
+                    </LabelAndInput1>
+                    {
+                      this.props.editAuthority && (
+                        <div className="clearfix">
+                          <div className="pull-right tip">
+                            <span className="mr5">点此删除按钮删除一条MSA信息</span>
+                            <Button className="small danger" onClick={() => this.setState({toRemoveMsaId: item.msaId})}>删除</Button>
+                          </div>
+                        </div>
+                      )
+                    }
+                  </Part>
+                </Row>
+              )
+            })
           }
         </Modal.Body>
         <Modal.Footer>
-          <Row>
-            <Part className="p5">
-              <Button className="block default" onClick={this.close}>取消</Button>
-            </Part>
-            <Part className="p5">
-              <Button className="info block" onClick={() => this.setState({showAddMsaDialog: true})}>添加</Button>
-            </Part>
-          </Row>
+          {
+            this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="block default" onClick={this.close}>取消</Button>
+                </Part>
+                <Part className="p5">
+                  <Button className="info block" onClick={() => this.setState({showAddMsaDialog: true})}>添加</Button>
+                </Part>
+              </Row>
+            )
+          }
+          {
+            !this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="block default" onClick={this.close}>取消</Button>
+                </Part>
+              </Row>
+            )
+          }
         </Modal.Footer>
       </Modal>
     )

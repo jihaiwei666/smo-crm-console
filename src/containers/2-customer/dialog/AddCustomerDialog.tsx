@@ -79,6 +79,7 @@ class AddCustomerDialog extends React.Component<AddCustomerDialogProps> {
           <RightNav>
             <BD_BDPC
               customerId={this.state.customerId}
+              canApplyBdpcFollow={true}
             />
 
             <CategoryTitle title="客户信息"/>

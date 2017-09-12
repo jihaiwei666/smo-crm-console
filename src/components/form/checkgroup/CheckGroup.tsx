@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/7/25.
  */
 import React from 'react'
+import PropTypes from 'prop-types'
 import addFormSupport from 'app-core/core/hoc/addFormSupport'
 
 import CheckBox from '../checkbox/CheckBox'
@@ -18,6 +19,10 @@ interface CheckGroupProps {
 }
 
 class CheckGroup extends React.Component<CheckGroupProps> {
+  static contextTypes = {
+    disabled: PropTypes.bool
+  }
+
   handleChange = (itemValue) => {
     const value = copyList(this.props.value)
     let index = value.indexOf(itemValue)
@@ -35,12 +40,13 @@ class CheckGroup extends React.Component<CheckGroupProps> {
       <div className="check-group">
         {
           this.props.options.map(option => {
+            let disabled = option.disabled || this.context.disabled
             return (
               <CheckBox
                 key={option.value}
                 checked={this.props.value.indexOf(option.value) != -1}
                 onChange={() => this.handleChange(option.value)}
-                disabled={option.disabled}
+                disabled={disabled}
               >
                 {option.text}
               </CheckBox>

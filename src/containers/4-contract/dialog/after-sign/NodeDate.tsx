@@ -3,18 +3,19 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import DatePicker from 'antd/lib/date-picker'
 
+import DatePicker from '../../../../components/form/DatePicker'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-
 import AddIcon from '../../../../components/AddIcon'
 import RemoveIcon from '../../../../components/RemoveIcon'
+
 import {handleCrudList} from '../../../../core/crud'
 
 interface NodeDateProps {
   item: any
   index: number
   total: number
+  disabled: boolean
 }
 
 class NodeDate extends React.Component<NodeDateProps> {
@@ -32,12 +33,12 @@ class NodeDate extends React.Component<NodeDateProps> {
         <LabelAndInput1 label="节点日期">
           <DatePicker value={item.nodeDate} onChange={v => this.context.onUpdate(item.id, {nodeDate: v})}/>
           {
-            index != 0 && (
+            !this.props.disabled && index != 0 && (
               <RemoveIcon onClick={() => this.context.onRemove(item.id)}/>
             )
           }
           {
-            index == total - 1 && (
+            !this.props.disabled && index == total - 1 && (
               <AddIcon onClick={this.context.onAdd}/>
             )
           }

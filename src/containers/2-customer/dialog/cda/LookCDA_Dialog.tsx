@@ -146,7 +146,7 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
           <Modal.Title> 查看CDA </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onValidChange={valid => this.setState({valid})}>
+          <Form onValidChange={valid => this.setState({valid})} disabled={true}>
             <InputGroup className="bb" label="有效期" inputType="1">
               <LabelAndInput1 label="起始日期">
                 <DatePicker
@@ -201,10 +201,11 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
                 file={this.state.scanFile}
                 onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}
+                disabled={true}
               />
             </LabelAndInput1>
             <LabelAndInput1 label="备注">
-            <textarea rows={4} className="input"
+            <textarea rows={4} className="input default-input"
                       value={this.state.remark}
             ></textarea>
             </LabelAndInput1>

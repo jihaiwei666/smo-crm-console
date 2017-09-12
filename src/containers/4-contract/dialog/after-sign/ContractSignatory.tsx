@@ -17,6 +17,7 @@ interface ContractSignatoryProps {
   onAdd: () => void
   onUpdate: (item) => void
   onRemove: () => void
+  disabled: boolean
 }
 
 class ContractSignatory extends React.Component<ContractSignatoryProps> {
@@ -27,12 +28,12 @@ class ContractSignatory extends React.Component<ContractSignatoryProps> {
       <FlexDiv className="mt5">
         <Input width="300px" value={item.signatory} onChange={v => this.props.onUpdate({signatory: v})}/>
         {
-          index != 0 && (
+          !this.props.disabled && index != 0 && (
             <RemoveIcon onClick={this.props.onRemove}/>
           )
         }
         {
-          index == total - 1 && (
+          !this.props.disabled && index == total - 1 && (
             <AddIcon onClick={this.props.onAdd}/>
           )
         }

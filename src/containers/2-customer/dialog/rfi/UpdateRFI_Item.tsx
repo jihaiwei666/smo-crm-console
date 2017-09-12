@@ -2,7 +2,6 @@
  * Created by jiangyukun on 2017/7/28.
  */
 import React from 'react'
-import DatePicker from 'antd/lib/date-picker'
 import {Row, Part} from 'app-core/layout/'
 import Confirm from 'app-core/common/Confirm'
 
@@ -11,21 +10,21 @@ import Button from '../../../../components/button/Button'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
-import {NECESSARY, IMPORTANT} from '../../../common/Label'
 import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
 import Radio from '../../../../components/form/radio/Radio'
-import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
 import Input from '../../../../components/form/Input'
 import SelectContact from '../base/SelectContact'
-
-import {MODULES} from './rfi.constants'
-import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
-import {EDIT, ADD} from '../../../../core/crud'
-import {getDateStr} from '../../../../core/utils/dateUtils'
 import CheckGroup1 from '../../../../components/form/checkgroup/CheckGroup1'
 import CheckBox1 from '../../../../components/form/checkbox/CheckBox1'
 import Line from '../../../../components/layout/Line'
+import MT15 from '../../../../components/layout/MT15'
+import DatePicker from '../../../../components/form/DatePicker'
+
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
+import {EDIT, ADD} from '../../../../core/crud'
+import {updateItemAtIndex, addListItem} from '../../../../core/utils/arrayUtils'
+import {getDateStr} from '../../../../core/utils/dateUtils'
 
 interface UpdateRFI_ItemProps {
   customerId: string
@@ -35,6 +34,7 @@ interface UpdateRFI_ItemProps {
   initRfi: any
   updateRfi: (options) => void
   removeRfi: (rfiId) => void
+  editAuthority: boolean
 }
 
 let id = 1
@@ -145,7 +145,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
             })
           }
           <TextAndButton text="请先完善联系人信息，之后才能选择该联系人">
-            <AddButton disabled={!this.props.customerId} onClick={this.addBroker}/>
+            <AddButton disabled={!this.props.customerId || !this.props.editAuthority} onClick={this.addBroker}/>
           </TextAndButton>
         </InputGroup>
         <LabelAndInput className="pb5 bb" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
@@ -178,16 +178,23 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
             </div>
           </CheckGroup1>
         </LabelAndInput1>
-        <div className="m10">
-          <Row>
-            <Part className="ml20 mr20">
-              <Button className="small danger block" onClick={() => this.setState({showRemoveConfirm: true})}>删除</Button>
-            </Part>
-            <Part className="ml20 mr20">
-              <Button className="small block" onClick={this.update}>更新</Button>
-            </Part>
-          </Row>
-        </div>
+        {
+          this.props.editAuthority && (
+            <div className="m10">
+              <Row>
+                <Part className="ml20 mr20">
+                  <Button className="small danger block" onClick={() => this.setState({showRemoveConfirm: true})}>删除</Button>
+                </Part>
+                <Part className="ml20 mr20">
+                  <Button className="small block" onClick={this.update}>更新</Button>
+                </Part>
+              </Row>
+            </div>
+          )
+        }
+        {
+          !this.props.editAuthority && (<MT15/>)
+        }
       </div>
     )
   }

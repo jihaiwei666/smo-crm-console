@@ -9,6 +9,7 @@ import Select1 from 'app-core/common/Select1'
 import Label from '../../../common/Label'
 import InputUnit from '../../../common/InputUnit'
 import Button from '../../../../components/button/Button'
+import MT15 from '../../../../components/layout/MT15'
 import Update from '../../../common/Update'
 import ApplyBdpcFollowUpDialog from '../ApplyBdpcFollowUpDialog'
 
@@ -30,6 +31,7 @@ interface BD_BDPC_Props extends CustomerState, CommonFunctionAndRoleCode {
   fetchBDPC: () => void
   BDPCList: any
   initBdAndBdpc?: any
+  canApplyBdpcFollow: boolean
   updateBdAndBdpc: (options) => void
   applyBdpcFollowUp: (options) => void
 
@@ -38,6 +40,7 @@ interface BD_BDPC_Props extends CustomerState, CommonFunctionAndRoleCode {
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
+  canApplyBdpcFollow = true
   state = {
     showApply: false,
 
@@ -61,6 +64,7 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
     if (this.props.initBdAndBdpc) {
       this.setState(this.props.initBdAndBdpc)
     }
+    this.canApplyBdpcFollow = this.props.canApplyBdpcFollow
   }
 
   componentDidMount() {
@@ -76,6 +80,9 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
     }
     if (!this.props.customerBdBdpc.loaded && nextProps.customerBdBdpc.loaded) {
       this.setState(nextProps.customerBdBdpc.data)
+    }
+    if (!this.props.applyBdpcFollowUpSuccess && nextProps.applyBdpcFollowUpSuccess) {
+      this.canApplyBdpcFollow = false
     }
   }
 
@@ -133,13 +140,19 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
           </FlexDiv>
           <div className="tip mt5">确定所属BD后，由所属BD点击申请BDPC跟进，BDPC确认后产生。有争议时BDPC负责人确认后修改</div>
           <div className="pull-right">
-            <Button className="small" disabled={!this.props.customerId} onClick={() => this.setState({showApply: true})}>申请BDPC跟进</Button>
+            <Button className="small" disabled={!this.props.customerId || !this.canApplyBdpcFollow}
+                    onClick={() => this.setState({showApply: true})}>申请BDPC跟进</Button>
           </div>
 
         </InputUnit>
         {
           checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
             <Update disabled={!this.props.customerId} onClick={this.update}/>
+          )
+        }
+        {
+          !checkHavePermission(this.props.roleCode, showBdBdpcUpdate(this.props.roleCode)) && (
+            <MT15/>
           )
         }
       </div>

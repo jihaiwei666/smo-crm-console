@@ -82,7 +82,7 @@ class SingleFile extends React.Component<SingleFileProps> {
                 [ {this.props.file.fileName} ]
               </DownloadFile>
               {
-                this.props.showRemove && (
+                !this.props.disabled && this.props.showRemove && (
                   <RemoveIcon onClick={this.handleClear}/>
                 )
               }
@@ -90,7 +90,7 @@ class SingleFile extends React.Component<SingleFileProps> {
           )
         }
         {
-          empty && (
+          !this.props.disabled && empty && (
             <AddFileButton
               accept={this.props.accept} multiple={false}
               onUploadSuccess={this.handleUploaded}

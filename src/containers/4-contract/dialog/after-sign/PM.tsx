@@ -17,6 +17,7 @@ interface PMProps {
   onAdd: () => void
   onUpdate: (item) => void
   onRemove: () => void
+  disabled: boolean
 }
 
 class PM extends React.Component<PMProps> {
@@ -26,9 +27,13 @@ class PM extends React.Component<PMProps> {
     return (
       <FlexDiv className="mt5">
         <Input width="300px" value={item.pm} onChange={v => this.props.onUpdate({pm: v})}/>
-        <RemoveIcon onClick={this.props.onRemove}/>
         {
-          index == total - 1 && (
+          !this.props.disabled && (
+            <RemoveIcon onClick={this.props.onRemove}/>
+          )
+        }
+        {
+          !this.props.disabled && index == total - 1 && (
             <AddIcon onClick={this.props.onAdd}/>
           )
         }

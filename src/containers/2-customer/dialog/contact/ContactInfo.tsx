@@ -128,7 +128,9 @@ class ContactInfo extends React.Component<ContactProps> {
               updateVisitRecordSuccess={this.props.updateVisitRecordSuccess}
               removeVisitRecord={this.props.removeVisitRecord}
               removeVisitRecordSuccess={this.props.removeVisitRecordSuccess}
-              onExited={() => this.setState({showVisitRecordDialog: false})}/>
+              onExited={() => this.setState({showVisitRecordDialog: false})}
+              editAuthority={this.props.editAuthority}
+            />
           )
         }
         {
@@ -150,10 +152,14 @@ class ContactInfo extends React.Component<ContactProps> {
         }
         <div className="clearfix p10 bb">
           <span className="input-unit-illustrate">请先完善联系人信息，之后才能在CDA、供应商、RFI的对接人中选择该联系人</span>
-          <div className="pull-right">
-            <Button className="small" onClick={this.addLocalContact}
-                    disabled={!this.props.customerId || !this.props.editAuthority || lastItemIsLocal(this.state.list)}>添加</Button>
-          </div>
+          {
+            this.props.editAuthority && (
+              <div className="pull-right">
+                <Button className="small" onClick={this.addLocalContact}
+                        disabled={!this.props.customerId || !this.props.editAuthority || lastItemIsLocal(this.state.list)}>添加</Button>
+              </div>
+            )
+          }
         </div>
 
         <div className="p10">

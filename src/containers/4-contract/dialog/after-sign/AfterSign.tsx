@@ -12,7 +12,7 @@ import InputGroup from '../../../common/InputGroup'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import CheckGroup from '../../../../components/form/checkgroup/CheckGroup'
-import {NECESSARY, IMPORTANT} from '../../../common/Label'
+import {NECESSARY, IMPORTANT, default as Label} from '../../../common/Label'
 import Input from '../../../../components/form/Input'
 import MoneyInput from '../../../../components/form/MoneyInput'
 import MoneyUnit from '../../../common/MoneyUnit'
@@ -33,9 +33,10 @@ import Update from '../../../common/Update'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import Data from '../../../common/interface/Data'
-import {serviceTypeOptions, trailPhaseOptions} from '../../contract.constant'
+import {serviceTypeOptions, trailPhaseOptions, nodeProgress} from '../../contract.constant'
 import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
+import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {notEmpty, isEmpty} from '../../../../core/utils/common'
 import {fetchClientInfoFromProject, addAfterSign, fetchAfterSign, updateAfterSign} from '../../contract.action'
 
@@ -65,7 +66,6 @@ class AfterSign extends React.Component<AfterSignProps> {
   _bdList: any
   _attachment: any
 
-  paymentNodeSwitchable = true
   initNodeDateList = []
   initProgressList = []
   afterSignId = ''
@@ -85,6 +85,7 @@ class AfterSign extends React.Component<AfterSignProps> {
     taxes: '',
     taxRate: '',
     paymentNode: '',
+    paymentNodeSwitchable: true,
     payer: '',
     contractSignDate: null,
     takeEffectDate: null,
@@ -212,14 +213,33 @@ class AfterSign extends React.Component<AfterSignProps> {
     }
   }
 
+  disablePaymentNode = () => {
+    if (this.state.paymentNodeSwitchable) {
+      this.setState({paymentNodeSwitchable: false})
+    }
+  }
+
+  checkProgressValid = (item) => {
+    if (item.node == '' || item.date == null) return false
+    if (item.node != nodeProgress.contractSigned && item.node != nodeProgress.databaseLock) {
+      if (item.quota == '') {
+        return false
+      }
+    }
+    return true
+  }
+
   componentWillMount() {
     if (this.props.initAfterSign) {
       this.afterSignId = this.props.initAfterSign.afterSignId
       this.initNodeDateList = this.props.initAfterSign.nodeDateList
       this.initProgressList = this.props.initAfterSign.progressList
-      this.paymentNodeSwitchable = this.props.initAfterSign.paymentNodeSwitchable
       this.setState(this.props.initAfterSign)
     }
+  }
+
+  componentDidMount() {
+    eventBus.addListener(EVENT_NAMES.COLLECTION_UPDATED, this.disablePaymentNode)
   }
 
   componentWillReceiveProps(nextProps: AfterSignProps) {
@@ -254,6 +274,10 @@ class AfterSign extends React.Component<AfterSignProps> {
     }
   }
 
+  componentWillUnmount() {
+    eventBus.removeListener(EVENT_NAMES.COLLECTION_UPDATED, this.disablePaymentNode)
+  }
+
   render() {
     return (
       <Form className="--module-item" onValidChange={valid => this.setState({valid})} disabled={!this.props.editAuthority}>
@@ -286,7 +310,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           </InputGroup>
           <TextAndButton text="关联项目后，项目信息中的部分信息直接复制到合同信息中">
             <Button className="small default"
-                    disabled={!this.props.projectId}
+                    disabled={!this.props.projectId || !this.props.editAuthority}
                     onClick={() => this.props.fetchClientInfoFromProject(this.props.projectId)}>
               从项目中复制
             </Button>
@@ -339,8 +363,8 @@ class AfterSign extends React.Component<AfterSignProps> {
               required={true} name="paymentNode"
               value={this.state.paymentNode} onChange={this.handlePaymentNodeChange}
             >
-              <Radio value="1" disabled={!this.paymentNodeSwitchable}>按日期</Radio>
-              <Radio value="2" disabled={!this.paymentNodeSwitchable}>按进度</Radio>
+              <Radio value="1" disabled={!this.state.paymentNodeSwitchable}>按日期</Radio>
+              <Radio value="2" disabled={!this.state.paymentNodeSwitchable}>按进度</Radio>
             </Radio.Group>
             {
               this.state.paymentNode == '1' && (
@@ -357,6 +381,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                         item={nodeDate}
                         index={index}
                         total={total}
+                        disabled={!this.props.editAuthority}
                       />
                     )
                   }}
@@ -370,7 +395,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                   onAdd={() => ({node: '', quota: '', date: null})}
                   list={this.state.progressList}
                   onChange={list => this.setState({progressList: list})}
-                  checkItemValid={item => item.node != '' && item.quota != '' && item.date != null}
+                  checkItemValid={this.checkProgressValid}
                   renderItem={(progress, index, total) => {
                     return (
                       <Progress
@@ -378,6 +403,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                         item={progress}
                         index={index}
                         total={total}
+                        disabled={!this.props.editAuthority}
                       />
                     )
                   }}
@@ -393,7 +419,9 @@ class AfterSign extends React.Component<AfterSignProps> {
             ref={c => this._signatoryList = c}
             parentId={this.afterSignId}
             required={true}
-            list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}/>
+            list={this.state.signatoryList} onChange={list => this.setState({signatoryList: list})}
+            disabled={!this.props.editAuthority}
+          />
         </LabelAndInput1>
 
         <LabelAndInput
@@ -444,7 +472,9 @@ class AfterSign extends React.Component<AfterSignProps> {
           <PM
             ref={c => this._pmList = c}
             parentId={this.afterSignId}
-            list={this.state.pmList} onChange={list => this.setState({pmList: list})}/>
+            list={this.state.pmList} onChange={list => this.setState({pmList: list})}
+            disabled={!this.props.editAuthority}
+          />
         </LabelAndInput1>
 
         <LabelAndInput
@@ -455,7 +485,8 @@ class AfterSign extends React.Component<AfterSignProps> {
           <CoordinateBD
             ref={c => this._bdList = c}
             parentId={this.afterSignId}
-            list={this.state.bdList} onChange={list => this.setState({bdList: list})}/>
+            list={this.state.bdList} onChange={list => this.setState({bdList: list})}
+            disabled={!this.props.editAuthority}/>
         </LabelAndInput1>
 
         <LabelAndInput
@@ -492,11 +523,15 @@ class AfterSign extends React.Component<AfterSignProps> {
           </Radio.Group>
         </LabelAndInput1>
         <div className="bb">
-          <div className="mt5 mb5">合同扫描件</div>
+          <div className="mt5 mb5">
+            <Label>合同扫描件</Label>
+          </div>
           <div>
             <Attachment
               ref={c => this._attachment = c} title="添加扫描件"
-              fileList={this.state.attachmentList} onChange={v => this.setState({attachmentList: v})}/>
+              fileList={this.state.attachmentList} onChange={v => this.setState({attachmentList: v})}
+              disabled={!this.props.editAuthority}
+            />
           </div>
         </div>
 

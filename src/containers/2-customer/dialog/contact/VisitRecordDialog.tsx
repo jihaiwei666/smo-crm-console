@@ -4,21 +4,22 @@
 import React from 'react'
 import DatePicker from 'antd/lib/date-picker'
 import Modal from 'app-core/modal'
-import {Row, Part, Line} from 'app-core/layout'
+import {Row, Part} from 'app-core/layout'
 import Confirm from 'app-core/common/Confirm'
 import Select1 from 'app-core/common/Select1'
 import Spinner from 'app-core/common/Spinner'
 import TextArea from 'app-core/form/TextArea'
 
 import Button from '../../../../components/button/Button'
-import AddVisitRecordDialog from './AddVisitRecordDialog'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import NoListData from '../../../common/NoListData'
+import AddVisitRecordDialog from './AddVisitRecordDialog'
 
+import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {VISIT_TYPE} from './contact.constant'
 import {CUSTOMER} from '../../../../core/constants/types'
-import Data from '../../../common/interface/Data'
 import {getContactOptions} from './contact.helper'
 
 interface VisitRecordDialogProps extends CommonFunction {
@@ -33,6 +34,7 @@ interface VisitRecordDialogProps extends CommonFunction {
   updateVisitRecordSuccess: boolean
   removeVisitRecord: any
   removeVisitRecordSuccess: boolean
+  editAuthority: boolean
   onExited: () => void
 }
 
@@ -114,6 +116,11 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
             )
           }
           {
+            loaded && data.length == 0 && (
+              <NoListData/>
+            )
+          }
+          {
             loaded && data.map((record, index) => {
               return (
                 <div key={record.visitId} className="visit-record-item">
@@ -136,25 +143,42 @@ class VisitRecordDialog extends React.Component<VisitRecordDialogProps> {
                   <LabelAndInput1 label="拜访内容">
                     <TextArea value={record.visitContent} onChange={e => this.setState({visitContent: e.target.value})}/>
                   </LabelAndInput1>
-                  <div className="text-right">
-                    <Button className="small danger" onClick={() => this.setState({removeVisitId: record.visitId})}>
-                      删除
-                    </Button>
-                  </div>
+                  {
+                    this.props.editAuthority && (
+                      <div className="text-right">
+                        <Button className="small danger" onClick={() => this.setState({removeVisitId: record.visitId})}>
+                          删除
+                        </Button>
+                      </div>
+                    )
+                  }
                 </div>
               )
             })
           }
         </Modal.Body>
         <Modal.Footer>
-          <Row>
-            <Part className="p5">
-              <Button className="default block" onClick={this.close}>取消</Button>
-            </Part>
-            <Part className="p5">
-              <Button className="info block" onClick={() => this.setState({showAddDialog: true})}>添 加</Button>
-            </Part>
-          </Row>
+          {
+            this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="default block" onClick={this.close}>取消</Button>
+                </Part>
+                <Part className="p5">
+                  <Button className="info block" onClick={() => this.setState({showAddDialog: true})}>添 加</Button>
+                </Part>
+              </Row>
+            )
+          }
+          {
+            !this.props.editAuthority && (
+              <Row>
+                <Part className="p5">
+                  <Button className="default block" onClick={this.close}>取消</Button>
+                </Part>
+              </Row>
+            )
+          }
         </Modal.Footer>
       </Modal>
     )

@@ -108,7 +108,11 @@ class CDA extends React.Component<CDAProps> {
                     <FixRow.Item>{item.remark}</FixRow.Item>
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showLookDialog: true})}>查看</Button>
-                      <Button className="small" onClick={() => this.setState({showEditDialog: true})}>编辑</Button>
+                      {
+                        this.props.editAuthority && (
+                          <Button className="small" onClick={() => this.setState({showEditDialog: true})}>编辑</Button>
+                        )
+                      }
                     </FixRow.Item>
                   </FixRow>
                 )

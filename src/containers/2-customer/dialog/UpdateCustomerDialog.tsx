@@ -77,6 +77,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
     const authority = data.authority || {}
     const lookAuthority = authority.look
     const editAuthority = authority.edit
+    const canApplyBdpcFollow = authority.canApplyBdpcFollow
 
     return (
       <Modal
@@ -113,6 +114,7 @@ class UpdateCustomerDialog extends React.Component<UpdateCustomerDialogProps> {
                 <BD_BDPC
                   customerId={this.props.customerId}
                   initBdAndBdpc={initBdAndBdpc}
+                  canApplyBdpcFollow={canApplyBdpcFollow}
                 />
 
                 {

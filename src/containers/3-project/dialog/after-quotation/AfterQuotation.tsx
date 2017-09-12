@@ -4,7 +4,6 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DatePicker from 'antd/lib/date-picker'
 import {Row} from 'app-core/layout/'
 import Form from 'app-core/form/Form'
 
@@ -15,6 +14,7 @@ import MoneyInput from '../../../../components/form/MoneyInput'
 import Radio from '../../../../components/form/radio/Radio'
 import MoneyUnit from '../../../common/MoneyUnit'
 import SingleFile from '../../../common/file/SingleFile'
+import DatePicker from '../../../../components/form/DatePicker'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
@@ -23,8 +23,8 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
 import {getDateStr, getYearMonth} from '../../../../core/utils/dateUtils'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
-
-const {MonthPicker} = DatePicker
+import MonthPicker from '../../../../components/form/MonthPicker'
+import MT15 from '../../../../components/layout/MT15'
 
 interface AfterQuotationProps extends CommonFunction {
   projectId?: string
@@ -191,20 +191,24 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               onChange={file => this.setState({priceFile: file})}
               onClear={() => this.setState({priceFile: null})}
               accept="*"
+              disabled={!this.props.editAuthority}
             />
           </LabelAndInput1>
           <div className="tip">只需要上传最终版报价，旧版本请删除</div>
         </div>
 
         {
-          this.props.afterQuotationId && (
+          this.props.editAuthority && this.props.afterQuotationId && (
             <Update onClick={this.save} disabled={!this.state.valid}/>
           )
         }
         {
-          !this.props.afterQuotationId && (
+          this.props.editAuthority && !this.props.afterQuotationId && (
             <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.save}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<MT15/>)
         }
       </Form>
     )

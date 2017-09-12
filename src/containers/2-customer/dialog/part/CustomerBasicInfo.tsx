@@ -10,9 +10,10 @@ import LabelAndInput from '../../../common/LabelAndInput'
 import InputGroup from '../../../common/InputGroup'
 import AutoComplete from '../../../../components/form/auto-complete/AutoComplete'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import {NECESSARY, IMPORTANT} from '../../../common/Label'
+import MT15 from '../../../../components/layout/MT15'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
-import {NECESSARY, IMPORTANT} from '../../../common/Label'
 
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
@@ -97,7 +98,9 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   }
 
   refreshBasicInfo = () => {
-    this.props.fetchBasicInfo(this.props.customerId)
+    if (!this.state.customerNumber) {
+      this.props.fetchBasicInfo(this.props.customerId)
+    }
   }
 
   componentDidMount() {
@@ -216,26 +219,27 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
           </InputGroup>
         </div>
         {
-          !this.props.customerId && (
+          this.props.editAuthority && !this.props.customerId && (
             <Save disabled={!this.state.valid || !this.props.editAuthority} onClick={this.save}/>
           )
         }
         {
-          this.props.customerId && (
+          this.props.editAuthority && this.props.customerId && (
             <Update disabled={!this.state.valid || !this.props.editAuthority} onClick={this.save}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<MT15/>)
         }
       </Form>
     )
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
     ...state.customer,
     similarNameList: state.similarNameList,
-    customerId: props.customerId,
-    initCustomerBaseInfo: props.initCustomerBaseInfo,
     customerBasicInfo: state.customerBasicInfo
   }
 }

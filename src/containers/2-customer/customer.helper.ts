@@ -144,6 +144,7 @@ export function handleClientInfo(data) {
 
 function handleDetailAuthority(authority) {
   return {
+    canApplyBdpcFollow: authority['is_show_apply_bdpc'],
     look: {
       basicInfo: authority['is_can_read_customer_info'],
       cda: authority['is_can_read_customer_cda'],

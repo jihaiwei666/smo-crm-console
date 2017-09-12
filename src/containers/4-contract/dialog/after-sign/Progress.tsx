@@ -3,26 +3,25 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import DatePicker from 'antd/lib/date-picker'
 import Select1 from 'app-core/common/Select1'
 
-import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Button from '../../../../components/button/Button'
-import InputWithSuffix from '../../../../components/form/InputWithSuffix'
-
-import listCrud from '../../../../components/hoc/listCrud'
-import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
 import Input from '../../../../components/form/Input'
-import {getSuffix} from './after-sign.helper'
-import {handleCrudList} from '../../../../core/crud'
+import InputWithSuffix from '../../../../components/form/InputWithSuffix'
+import DatePicker from '../../../../components/form/DatePicker'
+import LabelAndInput1 from '../../../common/LabelAndInput1'
 import AddIcon from '../../../../components/AddIcon'
 import RemoveIcon from '../../../../components/RemoveIcon'
+
+import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
+import {getSuffix} from './after-sign.helper'
+import {handleCrudList} from '../../../../core/crud'
 import regex from '../../../../core/constants/regex'
 
 interface ProgressProps {
   item: any
   index: number
   total: number
+  disabled: boolean
 }
 
 class Progress extends React.Component<ProgressProps> {
@@ -60,14 +59,14 @@ class Progress extends React.Component<ProgressProps> {
           <DatePicker value={item.date} onChange={v => this.context.onUpdate(item.id, {date: v})}/>
         </LabelAndInput1>
         {
-          index != 0 && (
+          !this.props.disabled && index != 0 && (
             <div className="remove-progress">
               <RemoveIcon onClick={() => this.context.onRemove(item.id)}/>
             </div>
           )
         }
         {
-          index == total - 1 && (
+          !this.props.disabled && index == total - 1 && (
             <div>
               <AddIcon onClick={this.context.onAdd}/>
             </div>

@@ -16,12 +16,15 @@ import Radio from '../../../../components/form/radio/Radio'
 import TextAndButton from '../../../common/TextAndButton'
 import SelectContact from '../base/SelectContact'
 import AddButton from '../../../common/AddButton'
+import SingleFile from '../../../common/file/SingleFile'
+import CrudList from '../../../../components/CrudList'
+import LookMSADialog from './LookMSADialog'
+import Index from '../../../common/Index'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
-import LookMSADialog from './LookMSADialog'
-import SingleFile from '../../../common/file/SingleFile'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
+import RemoveIcon from '../../../../components/RemoveIcon'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
@@ -31,11 +34,9 @@ import {addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {fetchContactList} from '../../customer.action'
 import {addSupplier, updateSupplier, fetchLastSupplierDetail} from './supplier.action'
-import Index from '../../../common/Index'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
-import RemoveIcon from '../../../../components/RemoveIcon'
 import {handleBrokerListCrud} from './supplier.helper'
-import CrudList from '../../../../components/CrudList'
+import MT15 from '../../../../components/layout/MT15'
 
 interface SupplierProps extends CustomerState, CommonFunction {
   customerId: string
@@ -254,6 +255,7 @@ class Supplier extends React.Component<SupplierProps> {
               fetchMSAList={this.props.fetchMSAList}
               msaListInfo={this.props.msaListInfo}
               onExited={() => this.setState({showMoreMSA: false})}
+              editAuthority={this.props.editAuthority}
             />
           )
         }
@@ -308,9 +310,13 @@ class Supplier extends React.Component<SupplierProps> {
                                   onOpen={() => this.props.fetchContactList(this.props.customerId)}
                                   onChange={v => this.handleBrokerChange(supplierIndex, brokerIndex, 'broker', v)}
                                 />
-                                <div className="remove-broker-container">
-                                  <RemoveIcon onClick={() => this.removeBroker(supplierIndex, brokerIndex)}/>
-                                </div>
+                                {
+                                  this.props.editAuthority && (
+                                    <div className="remove-broker-container">
+                                      <RemoveIcon onClick={() => this.removeBroker(supplierIndex, brokerIndex)}/>
+                                    </div>
+                                  )
+                                }
                               </div>
                             )
                           }
@@ -360,7 +366,7 @@ class Supplier extends React.Component<SupplierProps> {
                   file={this.state.scanFile}
                   onChange={file => this.setState({scanFile: file})}
                   onClear={() => this.setState({scanFile: null})}
-                  disabled={!this.props.editAuthority}
+                  disabled={!this.props.customerId || !this.props.editAuthority}
                 />
               </LabelAndInput1>
             </InputGroup>
@@ -373,15 +379,16 @@ class Supplier extends React.Component<SupplierProps> {
           </div>
         </Form>
         {
-          !this.supplierId && (
+          this.props.editAuthority && !this.supplierId && (
             <Save disabled={!this.props.customerId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
-          this.supplierId && (
+          this.props.editAuthority && this.supplierId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
+        {!this.props.editAuthority && (<MT15/>)}
       </div>
     )
   }

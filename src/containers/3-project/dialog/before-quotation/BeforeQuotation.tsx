@@ -28,6 +28,7 @@ import {PROJECT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
+import MT15 from '../../../../components/layout/MT15'
 
 interface BeforeQuotationProps extends CommonFunction {
   projectId: string
@@ -268,6 +269,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
             ref={c => this._pm = c}
             parentId={this.props.beforeQuotationId}
             list={this.state.pmList} onChange={list => this.setState({pmList: list})}
+            disabled={!this.props.editAuthority}
           />
         </LabelAndInput1>
         <LabelAndInput1 className="bb" label="备注">
@@ -279,9 +281,15 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         <LabelAndInput1 className="bb" label="方案附件">
           <PlanAttachment
             ref={c => this._planAttachment = c}
-            list={this.state.planList} onChange={list => this.setState({planList: list})}
+            list={this.state.planList}
+            onChange={list => this.setState({planList: list})}
+            disabled={!this.props.editAuthority}
           >
-            <AddAttachmentButton/>
+            {
+              this.props.editAuthority && (
+                <AddAttachmentButton/>
+              )
+            }
           </PlanAttachment>
         </LabelAndInput1>
 
@@ -290,21 +298,29 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
             <ResearchCenter
               ref={c => this._center = c}
               list={this.state.centerList} onChange={list => this.setState({centerList: list})}
+              disabled={!this.props.editAuthority}
             >
-              <AddAttachmentButton/>
+              {
+                this.props.editAuthority && (
+                  <AddAttachmentButton/>
+                )
+              }
             </ResearchCenter>
           </LabelAndInput1>
           <div className="tip">研究中心名单或整个含附件的往来邮件记录</div>
         </div>
         {
-          this.props.beforeQuotationId && (
+          this.props.editAuthority && this.props.beforeQuotationId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
-          !this.props.beforeQuotationId && (
+          this.props.editAuthority && !this.props.beforeQuotationId && (
             <Save disabled={!this.props.projectId || !this.state.valid} onClick={this.add}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<MT15/>)
         }
       </Form>
     )

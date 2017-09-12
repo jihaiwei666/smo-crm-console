@@ -245,7 +245,9 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
                   />
                 </LabelAndInput1>
                 <TextAndButton text="点击右侧“提交开票申请”后，将自动生成">
-                  <Button className="small" disabled={!this.state.institution} onClick={this.submitBillApply}>提交开票申请</Button>
+                  <Button className="small" disabled={!this.state.institution || !this.props.editAuthority} onClick={this.submitBillApply}>
+                    提交开票申请
+                  </Button>
                 </TextAndButton>
               </div>
               <LabelAndInput1 className="input-row" label="开票日期" inputType={IMPORTANT}>

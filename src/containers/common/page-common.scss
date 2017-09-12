@@ -220,3 +220,11 @@
 .load-more {
     padding: 15px 10px;
 }
+
+.no-list-data {
+    &.default {
+        font-size: 14px;
+        color: #aaa;
+        text-align: center;
+    }
+}

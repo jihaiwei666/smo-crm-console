@@ -10,6 +10,7 @@ import {copyList} from '../../core/utils/common'
 export type Crud1Props = {
   list: any[]
   onChange: (list: any[]) => void
+  disabled?: boolean
 }
 
 export type Config = {
@@ -87,6 +88,7 @@ function listCrud1(WrapperComponent, serverHandleConfig?: Config) {
                   onAdd={(addInfo) => this.onAdd(addInfo)}
                   onUpdate={(updateInfo) => this.onUpdate(item.id, updateInfo)}
                   onRemove={() => this.onRemove(item.id)}
+                  disabled={this.props.disabled}
                 />
               )
             })

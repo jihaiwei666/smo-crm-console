@@ -168,7 +168,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
                 {
                   lookAuthority.afterSign && (
-                    <CategoryTitle title="签署后"/>
+                    <CategoryTitle title="签署后" readonly={!editAuthority.afterSign}/>
                   )
                 }
                 {
@@ -184,7 +184,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 
                 {
                   lookAuthority.makeCollection && (
-                    <CategoryTitle title="收款"/>
+                    <CategoryTitle title="收款" readonly={!editAuthority.makeCollection}/>
                   )
                 }
                 {

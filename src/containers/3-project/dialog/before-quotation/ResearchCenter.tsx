@@ -12,6 +12,7 @@ interface ResearchCenterProps {
   onAdd: () => void
   onUpdate: (item) => void
   onRemove: () => void
+  disabled: boolean
 }
 
 class ResearchCenter extends React.Component<ResearchCenterProps> {
@@ -21,7 +22,11 @@ class ResearchCenter extends React.Component<ResearchCenterProps> {
       <div className="m5">
         <span className="mr10">{item.fileName}</span>
         <a target="_blank" href={item.fileUrl}>下载</a>
-        <RemoveIcon onClick={this.props.onRemove}/>
+        {
+          !this.props.disabled && (
+            <RemoveIcon onClick={this.props.onRemove}/>
+          )
+        }
       </div>
     )
   }

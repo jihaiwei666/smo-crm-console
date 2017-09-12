@@ -123,13 +123,17 @@ class SubCompany extends React.Component<SubCompanyProps> {
         }
         <div className="clearfix m10">
           <span className="tip">录入分/子公司或下属院区信息，如果分/子公司或下属院区成单，则需新建客户处理</span>
-          <div className="pull-right">
-            <Button
-              className="small" onClick={this.addCompany}
-              disabled={!this.props.customerId || !this.props.editAuthority || lastItemIsLocal(this.state.companyList)}>
-              添加
-            </Button>
-          </div>
+          {
+            this.props.editAuthority && (
+              <div className="pull-right">
+                <Button
+                  className="small" onClick={this.addCompany}
+                  disabled={!this.props.customerId || !this.props.editAuthority || lastItemIsLocal(this.state.companyList)}>
+                  添加
+                </Button>
+              </div>
+            )
+          }
         </div>
       </div>
     )

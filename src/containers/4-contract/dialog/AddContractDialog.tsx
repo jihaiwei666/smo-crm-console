@@ -17,13 +17,15 @@ import CollectionList from './make-collections/CollectionList'
 import ContractRemarkAttachment from './other/ContractRemarkAttachment'
 
 import Data from '../../common/interface/Data'
-import addCommonFunction from '../../_frameset/addCommonFunction'
-import CommonFunction from '../../common/interface/CommonFunction'
+import CommonFunctionAndRoleCode from '../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {updateCollection, fetchCollectionList} from '../contract.action'
 import Button from '../../../components/button/Button'
 import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
+import {checkHavePermission} from '../../../core/permission'
+import {roleCategory} from '../../7-account-manage/account-manage.constant'
 
-interface AddContractDialogProps extends CommonFunction {
+interface AddContractDialogProps extends CommonFunctionAndRoleCode {
   addContractSuccess: boolean
   newContractId: string
   updateCollection: (options) => void
@@ -64,6 +66,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
   }
 
   render() {
+    let roleCode = this.props.roleCode
     return (
       <Modal
         style={{width: '60%'}} contentComponent={FullDialogContent}
@@ -105,12 +108,20 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
             <CategoryTitle title="签署后"/>
             <AfterSign contractId={this.state.contractId} projectId={this.state.projectId}/>
 
-            <CategoryTitle title="收款"/>
-            <CollectionList
-              contractId={this.state.contractId}
-              collectionList={this.collectionList}
-              updateCollection={this.props.updateCollection}
-            />
+            {
+              checkHavePermission(roleCode, roleCode != roleCategory.bd && roleCode != roleCategory.bdLeader) && (
+                <CategoryTitle title="收款"/>
+              )
+            }
+            {
+              checkHavePermission(roleCode, roleCode != roleCategory.bd && roleCode != roleCategory.bdLeader) && (
+                <CollectionList
+                  contractId={this.state.contractId}
+                  collectionList={this.collectionList}
+                  updateCollection={this.props.updateCollection}
+                />
+              )
+            }
 
             <CategoryTitle title="关联信息"/>
             <ContractAssociateInfo relationInfo={{}}/>
@@ -126,7 +137,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
     newContractId: state.contract.newContractId,
     addContractSuccess: state.contract.addContractSuccess,
@@ -138,4 +149,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   updateCollection, fetchCollectionList
-})(addCommonFunction(AddContractDialog))
+})(getCommonFunctionAndRoleCode(AddContractDialog))

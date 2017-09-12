@@ -119,7 +119,7 @@ class Company extends React.Component<CompanyProps> {
               <LabelAndInput label="接收人联系方式" value={this.state.receiverContactInfo} onChange={v => this.setState({receiverContactInfo: v})}/>
             </InputGroup>
             {
-              this.props.companyId && (
+              this.props.editAuthority && this.props.companyId && (
                 <div className="clearfix m10">
                   <div className="pull-right">
                     <span className="input-unit-illustrate">点此删除按钮删除一条供应商信息</span>
@@ -130,10 +130,14 @@ class Company extends React.Component<CompanyProps> {
             }
           </Form>
           <div className="m10">
-            <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId || !this.state.valid}>
-              {this.props.companyId && <span>更新</span>}
-              {!this.props.companyId && <span>保存</span>}
-            </Button>
+            {
+              this.props.editAuthority && (
+                <Button className="block" onClick={this.addOrUpdate} disabled={!this.props.customerId || !this.state.valid}>
+                  {this.props.companyId && <span>更新</span>}
+                  {!this.props.companyId && <span>保存</span>}
+                </Button>
+              )
+            }
           </div>
         </Part>
       </Row>

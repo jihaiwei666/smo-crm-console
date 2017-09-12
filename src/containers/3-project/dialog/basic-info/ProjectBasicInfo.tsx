@@ -21,6 +21,7 @@ import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {isAdmin} from '../../../7-account-manage/account-manage.helper'
 import {checkHavePermission} from '../../../../core/permission'
 import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
+import MT15 from '../../../../components/layout/MT15'
 
 interface ProjectBasicInfoProps extends CommonFunctionAndRoleCode {
   projectId?: string
@@ -134,12 +135,12 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
         </LabelAndInput1>
 
         {
-          this.props.projectId && (
+          this.props.editAuthority && this.props.projectId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }
         {
-          !this.props.projectId && (
+          this.props.editAuthority && !this.props.projectId && (
             <Save disabled={!this.state.valid} onClick={this.add}/>
           )
         }

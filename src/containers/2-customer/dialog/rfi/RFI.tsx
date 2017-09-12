@@ -181,6 +181,7 @@ class RFI extends React.Component<RFIProps> {
               removeRfiSuccess={this.props.removeRfiSuccess}
               fetchRfiList={this.props.fetchRfiList}
               rfiList={this.props.rfiList}
+              editAuthority={this.props.editAuthority}
               onExited={() => this.setState({showRfiListDialog: false})}
             />
           )
@@ -248,12 +249,12 @@ class RFI extends React.Component<RFIProps> {
           <Button className="small" disabled={!this.props.customerId || !this.rfiId} onClick={() => this.setState({showRfiListDialog: true})}>...查看更多</Button>
         </TextAndButton>
         {
-          !this.rfiId && (
+          this.props.editAuthority && !this.rfiId && (
             <Save disabled={!this.props.customerId || !this.state.valid} onClick={this.add}/>
           )
         }
         {
-          this.rfiId && (
+          this.props.editAuthority && this.rfiId && (
             <Update disabled={!this.state.valid} onClick={this.update}/>
           )
         }

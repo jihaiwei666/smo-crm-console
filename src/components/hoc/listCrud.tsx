@@ -14,6 +14,7 @@ export interface CrudProps {
   showAdd?: boolean
   list: any[]
   onChange: (list: any[]) => void
+  disabled?: boolean
 }
 
 export type Config = {
@@ -89,12 +90,13 @@ function listCrud(WrapperComponent, defaultItem, serverHandleConfig?: Config) {
                   onAdd={() => this.onAdd()}
                   onUpdate={(updateInfo) => this.onUpdate(item.id, updateInfo)}
                   onRemove={() => this.onRemove(item.id)}
+                  disabled={this.props.disabled}
                 />
               )
             })
           }
           {
-            (list.length == 0 || this.props.showAdd) && (
+            (!this.props.disabled && (list.length == 0 || this.props.showAdd)) && (
               <AddIcon onClick={this.onAdd}/>
             )
           }
