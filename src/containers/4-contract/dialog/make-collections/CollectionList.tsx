@@ -15,7 +15,8 @@ import {updateCollection, fetchInstitutionList, fetchInstitutionInfo, submitBill
 
 interface CollectionListProps extends CommonFunction {
   contractId: string
-  collectionList: any[]
+  initCollectionList: any[]
+  collectionList: Data<any>
   fetchInstitutionList: (contractId) => void
   institutionList: Data<any[]>
   fetchInstitutionInfo: (institutionId) => void
@@ -32,8 +33,18 @@ class CollectionList extends React.Component<CollectionListProps> {
   static defaultProps = {
     editAuthority: true
   }
+  collectionList = []
+
+  componentWillMount() {
+    if (this.props.initCollectionList) {
+      this.collectionList = this.props.initCollectionList
+    }
+  }
 
   componentWillReceiveProps(nextProps: CollectionListProps) {
+    if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
+      this.collectionList = nextProps.collectionList.data
+    }
     if (!this.props.updateCollectionSuccess && nextProps.updateCollectionSuccess) {
       this.props.showSuccess('更新收款成功！')
       this.props.clearState(CONTRACT.UPDATE_COLLECTION)
@@ -54,12 +65,12 @@ class CollectionList extends React.Component<CollectionListProps> {
     return (
       <div className="--module-item">
         {
-          this.props.collectionList.length == 0 && (
+          this.collectionList.length == 0 && (
             <div className="add-payment-node-info-first">请先添加付款节点信息</div>
           )
         }
         {
-          this.props.collectionList.map((collection, index) => {
+          this.collectionList.map((collection, index) => {
             if (!collection.collectionId) return null
             return (
               <MakeCollection
@@ -68,6 +79,7 @@ class CollectionList extends React.Component<CollectionListProps> {
                 contractId={this.props.contractId}
                 collectionId={collection.collectionId}
                 initCollection={collection}
+                loaded={this.props.collectionList.loaded}
                 institutionList={this.props.institutionList}
                 fetchInstitutionInfo={this.props.fetchInstitutionInfo}
                 institutionInfo={this.props.institutionInfo}
@@ -85,10 +97,9 @@ class CollectionList extends React.Component<CollectionListProps> {
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
-    contractId: props.contractId,
-    collectionList: props.collectionList,
+    collectionList: state.collectionList,
     institutionList: state.institutionList,
     institutionInfo: state.institutionInfo,
     submitBillApplySuccess: state.contract.submitBillApplySuccess,

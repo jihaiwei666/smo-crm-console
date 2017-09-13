@@ -15,14 +15,15 @@ import Update from '../../../common/Update'
 import Input from '../../../../components/form/Input'
 import Data from '../../../common/interface/Data'
 
-import addCommonFunction from '../../../_frameset/addCommonFunction'
-import CommonFunction from '../../../common/interface/CommonFunction'
+import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
+import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {CONTRACT} from '../../../../core/constants/types'
 import {getIsFirstOperation} from '../../contract.helper'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
+import {checkHavePermission} from '../../../../core/permission'
 
-interface ContractBasicInfoProps extends CommonFunction {
+interface ContractBasicInfoProps extends CommonFunctionAndRoleCode {
   contractId?: string
   initBaseInfo?: any
   fetchProjectList: () => void
@@ -45,6 +46,8 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
     editAuthority: true
   }
 
+  oldContractName = ''
+  projectName = ''
   state = {
     valid: true,
     contractName: '',
@@ -86,6 +89,8 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
   componentWillMount() {
     if (this.props.initBaseInfo) {
       this.setState(this.props.initBaseInfo)
+      this.oldContractName = this.props.initBaseInfo.contractName
+      this.projectName = this.props.initBaseInfo.projectName
     }
   }
 
@@ -111,6 +116,9 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
       this.props.clearState(CONTRACT.UPDATE_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
       this.props.onContractNameChange(this.state.contractName)
+      if (this.oldContractName != this.state.contractName) {
+        eventBus.emit(EVENT_NAMES.CONTRACT_NAME_UPDATED)
+      }
     }
   }
 
@@ -126,13 +134,22 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
-          <div style={{width: '300px'}}>
-            <Select1
-              options={this.props.projectList.data || []}
-              required={true} name="projectId"
-              value={this.state.projectId} onChange={this.handleProjectChange}
-            />
-          </div>
+          {
+            this.props.editAuthority && (
+              <div style={{width: '300px'}}>
+                <Select1
+                  options={this.props.projectList.data || []}
+                  required={true} name="projectId"
+                  value={this.state.projectId} onChange={this.handleProjectChange}
+                />
+              </div>
+            )
+          }
+          {
+            !this.props.editAuthority && (
+              <div className="p5">{this.projectName}</div>
+            )
+          }
         </LabelAndInput1>
         <div className="input-row">
           <LabelAndInput1 label="合同编号" inputType={NECESSARY}>
@@ -153,7 +170,20 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">合同编号格式为：项目编号-流水号（3位数字）-协同BD，项目编号关联项目后产生</div>
         </div>
         <div className="input-row">
-          <LabelAndInput label="是否首次合作" disabled={true} placeholder="尚未确定" value={getIsFirstOperation(this.state.isFirstOperation)}/>
+          {
+            this.props.contractId && checkHavePermission(this.props.roleCode) && (
+              <LabelAndInput1 label="是否首次合作">
+                <Select1 width="250px" options={[{value: '1', text: '是'}, {value: '2', text: '否'}]}
+                         value={this.state.isFirstOperation} onChange={v => this.setState({isFirstOperation: v})}
+                />
+              </LabelAndInput1>
+            )
+          }
+          {
+            !(this.props.contractId && checkHavePermission(this.props.roleCode)) && (
+              <LabelAndInput label="是否首次合作" disabled={true} placeholder="尚未确定" value={getIsFirstOperation(this.state.isFirstOperation)}/>
+            )
+          }
           <div className="tip">由系统检测该客户是否有历史合同，不可修改</div>
         </div>
 
@@ -186,4 +216,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   fetchProjectList, fetchContractCodePrefix, addContract, updateContract
-})(addCommonFunction(ContractBasicInfo))
+})(getCommonFunctionAndRoleCode(ContractBasicInfo))

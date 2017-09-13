@@ -232,7 +232,6 @@ class Supplier extends React.Component<SupplierProps> {
     }
     if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
       this.props.fetchLastSupplierDetail(this.props.customerId)
-      eventBus.emit(EVENT_NAMES.MSA_UPDATE)
     }
     if (!this.props.removeMsaSuccess && nextProps.removeMsaSuccess) {
       this.props.fetchLastSupplierDetail(this.props.customerId)

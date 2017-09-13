@@ -14,8 +14,9 @@ import Modules from './Modules'
 import RecentOpen from './RecentOpen'
 
 import Data from '../common/interface/Data'
-import {getPath} from '../../core/env'
 import pages from '../../core/pages'
+import eventBus, {EVENT_NAMES} from '../../core/event'
+import {getPath} from '../../core/env'
 import {fetchRecentOpenList, changePassword} from '../../actions/app.action'
 import {fetchUnReadRemindAmount, clearRemindAmount} from '../1-todo-remind/todo-remind.action'
 
@@ -46,8 +47,12 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.Child
   }
   taskId = null
 
-  componentDidMount() {
+  refreshRecentOpen = () => {
     this.props.fetchRecentOpenList(0)
+  }
+
+  componentDidMount() {
+    this.refreshRecentOpen()
     if (this.props.router.location.pathname == getPath('index')) {
       this.context.router.history.replace(getPath(pages.todoRemind))
     }
@@ -55,10 +60,16 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.Child
     this.taskId = setInterval(() => {
       this.props.fetchUnReadRemindAmount()
     }, 30000)
+    eventBus.addListener(EVENT_NAMES.CUSTOMER_NAME_UPDATED, this.refreshRecentOpen)
+    eventBus.addListener(EVENT_NAMES.PROJECT_NAME_UPDATED, this.refreshRecentOpen)
+    eventBus.addListener(EVENT_NAMES.CONTRACT_NAME_UPDATED, this.refreshRecentOpen)
   }
 
   componentWillUnmount() {
     clearInterval(this.taskId)
+    eventBus.removeListener(EVENT_NAMES.CUSTOMER_NAME_UPDATED, this.refreshRecentOpen)
+    eventBus.removeListener(EVENT_NAMES.PROJECT_NAME_UPDATED, this.refreshRecentOpen)
+    eventBus.removeListener(EVENT_NAMES.CONTRACT_NAME_UPDATED, this.refreshRecentOpen)
   }
 
   render() {

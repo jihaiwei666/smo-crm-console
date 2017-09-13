@@ -41,6 +41,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
     editAuthority: true
   }
 
+  oldCustomerName = ''
   state = {
     valid: false,
 
@@ -94,6 +95,7 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   componentWillMount() {
     if (this.props.initCustomerBaseInfo) {
       this.setState(this.props.initCustomerBaseInfo)
+      this.oldCustomerName = this.props.initCustomerBaseInfo.customerName
     }
   }
 
@@ -118,6 +120,9 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
       this.props.showSuccess('更新客户信息成功！')
       this.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
       this.props.onCustomerNameChange(this.state.customerName)
+      if (this.oldCustomerName != this.state.customerName) {
+        eventBus.emit(EVENT_NAMES.CUSTOMER_NAME_UPDATED)
+      }
     }
     if (!this.props.customerBasicInfo.loaded && nextProps.customerBasicInfo.loaded) {
       this.setState(nextProps.customerBasicInfo.data)

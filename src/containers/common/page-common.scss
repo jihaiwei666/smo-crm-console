@@ -195,14 +195,15 @@
         background: #EEEEEE;
     }
 
-    input {
-        border: none;
+    .input-container {
         flex: 1;
-        outline: none;
-        &[disabled] {
-            background: #EEEEEE;
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
         }
     }
+
     .unit {
         padding: 0 0 0 10px;
     }

@@ -12,13 +12,15 @@ function fetchRecentOpen() {
 }
 
 export function* fetchRecentOpenList() {
-  let type = APP.FETCH_RECENT_OPEN_LIST
-  yield take(APP.FETCH_RECENT_OPEN_LIST)
-  yield put({type: type + phase.START})
-  try {
-    let data = yield call(fetchRecentOpen)
-    yield put({type: type + phase.SUCCESS, data: handleRecentOpenList(data)})
-  } catch (err) {
-    yield put({type: type + phase.FAILURE, err})
+  while (true) {
+    let type = APP.FETCH_RECENT_OPEN_LIST
+    yield take(APP.FETCH_RECENT_OPEN_LIST)
+    yield put({type: type + phase.START})
+    try {
+      let data = yield call(fetchRecentOpen)
+      yield put({type: type + phase.SUCCESS, data: handleRecentOpenList(data)})
+    } catch (err) {
+      yield put({type: type + phase.FAILURE, err})
+    }
   }
 }

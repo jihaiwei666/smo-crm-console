@@ -24,6 +24,8 @@ class RecycleBin extends React.Component<RecycleBinProps> {
   }
 
   loadMore = () => {
+    const {total, list} = handlePageListData(this.props.recycleBinList)
+    if (total <= list.length) return
     this.start++
     this.props.fetchList(this.start)
   }
@@ -34,6 +36,7 @@ class RecycleBin extends React.Component<RecycleBinProps> {
 
   render() {
     const {total, list, loading, loaded} = handlePageListData(this.props.recycleBinList)
+
     return (
       <div className="app-function-page">
         <ScrollContainer className="recycle-bin-container" onScrollBottom={this.loadMore}>
@@ -51,7 +54,11 @@ class RecycleBin extends React.Component<RecycleBinProps> {
               )
             })
           }
-          <a className="load-more" onClick={this.loadMore}>加载更多</a>
+          {
+            list.length < total && (
+              <a className="load-more" onClick={this.loadMore}>加载更多</a>
+            )
+          }
         </ScrollContainer>
       </div>
     )

@@ -110,8 +110,8 @@ body {
                     text-overflow: ellipsis;
                     display: block;
                     padding: 10px 20px;
-                    width: 100%;
                     color: #ccc;
+                    overflow: hidden;
                 }
 
                 &:hover {

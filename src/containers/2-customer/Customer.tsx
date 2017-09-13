@@ -95,6 +95,9 @@ class Customer extends React.Component<CustomerProps> {
     if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
       this.refreshCurrentPage()
     }
+    if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
+      this.refreshCurrentPage()
+    }
   }
 
   render() {

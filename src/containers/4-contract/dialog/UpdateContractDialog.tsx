@@ -7,22 +7,21 @@ import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 import Spinner from 'app-core/common/Spinner'
 
+import Button from '../../../components/button/Button'
 import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import ContractBdBdpc from './other/ContractBdBdpc'
 import ContractBasicInfo from './basic-info/ContractBasicInfo'
 import BeforeSign from './before-sign/BeforeSign'
 import AfterSign from './after-sign/AfterSign'
-
-import Data from '../../common/interface/Data'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import OperationRecord from '../../common/OperationRecord'
 import CollectionList from './make-collections/CollectionList'
 import ContractRemarkAttachment from './other/ContractRemarkAttachment'
-
-import {fetchContractDetail, fetchCollectionList} from '../contract.action'
-import Button from '../../../components/button/Button'
 import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
+
+import Data from '../../common/interface/Data'
+import {fetchContractDetail, fetchCollectionList} from '../contract.action'
 
 interface UpdateContractDialogProps {
   contractId: string
@@ -38,7 +37,6 @@ interface UpdateContractDialogProps {
   updateAfterSignSuccess: boolean
 
   fetchCollectionList: (contractId) => void
-  collectionList: Data<any[]>
   updateCollection: (options) => void
 
   onExited: () => void
@@ -46,7 +44,6 @@ interface UpdateContractDialogProps {
 
 class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
   contractName = ''
-  collectionList = []
   state = {
     show: true,
     showSendRemind: false,
@@ -65,7 +62,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
     if (!this.props.contractDetail.loaded && nextProps.contractDetail.loaded) {
       const {data} = nextProps.contractDetail
       this.contractName = data.baseInfo.contractName
-      this.collectionList = data.collectionList
       this.setState({projectId: data.baseInfo.projectId})
     }
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
@@ -74,13 +70,11 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.fetchCollectionList(this.props.contractId)
     }
-    if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
-      this.collectionList = nextProps.collectionList.data
-    }
   }
 
   render() {
     let baseInfo = null, initBdAndBdpc = null, initBeforeSign = null, initAfterSign = null, relationInfo = null, operationRecordList = []
+    let initCollectionList = []
     let initRemarkAttachment = null
     let authority: any = {}, lookAuthority: any = {}, editAuthority: any = {}
 
@@ -90,6 +84,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
       initBdAndBdpc = data.bdAnBdpc
       initBeforeSign = data.beforeSign
       initAfterSign = data.afterSign
+      initCollectionList = data.collectionList
       relationInfo = data.relationInfo
       operationRecordList = data.operationRecordList
       initRemarkAttachment = data.remarkAttachment
@@ -191,7 +186,7 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
                   lookAuthority.makeCollection && (
                     <CollectionList
                       contractId={this.props.contractId}
-                      collectionList={this.collectionList}
+                      initCollectionList={initCollectionList}
                       editAuthority={editAuthority.makeCollection}
                     />
                   )
@@ -217,7 +212,6 @@ class UpdateContractDialog extends React.Component<UpdateContractDialogProps> {
 function mapStateToProps(state, props) {
   return {
     ...state.contract,
-    collectionList: state.collectionList,
     contractId: props.contractId,
     contractDetail: state.contractDetail,
   }

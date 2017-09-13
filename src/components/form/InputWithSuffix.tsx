@@ -24,10 +24,12 @@ class InputWithSuffix extends React.Component<InputWithSuffixProps> {
   render() {
     return (
       <div className={classnames('input-have-unit', {invalid: this.state.touched && !this.props.valid})} disabled={this.props.disabled}>
-        <Input clsPrefix="suffix-input" placeholder={this.props.placeholder} value={this.props.value}
-               onChange={this.props.onChange} disabled={this.props.disabled}
-               onBlur={() => this.setState({touched: true})}
-        />
+        <div className="input-container">
+          <Input clsPrefix="suffix-input" placeholder={this.props.placeholder} value={this.props.value}
+                 onChange={this.props.onChange} disabled={this.props.disabled}
+                 onBlur={() => this.setState({touched: true})}
+          />
+        </div>
         <div className="unit">{this.props.suffix}</div>
       </div>
     )

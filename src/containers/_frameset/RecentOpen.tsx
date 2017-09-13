@@ -10,6 +10,7 @@ import UpdateContractDialog from '../4-contract/dialog/UpdateContractDialog'
 import List from '../common/interface/List'
 import {handleListData} from '../common/common.helper'
 import {getRecentOpenTypeText} from '../common/common.helper'
+import TxtTip from '../../components/txt/TxtTip'
 
 interface RecentOpenProps {
   recentOpenList: List<any>
@@ -64,23 +65,23 @@ class RecentOpen extends React.Component<RecentOpenProps> {
                 if (item.isDeleted) {
                   return (
                     <li key={item.id} className="removed">
-                      <a>
+                      <TxtTip title={item.name} element="a">
                         <span className="recent-open-type">
                           {getRecentOpenTypeText(item.module)}
                         </span>
                         {item.name}
-                      </a>
+                      </TxtTip>
                     </li>
                   )
                 }
                 return (
                   <li key={item.id} onClick={() => this.setState({module: item.module, moduleId: item.moduleId})}>
-                    <a>
+                    <TxtTip title={item.name} element="a">
                       <span className="recent-open-type">
                         {getRecentOpenTypeText(item.module)}
                       </span>
                       {item.name}
-                    </a>
+                    </TxtTip>
                   </li>
                 )
               })

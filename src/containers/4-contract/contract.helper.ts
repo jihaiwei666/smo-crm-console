@@ -3,6 +3,7 @@ import {contractTypeMapper} from './contract.constant'
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
 import {handleOperationList, handleAttachmentList, handleButtonOperation, handleItemOperation} from '../common/common.helper'
 import {handleCollectionList} from './dialog/make-collections/make-collection.helper'
+import {finalPermission} from '../../core/permission'
 
 export function getContractType(type) {
   if (contractTypeMapper[type]) {
@@ -64,7 +65,8 @@ export function handleContractDetail(data) {
       serialNumber: baseInfo['contract_serial_code'],
       bdCode: baseInfo['contract_bd_code'],
       isFirstOperation: baseInfo['first_cooperation'],
-      projectId: baseInfo['project_info_id']
+      projectId: baseInfo['project_info_id'],
+      projectName: baseInfo['project_info_name']
     },
     beforeSign: {
       beforeSignId: beforeSign['before_signed_id'],
@@ -121,16 +123,16 @@ export function getIsFirstOperation(value) {
 function handleContractAuthority(authority) {
   return {
     look: {
-      basicInfo: authority['is_can_read_contract_info'],
-      beforeSign: authority['is_can_read_contract_before_signed'],
-      afterSign: authority['is_can_read_contract_after_signed'],
-      makeCollection: authority['is_can_read_contract_collection']
+      basicInfo: finalPermission(authority['is_can_read_contract_info']),
+      beforeSign: finalPermission(authority['is_can_read_contract_before_signed']),
+      afterSign: finalPermission(authority['is_can_read_contract_after_signed']),
+      makeCollection: finalPermission(authority['is_can_read_contract_collection'])
     },
     edit: {
-      basicInfo: authority['is_can_edit_contract_info'],
-      beforeSign: authority['is_can_edit_contract_before_signed'],
-      afterSign: authority['is_can_edit_contract_after_signed'],
-      makeCollection: authority['is_can_edit_contract_collection']
+      basicInfo: finalPermission(authority['is_can_edit_contract_info']),
+      beforeSign: finalPermission(authority['is_can_edit_contract_before_signed']),
+      afterSign: finalPermission(authority['is_can_edit_contract_after_signed']),
+      makeCollection: finalPermission(authority['is_can_edit_contract_collection'])
     }
   }
 }

@@ -21,7 +21,6 @@ import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {isAdmin} from '../../../7-account-manage/account-manage.helper'
 import {checkHavePermission} from '../../../../core/permission'
 import {fetchClientList, addProjectBaseInfo, updateProjectBaseInfo} from '../../project.action'
-import MT15 from '../../../../components/layout/MT15'
 
 interface ProjectBasicInfoProps extends CommonFunctionAndRoleCode {
   projectId?: string
@@ -40,6 +39,8 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   static defaultProps = {
     editAuthority: true
   }
+
+  oldProjectName = ''
 
   state = {
     valid: true,
@@ -78,6 +79,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   componentWillMount() {
     if (this.props.baseInfo) {
       this.setState(this.props.baseInfo)
+      this.oldProjectName = this.props.baseInfo.projectName
     }
   }
 
@@ -98,6 +100,9 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
       this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
       this.triggerCroClient(nextProps.clientList.data)
+      if (this.oldProjectName != this.state.projectName) {
+        eventBus.emit(EVENT_NAMES.PROJECT_NAME_UPDATED)
+      }
     }
     if (!this.props.clientList.loaded && nextProps.clientList.loaded) {
       let clientList = nextProps.clientList.data

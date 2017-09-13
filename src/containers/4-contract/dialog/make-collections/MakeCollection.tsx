@@ -31,6 +31,7 @@ interface MakeCollectionProps extends CommonFunction {
   contractId: string
   collectionId: string
   initCollection: any
+  loaded: boolean
   institutionList: Data<any[]>
   fetchInstitutionInfo: (institutionId) => void
   institutionInfo: Data<any[]>
@@ -115,6 +116,9 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
       this.setState({applyInvoiceDate: nextProps.newBillDate})
       this.props.showSuccess('申请开票成功！')
       this.props.clearState(CONTRACT.SUBMIT_BILL_APPLY)
+    }
+    if (!this.props.loaded && nextProps.loaded) {
+      this.setState(nextProps.initCollection)
     }
   }
 

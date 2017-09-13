@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import FullDialogContent from 'app-core/common/content/FullDialogContent'
 
+import Button from '../../../components/button/Button'
 import RightNav from '../../../components/nav/RightNav'
 import CategoryTitle from '../../common/CategoryTitle'
 import ContractBdBdpc from './other/ContractBdBdpc'
@@ -15,13 +16,11 @@ import AfterSign from './after-sign/AfterSign'
 import ContractAssociateInfo from './other/ContractAssociateInfo'
 import CollectionList from './make-collections/CollectionList'
 import ContractRemarkAttachment from './other/ContractRemarkAttachment'
+import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 
-import Data from '../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {updateCollection, fetchCollectionList} from '../contract.action'
-import Button from '../../../components/button/Button'
-import SendRemindDialog from '../../1-todo-remind/dialog/SendRemindDialog'
 import {checkHavePermission} from '../../../core/permission'
 import {roleCategory} from '../../7-account-manage/account-manage.constant'
 
@@ -30,7 +29,6 @@ interface AddContractDialogProps extends CommonFunctionAndRoleCode {
   newContractId: string
   updateCollection: (options) => void
   fetchCollectionList: (contractId) => void
-  collectionList: Data<any>
   addAfterSignSuccess: boolean
   updateAfterSignSuccess: boolean
   onExited: () => void
@@ -38,7 +36,6 @@ interface AddContractDialogProps extends CommonFunctionAndRoleCode {
 
 class AddContractDialog extends React.Component<AddContractDialogProps> {
   contractName = ''
-  collectionList = []
   state = {
     show: true,
     showSendRemind: false,
@@ -60,9 +57,7 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.fetchCollectionList(this.state.contractId)
     }
-    if (!this.props.collectionList.loaded && nextProps.collectionList.loaded) {
-      this.collectionList = nextProps.collectionList.data
-    }
+
   }
 
   render() {
@@ -117,7 +112,6 @@ class AddContractDialog extends React.Component<AddContractDialogProps> {
               checkHavePermission(roleCode, roleCode != roleCategory.bd && roleCode != roleCategory.bdLeader) && (
                 <CollectionList
                   contractId={this.state.contractId}
-                  collectionList={this.collectionList}
                   updateCollection={this.props.updateCollection}
                 />
               )
@@ -142,8 +136,7 @@ function mapStateToProps(state) {
     newContractId: state.contract.newContractId,
     addContractSuccess: state.contract.addContractSuccess,
     addAfterSignSuccess: state.contract.addAfterSignSuccess,
-    updateAfterSignSuccess: state.contract.updateAfterSignSuccess,
-    collectionList: state.collectionList
+    updateAfterSignSuccess: state.contract.updateAfterSignSuccess
   }
 }
 

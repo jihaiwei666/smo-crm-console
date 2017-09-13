@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import Button from '../../../../components/button/Button'
 import {FixHeadList, FixHead, FixBody, FixRow} from '../../../../components/fix-head-list/'
 import AddCDA_Dialog from '../cda/AddCDA_Dialog'
+import LookCDA_Dialog from './LookCDA_Dialog'
 import UpdateCDA_Dialog from '../cda/UpdateCDA_Dialog'
 
 import Data from '../../../common/interface/Data'
@@ -14,7 +15,6 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {fetchProjectList, fetchContactList} from '../../customer.action'
 import {fetchCdaList, addCda} from './cda.action'
-import LookCDA_Dialog from './LookCDA_Dialog'
 
 interface CDAProps extends CommonFunction {
   customerId: string
@@ -27,6 +27,10 @@ interface CDAProps extends CommonFunction {
 }
 
 class CDA extends React.Component<CDAProps> {
+  static defaultProps = {
+    editAuthority: true
+  }
+
   cdaList = []
   state = {
     showAddCDA: false,
@@ -52,11 +56,13 @@ class CDA extends React.Component<CDAProps> {
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
       this.props.fetchCdaList(this.props.customerId)
     }
+    if (!this.props.cdaList.loaded && nextProps.cdaList.loaded) {
+      this.cdaList = nextProps.cdaList.data
+    }
   }
 
   render() {
-    const {loaded, data} = this.props.cdaList
-    const list = data || []
+    const list = this.cdaList || []
     const item = list[this.state.index] || {}
     return (
       <div className="customer-cda --module-item">
