@@ -31,5 +31,6 @@ export function getDate(d) {
 }
 
 export function getYearMonth(d) {
+  if (d == null) return null
   return d.format('YYYY-MM')
 }

@@ -6,8 +6,9 @@ import {connect} from 'react-redux'
 import Select1 from 'app-core/common/Select1'
 
 import InputUnit from '../../../common/InputUnit'
-import Update from '../../../common/Update'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
+import MT15 from '../../../../components/layout/MT15'
+import Update from '../../../common/Update'
 
 import Data from '../../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
@@ -18,7 +19,6 @@ import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
 import {updateBdAndBdpc, fetchContractBdBdpc} from '../../contract.action'
-import MT15 from '../../../../components/layout/MT15'
 
 interface ContractBdBdpcProps extends CommonFunctionAndRoleCode {
   contractId?: string
@@ -35,6 +35,7 @@ interface ContractBdBdpcProps extends CommonFunctionAndRoleCode {
 }
 
 class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
+  bdName = ''
   state = {
     bd: '',
     bdpc: ''
@@ -54,7 +55,9 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
 
   componentDidMount() {
     if (this.props.initBdAndBdpc) {
-      this.setState(this.props.initBdAndBdpc)
+      const {bd, bdName, bdpc} = this.props.initBdAndBdpc
+      this.setState({bd, bdpc})
+      this.bdName = bdName
     }
     this.props.fetchBD()
     this.props.fetchBDPC()
@@ -67,7 +70,9 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
       this.props.clearState(CONTRACT.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.contractBdBdpc.loaded && nextProps.contractBdBdpc.loaded) {
-      this.setState(nextProps.contractBdBdpc.data)
+      const {bd, bdName, bdpc} = nextProps.contractBdBdpc.data
+      this.setState({bd, bdpc})
+      this.bdName = bdName
     }
   }
 
@@ -89,8 +94,7 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
         <InputUnit>
           <LabelAndInput1 label="所属BD">
             <Select1 disabled={!this.props.contractId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
-                     options={BDList}
-                     showClear={true}
+                     options={BDList} showClear={true} notMatchText={this.bdName}
                      value={this.state.bd} onChange={v => this.setState({bd: v})}
             />
           </LabelAndInput1>

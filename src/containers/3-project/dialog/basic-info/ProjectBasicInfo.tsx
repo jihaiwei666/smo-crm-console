@@ -4,12 +4,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Form from 'app-core/form/Form'
+import Select1 from 'app-core/common/Select1'
 
 import Data from '../../../common/interface/Data'
 import {NECESSARY} from '../../../common/Label'
 import LabelAndInput from '../../../common/LabelAndInput'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Select1 from 'app-core/common/Select1'
+import MT15 from '../../../../components/layout/MT15'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
@@ -41,7 +42,7 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   }
 
   oldProjectName = ''
-
+  relativeClientName = ''
   state = {
     valid: true,
     projectName: '',
@@ -78,8 +79,10 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
 
   componentWillMount() {
     if (this.props.baseInfo) {
-      this.setState(this.props.baseInfo)
-      this.oldProjectName = this.props.baseInfo.projectName
+      const {projectName, projectCode, relativeClient, relativeClientName} = this.props.baseInfo
+      this.setState({projectName, projectCode, relativeClient})
+      this.oldProjectName = projectName
+      this.relativeClientName = relativeClientName
     }
   }
 
@@ -131,11 +134,11 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
           <div className="tip">有合同关联后，则生成项目编码（SM-年份-月份-BD缩写-流水号，如SM201705LXX001）</div>
         </div>
 
-        <LabelAndInput1 label="关联客户" inputType={NECESSARY}>
+        <LabelAndInput1 label="关联客户" inputType={NECESSARY} className="input-row">
           <Select1
             width="250px"
             required={true} name="relativeClient"
-            options={this.props.clientList.data || []}
+            options={this.props.clientList.data || []} notMatchText={this.relativeClientName}
             value={this.state.relativeClient} onChange={v => this.setState({relativeClient: v})}/>
         </LabelAndInput1>
 
@@ -148,6 +151,9 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
           this.props.editAuthority && !this.props.projectId && (
             <Save disabled={!this.state.valid} onClick={this.add}/>
           )
+        }
+        {
+          !this.props.editAuthority && (<MT15/>)
         }
       </Form>
     )

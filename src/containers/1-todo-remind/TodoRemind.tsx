@@ -26,7 +26,6 @@ interface TodoRemindProps extends AppFunctionPage {
   sendRemindSuccess: boolean
   updateRemindStatus: (remindId, status) => void
   updateRemindStatusSuccess: boolean
-  fetchUnreadRemindAmountSuccess: boolean
   unreadRemindAmount: number
 }
 
@@ -97,7 +96,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
     if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {
       this.refreshList()
     }
-    if (!this.props.fetchUnreadRemindAmountSuccess && nextProps.fetchUnreadRemindAmountSuccess) {
+    if (this.props.unreadRemindAmount != nextProps.unreadRemindAmount) {
       if (nextProps.unreadRemindAmount != 0) {
         this.refreshList()
       }
@@ -200,6 +199,7 @@ class TodoRemind extends React.Component<TodoRemindProps> {
 
 function mapStateToProps(state) {
   return {
+    unreadRemindAmount: state.app.unreadRemindAmount,
     sendRemindSuccess: state.todoRemind.sendRemindSuccess,
     updateRemindStatusSuccess: state.todoRemind.updateRemindStatusSuccess,
     todoRemindAllList: state.todoRemindAllList,

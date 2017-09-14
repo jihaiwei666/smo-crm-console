@@ -46,6 +46,9 @@ class AddProjectDialog extends React.Component<AddProjectDialogProps> {
     if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
       this.setState({beforeQuotationId: nextProps.newBeforeQuotation.beforeQuotationId})
     }
+    if (!this.props.addAfterQuotationSuccess && nextProps.addAfterQuotationSuccess) {
+      this.setState({afterQuotationId: nextProps.newAfterQuotation.afterQuotationId})
+    }
   }
 
   render() {

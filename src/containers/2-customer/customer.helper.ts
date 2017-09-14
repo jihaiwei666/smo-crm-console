@@ -1,11 +1,11 @@
 /**
  * Created by jiangyukun on 2017/7/11.
  */
+import {customerTypeMapper} from './customer.constant'
 import {getDateStr} from '../../core/utils/dateUtils'
 import {handleSupplierServerData} from './dialog/supplier/supplier.helper'
 import {handleLastRfiDetail} from './dialog/rfi/rfi.helper'
-import {handleOperationList, getNullValue, handleAttachmentList, handleButtonOperation, handleItemOperation} from '../common/common.helper'
-import {customerTypeMapper} from './customer.constant'
+import {handleOperationList, getNullValue, handleAttachmentList, handleButtonOperation, handleItemOperation, getNameAndEmail} from '../common/common.helper'
 
 export function getCustomerType(type) {
   return customerTypeMapper[type]
@@ -77,6 +77,7 @@ export function handleCustomerRemarkAttachment(remarkAttachment) {
 export function handleCustomerBdBdpc(bdAndBdpc) {
   return {
     owner: bdAndBdpc['customer_owner'],
+    ownerName: getNameAndEmail(bdAndBdpc['customer_owner_name'], bdAndBdpc['customer_owner']),
     bdpc: bdAndBdpc['customer_the_bdpc'],
   }
 }

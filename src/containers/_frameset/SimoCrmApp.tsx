@@ -38,6 +38,11 @@ interface SimoCrmAppProps {
   clearRemindAmount: () => void
 }
 
+let remindTimeout = 30000
+if (process.env.NODE_ENV != 'production') {
+  remindTimeout = 10000
+}
+
 class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.ChildContextProvider<any> {
   static childContextTypes = {
     roleCode: PropTypes.number
@@ -59,7 +64,7 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.Child
     this.props.fetchUnReadRemindAmount()
     this.taskId = setInterval(() => {
       this.props.fetchUnReadRemindAmount()
-    }, 30000)
+    }, remindTimeout)
     eventBus.addListener(EVENT_NAMES.CUSTOMER_NAME_UPDATED, this.refreshRecentOpen)
     eventBus.addListener(EVENT_NAMES.PROJECT_NAME_UPDATED, this.refreshRecentOpen)
     eventBus.addListener(EVENT_NAMES.CONTRACT_NAME_UPDATED, this.refreshRecentOpen)

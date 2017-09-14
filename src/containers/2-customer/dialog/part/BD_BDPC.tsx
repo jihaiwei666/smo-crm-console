@@ -40,6 +40,7 @@ interface BD_BDPC_Props extends CustomerState, CommonFunctionAndRoleCode {
 }
 
 class BD_BDPC extends React.Component<BD_BDPC_Props> {
+  ownerName = ''
   canApplyBdpcFollow = true
   state = {
     showApply: false,
@@ -62,7 +63,9 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
 
   componentWillMount() {
     if (this.props.initBdAndBdpc) {
-      this.setState(this.props.initBdAndBdpc)
+      const {owner, ownerName, bdpc} = this.props.initBdAndBdpc
+      this.setState({owner, bdpc})
+      this.ownerName = ownerName
     }
     this.canApplyBdpcFollow = this.props.canApplyBdpcFollow
   }
@@ -79,7 +82,9 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
       this.props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.customerBdBdpc.loaded && nextProps.customerBdBdpc.loaded) {
-      this.setState(nextProps.customerBdBdpc.data)
+      const {owner, ownerName, bdpc} = nextProps.customerBdBdpc.data
+      this.setState({owner, bdpc})
+      this.ownerName = ownerName
     }
     if (!this.props.applyBdpcFollowUpSuccess && nextProps.applyBdpcFollowUpSuccess) {
       this.canApplyBdpcFollow = false
@@ -118,9 +123,8 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
             <Label>客户所有人</Label>
             <Part>
               <Select1 disabled={!this.props.customerId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
-                       options={BDList} showClear={true}
+                       options={BDList} showClear={true} notMatchText={this.ownerName}
                        value={this.state.owner} onChange={v => this.setState({owner: v})}
-                       lazyLoad={true} onFirstOpen={this.props.fetchBD} loadSuccess={this.props.BDList.loaded}
               />
             </Part>
           </FlexDiv>
@@ -134,7 +138,6 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
               <Select1 disabled={!this.props.customerId || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdpcLeader)}
                        options={BDPCList} showClear={true}
                        value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
-                       lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
               />
             </Part>
           </FlexDiv>

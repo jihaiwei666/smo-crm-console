@@ -15,6 +15,8 @@ import Radio from '../../../../components/form/radio/Radio'
 import MoneyUnit from '../../../common/MoneyUnit'
 import SingleFile from '../../../common/file/SingleFile'
 import DatePicker from '../../../../components/form/DatePicker'
+import MonthPicker from '../../../../components/form/MonthPicker'
+import MT15 from '../../../../components/layout/MT15'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
 
@@ -23,8 +25,6 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import {PROJECT} from '../../../../core/constants/types'
 import {getDateStr, getYearMonth} from '../../../../core/utils/dateUtils'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
-import MonthPicker from '../../../../components/form/MonthPicker'
-import MT15 from '../../../../components/layout/MT15'
 
 interface AfterQuotationProps extends CommonFunction {
   projectId?: string

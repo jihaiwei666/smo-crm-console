@@ -33,6 +33,7 @@ interface ProjectBD_BDPCProps extends CommonFunctionAndRoleCode {
 }
 
 class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
+  bdName = ''
   state = {
     bd: '',
     bdpc: ''
@@ -52,7 +53,9 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
 
   componentWillMount() {
     if (this.props.initBdAndBdpc) {
-      this.setState(this.props.initBdAndBdpc)
+      const {bd, bdName, bdpc} = this.props.initBdAndBdpc
+      this.setState({bd, bdpc})
+      this.bdName = bdName
     }
   }
 
@@ -68,7 +71,9 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
       this.props.clearState(PROJECT.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.projectBdBdpc.loaded && nextProps.projectBdBdpc.loaded) {
-      this.setState(nextProps.projectBdBdpc.data)
+      const {bd, bdName, bdpc} = nextProps.projectBdBdpc.data
+      this.setState({bd, bdpc})
+      this.bdName = bdName
     }
   }
 
@@ -90,8 +95,7 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
         <div className="input-row">
           <LabelAndInput1 label="所属BD">
             <Select1 disabled={this.props.projectId == '' || !checkHavePermission(this.props.roleCode, this.props.roleCode == roleCategory.bdLeader)}
-                     options={BDList}
-                     showClear={true}
+                     options={BDList} showClear={true} notMatchText={this.bdName}
                      value={this.state.bd} onChange={v => this.setState({bd: v})}
             />
           </LabelAndInput1>

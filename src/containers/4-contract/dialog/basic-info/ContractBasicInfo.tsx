@@ -10,18 +10,18 @@ import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Select1 from 'app-core/common/Select1'
 import Form from 'app-core/form/Form'
 
+import Input from '../../../../components/form/Input'
 import Save from '../../../common/Save'
 import Update from '../../../common/Update'
-import Input from '../../../../components/form/Input'
-import Data from '../../../common/interface/Data'
 
+import Data from '../../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {CONTRACT} from '../../../../core/constants/types'
 import {getIsFirstOperation} from '../../contract.helper'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
-import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
 import {checkHavePermission} from '../../../../core/permission'
+import {fetchProjectList, fetchContractCodePrefix, addContract, updateContract} from '../../contract.action'
 
 interface ContractBasicInfoProps extends CommonFunctionAndRoleCode {
   contractId?: string
@@ -134,35 +134,26 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
           <div className="tip">项目名称只能输入汉字、英文、数字、-、（、），项目编码-申办方-项目名称-中心名称</div>
         </div>
         <LabelAndInput1 className="pb10 bb" label="关联项目" inputType={NECESSARY}>
-          {
-            this.props.editAuthority && (
-              <div style={{width: '300px'}}>
-                <Select1
-                  options={this.props.projectList.data || []}
-                  required={true} name="projectId"
-                  value={this.state.projectId} onChange={this.handleProjectChange}
-                />
-              </div>
-            )
-          }
-          {
-            !this.props.editAuthority && (
-              <div className="p5">{this.projectName}</div>
-            )
-          }
+          <div style={{width: '300px'}}>
+            <Select1
+              options={this.props.projectList.data || []} notMatchText={this.projectName}
+              required={true} name="projectId" disabled={!this.props.editAuthority}
+              value={this.state.projectId} onChange={this.handleProjectChange}
+            />
+          </div>
         </LabelAndInput1>
         <div className="input-row">
           <LabelAndInput1 label="合同编号" inputType={NECESSARY}>
-            <Input width="30%" disabled={true} placeholder="选择关联项目后自动产生" className="m5"
+            <Input width="30%" disabled={true} placeholder="选择关联项目后自动产生" className="contract-code-input"
                    value={this.state.codePrefix || '暂无项目编号'}/>
             -
-            <Input width="20%" className="m5" placeholder="请输入流水号"
+            <Input width="20%" className="contract-code-input" placeholder="请输入流水号"
                    required={true} name="serialNumber"
                    format={/^\d{3}$/}
                    value={this.state.serialNumber} onChange={v => this.setState({serialNumber: v})}
             />
             -
-            <Input width="30%" className="m5" placeholder="请输入协同BD缩写"
+            <Input width="30%" className="contract-code-input" placeholder="请输入协同BD缩写"
                    required={true} name="bdCode"
                    value={this.state.bdCode} onChange={v => this.setState({bdCode: v})}
             />

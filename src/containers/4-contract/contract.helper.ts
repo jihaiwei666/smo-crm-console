@@ -1,7 +1,7 @@
 import {contractTypeMapper} from './contract.constant'
 
 import {handleAfterSign} from './dialog/after-sign/after-sign.helper'
-import {handleOperationList, handleAttachmentList, handleButtonOperation, handleItemOperation} from '../common/common.helper'
+import {handleOperationList, handleAttachmentList, handleButtonOperation, handleItemOperation, getNameAndEmail} from '../common/common.helper'
 import {handleCollectionList} from './dialog/make-collections/make-collection.helper'
 import {finalPermission} from '../../core/permission'
 
@@ -42,6 +42,7 @@ export function handleContractBdBdpc(bdAnBdpc) {
   bdAnBdpc = bdAnBdpc || {}
   return {
     bd: bdAnBdpc['contract_the_bd'],
+    bdName: getNameAndEmail(bdAnBdpc['contract_the_bd_name'], bdAnBdpc['contract_the_bd']),
     bdpc: bdAnBdpc['contract_the_bdpc']
   }
 }

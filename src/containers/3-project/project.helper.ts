@@ -1,4 +1,4 @@
-import {handleOperationList, handleItemOperation, handleButtonOperation} from '../common/common.helper'
+import {handleOperationList, handleItemOperation, handleButtonOperation, getNameAndEmail} from '../common/common.helper'
 import {handleBeforeQuotation} from './dialog/before-quotation/before-quotation.helper'
 import {handleAfterQuotation} from './dialog/after-quotation/after-quotation.helper'
 
@@ -44,6 +44,7 @@ export function handleProjectRemarkAttachment(remarkAttachment) {
 export function handleProjectBdBdpc(bdAndBdpc) {
   return {
     bd: bdAndBdpc['project_the_bd'],
+    bdName: getNameAndEmail(bdAndBdpc['project_the_bd_name'], bdAndBdpc['project_the_bd']),
     bdpc: bdAndBdpc['project_the_bdpc']
   }
 }
@@ -61,6 +62,7 @@ export function handleProjectDetail(data) {
       projectName: baseInfo['project_info_name'] || '',
       projectCode: baseInfo['project_info_code'] || '',
       relativeClient: baseInfo['customer_info_id'] || '',
+      relativeClientName: baseInfo['customer_name'] || '',
     },
     bdAndBdpc: handleProjectBdBdpc(bdAndBdpc),
     beforeQuotation: handleBeforeQuotation(beforeQuotation),
