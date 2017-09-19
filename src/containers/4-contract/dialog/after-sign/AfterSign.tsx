@@ -350,7 +350,7 @@ class AfterSign extends React.Component<AfterSignProps> {
           <LabelAndInput1 label="税率">
             <InputWithSuffix
               required={true} name="taxRate"
-              format={regex.PERCENT_INTEGER}
+              format={regex.NUMBER}
               placeholder="请输入数字"
               suffix="%"
               value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}

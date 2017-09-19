@@ -23,8 +23,8 @@ import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
-import {getSuffix} from '../after-sign/after-sign.helper'
 import {CONTRACT} from '../../../../core/constants/types'
+import {getSuffix} from '../after-sign/after-sign.helper'
 
 interface MakeCollectionProps extends CommonFunction {
   index: number

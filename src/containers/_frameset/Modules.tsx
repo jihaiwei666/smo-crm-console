@@ -5,13 +5,14 @@ import React from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
-import pages from '../../core/pages'
-import {getPath} from '../../core/env'
 import CssTransition from '../../components/CssTransition'
-import {roleCategory} from '../7-account-manage/account-manage.constant'
-import CommonFunction from '../common/interface/CommonFunction'
+
 import addCommonFunction from './addCommonFunction'
+import CommonFunction from '../common/interface/CommonFunction'
+import pages from '../../core/pages'
 import {TODO_REMIND} from '../../core/constants/types'
+import {getPath} from '../../core/env'
+import {roleCategory} from '../7-account-manage/account-manage.constant'
 
 interface ModulesProps extends CommonFunction {
   roleCode: number

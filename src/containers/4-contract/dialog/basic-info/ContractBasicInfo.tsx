@@ -154,7 +154,6 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
             />
             -
             <Input width="30%" className="contract-code-input" placeholder="请输入协同BD缩写"
-                   required={true} name="bdCode"
                    value={this.state.bdCode} onChange={v => this.setState({bdCode: v})}
             />
           </LabelAndInput1>

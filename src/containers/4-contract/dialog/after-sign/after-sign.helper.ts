@@ -1,9 +1,9 @@
 /**
  * Created by jiangyukun on 2017/8/7.
  */
+import {nodeProgress} from '../../contract.constant'
 import {getDate} from '../../../../core/utils/dateUtils'
 import {numberToText, getAttachmentList} from '../../../common/common.helper'
-import {nodeProgress} from '../../contract.constant'
 
 export function handleAfterSign(afterSign) {
   const base = afterSign['contractAfterSignedVo']
