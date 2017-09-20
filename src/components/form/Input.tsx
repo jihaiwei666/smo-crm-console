@@ -14,15 +14,16 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   clsPrefix?: string
 }
 
+function defaultFormat(value) {
+  if (value == null) return false
+  if (typeof value == 'number') return true
+  return value.trim().length != 0
+}
+
 class Input extends React.Component<InputProps> {
   static defaultProps = {
     onChange: () => null,
-    clsPrefix: 'default',
-    format: value => {
-      if (value == null) return false
-      if (typeof value == 'number') return true
-      return value.trim().length != 0
-    }
+    clsPrefix: 'default'
   }
 
   state = {
@@ -60,8 +61,9 @@ class Input extends React.Component<InputProps> {
 
     return (
       <input
+        {...otherProps}
         style={style}
-        className={classnames('input', `${clsPrefix}-input`, className, {invalid: invalid})} {...otherProps}
+        className={classnames('input', `${clsPrefix}-input`, className, {invalid: invalid})}
         value={this.props.value || ''}
         onBlur={this.handleBlur}
         onChange={e => this.props.onChange(e.target.value)}
@@ -70,4 +72,11 @@ class Input extends React.Component<InputProps> {
   }
 }
 
-export default addFormSupport(Input, ({props}) => checkValid(props.format, props.value))
+const noFormatRule = (required) => value => {
+  if (required) {
+    return defaultFormat(value)
+  }
+  return true
+}
+
+export default addFormSupport(Input, ({props}) => checkValid(props.format || noFormatRule(props.required), props.value))

@@ -25,6 +25,7 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
 import {CONTRACT} from '../../../../core/constants/types'
 import {getSuffix} from '../after-sign/after-sign.helper'
+import regex from '../../../../core/constants/regex'
 
 interface MakeCollectionProps extends CommonFunction {
   index: number
@@ -192,10 +193,16 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
                   required={true} name="money"
                   value={this.state.money} onChange={v => this.setState({money: v})}
                 />
-                <LabelAndInput
-                  label="税率"
-                  value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}
-                />
+                <LabelAndInput1 label="税率">
+                  <InputWithSuffix
+                    name="taxRate"
+                    format={regex.NUMBER}
+                    placeholder="请输入税率"
+                    suffix="%"
+                    value={this.state.taxRate} onChange={v => this.setState({taxRate: v})}
+                  />
+                </LabelAndInput1>
+
                 <LabelAndInput
                   label="发票邮寄地址"
                   value={this.state.invoicePostAddress} onChange={v => this.setState({invoicePostAddress: v})}
