@@ -11,7 +11,8 @@ const initValue = {
   user: null,
   changePasswordSuccess: false,
   fetchUnreadRemindAmountSuccess: false,
-  unreadRemindAmount: 0
+  unreadRemindAmount: 0,
+  updateUserStatusSuccess: false
 }
 
 export default function app(iState = fromJS(initValue), action) {
@@ -27,5 +28,6 @@ export default function app(iState = fromJS(initValue), action) {
   }
   nextIState = handleFlagState(nextIState, action, APP.CHANGE_PASSWORD, 'changePasswordSuccess')
   nextIState = handleFlagState(nextIState, action, TODO_REMIND.FETCH_UNREAD_REMIND_AMOUNT, 'fetchUnreadRemindAmountSuccess')
+  nextIState = handleFlagState(nextIState, action, APP.UPDATE_USER_STATUS, 'updateUserStatusSuccess')
   return nextIState
 }

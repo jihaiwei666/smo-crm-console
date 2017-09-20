@@ -4,9 +4,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-
 import MessageManage from 'app-core/message/'
-import {changeMessageStatus} from 'app-core/message/message.action'
 
 import Header from './Header'
 import PageContent from './PageContent'
@@ -17,8 +15,9 @@ import Data from '../common/interface/Data'
 import pages from '../../core/pages'
 import eventBus, {EVENT_NAMES} from '../../core/event'
 import {getPath} from '../../core/env'
-import {fetchRecentOpenList, changePassword} from '../../actions/app.action'
+import {fetchRecentOpenList, changePassword, updateUserStatus, refreshUserStatus} from '../../actions/app.action'
 import {fetchUnReadRemindAmount, clearRemindAmount} from '../1-todo-remind/todo-remind.action'
+import {changeMessageStatus} from 'app-core/message/message.action'
 
 interface SimoCrmAppProps {
   user: any
@@ -36,11 +35,15 @@ interface SimoCrmAppProps {
   fetchUnreadRemindAmountSuccess: boolean
   unreadRemindAmount: number
   clearRemindAmount: () => void
+  updateUserStatus: (options) => void
+  updateUserStatusSuccess: boolean
+  refreshUserStatus: () => void
+  newUserStatus: Data<any>
 }
 
 let remindTimeout = 30000
 if (process.env.NODE_ENV != 'production') {
-  remindTimeout = 10000
+  remindTimeout = 60000
 }
 
 class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.ChildContextProvider<any> {
@@ -100,6 +103,10 @@ class SimoCrmApp extends React.Component<SimoCrmAppProps> implements React.Child
             user={this.props.user}
             changePassword={this.props.changePassword}
             changePasswordSuccess={this.props.changePasswordSuccess}
+            updateUserStatus={this.props.updateUserStatus}
+            updateUserStatusSuccess={this.props.updateUserStatusSuccess}
+            refreshUserStatus={this.props.refreshUserStatus}
+            newUserStatus={this.props.newUserStatus}
           />
           <PageContent roleCode={this.props.roleCode} match={this.props.match}/>
         </main>
@@ -120,11 +127,13 @@ function mapStateToProps(state) {
     ...state['app'],
     message: state.message,
     recentOpenList: state.recentOpenList,
+    newUserStatus: state.newUserStatus,
     currentPath,
     router: state.router
   }
 }
 
 export default connect(mapStateToProps, {
-  changeMessageStatus, fetchRecentOpenList, changePassword, fetchUnReadRemindAmount, clearRemindAmount
+  changeMessageStatus, fetchRecentOpenList, changePassword, fetchUnReadRemindAmount, clearRemindAmount,
+  updateUserStatus, refreshUserStatus
 })(SimoCrmApp)

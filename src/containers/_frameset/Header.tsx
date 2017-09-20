@@ -5,27 +5,50 @@ import React from 'react'
 import classnames from 'classnames'
 import OuterClick from 'app-core/core/OuterClick'
 
-import {context} from '../../core/env'
-import {_get} from '../../core/http'
 import CssTransition from '../../components/CssTransition'
 import ChangePasswordDialog from './ChangePasswordDialog'
 import {getPositionName} from '../7-account-manage/account-manage.helper'
+import MyStatusDialog from './MyStatusDialog'
+
+import Data from '../common/interface/Data'
+import {context} from '../../core/env'
+import {_get} from '../../core/http'
+import {getUserStatusText} from '../common/common.helper'
 
 interface HeaderProps {
   user: any
   changePassword: (userId, oldPassword, newPassword) => void
   changePasswordSuccess: boolean
+  updateUserStatus: (options) => void
+  updateUserStatusSuccess: boolean
+  refreshUserStatus: () => void
+  newUserStatus: Data<any>
 }
 
 class Header extends React.Component<HeaderProps> {
   state = {
     active: false,
-    showResetPassword: false
+    showResetPassword: false,
+    showMyStatusDialog: false,
+    userStatus: 0
   }
 
   logout = () => {
     _get('/user/v1/logout')
     location.href = `${context}/login`
+  }
+
+  componentWillMount() {
+    this.setState({userStatus: this.props.user.userStatus})
+  }
+
+  componentWillReceiveProps(nextProps: HeaderProps) {
+    if (!this.props.updateUserStatusSuccess && nextProps.updateUserStatusSuccess) {
+      this.props.refreshUserStatus()
+    }
+    if (!this.props.newUserStatus.loaded && nextProps.newUserStatus.loaded) {
+      this.setState({userStatus: nextProps.newUserStatus.data})
+    }
   }
 
   render() {
@@ -39,6 +62,16 @@ class Header extends React.Component<HeaderProps> {
               changePassword={this.props.changePassword}
               changePasswordSuccess={this.props.changePasswordSuccess}
               onExited={() => this.setState({showResetPassword: false})}
+            />
+          )
+        }
+        {
+          this.state.showMyStatusDialog && (
+            <MyStatusDialog
+              userStatus={this.state.userStatus}
+              updateUserStatus={this.props.updateUserStatus}
+              updateUserStatusSuccess={this.props.updateUserStatusSuccess}
+              onExited={() => this.setState({showMyStatusDialog: false})}
             />
           )
         }
@@ -58,8 +91,8 @@ class Header extends React.Component<HeaderProps> {
               </CssTransition>
             </div>
           </OuterClick>
-          <div className="user-status">
-            我的状态（正常）
+          <div className="user-status" onClick={() => this.setState({showMyStatusDialog: true})}>
+            我的状态（{getUserStatusText(this.state.userStatus)}）
           </div>
         </div>
       </header>

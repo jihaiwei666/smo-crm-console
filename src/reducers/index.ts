@@ -43,6 +43,7 @@ export default combineReducers({
   accountInfo: wrapReducerState(data(APP.FETCH_ACCOUNT_INFO)),
   BDList: wrapReducerState(data(APP.FETCH_BD)),
   BDPCList: wrapReducerState(data(APP.FETCH_BDPC)),
+  newUserStatus: wrapReducerState(data(APP.REFRESH_USER_STATUS)),
 
   todoRemind: wrapReducerState(todoRemind),
   todoRemindAllList: wrapReducerState(pageList(TODO_REMIND.FETCH_LIST)),

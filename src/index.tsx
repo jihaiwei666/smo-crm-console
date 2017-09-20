@@ -39,8 +39,9 @@ _get('/user/v1/getUserStatus').then(data => {
   let email = data['account']
   let userName = data['name']
   let roleCode = data['post_type']
+  let userStatus = data['user_status']
   // roleCode = roleCategory.systemManage //todo
-  store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode}})
+  store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode, userStatus}})
   render(
     <Root store={store} history={history} roleCode={roleCode}/>,
     document.getElementById('root')

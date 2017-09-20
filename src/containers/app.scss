@@ -161,6 +161,7 @@ body {
             flex-direction: row-reverse;
             padding: 0 15px;
             .user-status {
+                cursor: pointer;
                 display: inline-block;
                 border: 1px solid #ccc;
                 border-radius: 5px;
@@ -232,6 +233,18 @@ body {
             display: flex;
             flex-direction: column;
         }
+    }
+}
+
+.status-title {
+    font-weight:600;
+}
+
+.my-status-dialog {
+    .current-status {
+        padding-bottom: 15px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #eee;
     }
 }
 

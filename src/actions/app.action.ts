@@ -4,7 +4,7 @@
 import {APP} from '../core/constants/types'
 import phase from '../core/constants/phase'
 import {THREE_PHASE} from '../middlewares/request_3_phase'
-import {_get, _patch} from '../core/http'
+import {_get, _patch, _post} from '../core/http'
 import {handleBDListData, handleBDPCListData, handleAccountInfo} from './app.helper'
 
 export function clearState(type: string) {
@@ -56,6 +56,25 @@ export function changePassword(userId, oldPassword, newPassword) {
     [THREE_PHASE]: {
       type: APP.CHANGE_PASSWORD,
       http: () => _patch(`/user/v1/updateUserPassWord/${userId}/${newPassword}/${oldPassword}`)
+    }
+  }
+}
+
+export function updateUserStatus(options) {
+  return {
+    [THREE_PHASE]: {
+      type: APP.UPDATE_USER_STATUS,
+      http: () => _post('/user/v1/updateUserStatus', {body: options})
+    }
+  }
+}
+
+export function refreshUserStatus() {
+  return {
+    [THREE_PHASE]: {
+      type: APP.REFRESH_USER_STATUS,
+      http: () => _get('/user/v1/getUserStatus'),
+      handleResponse: data => data['user_status']
     }
   }
 }

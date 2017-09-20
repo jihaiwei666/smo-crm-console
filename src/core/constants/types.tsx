@@ -16,7 +16,9 @@ export const APP = {
   FETCH_RECENT_OPEN_LIST: null,
   FETCH_OPERATION_HISTORY_LIST: null,
   FETCH_ACCOUNT_INFO: null,
-  CHANGE_PASSWORD: null
+  CHANGE_PASSWORD: null,
+  UPDATE_USER_STATUS: null,
+  REFRESH_USER_STATUS: null
 }
 
 export const TODO_REMIND = {

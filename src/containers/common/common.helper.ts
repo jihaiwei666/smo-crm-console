@@ -121,3 +121,10 @@ export function getNameAndEmail(name, email) {
   if (!email) return name
   return `${name} ( ${email} )`
 }
+
+export function getUserStatusText(status) {
+  if (status == '0') return '正常'
+  if (status == '1') return '休假'
+  if (status == '2') return '出差'
+  return '未知状态'
+}
