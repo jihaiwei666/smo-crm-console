@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const RecycleBin = require('../../6-recycle-bin/RecycleBin')
     callback(RecycleBin)
-  })
+  }, 'recycle_bin')
 }

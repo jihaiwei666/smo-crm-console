@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const Project = require('../../3-project/Project')
     callback(Project)
-  })
+  }, 'project')
 }

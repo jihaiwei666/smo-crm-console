@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import classnames from 'classnames'
-import addFormSupport, {checkValid} from 'app-core/core/hoc/addFormSupport'
+import addFormSupport, {checkValid, defaultValueFormat} from 'app-core/core/hoc/addFormSupport'
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   value?: string
@@ -12,12 +12,6 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   width?: string
   valid?: boolean
   clsPrefix?: string
-}
-
-function defaultFormat(value) {
-  if (value == null) return false
-  if (typeof value == 'number') return true
-  return value.trim().length != 0
 }
 
 class Input extends React.Component<InputProps> {
@@ -74,7 +68,7 @@ class Input extends React.Component<InputProps> {
 
 const noFormatRule = (required) => value => {
   if (required) {
-    return defaultFormat(value)
+    return defaultValueFormat(value)
   }
   return true
 }

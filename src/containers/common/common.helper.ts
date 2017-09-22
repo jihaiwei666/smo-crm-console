@@ -122,6 +122,12 @@ export function getNameAndEmail(name, email) {
   return `${name} ( ${email} )`
 }
 
+export const USER_STATUS = {
+  normal: 0,
+  holiday: 1,
+  businessTrip: 2
+}
+
 export function getUserStatusText(status) {
   if (status == '0') return '正常'
   if (status == '1') return '休假'

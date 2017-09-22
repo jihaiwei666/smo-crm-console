@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const TodoRemind = require('../../1-todo-remind/TodoRemind')
     callback(TodoRemind)
-  })
+  }, 'todo_remind')
 }

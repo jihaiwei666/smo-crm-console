@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const Report = require('../../5-report/Report')
     callback(Report)
-  })
+  }, 'report')
 }

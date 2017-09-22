@@ -15,6 +15,7 @@ import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
 import {relevantType, remindTypeOptions} from '../../1-todo-remind/todo-remind.constant'
 import {CUSTOMER} from '../../../core/constants/types'
+import UserStatusOptionItem from '../custom/UserStatusOptionItem'
 
 interface ApplyBdpcFollowUpDialogProps extends CommonFunction {
   customerId: string
@@ -59,6 +60,16 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
     }
   }
 
+  renderOption = (option, index) => {
+    return (
+      <UserStatusOptionItem
+        key={option.value}
+        option={option}
+        index={index}
+      />
+    )
+  }
+
   render() {
     let BDPCList = []
 
@@ -89,6 +100,7 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
                          required={true} name="bdpc"
                          value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}
                          lazyLoad={true} onFirstOpen={this.props.fetchBDPC} loadSuccess={this.props.BDPCList.loaded}
+                         renderOption={this.renderOption}
                 />
               </Part>
             </FlexDiv>

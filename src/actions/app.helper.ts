@@ -13,7 +13,8 @@ export function handleBDListData(BDListData) {
 export function handleBDPCListData(BDPCListData) {
   return BDPCListData.map(d => ({
     value: d['account'],
-    text: getNameAndEmail(d['name'], d['account'])
+    text: getNameAndEmail(d['name'], d['account']),
+    userStatus: d['status']
   }))
 }
 

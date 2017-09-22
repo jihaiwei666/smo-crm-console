@@ -30,7 +30,9 @@ class Header extends React.Component<HeaderProps> {
     active: false,
     showResetPassword: false,
     showMyStatusDialog: false,
-    userStatus: 0
+    userStatus: 0,
+    startDate: null,
+    endDate: null,
   }
 
   logout = () => {
@@ -39,7 +41,9 @@ class Header extends React.Component<HeaderProps> {
   }
 
   componentWillMount() {
-    this.setState({userStatus: this.props.user.userStatus})
+    let {userStatus, userStatusInfo} = this.props.user
+    const {startDate, endDate} = userStatusInfo
+    this.setState({userStatus: userStatus, startDate, endDate})
   }
 
   componentWillReceiveProps(nextProps: HeaderProps) {
@@ -47,7 +51,8 @@ class Header extends React.Component<HeaderProps> {
       this.props.refreshUserStatus()
     }
     if (!this.props.newUserStatus.loaded && nextProps.newUserStatus.loaded) {
-      this.setState({userStatus: nextProps.newUserStatus.data})
+      const {userStatus, startDate, endDate} = nextProps.newUserStatus.data
+      this.setState({userStatus, startDate, endDate})
     }
   }
 
@@ -69,6 +74,8 @@ class Header extends React.Component<HeaderProps> {
           this.state.showMyStatusDialog && (
             <MyStatusDialog
               userStatus={this.state.userStatus}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
               updateUserStatus={this.props.updateUserStatus}
               updateUserStatusSuccess={this.props.updateUserStatusSuccess}
               onExited={() => this.setState({showMyStatusDialog: false})}

@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const Client = require('../../2-customer/Customer')
     callback(Client)
-  })
+  }, 'customer')
 }

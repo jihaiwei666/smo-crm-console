@@ -2,6 +2,7 @@
  * Created by jiangyukun on 2017/9/20.
  */
 import React from 'react'
+import {Moment} from 'moment'
 import Modal from 'app-core/modal'
 import Form from 'app-core/form/Form'
 
@@ -17,6 +18,8 @@ import {getUserStatusText} from '../common/common.helper'
 
 interface MyStatusDialogProps extends CommonFunction {
   userStatus: number
+  startDate: Moment
+  endDate: Moment
   updateUserStatus: (options) => void
   updateUserStatusSuccess: boolean
   onExited: () => void
@@ -41,6 +44,11 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
       "begin_date": this.state.startDate,
       "end_date": this.state.endDate
     })
+  }
+
+  componentWillMount() {
+    const {userStatus, startDate, endDate} = this.props
+    this.setState({status: userStatus, startDate, endDate})
   }
 
   componentWillReceiveProps(nextProps: MyStatusDialogProps) {

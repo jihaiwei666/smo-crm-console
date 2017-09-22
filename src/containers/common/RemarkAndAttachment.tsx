@@ -24,7 +24,9 @@ class RemarkAndAttachment extends React.Component<RemarkAndAttachmentProps> {
     return (
       <div className="--module-item">
         <LabelAndInput1 className="bb" label="备注">
-          <TextArea rows={5} value={this.props.remark} onChange={this.props.onRemarkChange}></TextArea>
+          <TextArea
+            placeholder="请输入备注"
+            rows={5} value={this.props.remark} onChange={this.props.onRemarkChange}></TextArea>
         </LabelAndInput1>
         <div className="mt5 bb">
           <div className="mb5">

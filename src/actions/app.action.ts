@@ -6,6 +6,7 @@ import phase from '../core/constants/phase'
 import {THREE_PHASE} from '../middlewares/request_3_phase'
 import {_get, _patch, _post} from '../core/http'
 import {handleBDListData, handleBDPCListData, handleAccountInfo} from './app.helper'
+import {getDate} from '../core/utils/dateUtils'
 
 export function clearState(type: string) {
   return {
@@ -74,7 +75,11 @@ export function refreshUserStatus() {
     [THREE_PHASE]: {
       type: APP.REFRESH_USER_STATUS,
       http: () => _get('/user/v1/getUserStatus'),
-      handleResponse: data => data['user_status']
+      handleResponse: data => ({
+        userStatus: data['user_status'],
+        startDate: getDate(data['begin_date']),
+        endDate: getDate(data['end_date'])
+      })
     }
   }
 }

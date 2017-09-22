@@ -274,6 +274,7 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
         </LabelAndInput1>
         <LabelAndInput1 className="bb" label="备注">
           <TextArea
+            placeholder="请输入备注"
             value={this.state.remark} onChange={(e: any) => this.setState({remark: e.target.value})}
           />
         </LabelAndInput1>

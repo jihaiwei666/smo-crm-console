@@ -7,5 +7,5 @@ export default function load(callback) {
   require.ensure([], require => {
     const AccountManage = require('../../7-account-manage/AccountManage')
     callback(AccountManage)
-  })
+  }, 'account_manage')
 }

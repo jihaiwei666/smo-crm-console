@@ -20,6 +20,7 @@ import rootSaga from './sagas/'
 import {_get} from './core/http'
 import {APP} from './core/constants/types'
 import {roleCategory} from './containers/7-account-manage/account-manage.constant'
+import {getDate} from './core/utils/dateUtils'
 
 let history = createBrowserHistory()
 let sagaMiddleware = createSagaMiddleware()
@@ -40,8 +41,12 @@ _get('/user/v1/getUserStatus').then(data => {
   let userName = data['name']
   let roleCode = data['post_type']
   let userStatus = data['user_status']
+  let userStatusInfo = {
+    startDate: getDate(data['begin_date']),
+    endDate: getDate(data['end_date'])
+  }
   // roleCode = roleCategory.systemManage //todo
-  store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode, userStatus}})
+  store.dispatch({type: APP.INIT_USER, user: {userId, email, userName, roleCode, userStatus, userStatusInfo}})
   render(
     <Root store={store} history={history} roleCode={roleCode}/>,
     document.getElementById('root')

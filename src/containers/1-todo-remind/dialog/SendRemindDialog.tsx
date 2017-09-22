@@ -22,6 +22,7 @@ import CommonFunction from '../../common/interface/CommonFunction'
 import {remindTypeOptions} from '../todo-remind.constant'
 import {TODO_REMIND} from '../../../core/constants/types'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
+import UserStatusCategoryItem from '../custom/UserStatusCategoryItem'
 
 interface SendRemindDialogProps extends CommonFunction {
   relevantId?: string
@@ -99,6 +100,17 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
     }
   }
 
+  renderOption = value => (option, index1, index2) => {
+    return (
+      <UserStatusCategoryItem
+        currentValue={value}
+        option={option}
+        index1={index1}
+        index2={index2}
+      />
+    )
+  }
+
   render() {
     return (
       <Modal show={this.state.show} onHide={this.close} onExited={this.props.onExited}>
@@ -131,6 +143,7 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
                   required={true} name="receiver"
                   categoryOptions={this.props.userCategory.data || []}
                   value={this.state.receiver} onChange={value => this.setState({receiver: value})}
+                  renderOption={this.renderOption}
                 />
               </Part>
             </FlexDiv>
@@ -141,6 +154,8 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
               <Part>待办内容：</Part>
               <Part weight={2}>
                 <LimitTextArea
+                  required={true} name="content"
+                  placeholder="请输入待办内容"
                   rows={5}
                   limit={500}
                   tip="待办内容不能超过500字！"

@@ -1,3 +1,4 @@
+
 .todo-remind {
     display: flex;
     flex-direction: column;
@@ -108,4 +109,14 @@
 .relevant-item-list {
     overflow: auto;
     max-height: 400px;
+}
+
+.user-status {
+    float: right;
+    &.holiday {
+        color: #00a854;
+    }
+    &.business-trip {
+        color: #2b77e5;
+    }
 }

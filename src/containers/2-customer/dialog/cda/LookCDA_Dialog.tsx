@@ -205,9 +205,11 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
               />
             </LabelAndInput1>
             <LabelAndInput1 label="备注">
-            <textarea rows={4} className="input default-input"
-                      value={this.state.remark}
-            ></textarea>
+              <textarea
+                placeholder="请输入备注"
+                rows={4} className="input default-input"
+                value={this.state.remark}
+              ></textarea>
             </LabelAndInput1>
           </Form>
         </Modal.Body>
