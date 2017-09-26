@@ -30,7 +30,8 @@ class Header extends React.Component<HeaderProps> {
     active: false,
     showResetPassword: false,
     showMyStatusDialog: false,
-    userStatus: 0,
+    currentStatus: 0,
+    newStatus: 0,
     startDate: null,
     endDate: null,
   }
@@ -41,9 +42,9 @@ class Header extends React.Component<HeaderProps> {
   }
 
   componentWillMount() {
-    let {userStatus, userStatusInfo} = this.props.user
-    const {startDate, endDate} = userStatusInfo
-    this.setState({userStatus: userStatus, startDate, endDate})
+    let {currentStatus, userStatusInfo} = this.props.user
+    const {newStatus, startDate, endDate} = userStatusInfo
+    this.setState({currentStatus, newStatus, startDate, endDate})
   }
 
   componentWillReceiveProps(nextProps: HeaderProps) {
@@ -51,8 +52,8 @@ class Header extends React.Component<HeaderProps> {
       this.props.refreshUserStatus()
     }
     if (!this.props.newUserStatus.loaded && nextProps.newUserStatus.loaded) {
-      const {userStatus, startDate, endDate} = nextProps.newUserStatus.data
-      this.setState({userStatus, startDate, endDate})
+      const {currentStatus, newStatus, startDate, endDate} = nextProps.newUserStatus.data
+      this.setState({currentStatus, newStatus, startDate, endDate})
     }
   }
 
@@ -73,7 +74,8 @@ class Header extends React.Component<HeaderProps> {
         {
           this.state.showMyStatusDialog && (
             <MyStatusDialog
-              userStatus={this.state.userStatus}
+              currentStatus={this.state.currentStatus}
+              newStatus={this.state.newStatus}
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               updateUserStatus={this.props.updateUserStatus}
@@ -99,7 +101,7 @@ class Header extends React.Component<HeaderProps> {
             </div>
           </OuterClick>
           <div className="user-status" onClick={() => this.setState({showMyStatusDialog: true})}>
-            我的状态（{getUserStatusText(this.state.userStatus)}）
+            我的状态（{getUserStatusText(this.state.currentStatus)}）
           </div>
         </div>
       </header>

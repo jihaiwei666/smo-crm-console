@@ -8,6 +8,15 @@ export const contractTypeMapper = {
   '4': '其它',
 }
 
+export const filter = {
+  contractType: [
+    {value: '1', text: '大项目主合同'},
+    {value: '2', text: 'CRC三方协议'},
+    {value: '3', text: '思默和Site两方协议'},
+    {value: '4', text: '其它'},
+  ]
+}
+
 export const serviceTypeOptions = [
   {value: '1', text: 'CRC'},
   {value: '2', text: '招募'},

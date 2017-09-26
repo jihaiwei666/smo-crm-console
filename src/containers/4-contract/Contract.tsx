@@ -16,6 +16,11 @@ import {handleListData, getNameAndEmail, getOperation} from '../common/common.he
 import {getContractType} from './contract.helper'
 import {CONTRACT} from '../../core/constants/types'
 import {fetchList, removeContract} from './contract.action'
+import FilterItem from '../../components/query-filter/FilterItem'
+import Input from '../../components/form/Input'
+import FilterOptions from '../../components/query-filter/FilterOptions'
+import FilterButton from '../common/FilterButton'
+import {filter} from './contract.constant'
 
 interface ContractProps extends AppFunctionPage {
   contractList: any
@@ -34,7 +39,14 @@ class Contract extends React.Component<ContractProps> {
     currentPage: 0,
     showAddDialog: false,
     showEditDialog: false,
-    showDeleteConfirm: false
+    showDeleteConfirm: false,
+    showFilter: false,
+
+    contractName: '',
+    contractCode: '',
+    contractType: '',
+    bd: '',
+    bdpc: ''
   }
 
   toPage = (newPage) => {
@@ -45,6 +57,11 @@ class Contract extends React.Component<ContractProps> {
     this.props.fetchList({
       "start": newPage,
       "limit": 10,
+      "contract_name": this.state.contractName,
+      "contract_code": this.state.contractCode,
+      "contract_type": this.state.contractType,
+      "customer_the_bd": this.state.bd,
+      "customer_the_bdpc": this.state.bdpc,
     })
   }
 
@@ -127,8 +144,48 @@ class Contract extends React.Component<ContractProps> {
               <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
             )
           }
+          <div className="pull-right">
+            <FilterButton onClick={() => this.setState({showFilter: !this.state.showFilter})}/>
+          </div>
         </div>
-
+        {
+          this.state.showFilter && (
+            <div className="query-filter">
+              <FilterItem label="合同名称">
+                <Input
+                  className="small"
+                  placeholder="请输入合同名称"
+                  value={this.state.contractName} onChange={v => this.setState({contractName: v})}
+                />
+              </FilterItem>
+              <FilterItem label="合同编号">
+                <Input
+                  className="small"
+                  placeholder="请输入合同编号"
+                  value={this.state.contractCode} onChange={v => this.setState({contractCode: v})}
+                />
+              </FilterItem>
+              <FilterItem label="合同类型">
+                <FilterOptions options={filter.contractType} useSelect={true} value={this.state.contractType} onChange={v => this.setState({contractType: v})}/>
+              </FilterItem>
+              <FilterItem label="所属BD">
+                <FilterOptions options={[{value: '1', text: '只看我的'}]} value={this.state.bd} onChange={v => this.setState({bd: v})}/>
+              </FilterItem>
+              <FilterItem label="所属BDPC">
+                <FilterOptions options={[{value: '1', text: '只看我的'}]} value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}/>
+              </FilterItem>
+              <div className="bt clearfix">
+                <div className="pull-right mt7">
+                  <Button
+                    className="default"
+                    onClick={() => this.setState({contractName: '', contractCode: '', contractType: '', bd: '', bdpc: ''})}
+                  >清除</Button>
+                  <Button onClick={() => this.toPage(0)}>确定</Button>
+                </div>
+              </div>
+            </div>
+          )
+        }
         <FixHeadList total={total} weights={[1, 2, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>合同名称</FixHead.Item>

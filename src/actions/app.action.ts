@@ -76,7 +76,8 @@ export function refreshUserStatus() {
       type: APP.REFRESH_USER_STATUS,
       http: () => _get('/user/v1/getUserStatus'),
       handleResponse: data => ({
-        userStatus: data['user_status'],
+        currentStatus: data['current_Status'],
+        newStatus: data['user_status'],
         startDate: getDate(data['begin_date']),
         endDate: getDate(data['end_date'])
       })

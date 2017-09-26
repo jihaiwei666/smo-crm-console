@@ -17,7 +17,8 @@ import {APP} from '../../core/constants/types'
 import {getUserStatusText} from '../common/common.helper'
 
 interface MyStatusDialogProps extends CommonFunction {
-  userStatus: number
+  currentStatus: number
+  newStatus: number
   startDate: Moment
   endDate: Moment
   updateUserStatus: (options) => void
@@ -47,8 +48,8 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
   }
 
   componentWillMount() {
-    const {userStatus, startDate, endDate} = this.props
-    this.setState({status: userStatus, startDate, endDate})
+    const {newStatus, startDate, endDate} = this.props
+    this.setState({status: newStatus, startDate, endDate})
   }
 
   componentWillReceiveProps(nextProps: MyStatusDialogProps) {
@@ -72,7 +73,7 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
                 当前状态
               </header>
               <div className="mt7">
-                {getUserStatusText(this.props.userStatus)}
+                {getUserStatusText(this.props.currentStatus)}
               </div>
             </section>
             <section>

@@ -13,10 +13,14 @@ import AppFunctionPage from '../common/interface/AppFunctionPage'
 import UpdateProjectDialog from './dialog/UpdateProjectDialog'
 import PageCountNav from '../../components/nav/PageCountNav'
 
-import {fetchList, removeProject} from './project.action'
-import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
 import ProjectState from './ProjectState'
+import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
 import {PROJECT} from '../../core/constants/types'
+import {fetchList, removeProject} from './project.action'
+import FilterItem from '../../components/query-filter/FilterItem'
+import FilterOptions from '../../components/query-filter/FilterOptions'
+import Input from '../../components/form/Input'
+import FilterButton from '../common/FilterButton'
 
 interface ProjectProps extends AppFunctionPage, ProjectState {
   projectList: any
@@ -26,10 +30,17 @@ interface ProjectProps extends AppFunctionPage, ProjectState {
 class Project extends React.Component<ProjectProps> {
   state = {
     index: -1,
-    currentPage: 0,
+    showFilter: false,
     showAddDialog: false,
     showEditDialog: false,
-    showDeleteConfirm: false
+    showDeleteConfirm: false,
+
+    currentPage: 0,
+    customerName: '',
+    projectName: '',
+    projectCode: '',
+    bd: '',
+    bdpc: ''
   }
 
   toPage = (newPage) => {
@@ -40,6 +51,11 @@ class Project extends React.Component<ProjectProps> {
     this.props.fetchList({
       "start": newPage,
       "limit": 10,
+      "customer_name": this.state.customerName,
+      "project_info_name": this.state.projectName,
+      "project_info_code": this.state.projectCode,
+      "project_the_bd": this.state.bd,
+      "project_the_bdpc": this.state.bdpc,
     })
   }
 
@@ -116,7 +132,52 @@ class Project extends React.Component<ProjectProps> {
               <Button onClick={() => this.setState({showAddDialog: true})}>创建</Button>
             )
           }
+          <div className="pull-right">
+            <FilterButton onClick={() => this.setState({showFilter: !this.state.showFilter})}/>
+          </div>
         </div>
+        {
+          this.state.showFilter && (
+            <div className="query-filter">
+              <FilterItem label="客户名称">
+                <Input
+                  className="small"
+                  placeholder="请输入客户名称"
+                  value={this.state.customerName} onChange={v => this.setState({customerName: v})}
+                />
+              </FilterItem>
+              <FilterItem label="项目名称">
+                <Input
+                  className="small"
+                  placeholder="请输入客户名称"
+                  value={this.state.projectName} onChange={v => this.setState({projectName: v})}
+                />
+              </FilterItem>
+              <FilterItem label="项目名称">
+                <Input
+                  className="small"
+                  placeholder="项目编码"
+                  value={this.state.projectCode} onChange={v => this.setState({projectCode: v})}
+                />
+              </FilterItem>
+              <FilterItem label="所属BD">
+                <FilterOptions options={[{value: '1', text: '只看我的'}]} value={this.state.bd} onChange={v => this.setState({bd: v})}/>
+              </FilterItem>
+              <FilterItem label="所属BDPC">
+                <FilterOptions options={[{value: '1', text: '只看我的'}]} value={this.state.bdpc} onChange={v => this.setState({bdpc: v})}/>
+              </FilterItem>
+              <div className="bt clearfix">
+                <div className="pull-right mt7">
+                  <Button
+                    className="default"
+                    onClick={() => this.setState({customerName: '', projectName: '', projectCode: '', bd: '', bdpc: ''})}
+                  >清除</Button>
+                  <Button onClick={() => this.toPage(0)}>确定</Button>
+                </div>
+              </div>
+            </div>
+          )
+        }
         <FixHeadList total={total} weights={[1, 1, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>项目名称</FixHead.Item>

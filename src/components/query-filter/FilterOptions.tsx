@@ -9,9 +9,14 @@ interface FilterOptionsProps {
   options: { value: string, text: string }[]
   value: string
   onChange: (value) => void
+  useSelect?: boolean
 }
 
 class FilterOptions extends React.Component<FilterOptionsProps> {
+  static defaultProps = {
+    useSelect: false
+  }
+
   render() {
     const {options} = this.props
     return (
@@ -23,7 +28,7 @@ class FilterOptions extends React.Component<FilterOptionsProps> {
         </li>
 
         {
-          options.length <= 5 && options.map(item => {
+          !this.props.useSelect && options.length <= 5 && options.map(item => {
             return (
               <li key={item.value}
                   className={classnames('filter-item', {'selected': item.value == this.props.value})}
@@ -36,7 +41,7 @@ class FilterOptions extends React.Component<FilterOptionsProps> {
         }
 
         {
-          options.length > 5 && (
+          (this.props.useSelect || options.length > 5) && (
             <li className="filter-select-item filter-item">
               <Select1 value={this.props.value}
                        className={classnames({'selected': this.props.value != ''})}
