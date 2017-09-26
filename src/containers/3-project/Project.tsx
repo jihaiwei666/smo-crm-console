@@ -149,14 +149,14 @@ class Project extends React.Component<ProjectProps> {
               <FilterItem label="项目名称">
                 <Input
                   className="small"
-                  placeholder="请输入客户名称"
+                  placeholder="请输入项目名称"
                   value={this.state.projectName} onChange={v => this.setState({projectName: v})}
                 />
               </FilterItem>
-              <FilterItem label="项目名称">
+              <FilterItem label="项目编码">
                 <Input
                   className="small"
-                  placeholder="项目编码"
+                  placeholder="请输入项目编码"
                   value={this.state.projectCode} onChange={v => this.setState({projectCode: v})}
                 />
               </FilterItem>
