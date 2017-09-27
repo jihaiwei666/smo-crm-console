@@ -47,9 +47,26 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
     })
   }
 
+  checkValid = () => {
+    let valid = true
+    if (this.state.status != '0' && (!this.state.startDate || !this.state.endDate)) {
+      valid = false
+    }
+    if (valid != this.state.valid) {
+      this.setState({valid})
+    }
+  }
+
+  handleStatusChange = (v) => {
+    if (v == '0') {
+      this.setState({startDate: null, endDate: null})
+    }
+    this.setState({status: v}, this.checkValid)
+  }
+
   componentWillMount() {
     const {newStatus, startDate, endDate} = this.props
-    this.setState({status: newStatus, startDate, endDate})
+    this.setState({status: newStatus, startDate, endDate}, this.checkValid)
   }
 
   componentWillReceiveProps(nextProps: MyStatusDialogProps) {
@@ -87,20 +104,21 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
                 <LabelAndInput1 label="状态">
                   <Radio.Group
                     required={true} name="status"
-                    value={this.state.status} onChange={(v) => this.setState({status: v})}>
+                    value={this.state.status} onChange={this.handleStatusChange}>
+                    <Radio value="0">正常</Radio>
                     <Radio value="1">休假</Radio>
                     <Radio value="2">出差</Radio>
                   </Radio.Group>
                 </LabelAndInput1>
                 <LabelAndInput1 label="生效日期">
                   <DatePicker
-                    required={true} name="startDate"
-                    value={this.state.startDate} onChange={v => this.setState({startDate: v})}/>
+                    disabled={this.state.status == '0'}
+                    value={this.state.startDate} onChange={v => this.setState({startDate: v}, this.checkValid)}/>
                 </LabelAndInput1>
                 <LabelAndInput1 label="终止日期">
                   <DatePicker
-                    required={true} name="endDate"
-                    value={this.state.endDate} onChange={v => this.setState({endDate: v})}/>
+                    disabled={this.state.status == '0'}
+                    value={this.state.endDate} onChange={v => this.setState({endDate: v}, this.checkValid)}/>
                 </LabelAndInput1>
               </div>
             </section>

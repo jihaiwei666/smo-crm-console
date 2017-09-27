@@ -131,7 +131,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               required={true} name="serviceChargeUnit"
               value={this.state.serviceChargeUnit} onChange={v => this.setState({serviceChargeUnit: v})}/>
             <MoneyInput
-              width="200px" required={true} name="serviceChargeValue"
+              width="200px" required={true} name="serviceChargeValue" placeholder="请输入数字"
               value={this.state.serviceChargeValue} onChange={v => this.setState({serviceChargeValue: v})}/>
           </Row>
         </LabelAndInput1>
@@ -141,7 +141,7 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
               required={true} name="contractMoneyUnit"
               value={this.state.contractMoneyUnit} onChange={v => this.setState({contractMoneyUnit: v})}/>
             <MoneyInput
-              width="200px" required={true} name="contractMoneyValue"
+              width="200px" required={true} name="contractMoneyValue" placeholder="请输入数字"
               value={this.state.contractMoneyValue} onChange={v => this.setState({contractMoneyValue: v})}/>
           </Row>
         </LabelAndInput1>

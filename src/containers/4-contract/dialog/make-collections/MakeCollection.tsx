@@ -24,8 +24,9 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
 import {CONTRACT} from '../../../../core/constants/types'
-import {getSuffix} from '../after-sign/after-sign.helper'
 import regex from '../../../../core/constants/regex'
+import {getSuffix} from '../after-sign/after-sign.helper'
+import {ifNotFill} from './make-collection.helper'
 
 interface MakeCollectionProps extends CommonFunction {
   index: number
@@ -36,7 +37,7 @@ interface MakeCollectionProps extends CommonFunction {
   institutionList: Data<any[]>
   fetchInstitutionInfo: (institutionId) => void
   institutionInfo: Data<any[]>
-  submitBillApply: (content: string) => void
+  submitBillApply: (contractId, content: string) => void
   submitBillApplySuccess: boolean
   newBillDate: any
   updateCollection: (options) => void
@@ -97,14 +98,19 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
 
   submitBillApply = () => {
     let {taxpayerNumber, bank, bankAccount, address, telephone} = this.institutionInfo
+    let {po, invoiceTitle, money} = this.state
     let content = `此合同申请开票，开票信息如下：
                     纳税人识别号: ${taxpayerNumber}
                     开户银行: ${bank}
                     开户银行账号: ${bankAccount}
                     开票地址: ${address}
-                    电话: ${telephone}`
+                    电话: ${telephone}
+                    PO: ${ifNotFill(po)}
+                    发票抬头: ${ifNotFill(invoiceTitle)}
+                    金额: ${ifNotFill(money)}
+                    `
     this.submitApply = true
-    this.props.submitBillApply(content)
+    this.props.submitBillApply(this.props.contractId, content)
   }
 
   componentWillReceiveProps(nextProps: MakeCollectionProps) {

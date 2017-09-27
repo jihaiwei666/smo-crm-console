@@ -219,9 +219,10 @@ export function removeContract(contractId) {
   }
 }
 
-export function submitBillApply(content) {
+export function submitBillApply(contractId, content) {
   const options = {
-    content: content
+    "contract_info_id": contractId,
+    "content": content
   }
   return {
     [THREE_PHASE]: {

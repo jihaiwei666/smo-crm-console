@@ -80,6 +80,7 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
             <LabelAndInput1 label="MSA扫描件">
               <SingleFile
                 ref={c => this._scanFile = c}
+                accept="*"
                 file={this.state.scanFile}
                 onChange={file => this.setState({scanFile: file})}
                 onClear={() => this.setState({scanFile: null})}

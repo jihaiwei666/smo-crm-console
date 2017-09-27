@@ -36,6 +36,7 @@ export function handleInstitutionList(data) {
 }
 
 export function handleInstitutionInfo(data) {
+  data = data || {}
   return {
     address: data['billing_address'],
     bank: data['billing_open_bank'],
@@ -43,4 +44,9 @@ export function handleInstitutionInfo(data) {
     taxpayerNumber: data['billing_taxpayer_number'],
     telephone: data['billing_telephone'],
   }
+}
+
+export function ifNotFill(v) {
+  if (v == null || v == '') return '未填写'
+  return v
 }

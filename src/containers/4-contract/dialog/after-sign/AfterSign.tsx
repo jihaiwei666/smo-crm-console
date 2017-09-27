@@ -324,6 +324,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                 value={this.state.crcMoneyUnit} onChange={v => this.setState({crcMoneyUnit: v})}/>
               <MoneyInput
                 width="150px" required={true} name="crcMoneyValue"
+                placeholder="请输入数字"
                 value={this.state.crcMoneyValue} onChange={v => this.setState({crcMoneyValue: v})}
               />
             </Row>
@@ -334,7 +335,7 @@ class AfterSign extends React.Component<AfterSignProps> {
                 required={true} name="pmServeFeeUnit"
                 value={this.state.pmServeFeeUnit} onChange={v => this.setState({pmServeFeeUnit: v})}/>
               <MoneyInput
-                width="150px" required={true} name="pmServeFeeValue"
+                width="150px" required={true} name="pmServeFeeValue" placeholder="请输入数字"
                 value={this.state.pmServeFeeValue} onChange={v => this.setState({pmServeFeeValue: v})}
               />
             </Row>
