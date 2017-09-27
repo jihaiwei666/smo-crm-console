@@ -41,6 +41,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin('style' + '.min.css'),
     new webpack.DllReferencePlugin({
       context: __dirname,
