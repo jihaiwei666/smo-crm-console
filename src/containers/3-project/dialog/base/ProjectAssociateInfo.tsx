@@ -15,7 +15,7 @@ class ProjectAssociateInfo extends React.Component<ProjectAssociateInfoProps> {
 
     return (
       <div className="--module-item">
-        <div className="bb">
+        <div className="input-row">
           <FlexDiv>
             <Label>关联客户</Label>
             <Part>
@@ -33,10 +33,10 @@ class ProjectAssociateInfo extends React.Component<ProjectAssociateInfoProps> {
               }
             </Part>
           </FlexDiv>
-          <div className="p5 input-unit-illustrate">项目中关联该客户后，自动产生，不可修改</div>
+          <div className="tip">项目中关联该客户后，自动产生，不可修改</div>
         </div>
 
-        <div className="mt10">
+        <div className="input-row no-border">
           <FlexDiv>
             <Label>关联合同</Label>
             <Part>
@@ -54,7 +54,7 @@ class ProjectAssociateInfo extends React.Component<ProjectAssociateInfoProps> {
               }
             </Part>
           </FlexDiv>
-          <div className="p5 input-unit-illustrate">合同中关联项目后，自动产生，不可修改</div>
+          <div className="tip">合同中关联项目后，自动产生，不可修改</div>
         </div>
       </div>
     )

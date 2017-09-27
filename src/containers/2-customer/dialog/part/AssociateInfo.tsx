@@ -14,7 +14,7 @@ class AssociateInfo extends React.Component<AssociateInfoProps> {
     const {projects} = this.props.relationInfo || {projects: []}
     return (
       <div className="--module-item">
-        <div className="bb">
+        <div className="input-row">
           <FlexDiv>
             <Label>关联项目</Label>
             <Part>
@@ -32,17 +32,17 @@ class AssociateInfo extends React.Component<AssociateInfoProps> {
               }
             </Part>
           </FlexDiv>
-          <div className="p5 input-unit-illustrate">项目中关联该客户后，自动产生，不可修改</div>
+          <div className="tip">项目中关联该客户后，自动产生，不可修改</div>
         </div>
 
-        <div>
+        <div className="input-row no-border">
           <FlexDiv>
             <Label>关联合同</Label>
             <Part>
               <div className="associate-item">尚无关联合同</div>
             </Part>
           </FlexDiv>
-          <div className="p5 input-unit-illustrate">合同中关联项目后，自动产生，不可修改</div>
+          <div className="tip">合同中关联项目后，自动产生，不可修改</div>
         </div>
       </div>
     )
