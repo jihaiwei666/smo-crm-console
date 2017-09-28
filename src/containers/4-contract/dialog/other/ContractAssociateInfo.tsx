@@ -34,7 +34,7 @@ class ContractAssociateInfo extends React.Component<ContractAssociateInfoProps> 
               }
             </Part>
           </FlexDiv>
-          <div className="p5 input-unit-illustrate">合同中关联项目后，自动产生，不可修改</div>
+          <div className="tip">合同中关联项目后，自动产生，不可修改</div>
         </div>
 
         <div className="input-row no-border">

@@ -23,7 +23,7 @@ class InputWithSuffix extends React.Component<InputWithSuffixProps> {
 
   render() {
     return (
-      <div className={classnames('input-have-unit', {invalid: this.state.touched && !this.props.valid})} disabled={this.props.disabled}>
+      <div className={classnames('input-have-unit', {invalid: this.state.touched && !this.props.valid}, {'disabled': this.props.disabled})}>
         <div className="input-container">
           <Input clsPrefix="suffix-input" placeholder={this.props.placeholder} value={this.props.value}
                  onChange={this.props.onChange} disabled={this.props.disabled}

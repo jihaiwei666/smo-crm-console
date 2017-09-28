@@ -24,7 +24,7 @@ class PageCountNav extends React.Component<PageCountNavProps> {
     return (
       <div className="page-count-nav">
         <div className="page">
-          <a disabled={this.props.currentPage == 0}
+          <a className={classnames({'disabled': this.props.currentPage == 0})}
              onClick={() => this.props.onPageChange(this.props.currentPage - 1)}
           >上一页
           </a>
@@ -40,7 +40,7 @@ class PageCountNav extends React.Component<PageCountNavProps> {
               )
             })
           }
-          <a disabled={this.props.currentPage == totalPage}
+          <a className={classnames({'disabled': this.props.currentPage == totalPage})}
              onClick={() => this.props.onPageChange(this.props.currentPage + 1)}
           >下一页
           </a>

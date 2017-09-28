@@ -100,14 +100,14 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
     let {taxpayerNumber, bank, bankAccount, address, telephone} = this.institutionInfo
     let {po, invoiceTitle, money} = this.state
     let content = `此合同申请开票，开票信息如下：
+                    PO: ${ifNotFill(po)}
+                    发票抬头: ${ifNotFill(invoiceTitle)}
+                    金额: ${ifNotFill(money)}
                     纳税人识别号: ${taxpayerNumber}
                     开户银行: ${bank}
                     开户银行账号: ${bankAccount}
                     开票地址: ${address}
                     电话: ${telephone}
-                    PO: ${ifNotFill(po)}
-                    发票抬头: ${ifNotFill(invoiceTitle)}
-                    金额: ${ifNotFill(money)}
                     `
     this.submitApply = true
     this.props.submitBillApply(this.props.contractId, content)

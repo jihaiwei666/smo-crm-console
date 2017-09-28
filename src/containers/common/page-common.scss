@@ -194,7 +194,7 @@
     padding: 5px 10px;
     display: flex;
 
-    &[disabled] {
+    &.disabled {
         background: #EEEEEE;
     }
 
