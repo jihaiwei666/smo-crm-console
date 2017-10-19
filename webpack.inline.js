@@ -47,7 +47,7 @@ module.exports = {
       {test: /\.less$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'less-loader']},
       {test: /\.scss$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'sass-loader']},
       {test: /\.(jpg|png|svg)$/, loader: 'url-loader?limit=8192'},
-      {test: /\.(eot|woff|woff2|ttf)([\?]?.*)$/, loader: 'file-loader'}
+      {test: /\.(eot|woff|woff2|ttf)([?]?.*)$/, loader: 'file-loader'}
     ]
   }
 }

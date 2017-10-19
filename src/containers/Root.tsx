@@ -5,7 +5,6 @@ import React from 'react'
 import {Route} from 'react-router-dom'
 import {ConnectedRouter} from 'react-router-redux'
 import {Provider} from 'react-redux'
-import {AppContainer} from 'react-hot-loader'
 
 import SimoCrmApp from './_frameset/SimoCrmApp'
 

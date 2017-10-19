@@ -6,7 +6,7 @@ const webpack = require('webpack')
 const moment = require('moment')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const context = '/simo-crm'
+const context = ''
 
 const handleModulePath = require('./tools/handleModulePath')
 
