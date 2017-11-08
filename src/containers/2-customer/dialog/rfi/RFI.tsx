@@ -90,7 +90,7 @@ class RFI extends React.Component<RFIProps> {
         "model": this.state.modules.join(','),
         "model_remark": this.state.remark
       },
-      "customerRfiDockerList": this.state.brokerList.map(broker => ({
+      "customerRfiDockerList": this.state.brokerList.filter(broker => broker.contactId != '').map(broker => ({
         "contacts_info_id": broker.contactId,
         "sign": ADD
       }))
@@ -109,7 +109,7 @@ class RFI extends React.Component<RFIProps> {
         "model": this.state.modules.join(','),
         "model_remark": this.state.remark
       },
-      "customerRfiDockerList": this.state.brokerList.map(broker => ({
+      "customerRfiDockerList": this.state.brokerList.filter(broker => broker.contactId != '').map(broker => ({
         "customer_rfi_docker_id": broker.crud == crud.ADD ? '' : broker.id,
         "contacts_info_id": broker.contactId,
         "customer_rfi_id": this.rfiId,

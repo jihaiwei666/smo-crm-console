@@ -79,9 +79,6 @@ class Modules extends React.Component<ModulesProps> {
               <li className={classnames({'active': currentPath == getPath(pages.contract)})}>
                 <Link to={contract}>合同</Link>
               </li>
-              <li className={classnames({'active': currentPath == getPath(pages.report)})}>
-                <Link to={report}>报表</Link>
-              </li>
               {
                 this.props.roleCode == roleCategory.systemManage && (
                   <li className={classnames({'active': currentPath == getPath(pages.recycleBin)})}>
