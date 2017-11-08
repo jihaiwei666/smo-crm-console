@@ -254,10 +254,9 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
                 <div className="tip">选择机构后，自动匹配相应开票信息</div>
               </div>
               <div className="input-row">
-                <LabelAndInput1 label="申请开票日期" inputType={NECESSARY}>
+                <LabelAndInput1 label="申请开票日期" inputType={IMPORTANT}>
                   <DatePicker
                     placeholder="提交申请后自动生成" disabled={true}
-                    required={true} name="applyInvoiceDate"
                     value={this.state.applyInvoiceDate}
                   />
                 </LabelAndInput1>
