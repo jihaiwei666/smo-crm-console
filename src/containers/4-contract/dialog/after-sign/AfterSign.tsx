@@ -220,13 +220,14 @@ class AfterSign extends React.Component<AfterSignProps> {
   }
 
   checkProgressValid = (item) => {
+    let result = true
     if (item.node == '' || item.date == null) return false
     if (item.node != nodeProgress.contractSigned && item.node != nodeProgress.databaseLock) {
       if (item.quota == '') {
-        return false
+        result = false
       }
     }
-    return true
+    return result
   }
 
   componentWillMount() {

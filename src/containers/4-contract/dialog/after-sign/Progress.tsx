@@ -47,7 +47,6 @@ class Progress extends React.Component<ProgressProps> {
               <Input width="250px" placeholder="请输入指标数字" disabled={true}/>
             ) : (
               <InputWithSuffix
-                required={true} name="quota"
                 format={regex.PERCENT_INTEGER}
                 placeholder="请输入指标数字" suffix={getSuffix(item.node)}
                 value={item.quota} onChange={v => this.context.onUpdate(item.id, {quota: v})}

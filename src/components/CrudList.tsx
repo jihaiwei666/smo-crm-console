@@ -35,7 +35,8 @@ class CrudList extends React.Component<CrudListProps> implements React.ChildCont
   static childContextTypes = {
     onAdd: PropTypes.func,
     onUpdate: PropTypes.func,
-    onRemove: PropTypes.func
+    onRemove: PropTypes.func,
+    setValid: PropTypes.any
   }
 
   valid: boolean
@@ -107,6 +108,12 @@ class CrudList extends React.Component<CrudListProps> implements React.ChildCont
     }
   }
 
+  componentWillUnmount() {
+    if (this.context.setValid) {
+      this.context.setValid(this.props.name, true)
+    }
+  }
+
   render() {
     let filterList = this.props.list.filter(item => item.crud != REMOVE)
     return (
@@ -126,7 +133,8 @@ class CrudList extends React.Component<CrudListProps> implements React.ChildCont
     return {
       onAdd: this.onAdd,
       onUpdate: this.onUpdate,
-      onRemove: this.onRemove
+      onRemove: this.onRemove,
+      setValid: null
     }
   }
 }

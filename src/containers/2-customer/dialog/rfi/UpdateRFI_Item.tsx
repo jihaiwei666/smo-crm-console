@@ -54,7 +54,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
     fillDate: null,
     fillPerson: '',
     brokerList: [],
-    language: null,
+    languages: [],
     auditPerson: '',
     modules: [],
     remark: ''
@@ -84,7 +84,7 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
         "write_time": getDateStr(this.state.fillDate),
         "write_person": this.state.fillPerson,
         "review_person": this.state.auditPerson,
-        "language": this.state.language,
+        "language": this.state.languages.join(','),
         "model": this.state.modules.join(','),
         "model_remark": this.state.remark
       },
@@ -150,10 +150,10 @@ class UpdateRFI_Item extends React.Component<UpdateRFI_ItemProps> {
         </InputGroup>
         <LabelAndInput className="pb5 bb" label="审阅人" inputType={IMPORTANT} value={this.state.auditPerson} onChange={v => this.setState({auditPerson: v})}/>
         <LabelAndInput1 className="bb" label="语言" inputType={IMPORTANT}>
-          <Radio.Group value={this.state.language} onChange={v => this.setState({language: v})}>
-            <Radio value="1">中文</Radio>
-            <Radio value="2">English</Radio>
-          </Radio.Group>
+          <CheckGroup1 value={this.state.languages} onChange={v => this.setState({languages: v})}>
+            <CheckBox1 value="1">中文</CheckBox1>
+            <CheckBox1 value="2">English</CheckBox1>
+          </CheckGroup1>
         </LabelAndInput1>
         <LabelAndInput1 label="模块" inputType={IMPORTANT} className="input-row">
           <CheckGroup1 value={this.state.modules} onChange={v => this.setState({modules: v}, this.checkModuleRemark)}>
