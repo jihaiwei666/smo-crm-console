@@ -12,7 +12,7 @@ interface MoneyInputProps extends InputProps {
 }
 
 const checkFormat = (value) => {
-  return regex.INTEGER.test(value.replace(/,/g, ''))
+  return regex.NUMBER.test(value.replace(/,/g, ''))
 }
 
 class MoneyInput extends React.Component<MoneyInputProps> {

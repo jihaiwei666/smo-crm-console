@@ -46,14 +46,20 @@ export function isEmpty(v) {
  */
 export function getMoneyText(value) {
   if (!value) return ''
-  let i = 1, p = value.length - 3 * i
+  let integer = value
+  let decimal = ''
+  if (value.indexOf('.') != -1) {
+    integer = value.substring(0, value.indexOf('.'))
+    decimal = value.substring(value.indexOf('.'))
+  }
+  let i = 1, p = integer.length - 3 * i
   let result = ''
   while (p > 0) {
-    result = ',' + value.substr(p, 3) + result
-    p = value.length - 3 * ++i
+    result = ',' + integer.substr(p, 3) + result
+    p = integer.length - 3 * ++i
   }
   if (p <= 0) {
-    result = value.substr(0, p + 3) + result
+    result = integer.substr(0, p + 3) + result
   }
-  return result
+  return result + decimal
 }

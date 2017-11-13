@@ -3,7 +3,7 @@
  */
 
 export default {
-  NUMBER: /^[0-9]+(.[0-9]{1,2})?$/,
+  NUMBER: /^[0-9]+(.[0-9]{1,4})?$/,
   INTEGER: /^[0-9]{1,12}$/,
   PERCENT_INTEGER: /^[0-9]{1,3}$/
 }

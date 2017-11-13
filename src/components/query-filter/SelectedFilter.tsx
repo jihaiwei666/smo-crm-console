@@ -4,6 +4,8 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import Label from '../../containers/common/Label'
+
 interface SelectedFilterProps {
   notEmpty: boolean
   clearAll: () => void
@@ -14,7 +16,7 @@ class SelectedFilter extends React.Component<SelectedFilterProps> {
   render() {
     return (
       <div className="selected-filter">
-        <div style={{width: '80px'}}>筛选条件:</div>
+        <Label>筛选条件:</Label>
         <div className="flex1 ">
           {this.props.children}
         </div>
