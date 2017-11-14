@@ -12,6 +12,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import {routerMiddleware} from 'react-router-redux'
 
 import './style/index'
+import EnvChecker from './EnvChecker'
 import Root from './containers/Root'
 import allReducers from './reducers/'
 import request_3_phase from './middlewares/request_3_phase'
@@ -33,6 +34,8 @@ if (module.hot) {
     store.replaceReducer(nextRootReducer)
   })
 }
+
+render(<EnvChecker/>, document.getElementById('root'))
 
 _get('/user/v1/getUserStatus').then(data => {
   let userId = data['user_id']

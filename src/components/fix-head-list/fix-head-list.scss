@@ -1,8 +1,11 @@
 .fix-head-list {
     flex: 1;
-    overflow: auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    .head-wrap {
+        overflow: hidden;
+    }
     .head-container {
         display: flex;
 

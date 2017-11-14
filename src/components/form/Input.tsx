@@ -46,8 +46,16 @@ class Input extends React.Component<InputProps> {
   }
 
   render() {
-    const {width, className, valid, clsPrefix, onChange, format, ...otherProps} = this.props
-    let invalid = this.props.required && this.state.touched && !valid
+    const {value, width, className, valid, clsPrefix, onChange, format, ...otherProps} = this.props
+    let invalid = false
+    if (this.state.touched) {
+      if (this.props.required && !valid) {
+        invalid = true
+      }
+    } else {
+      if (this.props.required && !valid && (value != '' && value != null)) invalid = true
+    }
+
     let style: any = {}
     if (width) {
       style.width = width
