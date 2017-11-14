@@ -14,7 +14,6 @@ import Data from '../../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {roleCategory} from '../../../7-account-manage/account-manage.constant'
-import {CONTRACT} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
 import {fetchBD, fetchBDPC} from '../../../../actions/app.action'
@@ -67,7 +66,6 @@ class ContractBdBdpc extends React.Component<ContractBdBdpcProps> {
   componentWillReceiveProps(nextProps: ContractBdBdpcProps) {
     if (!this.props.updateBdBdpcSuccess && nextProps.updateBdBdpcSuccess) {
       this.props.showSuccess('更新BD/BDPC成功！')
-      this.props.clearState(CONTRACT.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.contractBdBdpc.loaded && nextProps.contractBdBdpc.loaded) {
       const {bd, bdName, bdpc} = nextProps.contractBdBdpc.data

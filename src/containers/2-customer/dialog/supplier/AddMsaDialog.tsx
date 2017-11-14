@@ -14,7 +14,6 @@ import {NECESSARY} from '../../../common/Label'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 
 interface AddMsaDialogProps extends CommonFunction {
   supplierId: string
@@ -51,7 +50,6 @@ class AddMsaDialog extends React.Component<AddMsaDialogProps> {
   componentWillReceiveProps(nextProps: AddMsaDialogProps) {
     if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {
       this.props.showSuccess('添加MSA成功！')
-      this.props.clearState(CUSTOMER.ADD_MSA)
       this.close()
     }
   }

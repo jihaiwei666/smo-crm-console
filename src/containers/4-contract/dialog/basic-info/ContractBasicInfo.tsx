@@ -17,7 +17,6 @@ import Update from '../../../common/Update'
 import Data from '../../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
-import {CONTRACT} from '../../../../core/constants/types'
 import {getIsFirstOperation} from '../../contract.helper'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {checkHavePermission} from '../../../../core/permission'
@@ -102,18 +101,15 @@ class ContractBasicInfo extends React.Component<ContractBasicInfoProps> {
     if (!this.props.fetchCodePrefixSuccess && nextProps.fetchCodePrefixSuccess) {
       this.setState({codePrefix: nextProps.newContractCodePrefix})
       this.setState({isFirstOperation: nextProps.isFirstOperation})
-      this.props.clearState(CONTRACT.FETCH_CONTRACT_CODE_PREFIX)
     }
     if (!this.props.addContractSuccess && nextProps.addContractSuccess) {
       this.props.showSuccess('添加合同信息成功！')
-      this.props.clearState(CONTRACT.ADD_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
       this.props.onContractNameChange(this.state.contractName)
       eventBus.emit(EVENT_NAMES.ADD_CONTRACT_SUCCESS)
     }
     if (!this.props.updateContractSuccess && nextProps.updateContractSuccess) {
       this.props.showSuccess('更新合同信息成功！')
-      this.props.clearState(CONTRACT.UPDATE_CONTRACT)
       this.props.onProjectIdChange(this.state.projectId)
       this.props.onContractNameChange(this.state.contractName)
       if (this.oldContractName != this.state.contractName) {

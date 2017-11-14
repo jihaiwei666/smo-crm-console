@@ -10,7 +10,6 @@ import CssTransition from '../../components/CssTransition'
 import addCommonFunction from './addCommonFunction'
 import CommonFunction from '../common/interface/CommonFunction'
 import pages from '../../core/pages'
-import {TODO_REMIND} from '../../core/constants/types'
 import {getPath} from '../../core/env'
 import {roleCategory} from '../7-account-manage/account-manage.constant'
 
@@ -36,7 +35,6 @@ class Modules extends React.Component<ModulesProps> {
   componentWillReceiveProps(nextProps: ModulesProps) {
     if (!this.props.fetchUnreadRemindAmountSuccess && nextProps.fetchUnreadRemindAmountSuccess) {
       this.setState({unreadRemindAmount: nextProps.unreadRemindAmount})
-      this.props.clearState(TODO_REMIND.FETCH_UNREAD_REMIND_AMOUNT)
     }
   }
 

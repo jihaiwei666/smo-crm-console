@@ -11,7 +11,6 @@ import Update from '../../../common/Update'
 import Data from '../../../common/interface/Data'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
-import {PROJECT} from '../../../../core/constants/types'
 import {fetchBDPC, fetchBD} from '../../../../actions/app.action'
 import {updateBdAndBdpc, fetchProjectBdBdpc} from '../../project.action'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
@@ -68,7 +67,6 @@ class ProjectBD_BDPC extends React.Component<ProjectBD_BDPCProps> {
   componentWillReceiveProps(nextProps: ProjectBD_BDPCProps) {
     if (!this.props.updateBd_BdpcSuccess && nextProps.updateBd_BdpcSuccess) {
       this.props.showSuccess('更新BD/BDPC成功！')
-      this.props.clearState(PROJECT.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.projectBdBdpc.loaded && nextProps.projectBdBdpc.loaded) {
       const {bd, bdName, bdpc} = nextProps.projectBdBdpc.data

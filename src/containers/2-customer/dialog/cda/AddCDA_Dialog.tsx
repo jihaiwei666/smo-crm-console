@@ -25,7 +25,6 @@ import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {addCda} from './cda.action'
 import {fetchContactList, fetchProjectList} from '../../customer.action'
-import {CUSTOMER} from '../../../../core/constants/types'
 
 interface AddCDA_DialogProps extends CommonFunction {
   customerId: string
@@ -103,7 +102,6 @@ class AddCDA_Dialog extends React.Component<AddCDA_DialogProps> {
   componentWillReceiveProps(nextProps: AddCDA_DialogProps) {
     if (!this.props.addCdaSuccess && nextProps.addCdaSuccess) {
       this.props.showSuccess('添加CDA成功！')
-      this.props.clearState(CUSTOMER.ADD_CDA)
       this.close()
     }
   }

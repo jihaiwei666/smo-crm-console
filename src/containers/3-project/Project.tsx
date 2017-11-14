@@ -15,7 +15,6 @@ import PageCountNav from '../../components/nav/PageCountNav'
 
 import ProjectState from './ProjectState'
 import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
-import {PROJECT} from '../../core/constants/types'
 import {fetchList, removeProject} from './project.action'
 import FilterItem from '../../components/query-filter/FilterItem'
 import FilterOptions from '../../components/query-filter/FilterOptions'
@@ -84,7 +83,6 @@ class Project extends React.Component<ProjectProps> {
     }
     if (!this.props.removeProjectSuccess && nextProps.removeProjectSuccess) {
       this.props.showSuccess('删除项目成功！')
-      this.props.clearState(PROJECT.REMOVE_PROJECT)
       const {total} = handleListData(this.props.projectList)
       if (total % 10 == 1) {
         this.toPage(0)

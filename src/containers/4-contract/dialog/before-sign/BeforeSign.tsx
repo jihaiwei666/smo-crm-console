@@ -14,7 +14,6 @@ import Update from '../../../common/Update'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CONTRACT} from '../../../../core/constants/types'
 import {addBeforeSign, updateBeforeSign} from '../../contract.action'
 
 interface BeforeSignProps extends CommonFunction {
@@ -76,12 +75,10 @@ class BeforeSign extends React.Component<BeforeSignProps> {
   componentWillReceiveProps(nextProps: BeforeSignProps) {
     if (!this.props.addBeforeSignSuccess && nextProps.addBeforeSignSuccess) {
       this.props.showSuccess('添加签署前成功！')
-      this.props.clearState(CONTRACT.ADD_BEFORE_SIGN)
       this.beforeSignId = nextProps.newBeforeSignId
     }
     if (!this.props.updateBeforeSignSuccess && nextProps.updateBeforeSignSuccess) {
       this.props.showSuccess('更新签署前成功！')
-      this.props.clearState(CONTRACT.UPDATE_BEFORE_SIGN)
     }
   }
 

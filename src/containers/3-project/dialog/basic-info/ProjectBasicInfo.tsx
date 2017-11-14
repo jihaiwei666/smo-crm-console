@@ -17,7 +17,6 @@ import Update from '../../../common/Update'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
 import {customerType} from '../../../2-customer/customer.constant'
-import {PROJECT} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {isAdmin} from '../../../7-account-manage/account-manage.helper'
 import {checkHavePermission} from '../../../../core/permission'
@@ -93,14 +92,12 @@ class ProjectBasicInfo extends React.Component<ProjectBasicInfoProps> {
   componentWillReceiveProps(nextProps: ProjectBasicInfoProps) {
     if (!this.props.addProjectInfoSuccess && nextProps.addProjectInfoSuccess) {
       this.props.showSuccess('添加项目信息成功！')
-      this.props.clearState(PROJECT.ADD_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
       this.triggerCroClient(nextProps.clientList.data)
       eventBus.emit(EVENT_NAMES.PROJECT_CREATE)
     }
     if (!this.props.updateProjectInfoSuccess && nextProps.updateProjectInfoSuccess) {
       this.props.showSuccess('更新项目信息成功！')
-      this.props.clearState(PROJECT.UPDATE_PROJECT_INFO)
       this.props.onProjectNameChange(this.state.projectName)
       this.triggerCroClient(nextProps.clientList.data)
       if (this.oldProjectName != this.state.projectName) {

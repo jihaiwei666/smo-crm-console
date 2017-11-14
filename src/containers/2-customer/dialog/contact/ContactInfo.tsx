@@ -13,7 +13,6 @@ import {
 } from './contact.action'
 import {fetchContactList} from '../../customer.action'
 import CustomerState from '../../CustomerState'
-import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import {lastItemIsLocal} from '../../../common/common.helper'
@@ -77,7 +76,6 @@ class ContactInfo extends React.Component<ContactProps> {
   componentWillReceiveProps(nextProps: ContactProps) {
     if (!this.props.addContactSuccess && nextProps.addContactSuccess) {
       this.props.showSuccess('添加联系人信息成功！')
-      this.props.clearState(CUSTOMER.ADD_CONTACT)
       let list = this.state.list
       let match = list.find(c => c.id == this.localContactUid)
       match.contactId = nextProps.newContactId
@@ -86,11 +84,9 @@ class ContactInfo extends React.Component<ContactProps> {
     }
     if (!this.props.updateContactSuccess && nextProps.updateContactSuccess) {
       this.props.showSuccess('更新联系人信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_CONTACT)
     }
     if (!this.props.removeContactSuccess && nextProps.removeContactSuccess) {
       this.props.showSuccess('删除联系人成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CONTACT)
       let list = this.state.list
       let index = list.indexOf(list.find(c => c.contactId == this.lastContactId))
       list.splice(index, 1)

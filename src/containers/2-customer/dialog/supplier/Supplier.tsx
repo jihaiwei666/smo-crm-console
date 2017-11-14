@@ -29,7 +29,6 @@ import CommonFunction from '../../../common/interface/CommonFunction'
 import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import {EDIT, ADD, UPDATE, default as crud, handleListRemove, handleUpdateCrud} from '../../../../core/crud'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {addListItem} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
 import {fetchContactList} from '../../customer.action'
@@ -219,7 +218,6 @@ class Supplier extends React.Component<SupplierProps> {
   componentWillReceiveProps(nextProps: SupplierProps) {
     if (!this.props.addSupplierSuccess && nextProps.addSupplierSuccess) {
       this.props.showSuccess('添加供应商成功！')
-      this.props.clearState(CUSTOMER.ADD_SUPPLIER)
       this.supplierId = nextProps.newSupplierInfo.supplierId
       this.msaId = nextProps.newSupplierInfo.msaId
       this.props.fetchLastSupplierDetail(this.props.customerId)
@@ -227,7 +225,6 @@ class Supplier extends React.Component<SupplierProps> {
     }
     if (!this.props.updateSupplierSuccess && nextProps.updateSupplierSuccess) {
       this.props.showSuccess('更新供应商信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_SUPPLIER)
       this.props.fetchLastSupplierDetail(this.props.customerId)
     }
     if (!this.props.addMsaSuccess && nextProps.addMsaSuccess) {

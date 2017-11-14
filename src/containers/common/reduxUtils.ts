@@ -3,16 +3,8 @@
  */
 import phase from '../../core/constants/phase'
 
-export function handleClearState(iState, action, type, key) {
-  if (action.type == phase.CLEAR + type) {
-    return iState.set(key, false)
-  }
-
-  return iState
-}
-
 export function handleFlagState(iState, action, type, key) {
-  if (action.type == phase.CLEAR + type) {
+  if (action.type == type + phase.START) {
     return iState.set(key, false)
   }
   if (action.type == type + phase.SUCCESS) {

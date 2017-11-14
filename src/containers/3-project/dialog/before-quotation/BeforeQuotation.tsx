@@ -24,7 +24,6 @@ import Update from '../../../common/Update'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {SERVICE_TYPE, POSSIBILITY} from '../../project.constant'
-import {PROJECT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {addBeforeQuotation, updateBeforeQuotation} from '../../project.action'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
@@ -165,12 +164,10 @@ class BeforeQuotation extends React.Component<BeforeQuotationProps> {
   componentWillReceiveProps(nextProps: BeforeQuotationProps) {
     if (!this.props.addBeforeQuotationSuccess && nextProps.addBeforeQuotationSuccess) {
       this.props.showSuccess('添加报价前信息成功！')
-      this.props.clearState(PROJECT.ADD_BEFORE_QUOTATION)
       this.setState(nextProps.newBeforeQuotation)
     }
     if (!this.props.updateBeforeQuotationSuccess && nextProps.updateBeforeQuotationSuccess) {
       this.props.showSuccess('更新报价前信息成功！')
-      this.props.clearState(PROJECT.UPDATE_BEFORE_QUOTATION)
       this.setState(nextProps.newBeforeQuotation)
     }
   }

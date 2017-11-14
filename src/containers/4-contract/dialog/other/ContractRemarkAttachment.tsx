@@ -9,7 +9,6 @@ import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {CONTRACT} from '../../../../core/constants/types'
 import {updateRemarkAndAttachment, fetchContractRemarkAttachment} from '../../contract.action'
 
 interface ContractRemarkAttachmentProps extends CommonFunction {
@@ -45,7 +44,6 @@ class ContractRemarkAttachment extends React.Component<ContractRemarkAttachmentP
   componentWillReceiveProps(nextProps: ContractRemarkAttachmentProps) {
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
-      this.props.clearState(CONTRACT.UPDATE_REMARK_ATTACHMENT)
       this.props.fetchContractRemarkAttachment(this.props.contractId)
     }
     if (!this.props.contractRemarkAttachment.loaded && nextProps.contractRemarkAttachment.loaded) {

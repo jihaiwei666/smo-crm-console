@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'app-core/modal'
 import Select1 from 'app-core/common/Select1'
-import Confirm from 'app-core/common/Confirm'
 import {FlexDiv, Part} from 'app-core/layout/'
 import Form from 'app-core/form/Form'
 
@@ -14,7 +13,6 @@ import InputGroup from '../../../common/InputGroup'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
 import Radio from '../../../../components/form/radio/Radio'
 import Button from '../../../../components/button/Button'
-import AddButton from '../../../common/AddButton'
 import SelectContact from '../base/SelectContact'
 import SingleFile from '../../../common/file/SingleFile'
 import {NECESSARY} from '../../../common/Label'
@@ -26,7 +24,6 @@ import {fetchProjectList, fetchContactList} from '../../customer.action'
 import {fetchCDA_Detail, updateCda, removeCda} from './cda.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import {CUSTOMER} from '../../../../core/constants/types'
 import crud, {handleUpdateCrud, handleCrudList} from '../../../../core/crud'
 
 interface UpdateCDA_DialogProps extends CommonFunction {
@@ -126,12 +123,10 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
       this.props.showSuccess('更新CDA成功！')
-      this.props.clearState(CUSTOMER.UPDATE_CDA)
       this.close()
     }
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
       this.props.showSuccess('删除CDA成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CDA)
       this.close()
     }
   }

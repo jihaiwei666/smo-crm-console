@@ -20,7 +20,6 @@ import Data from '../../common/interface/Data'
 import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
 import {remindTypeOptions} from '../todo-remind.constant'
-import {TODO_REMIND} from '../../../core/constants/types'
 import {fetchUserCategoryInfo, fetchRelevantItemList, sendRemind} from '../todo-remind.action'
 import UserStatusCategoryItem from '../custom/UserStatusCategoryItem'
 
@@ -95,7 +94,6 @@ class SendRemindDialog extends React.Component<SendRemindDialogProps> {
   componentWillReceiveProps(nextProps: SendRemindDialogProps) {
     if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {
       this.props.showSuccess('发送提醒成功！')
-      this.props.clearState(TODO_REMIND.SEND_REMIND)
       this.close()
     }
   }

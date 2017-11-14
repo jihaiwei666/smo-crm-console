@@ -14,7 +14,6 @@ import CheckGroup from '../../../components/form/checkgroup/CheckGroup'
 import addCommonFunction from '../../_frameset/addCommonFunction'
 import CommonFunction from '../../common/interface/CommonFunction'
 import {relevantType, remindTypeOptions} from '../../1-todo-remind/todo-remind.constant'
-import {CUSTOMER} from '../../../core/constants/types'
 import UserStatusOptionItem from '../custom/UserStatusOptionItem'
 
 interface ApplyBdpcFollowUpDialogProps extends CommonFunction {
@@ -55,7 +54,6 @@ class ApplyBdpcFollowUpDialog extends React.Component<ApplyBdpcFollowUpDialogPro
   componentWillReceiveProps(nextProps: ApplyBdpcFollowUpDialogProps) {
     if (!this.props.applyBdpcFollowUpSuccess && nextProps.applyBdpcFollowUpSuccess) {
       this.props.showSuccess('已申请BDPC跟进！')
-      this.props.clearState(CUSTOMER.APPLY_BDPC_FOLLOW_UP)
       this.close()
     }
   }

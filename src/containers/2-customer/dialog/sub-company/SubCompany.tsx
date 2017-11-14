@@ -9,7 +9,6 @@ import Company from './Company'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {addSubCompany, updateSubCompany, removeSubCompany} from '../../customer.action'
 import crud from '../../../../core/crud'
 import {lastItemIsLocal} from '../../../common/common.helper'
@@ -68,7 +67,6 @@ class SubCompany extends React.Component<SubCompanyProps> {
   componentWillReceiveProps(nextProps: SubCompanyProps) {
     if (!this.props.addSubCompanySuccess && nextProps.addSubCompanySuccess) {
       this.props.showSuccess('添加子公司成功！')
-      this.props.clearState(CUSTOMER.ADD_SUB_COMPANY)
       let companyList = this.state.companyList
       let match = companyList.find(c => c.id == this.companyUid)
       match.companyId = nextProps.newSubCompanyId
@@ -77,11 +75,9 @@ class SubCompany extends React.Component<SubCompanyProps> {
     }
     if (!this.props.updateSubCompanySuccess && nextProps.updateSubCompanySuccess) {
       this.props.showSuccess('更新子公司信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_SUB_COMPANY)
     }
     if (!this.props.removeSubCompanySuccess && nextProps.removeSubCompanySuccess) {
       this.props.showSuccess('删除子公司信息成功！')
-      this.props.clearState(CUSTOMER.REMOVE_SUB_COMPANY)
       let companyList = this.state.companyList
       let index = companyList.indexOf(companyList.find(c => c.companyId == this.lastCompanyId))
       companyList.splice(index, 1)

@@ -12,7 +12,6 @@ import Label, {NECESSARY} from '../common/Label'
 import Input from '../../components/form/Input'
 import CommonFunction from '../common/interface/CommonFunction'
 import addCommonFunction from './addCommonFunction'
-import {APP} from '../../core/constants/types'
 import md5 from '../../core/utils/md5'
 
 interface ChangePasswordDialogProps extends CommonFunction {
@@ -42,7 +41,6 @@ class ChangePasswordDialog extends React.Component<ChangePasswordDialogProps> {
   componentWillReceiveProps(nextProps: ChangePasswordDialogProps) {
     if (!this.props.changePasswordSuccess && nextProps.changePasswordSuccess) {
       this.props.showSuccess('修改密码成功！')
-      this.props.clearState(APP.CHANGE_PASSWORD)
       this.close()
     }
   }

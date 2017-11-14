@@ -9,7 +9,6 @@ import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import Data from '../../../common/interface/Data'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {updateRemarkAndAttachment, fetchCustomerRemarkAttachment} from '../../customer.action'
 
 interface CustomerRemarkAttachmentProps extends CommonFunction {
@@ -45,7 +44,6 @@ class CustomerRemarkAttachment extends React.Component<CustomerRemarkAttachmentP
   componentWillReceiveProps(nextProps: CustomerRemarkAttachmentProps) {
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
-      this.props.clearState(CUSTOMER.UPDATE_REMARK_AND_ATTACHMENT)
       this.props.fetchCustomerRemarkAttachment(this.props.customerId)
     }
     if (!this.props.customerRemarkAttachment.loaded && nextProps.customerRemarkAttachment.loaded) {

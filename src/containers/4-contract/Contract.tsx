@@ -14,7 +14,6 @@ import UpdateContractDialog from './dialog/UpdateContractDialog'
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import {handleListData, getNameAndEmail, getOperation} from '../common/common.helper'
 import {getContractType} from './contract.helper'
-import {CONTRACT} from '../../core/constants/types'
 import {fetchList, removeContract} from './contract.action'
 import FilterItem from '../../components/query-filter/FilterItem'
 import Input from '../../components/form/Input'
@@ -96,7 +95,6 @@ class Contract extends React.Component<ContractProps> {
     }
     if (!this.props.removeContractSuccess && nextProps.removeContractSuccess) {
       this.props.showSuccess('删除合同成功！')
-      this.props.clearState(CONTRACT.REMOVE_CONTRACT)
       const {total} = handleListData(this.props.contractList)
       if (total % 10 == 1) {
         this.toPage(0)

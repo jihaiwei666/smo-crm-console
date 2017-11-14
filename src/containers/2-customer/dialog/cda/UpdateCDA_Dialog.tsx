@@ -26,7 +26,6 @@ import {fetchProjectList, fetchContactList} from '../../customer.action'
 import {fetchCDA_Detail, updateCda, removeCda} from './cda.action'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
-import {CUSTOMER} from '../../../../core/constants/types'
 import crud, {handleUpdateCrud, handleCrudList} from '../../../../core/crud'
 
 interface UpdateCDA_DialogProps extends CommonFunction {
@@ -127,12 +126,10 @@ class UpdateCDA_Dialog extends React.Component<UpdateCDA_DialogProps> {
     }
     if (!this.props.updateCdaSuccess && nextProps.updateCdaSuccess) {
       this.props.showSuccess('更新CDA成功！')
-      this.props.clearState(CUSTOMER.UPDATE_CDA)
       this.close()
     }
     if (!this.props.removeCdaSuccess && nextProps.removeCdaSuccess) {
       this.props.showSuccess('删除CDA成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CDA)
       this.close()
     }
   }

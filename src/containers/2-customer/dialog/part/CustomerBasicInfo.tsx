@@ -19,7 +19,6 @@ import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {EVENT_NAMES, default as eventBus} from '../../../../core/event'
 import {addCustomer, updateCustomer, querySimilarName, fetchBasicInfo} from '../../customer.action'
 
@@ -113,12 +112,10 @@ class CustomerBasicInfo extends React.Component<CustomerBasicInfoProps> {
   componentWillReceiveProps(nextProps: CustomerBasicInfoProps) {
     if (!this.props.addCustomerSuccess && nextProps.addCustomerSuccess) {
       this.props.showSuccess('添加客户信息成功！')
-      this.props.clearState(CUSTOMER.ADD_CUSTOMER)
       this.props.onCustomerNameChange(this.state.customerName)
     }
     if (!this.props.updateCustomerSuccess && nextProps.updateCustomerSuccess) {
       this.props.showSuccess('更新客户信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_CUSTOMER)
       this.props.onCustomerNameChange(this.state.customerName)
       if (this.oldCustomerName != this.state.customerName) {
         eventBus.emit(EVENT_NAMES.CUSTOMER_NAME_UPDATED)

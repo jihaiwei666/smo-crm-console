@@ -11,7 +11,6 @@ import SendRemindDialog from './dialog/SendRemindDialog'
 
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import List from '../common/interface/List'
-import {TODO_REMIND} from '../../core/constants/types'
 import {fetchAllList, fetchMyList, fetchCompleteList, updateRemindStatus} from './todo-remind.action'
 import {handlePageListData} from '../../reducers/page-list.reducer'
 
@@ -90,7 +89,6 @@ class TodoRemind extends React.Component<TodoRemindProps> {
   componentWillReceiveProps(nextProps: TodoRemindProps) {
     if (!this.props.updateRemindStatusSuccess && nextProps.updateRemindStatusSuccess) {
       this.props.showSuccess('修改状态成功！')
-      this.props.clearState(TODO_REMIND.UPDATE_REMIND_STATUS)
       this.refreshList()
     }
     if (!this.props.sendRemindSuccess && nextProps.sendRemindSuccess) {

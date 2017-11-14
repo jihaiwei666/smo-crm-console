@@ -11,7 +11,6 @@ import Button from '../../../../components/button/Button'
 import AddRfiDialog from './AddRfiDialog'
 import Data from '../../../common/interface/Data'
 import UpdateRFI_Item from './UpdateRFI_Item'
-import {CUSTOMER} from '../../../../core/constants/types'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import Index from '../../../common/Index'
@@ -52,7 +51,6 @@ class RFI_ListDialog extends React.Component<RFI_ListDialogProps> {
     }
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {
       this.props.showSuccess('删除RFI成功！')
-      this.props.clearState(CUSTOMER.REMOVE_RFI)
       this.props.fetchRfiList(this.props.customerId)
     }
   }

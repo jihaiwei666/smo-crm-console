@@ -19,7 +19,6 @@ import AddMsaDialog from './AddMsaDialog'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {fetchMSAList, addMsa, updateMsa, removeMsa} from './supplier.action'
 
 interface LookMSADialogProps extends CommonFunction {
@@ -57,7 +56,6 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
     }
     if (!this.props.removeMsaSuccess && nextProps.removeMsaSuccess) {
       this.props.showSuccess('删除MSA成功！')
-      this.props.clearState(CUSTOMER.REMOVE_MSA)
       this.props.fetchMSAList(this.props.supplierId)
     }
   }

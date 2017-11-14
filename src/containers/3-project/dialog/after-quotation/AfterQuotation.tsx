@@ -22,7 +22,6 @@ import Update from '../../../common/Update'
 
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {PROJECT} from '../../../../core/constants/types'
 import {getDateStr, getYearMonth} from '../../../../core/utils/dateUtils'
 import {addAfterQuotation, updateAfterQuotation} from '../../project.action'
 
@@ -113,12 +112,10 @@ class AfterQuotation extends React.Component<AfterQuotationProps> {
   componentWillReceiveProps(nextProps: AfterQuotationProps) {
     if (!this.props.addAfterQuotationSuccess && nextProps.addAfterQuotationSuccess) {
       this.props.showSuccess('添加报价后信息成功！')
-      this.props.clearState(PROJECT.ADD_AFTER_QUOTATION)
       this.setState(nextProps.newAfterQuotation)
     }
     if (!this.props.updateAfterQuotationSuccess && nextProps.updateAfterQuotationSuccess) {
       this.props.showSuccess('更新报价后信息成功！')
-      this.props.clearState(PROJECT.UPDATE_AFTER_QUOTATION)
     }
   }
 

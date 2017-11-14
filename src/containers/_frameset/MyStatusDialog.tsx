@@ -13,7 +13,6 @@ import Button from '../../components/button/Button'
 
 import addCommonFunction from './addCommonFunction'
 import CommonFunction from '../common/interface/CommonFunction'
-import {APP} from '../../core/constants/types'
 import {getUserStatusText} from '../common/common.helper'
 
 interface MyStatusDialogProps extends CommonFunction {
@@ -72,7 +71,6 @@ class MyStatusDialog extends React.Component<MyStatusDialogProps> {
   componentWillReceiveProps(nextProps: MyStatusDialogProps) {
     if (!this.props.updateUserStatusSuccess && nextProps.updateUserStatusSuccess) {
       this.props.showSuccess('更新状态成功！')
-      this.props.clearState(APP.UPDATE_USER_STATUS)
       this.close()
     }
   }

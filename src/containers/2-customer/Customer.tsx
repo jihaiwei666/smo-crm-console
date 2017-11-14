@@ -20,7 +20,6 @@ import UpdateCustomerDialog from './dialog/UpdateCustomerDialog'
 import AppFunctionPage from '../common/interface/AppFunctionPage'
 import Data from '../common/interface/Data'
 import {customerTypeOptions, customerOwnerOptions, createOptions} from './customer.constant'
-import {CUSTOMER} from '../../core/constants/types'
 import {handleListData, getOperation, getNameAndEmail} from '../common/common.helper'
 import {getCustomerType} from './customer.helper'
 import {fetchList, removeCustomer} from './customer.action'
@@ -84,7 +83,6 @@ class Customer extends React.Component<CustomerProps> {
     }
     if (!this.props.removeCustomerSuccess && nextProps.removeCustomerSuccess) {
       this.props.showSuccess('删除客户成功！')
-      this.props.clearState(CUSTOMER.REMOVE_CUSTOMER)
       const {total} = handleListData(this.props.customerList)
       if (total % 10 == 1) {
         this.toPage(0)

@@ -23,7 +23,6 @@ import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import {nodeProgressOptions, nodeProgress} from '../../contract.constant'
-import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import {getSuffix} from '../after-sign/after-sign.helper'
 import {ifNotFill} from './make-collection.helper'
@@ -122,7 +121,6 @@ class MakeCollection extends React.Component<MakeCollectionProps> {
       this.submitApply = false
       this.setState({applyInvoiceDate: nextProps.newBillDate})
       this.props.showSuccess('申请开票成功！')
-      this.props.clearState(CONTRACT.SUBMIT_BILL_APPLY)
     }
     if (!this.props.loaded && nextProps.loaded) {
       this.setState(nextProps.initCollection)

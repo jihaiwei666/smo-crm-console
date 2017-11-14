@@ -14,7 +14,6 @@ import AddAccountDialog from './dialog/AddAccountDialog'
 import UpdateAccountDialog from './dialog/UpdateAccountDialog'
 
 import {accountStatus} from './account-manage.constant'
-import {ACCOUNT_MANAGE} from '../../core/constants/types'
 import {handleListData} from '../common/common.helper'
 import {getPositionName} from './account-manage.helper'
 import * as actions from './account-manage.action'
@@ -61,24 +60,20 @@ class AccountManage extends React.Component<AccountManageProps> {
   componentDidUpdate() {
     if (this.props.addAccountSuccess) {
       this.props.showSuccess('新增账号成功！')
-      this.props.clearState(ACCOUNT_MANAGE.ADD_ACCOUNT)
       this.toPage(0)
     }
     if (this.props.updateAccountSuccess) {
       this.props.showSuccess('更新账号信息成功！')
-      this.props.clearState(ACCOUNT_MANAGE.UPDATE_ACCOUNT)
       this.toPage()
     }
     if (this.props.disableAccountSuccess) {
       const item = this.props.accountList.data.list[this.state.index]
       const msg = item['account_status'] === accountStatus.disabled ? "禁用账号信息成功! " : "启用账号信息成功! "
       this.props.showSuccess(msg)
-      this.props.clearState(ACCOUNT_MANAGE.DISABLE_ACCOUNT)
       this.toPage()
     }
     if (this.props.resetPasswordSuccess) {
       this.props.showSuccess('重置密码成功！')
-      this.props.clearState(ACCOUNT_MANAGE.RESET_PASSWORD)
     }
   }
 

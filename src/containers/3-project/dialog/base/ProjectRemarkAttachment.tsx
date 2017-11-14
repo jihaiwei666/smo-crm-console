@@ -9,7 +9,6 @@ import RemarkAndAttachment from '../../../common/RemarkAndAttachment'
 import Data from '../../../common/interface/Data'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
-import {PROJECT} from '../../../../core/constants/types'
 import {updateRemarkAndAttachment, fetchProjectRemarkAttachment} from '../../project.action'
 
 interface ProjectRemarkAttachmentProps extends CommonFunction {
@@ -45,7 +44,6 @@ class ProjectRemarkAttachment extends React.Component<ProjectRemarkAttachmentPro
   componentWillReceiveProps(nextProps: ProjectRemarkAttachmentProps) {
     if (!this.props.updateRemarkAttachmentSuccess && nextProps.updateRemarkAttachmentSuccess) {
       this.props.showSuccess('更新备注及附件成功！')
-      this.props.clearState(PROJECT.UPDATE_REMARK_ATTACHMENT)
       this.props.fetchProjectRemarkAttachment(this.props.projectId)
     }
     if (!this.props.projectRemarkAttachment.loaded && nextProps.projectRemarkAttachment.loaded) {

@@ -34,7 +34,6 @@ import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
 import Data from '../../../common/interface/Data'
 import {serviceTypeOptions, trailPhaseOptions, nodeProgress} from '../../contract.constant'
-import {CONTRACT} from '../../../../core/constants/types'
 import regex from '../../../../core/constants/regex'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {notEmpty, isEmpty} from '../../../../core/utils/common'
@@ -246,13 +245,11 @@ class AfterSign extends React.Component<AfterSignProps> {
   componentWillReceiveProps(nextProps: AfterSignProps) {
     if (!this.props.addAfterSignSuccess && nextProps.addAfterSignSuccess) {
       this.props.showSuccess('添加签署后成功！')
-      this.props.clearState(CONTRACT.ADD_AFTER_SIGN)
       this.afterSignId = nextProps.newAfterSignId
       this.props.fetchAfterSign(this.props.contractId)
     }
     if (!this.props.updateAfterSignSuccess && nextProps.updateAfterSignSuccess) {
       this.props.showSuccess('更新签署后成功！')
-      this.props.clearState(CONTRACT.UPDATE_AFTER_SIGN)
       this.props.fetchAfterSign(this.props.contractId)
     }
     if (!this.props.afterSignDetail.loaded && nextProps.afterSignDetail.loaded) {

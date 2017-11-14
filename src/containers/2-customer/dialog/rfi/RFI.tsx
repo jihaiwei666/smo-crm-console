@@ -15,7 +15,6 @@ import InputGroup from '../../../common/InputGroup'
 import TextAndButton from '../../../common/TextAndButton'
 import AddButton from '../../../common/AddButton'
 import LabelAndInput1 from '../../../common/LabelAndInput1'
-import Radio from '../../../../components/form/radio/Radio'
 import SelectContact from '../base/SelectContact'
 import CheckGroup1 from '../../../../components/form/checkgroup/CheckGroup1'
 import CheckBox1 from '../../../../components/form/checkbox/CheckBox1'
@@ -28,7 +27,6 @@ import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import addCommonFunction from '../../../_frameset/addCommonFunction'
 import CommonFunction from '../../../common/interface/CommonFunction'
-import {CUSTOMER} from '../../../../core/constants/types'
 import {ADD, EDIT, default as crud} from '../../../../core/crud'
 import {addListItem, updateItemAtIndex} from '../../../../core/utils/arrayUtils'
 import {getDateStr} from '../../../../core/utils/dateUtils'
@@ -144,12 +142,10 @@ class RFI extends React.Component<RFIProps> {
   componentWillReceiveProps(nextProps: RFIProps) {
     if (!this.props.addRfiSuccess && nextProps.addRfiSuccess) {
       this.props.showSuccess('新增RFI信息成功！')
-      this.props.clearState(CUSTOMER.ADD_RFI)
       this.props.fetchLastRfiDetail(this.props.customerId)
     }
     if (!this.props.updateRfiSuccess && nextProps.updateRfiSuccess) {
       this.props.showSuccess('更新RFI信息成功！')
-      this.props.clearState(CUSTOMER.UPDATE_RFI)
       this.props.fetchLastRfiDetail(this.props.customerId)
     }
     if (!this.props.removeRfiSuccess && nextProps.removeRfiSuccess) {

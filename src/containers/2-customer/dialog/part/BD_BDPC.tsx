@@ -17,7 +17,6 @@ import CustomerState from '../../CustomerState'
 import Data from '../../../common/interface/Data'
 import CommonFunctionAndRoleCode from '../../../common/interface/CommonFunctionAndRoleCode'
 import getCommonFunctionAndRoleCode from '../../../_frameset/hoc/getCommonFunctionAndRoleCode'
-import {CUSTOMER} from '../../../../core/constants/types'
 import eventBus, {EVENT_NAMES} from '../../../../core/event'
 import {checkHavePermission, showBdBdpcUpdate} from '../../../../core/permission'
 import {roleCategory} from '../../../7-account-manage/account-manage.constant'
@@ -79,7 +78,6 @@ class BD_BDPC extends React.Component<BD_BDPC_Props> {
   componentWillReceiveProps(nextProps: BD_BDPC_Props) {
     if (!this.props.updateBdAndBdpcSuccess && nextProps.updateBdAndBdpcSuccess) {
       this.props.showSuccess('更新 所有人、所属BDPC 成功！')
-      this.props.clearState(CUSTOMER.UPDATE_BD_AND_BDPC)
     }
     if (!this.props.customerBdBdpc.loaded && nextProps.customerBdBdpc.loaded) {
       const {owner, ownerName, bdpc} = nextProps.customerBdBdpc.data
