@@ -30,21 +30,21 @@ class SingleFile extends React.Component<SingleFileProps> {
     const file = this.props.file
     if (file.crud == crud.ADD) {
       return {
-        "file_url": file.fileUrl,
-        "file_name": file.fileName,
-        "sign": crud.ADD
+        'file_url': file.fileUrl,
+        'file_name': file.fileName,
+        'sign': crud.ADD
       }
     } else if (file.crud == crud.UPDATE) {
       return {
-        "file_id": file.id,
-        "file_url": file.fileUrl,
-        "file_name": file.fileName,
-        "sign": crud.UPDATE
+        'file_id': file.id,
+        'file_url': file.fileUrl,
+        'file_name': file.fileName,
+        'sign': crud.UPDATE
       }
     } else if (file.crud == crud.REMOVE) {
       return {
-        "file_id": file.id,
-        "sign": crud.REMOVE
+        'file_id': file.id,
+        'sign': crud.REMOVE
       }
     }
   }

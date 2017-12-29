@@ -5,6 +5,7 @@ import React from 'react'
 
 import listCrud1 from '../../../../components/hoc/listCrud1'
 import RemoveIcon from '../../../../components/RemoveIcon'
+import DownloadFile from '../../../../components/file/DownloadFile'
 
 interface PlanAttachmentProps {
   item: any
@@ -21,8 +22,9 @@ class PlanAttachment extends React.Component<PlanAttachmentProps> {
     let {item} = this.props
     return (
       <div className="m5">
-        <span className="mr10">{item.fileName}</span>
-        <a target="_blank" href={item.fileUrl}>下载</a>
+        <DownloadFile url={item.fileUrl}>
+          [ {item.fileName} ]
+        </DownloadFile>
         {
           !this.props.disabled && (
             <RemoveIcon onClick={this.props.onRemove}/>
@@ -35,22 +37,22 @@ class PlanAttachment extends React.Component<PlanAttachmentProps> {
 
 function ifAdd(item) {
   return {
-    "file_url": item.fileUrl,
-    "file_name": item.fileName,
+    'file_url': item.fileUrl,
+    'file_name': item.fileName
   }
 }
 
 function ifUpdate(item) {
   return {
-    "file_id": item.id,
-    "file_url": item.fileUrl,
-    "file_name": item.fileName,
+    'file_id': item.id,
+    'file_url': item.fileUrl,
+    'file_name': item.fileName
   }
 }
 
 function ifRemove(item) {
   return {
-    "file_id": item.id,
+    'file_id': item.id
   }
 }
 

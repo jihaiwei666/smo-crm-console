@@ -57,22 +57,22 @@ class AccountManage extends React.Component<AccountManageProps> {
     this.toPage(0)
   }
 
-  componentDidUpdate() {
-    if (this.props.addAccountSuccess) {
+  componentWillReceiveProps(nextProps: AccountManageProps) {
+    if (!this.props.addAccountSuccess && nextProps.addAccountSuccess) {
       this.props.showSuccess('新增账号成功！')
       this.toPage(0)
     }
-    if (this.props.updateAccountSuccess) {
+    if (!this.props.updateAccountSuccess && nextProps.updateAccountSuccess) {
       this.props.showSuccess('更新账号信息成功！')
       this.toPage()
     }
-    if (this.props.disableAccountSuccess) {
+    if (!this.props.disableAccountSuccess && nextProps.disableAccountSuccess) {
       const item = this.props.accountList.data.list[this.state.index]
-      const msg = item['account_status'] === accountStatus.disabled ? "禁用账号信息成功! " : "启用账号信息成功! "
+      const msg = item['account_status'] === accountStatus.disabled ? '禁用账号信息成功! ' : '启用账号信息成功! '
       this.props.showSuccess(msg)
       this.toPage()
     }
-    if (this.props.resetPasswordSuccess) {
+    if (!this.props.resetPasswordSuccess && nextProps.resetPasswordSuccess) {
       this.props.showSuccess('重置密码成功！')
     }
   }
@@ -106,8 +106,9 @@ class AccountManage extends React.Component<AccountManageProps> {
         }
         {
           this.state.showDisabledConfirm && (
-            <Confirm message={list[this.state.index]['account_status'] === accountStatus.disabled ? "确定停用此账号吗?" : "确定启用此账号吗?"}
-                     onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
+            <Confirm
+              message={list[this.state.index]['account_status'] === accountStatus.disabled ? '确定停用此账号吗?' : '确定启用此账号吗?'}
+              onExited={() => this.setState({showDisabledConfirm: false})} onConfirm={this.disableAccount}/>
           )
         }
 
@@ -136,7 +137,10 @@ class AccountManage extends React.Component<AccountManageProps> {
                     <FixRow.Item>
                       <Button className="small" onClick={() => this.setState({showEditDialog: true, index})}>修改</Button>
                       <Button className="small danger"
-                              onClick={() => this.setState({showDisabledConfirm: true, index})}>{item['account_status'] === accountStatus.disabled ? "停用" : "已停用"}</Button>
+                              onClick={() => this.setState({
+                                showDisabledConfirm: true,
+                                index
+                              })}>{item['account_status'] === accountStatus.disabled ? '停用' : '已停用'}</Button>
                     </FixRow.Item>
                   </FixRow>
                 )

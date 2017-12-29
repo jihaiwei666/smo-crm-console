@@ -3,8 +3,9 @@
  */
 import {fromJS} from 'immutable'
 
-import {ACCOUNT_MANAGE} from '../../core/constants/types'
+import {ACCOUNT_MANAGE, TODO_REMIND} from '../../core/constants/types'
 import phase from '../../core/constants/phase'
+import {handleFlagState} from '../common/reduxUtils'
 
 const initValue = {
   addAccountSuccess: false,
@@ -15,36 +16,10 @@ const initValue = {
 
 export default function (iState = fromJS(initValue), action) {
   let nextIState = iState
-  switch (action.type) {
-    case ACCOUNT_MANAGE.ADD_ACCOUNT + phase.SUCCESS:
-      nextIState = nextIState.set('addAccountSuccess', true)
-      break
 
-    case phase.CLEAR + ACCOUNT_MANAGE.ADD_ACCOUNT :
-      nextIState = nextIState.set('addAccountSuccess', false)
-      break
-
-    case ACCOUNT_MANAGE.UPDATE_ACCOUNT + phase.SUCCESS:
-      nextIState = nextIState.set('updateAccountSuccess', true)
-      break
-
-    case phase.CLEAR + ACCOUNT_MANAGE.UPDATE_ACCOUNT :
-      nextIState = nextIState.set('updateAccountSuccess', false)
-      break
-
-    case ACCOUNT_MANAGE.RESET_PASSWORD + phase.SUCCESS:
-      nextIState = nextIState.set('resetPasswordSuccess', true)
-      break
-    case phase.CLEAR + ACCOUNT_MANAGE.RESET_PASSWORD :
-      nextIState = nextIState.set('resetPasswordSuccess', false)
-      break
-
-    case ACCOUNT_MANAGE.DISABLE_ACCOUNT + phase.SUCCESS:
-      nextIState = nextIState.set('disableAccountSuccess', true)
-      break
-    case phase.CLEAR + ACCOUNT_MANAGE.DISABLE_ACCOUNT :
-      nextIState = nextIState.set('disableAccountSuccess', false)
-      break
-  }
+  nextIState = handleFlagState(nextIState, action, ACCOUNT_MANAGE.ADD_ACCOUNT, 'addAccountSuccess')
+  nextIState = handleFlagState(nextIState, action, ACCOUNT_MANAGE.UPDATE_ACCOUNT, 'updateAccountSuccess')
+  nextIState = handleFlagState(nextIState, action, ACCOUNT_MANAGE.RESET_PASSWORD, 'resetPasswordSuccess')
+  nextIState = handleFlagState(nextIState, action, ACCOUNT_MANAGE.DISABLE_ACCOUNT, 'disableAccountSuccess')
   return nextIState
 }

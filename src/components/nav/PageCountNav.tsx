@@ -5,6 +5,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import './page-count-nav.scss'
+import {calculatePageIndex} from '../../core/utils/common'
 
 interface PageCountNavProps {
   currentPage: number
@@ -16,34 +17,33 @@ class PageCountNav extends React.Component<PageCountNavProps> {
 
   render() {
     let totalPage = Math.floor((this.props.total - 1) / 10)
-    let pageList = []
-    for (let i = 0; i <= totalPage; i++) {
-      pageList.push(i)
-    }
+    let pageList = calculatePageIndex(totalPage, this.props.currentPage + 1)
 
     return (
       <div className="page-count-nav">
         <div className="page">
-          <a className={classnames({'disabled': this.props.currentPage == 0})}
-             onClick={() => this.props.onPageChange(this.props.currentPage - 1)}
+          <button disabled={this.props.currentPage == 0}
+                  onClick={() => this.props.onPageChange(this.props.currentPage - 1)}
           >上一页
-          </a>
+          </button>
           {
-            pageList.map(p => {
-              if (this.props.currentPage == p) {
+            pageList.map((p, index) => {
+              if (this.props.currentPage + 1 === p) {
                 return (
-                  <span key={p}>{p + 1}</span>
+                  <span key={p}>{p}</span>
                 )
+              } else if (p == '...') {
+                return <a key={index + '...'}>...</a>
               }
               return (
-                <a key={p} onClick={() => this.props.onPageChange(p)}>{p + 1}</a>
+                <a key={p} onClick={() => this.props.onPageChange(p - 1)}>{p}</a>
               )
             })
           }
-          <a className={classnames({'disabled': this.props.currentPage == totalPage})}
-             onClick={() => this.props.onPageChange(this.props.currentPage + 1)}
+          <button disabled={this.props.currentPage + 1 === totalPage}
+                  onClick={() => this.props.onPageChange(this.props.currentPage + 1)}
           >下一页
-          </a>
+          </button>
         </div>
       </div>
     )

@@ -57,7 +57,7 @@ class UpdateAccountDialog extends React.Component<UpdateAccountDialogProps> {
     this.setState({email, username, shortName, position})
   }
 
-  componentWillReceiveProps(nextProps: any) {
+  componentWillReceiveProps(nextProps: UpdateAccountDialogProps) {
     if (!this.props.updateAccountSuccess && nextProps.updateAccountSuccess) {
       this.close()
     }

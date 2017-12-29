@@ -184,7 +184,7 @@ class Contract extends React.Component<ContractProps> {
             </div>
           )
         }
-        <FixHeadList total={total} weights={[1, 2, 1, 2, 2, 1]}>
+        <FixHeadList total={total} weights={[3, 2, 1, 2, 2, 1]}>
           <FixHead>
             <FixHead.Item>合同名称</FixHead.Item>
             <FixHead.Item>合同编号</FixHead.Item>

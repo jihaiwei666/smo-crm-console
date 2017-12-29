@@ -1,7 +1,10 @@
 .page-count-nav {
     .page {
         padding: 10px 0 10px 0;
-        a, span {
+        button {
+            cursor: pointer;
+        }
+        a, span, button {
             display: inline-block;
             transition: color 0.5s;
             margin: 0 2px 0 6px;
@@ -14,8 +17,13 @@
             &.disabled {
                 cursor: not-allowed;
             }
+            &[disabled] {
+                cursor: not-allowed;
+                color: #666 !important;
+                background: #fff !important
+            }
         }
-        span, a:hover {
+        span, a:hover, button:hover {
             background: #4084d0;
             color: #fff;
         }
