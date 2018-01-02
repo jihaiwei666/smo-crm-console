@@ -78,7 +78,7 @@ class SingleFile extends React.Component<SingleFileProps> {
         {
           !empty && (
             <div className="m5">
-              <DownloadFile url={this.props.file.fileUrl} className="mr10">
+              <DownloadFile url={this.props.file.fileUrl} className="mr10" downloadName={this.props.file.fileName}>
                 [ {this.props.file.fileName} ]
               </DownloadFile>
               {

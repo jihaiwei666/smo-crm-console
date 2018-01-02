@@ -47,7 +47,7 @@ class RecycleBin extends React.Component<RecycleBinProps> {
                 <span className="mr10">
                   {item.name}
                 </span>
-                  <DownloadFile url={item.url}>
+                  <DownloadFile url={item.url} downloadName={item.name}>
                     下载
                   </DownloadFile>
                 </div>

@@ -7,12 +7,13 @@ import classnames from 'classnames'
 interface DownloadFileProps {
   className?: string
   url: string
+  downloadName: string
 }
 
 class DownloadFile extends React.Component<DownloadFileProps> {
   render() {
     return (
-      <a download="download-file" href={this.props.url} className={classnames('download-file', this.props.className)} title="点击下载">
+      <a download={this.props.downloadName} href={this.props.url} className={classnames('download-file', this.props.className)} title="点击下载">
         {this.props.children}
       </a>
     )

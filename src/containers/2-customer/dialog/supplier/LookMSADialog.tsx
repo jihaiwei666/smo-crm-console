@@ -118,7 +118,7 @@ class LookMSADialog extends React.Component<LookMSADialogProps> {
                     <LabelAndInput1 label="MSA扫描件">
                       {
                         item.scanFile && (
-                          <DownloadFile url={item.scanFile.fileUrl}>
+                          <DownloadFile url={item.scanFile.fileUrl} downloadName={item.scanFile.fileName}>
                             <span>[ {item.scanFile.fileName} ]</span>
                           </DownloadFile>
                         )

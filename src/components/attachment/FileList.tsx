@@ -61,7 +61,7 @@ class FileList extends React.Component<FileListProps> {
                   <div className="uploaded-file-type-icon">
                     {
                       this.state.touchIndex == index && (
-                        <DownloadFile url={fileUrl}>
+                        <DownloadFile url={fileUrl} downloadName={fileName}>
                           <div className="to-download-file">
                             <img src={require('../download.svg')}/>
                           </div>

@@ -118,7 +118,7 @@ class Remind extends React.Component<RemindProps> {
                           {
                             item.attachments.map(attachment => {
                               return (
-                                <DownloadFile key={attachment.id} url={attachment.url} className="mr7">
+                                <DownloadFile key={attachment.id} url={attachment.url} className="mr7" downloadName={attachment.name}>
                                   [{attachment.name}]
                                 </DownloadFile>
                               )

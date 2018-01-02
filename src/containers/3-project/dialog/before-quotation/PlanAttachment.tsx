@@ -22,7 +22,7 @@ class PlanAttachment extends React.Component<PlanAttachmentProps> {
     let {item} = this.props
     return (
       <div className="m5">
-        <DownloadFile url={item.fileUrl}>
+        <DownloadFile url={item.fileUrl} downloadName={item.fileName}>
           [ {item.fileName} ]
         </DownloadFile>
         {
