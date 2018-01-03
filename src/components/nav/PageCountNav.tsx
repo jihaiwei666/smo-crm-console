@@ -16,7 +16,7 @@ interface PageCountNavProps {
 class PageCountNav extends React.Component<PageCountNavProps> {
 
   render() {
-    let totalPage = Math.floor((this.props.total - 1) / 10)
+    let totalPage = Math.ceil((this.props.total - 1) / 10)
     let pageList = calculatePageIndex(totalPage, this.props.currentPage + 1)
 
     return (

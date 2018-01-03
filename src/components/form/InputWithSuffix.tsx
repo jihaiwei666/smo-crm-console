@@ -36,4 +36,4 @@ class InputWithSuffix extends React.Component<InputWithSuffixProps> {
   }
 }
 
-export default addFormSupport(InputWithSuffix, ({props}) => checkValid(props.format, props.value))
+export default addFormSupport(InputWithSuffix, ({props}) => checkValid(props.format, props.value, props.required))

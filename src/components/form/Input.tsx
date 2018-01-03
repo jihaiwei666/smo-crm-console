@@ -81,4 +81,4 @@ const noFormatRule = (required) => value => {
   return true
 }
 
-export default addFormSupport(Input, ({props}) => checkValid(props.format || noFormatRule(props.required), props.value))
+export default addFormSupport(Input, ({props}) => checkValid(props.format || noFormatRule(props.required), props.value, props.required))
