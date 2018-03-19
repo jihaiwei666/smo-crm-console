@@ -135,6 +135,10 @@ export function handleClientInfo(data) {
       projects: relationInfo['relationProjects'].map(item => ({
         projectId: item['project_info_id'],
         projectName: item['project_info_name']
+      })),
+      contracts: relationInfo['relationContracts'].map(item => ({
+        contractId: item['contract_info_id'],
+        contractName: item['contract_name']
       }))
     },
     remarkAttachment: handleCustomerRemarkAttachment(remarkAttachment),

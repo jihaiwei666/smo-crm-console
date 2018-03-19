@@ -11,7 +11,7 @@ interface AssociateInfoProps {
 
 class AssociateInfo extends React.Component<AssociateInfoProps> {
   render() {
-    const {projects} = this.props.relationInfo || {projects: []}
+    const {projects, contracts} = this.props.relationInfo || {projects: [], contracts: []}
     return (
       <div className="--module-item">
         <div className="input-row">
@@ -39,7 +39,18 @@ class AssociateInfo extends React.Component<AssociateInfoProps> {
           <FlexDiv>
             <Label>关联合同</Label>
             <Part>
-              <div className="associate-item">尚无关联合同</div>
+              {
+                contracts.length != 0 && contracts.map(contract => {
+                  return (
+                    <div key={contract.contractId} className="associate-item">{contract.contractName}</div>
+                  )
+                })
+              }
+              {
+                !contracts.length && (
+                  <div className="associate-item">暂无关联信息</div>
+                )
+              }
             </Part>
           </FlexDiv>
           <div className="tip">合同中关联项目后，自动产生，不可修改</div>
